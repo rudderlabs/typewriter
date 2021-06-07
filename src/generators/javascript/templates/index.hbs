@@ -13,7 +13,7 @@
  */
 import Ajv from 'ajv'
 {{/if}}
-import * as Segment from './segment'
+import * as Rudder from './rudder'
 
 {{#each objects}}
 {{#if description}}
@@ -34,7 +34,7 @@ export interface {{name}} {
 {{/each}}
 
 export type ViolationHandler = (
-	message: {{#if isBrowser}}Record<string, any>{{else}}Segment.TrackMessage<Record<string, any>>{{/if}},
+	message: {{#if isBrowser}}Record<string, any>{{else}}Rudder.TrackMessage<Record<string, any>>{{/if}},
 	{{!-- Swap the type definitions here so we don't want depend on ajv in production just for this type definition. --}}
 	violations: {{#if isDevelopment}}Ajv.ErrorObject{{else}}any{{/if}}[]
 ) => void
@@ -72,20 +72,20 @@ let onViolation = defaultValidationErrorHandler
 {{#unless isBrowser}}
 const missingAnalyticsNodeError = new Error(`You must set an analytics-node instance:
 
->	const SegmentAnalytics = require('analytics-node')
+>	const RudderAnalytics = require('@rudderstack/rudder-sdk-node');
 >	const { setTypewriterOptions } = require('./analytics')
 >
->	const analytics = new SegmentAnalytics('SEGMENT_WRITE_KEY')
+>	const analytics = new RudderAnalytics(WRITE_KEY, DATA_PLANE_URL/v1/batch)
 >	setTypewriterOptions({
 >		analytics: analytics,
 >	})
 
-For more information on analytics-node, see: https://segment.com/docs/sources/server/node/quickstart/
+For more information on analytics-node, see: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#installing-the-rudderstack-node-js-sdk
 `)
 {{/unless}}
 
 {{!-- We use a closure so we can lazy-resolve window.analytics in browser environments. --}}
-let analytics: () => ({{#if isBrowser}}SegmentAnalytics.AnalyticsJS{{else}}Segment.AnalyticsNode{{/if}} | undefined) = () => {
+let analytics: () => ({{#if isBrowser}}RudderAnalytics.AnalyticsJS{{else}}Rudder.AnalyticsNode{{/if}} | undefined) = () => {
 	{{#if isBrowser}}
 	return window.analytics
 	{{else}}
@@ -101,7 +101,7 @@ export interface TypewriterOptions {
 	 * Defaults to window.analytics.
 	 {{/if}}
 	 */
-	analytics{{#if isBrowser}}?{{/if}}: {{#if isBrowser}}SegmentAnalytics.AnalyticsJS{{else}}Segment.AnalyticsNode{{/if}}
+	analytics{{#if isBrowser}}?{{/if}}: {{#if isBrowser}}RudderAnalytics.AnalyticsJS{{else}}Rudder.AnalyticsNode{{/if}}
 	/**
 	 * Handler fired when if an event does not match its spec. This handler
 	 * does not fire in production mode, because it requires inlining the full
@@ -127,7 +127,7 @@ export function setTypewriterOptions(options: TypewriterOptions) {
 	* is invalid, the `onViolation` handler will be called.
 	*/
 function validateAgainstSchema(
-	message: {{#if isBrowser}}Record<string, any>{{else}}Segment.TrackMessage<Record<string, any>>{{/if}},
+	message: {{#if isBrowser}}Record<string, any>{{else}}Rudder.TrackMessage<Record<string, any>>{{/if}},
 	schema: object
 ) {
 	const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
@@ -142,9 +142,9 @@ function validateAgainstSchema(
 
 /**
  * Helper to attach metadata on Typewriter to outbound requests.
- * This is used for attribution and debugging by the Segment team.
+ * This is used for attribution and debugging by the RudderStack team.
  */
-function withTypewriterContext{{#unless isBrowser}}<P, T extends Segment.TrackMessage<P>>{{/unless}}(message: {{#if isBrowser}}Segment.Options = {}{{else}}T{{/if}}): {{#if isBrowser}}Segment.Options{{else}}T{{/if}} {
+function withTypewriterContext{{#unless isBrowser}}<P, T extends Rudder.TrackMessage<P>>{{/unless}}(message: {{#if isBrowser}}Rudder.Options = {}{{else}}T{{/if}}): {{#if isBrowser}}Rudder.Options{{else}}T{{/if}} {
 	return {
 		...message,
 		context: {
@@ -160,7 +160,7 @@ function withTypewriterContext{{#unless isBrowser}}<P, T extends Segment.TrackMe
 {{#unless isBrowser}}
 /**
  * A message payload for an analytics-node `.track()` call.
- * See: https://segment.com/docs/spec/track/
+ * See: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#track
  *
  * @typedef TrackMessage<PropertiesType>
  * @property {string | number} [userId] - The ID for this user in your database.
@@ -193,8 +193,8 @@ function withTypewriterContext{{#unless isBrowser}}<P, T extends Segment.TrackMe
 {{#if ../isBrowser}}
 export function {{functionName}}(
 	props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
-	options?: Segment.Options,
-	callback?: Segment.Callback
+	options?: Rudder.Options,
+	callback?: Rudder.Callback
 ): void {
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
@@ -218,8 +218,8 @@ export function {{functionName}}(
 }
 {{else}}
 export function {{functionName}}(
-	message: Segment.TrackMessage<{{propertiesType}}>,
-	callback?: Segment.Callback
+	message: Rudder.TrackMessage<{{propertiesType}}>,
+	callback?: Rudder.Callback
 ): void {
 	const msg = withTypewriterContext({
 		properties: {},

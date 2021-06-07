@@ -7,13 +7,13 @@
  *
  {{#if isBrowser}}
  {{!-- Note: this uses whitespace control to "escape" the outer curly braces. --}}
- * @param { {{~propertiesType~}} } {{#if isPropertiesOptional}}[props]{{else}}props{{/if}} - The analytics properties that will be sent to Segment.
+ * @param { {{~propertiesType~}} } {{#if isPropertiesOptional}}[props]{{else}}props{{/if}} - The analytics properties that will be sent to RudderStack.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
  * 		call is fired.
  {{else}}
  {{!-- Note: this uses whitespace control to "escape" the outer curly braces. --}}
- * @param {TrackMessage<{{propertiesType}}>} message - The analytics properties that will be sent to Segment.
+ * @param {TrackMessage<{{propertiesType}}>} message - The analytics properties that will be sent to RudderStack.
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
  * 		call is fired.
  {{/if}}
