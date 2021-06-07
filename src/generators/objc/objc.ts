@@ -22,7 +22,7 @@ type ObjCPropertyContext = {
 	modifiers: string
 	// Whether the property is nullable (nonnull vs nullable modifier).
 	isVariableNullable: boolean
-	// Whether null is a valid value for this property when sent to Segment.
+	// Whether null is a valid value for this property when sent to Rudderstack.
 	isPayloadFieldNullable: boolean
 	// Whether the Objective-C type is a pointer (id, SERIALIZABLE_DICT, NSNumber *, ...).
 	isPointerType: boolean
@@ -111,7 +111,7 @@ export const objc: Generator<
 			// allowed properties.
 			const className = client.namer.register(schema.name, 'class', {
 				transform: (name: string) => {
-					return `SEG${upperFirst(camelCase(name))}`
+					return `RS${upperFirst(camelCase(name))}`
 				},
 			})
 			property.type = `${className} *`
@@ -136,28 +136,28 @@ export const objc: Generator<
 	generateRoot: async (client, context) => {
 		await Promise.all([
 			client.generateFile(
-				'SEGTypewriterAnalytics.h',
+				'RSTypewriterAnalytics.h',
 				'generators/objc/templates/analytics.h.hbs',
 				context
 			),
 			client.generateFile(
-				'SEGTypewriterAnalytics.m',
+				'RSTypewriterAnalytics.m',
 				'generators/objc/templates/analytics.m.hbs',
 				context
 			),
 			client.generateFile(
-				'SEGTypewriterUtils.h',
-				'generators/objc/templates/SEGTypewriterUtils.h.hbs',
+				'RSTypewriterUtils.h',
+				'generators/objc/templates/RSTypewriterUtils.h.hbs',
 				context
 			),
 			client.generateFile(
-				'SEGTypewriterUtils.m',
-				'generators/objc/templates/SEGTypewriterUtils.m.hbs',
+				'RSTypewriterUtils.m',
+				'generators/objc/templates/RSTypewriterUtils.m.hbs',
 				context
 			),
 			client.generateFile(
-				'SEGTypewriterSerializable.h',
-				'generators/objc/templates/SEGTypewriterSerializable.h.hbs',
+				'RSTypewriterSerializable.h',
+				'generators/objc/templates/RSTypewriterSerializable.h.hbs',
 				context
 			),
 			...context.objects.map(o =>
@@ -210,7 +210,7 @@ function generateFunctionSignature(
 	if (withOptions) {
 		parameters.push({
 			name: 'options',
-			type: 'SERIALIZABLE_DICT',
+			type: 'RSOption *',
 			isPointerType: true,
 			isVariableNullable: true,
 		})
@@ -286,7 +286,7 @@ function generatePropertiesDictionary(
 				: property.schemaType === Type.OBJECT && !property.type.includes('SERIALIZABLE_DICT')
 				? `[${name} toDictionary]`
 				: property.schemaType === Type.ARRAY
-				? `[SEGTypewriterUtils toSerializableArray:${name}]`
+				? `[RSTypewriterUtils toSerializableArray:${name}]`
 				: name
 
 		let setter: string
