@@ -20,7 +20,7 @@ type SwiftPropertyContext = {
 	type: string
 	// Whether the property is nullable (nonnull vs nullable modifier).
 	isVariableNullable: boolean
-	// Whether null is a valid value for this property when sent to Segment.
+	// Whether null is a valid value for this property when sent to Rudderstack.
 	isPayloadFieldNullable: boolean
 	// Whether the Objective-C type is a pointer (id, SERIALIZABLE_DICT, NSNumber *, ...).
 	isPointerType: boolean
@@ -185,7 +185,7 @@ function generateFunctionSignature(
 	if (withOptions) {
 		parameters.push({
 			name: 'options',
-			type: '[String: Any]',
+			type: 'RSOption',
 			isPointerType: true,
 			isVariableNullable: true,
 		})
