@@ -141,12 +141,12 @@ export const javascript: Generator<
 			context
 		)
 
-		// segment.hbs contains the TypeScript definitions for the Segment API.
+		// rudder.hbs contains the TypeScript definitions for the Rudder API.
 		// It becomes an empty file for JavaScript after being transpiled.
 		if (client.options.client.language === Language.TYPESCRIPT) {
 			await client.generateFile<JavaScriptRootContext>(
-				'segment.ts',
-				'generators/javascript/templates/segment.hbs',
+				'rudder.ts',
+				'generators/javascript/templates/rudder.hbs',
 				context
 			)
 		}

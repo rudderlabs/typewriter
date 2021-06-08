@@ -25,6 +25,25 @@
                 "rememberMe": {
                   "description": "Whether the user has indicated that the browser should store their login credentials.",
                   "type": "boolean"
+                },
+                "dimensions": {
+                  "type": "object",
+                  "properties": {
+                    "length": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    },
+                    "height": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "length",
+                    "width",
+                    "height"
+                  ]
                 }
               },
               "required": ["id"],

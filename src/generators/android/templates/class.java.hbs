@@ -67,7 +67,7 @@ public final class {{name}} extends SerializableProperties {
         public {{name}} build() {
             {{#each properties}}
             {{#if shouldThrowRuntimeError}}
-            if(properties.getMap().get("{{rawName}}") == null){
+            if(properties.getProperty("{{rawName}}") == null){
                 throw new IllegalArgumentException("{{../name}} missing required property: {{rawName}}");
             }
             {{/if}}

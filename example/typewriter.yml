@@ -7,8 +7,8 @@ scripts:
 # You can find more documentation on configuring this client in the Segment docs.
 # See: https://segment.com/docs/protocols/typewriter
 client:
-  sdk: analytics.js
-  language: typescript
+  sdk: analytics-android
+  language: java
 
 trackingPlans:
   # Tracking Plan: Typewriter Example Tracking Plan
