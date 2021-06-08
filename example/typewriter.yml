@@ -8,7 +8,7 @@ scripts:
 # See: https://segment.com/docs/protocols/typewriter
 client:
   sdk: analytics-ios
-  language: objective-c
+  language: swift
 
 trackingPlans:
   # Tracking Plan: Typewriter Example Tracking Plan

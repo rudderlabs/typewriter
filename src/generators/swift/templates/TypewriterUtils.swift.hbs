@@ -24,14 +24,12 @@ extension Array {
 
 class TypewriterUtils {
     static func addContextFields(_ options: RSOption?) -> RSOption {
-        options = options ?? RSOption() 
+        let rudderOptions = options ?? RSOption() 
         let typewriterContext = [
-            "typewriter": [
                 "language": "swift",
                 "version": "{{typewriterVersion}}"
             ]
-        ]
-        options.putContext(typewriterContext)
-        return options
+        options?.putCustomContext(typewriterContext, withKey: "typewriter")
+        return rudderOptions
     }
 }
