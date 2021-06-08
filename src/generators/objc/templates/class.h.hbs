@@ -3,7 +3,6 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <Rudder/RSSerializableValue.h>
 #import "RSTypewriterSerializable.h"
 #import "RSTypewriterUtils.h"
 {{#each imports}}
@@ -21,6 +20,6 @@
 
 +(nonnull instancetype) {{functionSignature "init" properties false}};
 
--(nonnull SERIALIZABLE_DICT) toDictionary;
+-(nonnull NSDictionary<NSString *, id> *) toDictionary;
 
 @end
