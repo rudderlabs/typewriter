@@ -130,11 +130,10 @@ function validateAgainstSchema(
 	message: {{#if isBrowser}}Record<string, any>{{else}}Rudder.TrackMessage<Record<string, any>>{{/if}},
 	schema: object
 ) {
-	const ajv = new Ajv({ schemaId: 'auto', allErrors: true, verbose: true })
+	const ajv = new Ajv({allErrors: true, verbose: true })
 	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
-	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
-
-	if (!ajv.validate(schema, message) && ajv.errors) {
+	
+    if (!ajv.validate(schema, message) && ajv.errors) {
 		onViolation(message, ajv.errors)
 	}
 }

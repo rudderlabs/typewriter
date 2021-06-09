@@ -7,8 +7,9 @@ scripts:
 # You can find more documentation on configuring this client in the Segment docs.
 # See: https://segment.com/docs/protocols/typewriter
 client:
-  sdk: analytics-ios
-  language: swift
+  sdk: analytics-node
+  language: javascript
+  moduleTarget: CommonJS
 
 trackingPlans:
   # Tracking Plan: Typewriter Example Tracking Plan
