@@ -1,4 +1,4 @@
-export { SegmentAPI, validateToken, fetchTrackingPlan, fetchAllTrackingPlans } from './api'
+export { RudderAPI, validateToken, fetchTrackingPlan, fetchTrackingPlans } from './api'
 export {
 	loadTrackingPlan,
 	writeTrackingPlan,

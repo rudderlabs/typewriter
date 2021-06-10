@@ -1,4 +1,4 @@
-import { SegmentAPI } from './api'
+import { RudderAPI } from './api'
 import { TrackingPlanConfig, resolveRelativePath, verifyDirectoryExists } from '../config'
 import sortKeys from 'sort-keys'
 import * as fs from 'fs'
@@ -14,7 +14,7 @@ export const TRACKING_PLAN_FILENAME = 'plan.json'
 export async function loadTrackingPlan(
 	configPath: string | undefined,
 	config: TrackingPlanConfig
-): Promise<SegmentAPI.TrackingPlan | undefined> {
+): Promise<RudderAPI.TrackingPlan | undefined> {
 	const path = resolveRelativePath(configPath, config.path, TRACKING_PLAN_FILENAME)
 
 	// Load the Tracking Plan from the local cache.
@@ -23,7 +23,7 @@ export async function loadTrackingPlan(
 			await readFile(path, {
 				encoding: 'utf-8',
 			})
-		) as SegmentAPI.TrackingPlan
+		) as RudderAPI.TrackingPlan
 
 		return await sanitizeTrackingPlan(plan)
 	} catch {
@@ -34,14 +34,14 @@ export async function loadTrackingPlan(
 
 export async function writeTrackingPlan(
 	configPath: string | undefined,
-	plan: SegmentAPI.TrackingPlan,
+	plan: RudderAPI.TrackingPlan,
 	config: TrackingPlanConfig
 ): Promise<void> {
 	const path = resolveRelativePath(configPath, config.path, TRACKING_PLAN_FILENAME)
 	await verifyDirectoryExists(path, 'file')
 
 	// Perform some pre-processing on the Tracking Plan before writing it.
-	const planJSON = flow<SegmentAPI.TrackingPlan, SegmentAPI.TrackingPlan, string>(
+	const planJSON = flow<RudderAPI.TrackingPlan, RudderAPI.TrackingPlan, string>(
 		// Enforce a deterministic ordering to reduce verson control deltas.
 		plan => sanitizeTrackingPlan(plan),
 		plan => stringify(plan, { space: '\t' })
@@ -52,7 +52,7 @@ export async function writeTrackingPlan(
 	})
 }
 
-export function sanitizeTrackingPlan(plan: SegmentAPI.TrackingPlan): SegmentAPI.TrackingPlan {
+export function sanitizeTrackingPlan(plan: RudderAPI.TrackingPlan): RudderAPI.TrackingPlan {
 	// TODO: on JSON Schema Draft-04, required fields must have at least one element.
 	// Therefore, we strip `required: []` from your rules so this error isn't surfaced.
 	return sortKeys(plan, { deep: true })
@@ -65,8 +65,8 @@ export type TrackingPlanDeltas = {
 }
 
 export function computeDelta(
-	prev: SegmentAPI.TrackingPlan | undefined,
-	next: SegmentAPI.TrackingPlan
+	prev: RudderAPI.TrackingPlan | undefined,
+	next: RudderAPI.TrackingPlan
 ): TrackingPlanDeltas {
 	const deltas: TrackingPlanDeltas = {
 		added: 0,
@@ -75,11 +75,11 @@ export function computeDelta(
 	}
 
 	// Since we only use track calls in typewriter, we only changes to track calls.
-	const nextByName: Record<string, SegmentAPI.RuleMetadata> = {}
+	const nextByName: Record<string, RudderAPI.RuleMetadata> = {}
 	for (const rule of next.rules.events) {
 		nextByName[rule.name] = rule
 	}
-	const prevByName: Record<string, SegmentAPI.RuleMetadata> = {}
+	const prevByName: Record<string, RudderAPI.RuleMetadata> = {}
 	if (!!prev) {
 		for (const rule of prev.rules.events) {
 			prevByName[rule.name] = rule
@@ -126,5 +126,5 @@ export function parseTrackingPlanName(name: string): { id: string; workspaceSlug
 
 export function toTrackingPlanURL(name: string): string {
 	const { id, workspaceSlug } = parseTrackingPlanName(name)
-	return `https://app.segment.com/${workspaceSlug}/protocols/tracking-plans/${id}`
+	return `https://api.rudderstack.com/trackingplans/${id}`
 }

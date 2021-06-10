@@ -5,7 +5,7 @@ import * as yaml from 'js-yaml'
 import { generateFromTemplate } from '../../templates'
 import { homedir } from 'os'
 import { Config, validateConfig } from './schema'
-import { validateToken, SegmentAPI } from '../api'
+import { validateToken, RudderAPI } from '../api'
 import { wrapError } from '../commands/error'
 import { runScript, Scripts } from './scripts'
 
@@ -128,7 +128,7 @@ export type TokenMetadata = {
 	token?: string
 	method: 'script' | 'file'
 	isValidToken: boolean
-	workspace?: SegmentAPI.Workspace
+	workspace?: RudderAPI.Workspace
 }
 
 // Only resolve token scripts once per CLI invocation.

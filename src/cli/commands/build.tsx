@@ -19,7 +19,7 @@ import {
 	writeTrackingPlan,
 	TrackingPlanDeltas,
 	computeDelta,
-	SegmentAPI,
+	RudderAPI,
 	toTrackingPlanURL,
 } from '../api'
 import { gen, RawTrackingPlan } from '../../generators/gen'
@@ -158,7 +158,7 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
 
 			// If we are pulling the latest Tracking Plan (npx typewriter), or if there is no local
 			// copy of the Tracking Plan (plan.json), then query the API for the latest Tracking Plan.
-			let newTrackingPlan: SegmentAPI.TrackingPlan | undefined = undefined
+			let newTrackingPlan: RudderAPI.TrackingPlan | undefined = undefined
 			if (update || !previousTrackingPlan) {
 				// Attempt to read a token and use it to update the local Tracking Plan to the latest version.
 				const token = await getToken(config, configPath)

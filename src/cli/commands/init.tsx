@@ -7,8 +7,8 @@ import Spinner from 'ink-spinner'
 import { Config, listTokens, getTokenMethod, setConfig, storeToken } from '../config'
 import {
 	validateToken,
-	SegmentAPI,
-	fetchAllTrackingPlans,
+	RudderAPI,
+	fetchTrackingPlans,
 	toTrackingPlanURL,
 	parseTrackingPlanName,
 } from '../api'
@@ -57,9 +57,9 @@ export const Init: React.FC<InitProps> = props => {
 	)
 	const [tokenMetadata, setTokenMetadata] = useState({
 		token: '',
-		workspace: undefined as SegmentAPI.Workspace | undefined,
+		workspace: undefined as RudderAPI.Workspace | undefined,
 	})
-	const [trackingPlan, setTrackingPlan] = useState<SegmentAPI.TrackingPlan>()
+	const [trackingPlan, setTrackingPlan] = useState<RudderAPI.TrackingPlan>()
 
 	const { exit } = useApp()
 	useEffect(() => {
@@ -383,7 +383,7 @@ type APITokenPromptProps = {
 	step: number
 	config?: Config
 	configPath: string
-	onSubmit: (tokenMetadata: { token: string; workspace: SegmentAPI.Workspace }) => void
+	onSubmit: (tokenMetadata: { token: string; workspace: RudderAPI.Workspace }) => void
 }
 
 /** A prompt to walk a user through getting a new Segment API token. */
@@ -391,7 +391,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 	const [state, setState] = useState({
 		token: '',
 		canBeSet: true,
-		workspace: undefined as SegmentAPI.Workspace | undefined,
+		workspace: undefined as RudderAPI.Workspace | undefined,
 		isLoading: true,
 		isInvalid: false,
 		foundCachedToken: false,
@@ -547,8 +547,8 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 type TrackingPlanPromptProps = {
 	step: number
 	token: string
-	trackingPlan?: SegmentAPI.TrackingPlan
-	onSubmit: (trackingPlan: SegmentAPI.TrackingPlan) => void
+	trackingPlan?: RudderAPI.TrackingPlan
+	onSubmit: (trackingPlan: RudderAPI.TrackingPlan) => void
 }
 
 /** A prompt to identify which Segment Tracking Plan a user wants to use. */
@@ -559,14 +559,14 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 	trackingPlan,
 	onSubmit,
 }) => {
-	const [trackingPlans, setTrackingPlans] = useState<SegmentAPI.TrackingPlan[]>([])
+	const [trackingPlans, setTrackingPlans] = useState<RudderAPI.TrackingPlan[]>([])
 	const [isLoading, setIsLoading] = useState(true)
 	const { handleFatalError } = useContext(ErrorContext)
 
 	async function loadTrackingPlans() {
 		setIsLoading(true)
 		try {
-			setTrackingPlans(await fetchAllTrackingPlans({ token }))
+			setTrackingPlans(await fetchTrackingPlans({ token }))
 			setIsLoading(false)
 		} catch (error) {
 			if (error.statusCode === 403) {
@@ -640,8 +640,8 @@ type SummaryPromptProps = {
 	language: Language
 	path: string
 	token: string
-	workspace: SegmentAPI.Workspace
-	trackingPlan: SegmentAPI.TrackingPlan
+	workspace: RudderAPI.Workspace
+	trackingPlan: RudderAPI.TrackingPlan
 	onConfirm: (config: Config) => void
 	onRestart: () => void
 }
