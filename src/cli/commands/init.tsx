@@ -47,8 +47,8 @@ enum Steps {
 }
 
 export const Init: React.FC<InitProps> = props => {
-	const { config, configPath } = props
-
+	const { configPath } = props
+	const [config, setConfig] = useState(props.config)
 	const [step, setStep] = useState(Steps.Confirmation)
 	const [sdk, setSDK] = useState(config ? config.client.sdk : SDK.WEB)
 	const [language, setLanguage] = useState(config ? config.client.language : Language.JAVASCRIPT)
@@ -84,6 +84,7 @@ export const Init: React.FC<InitProps> = props => {
 	}
 
 	function onAcceptSummary(config: Config) {
+		setConfig(config)
 		onNext()
 		if (props.onDone) {
 			props.onDone(config)
@@ -143,7 +144,7 @@ export const Init: React.FC<InitProps> = props => {
 				/>
 			)}
 			{step === Steps.Build && !props.onDone && (
-				<Build {...props} production={false} update={true} onDone={onNext} />
+				<Build {...{ ...props, config }} production={false} update={true} onDone={onNext} />
 			)}
 			{/* TODO: step 8 where we show an example script showing how to import typewriter */}
 		</Box>

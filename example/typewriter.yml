@@ -1,0 +1,16 @@
+# RudderStack Typewriter Configuration (https://rudderstack.com/docs/typewriter)
+# Just run `npx typewriter@next` to re-generate a client with the latest versions of these events.
+
+# You can find more documentation on configuring this client in the Segment docs.
+# See: https://rudderstack.com/docs/typewriter
+client:
+  sdk: analytics-android
+  language: java
+
+trackingPlans:
+  # Tracking Plan: Tracking Plan Dry Run
+  # https://app.rudderstack.com/tracking-plans/tp_1tn194pAe0XUiYCPffgGCj8HUem
+  - id: tp_1tn194pAe0XUiYCPffgGCj8HUem
+    workspaceSlug: 1tiktfIUOBLYSnjJxsLweH525qh
+    path: analytics
+
