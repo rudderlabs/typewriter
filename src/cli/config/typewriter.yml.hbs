@@ -1,4 +1,4 @@
-# Segment Typewriter Configuration (https://segment.com/docs/protocols/typewriter)
+# Segment Typewriter Configuration (https://rudderstack.com/docs/typewriter)
 # Just run `npx typewriter@next` to re-generate a client with the latest versions of these events.
 {{#if scripts.token}}
 
@@ -7,7 +7,7 @@ scripts:
 {{/if}}
 
 # You can find more documentation on configuring this client in the Segment docs.
-# See: https://segment.com/docs/protocols/typewriter
+# See: https://rudderstack.com/docs/typewriter
 client:
   {{#each client}}
   {{@key}}: {{this}}
@@ -16,7 +16,7 @@ client:
 trackingPlans:
   {{#each trackingPlans}}
   # Tracking Plan: {{name}}
-  # https://app.segment.com/{{workspaceSlug}}/protocols/tracking-plans/{{id}}
+  # https://app.rudderstack.com/tracking-plans/{{id}}
   - id: {{id}}
     workspaceSlug: {{workspaceSlug}}
     path: {{path}}

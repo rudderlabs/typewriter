@@ -57,6 +57,7 @@ export const Init: React.FC<InitProps> = props => {
 	)
 	const [tokenMetadata, setTokenMetadata] = useState({
 		token: '',
+		email: '',
 		workspace: undefined as RudderAPI.Workspace | undefined,
 	})
 	const [trackingPlan, setTrackingPlan] = useState<RudderAPI.TrackingPlan>()
@@ -120,6 +121,7 @@ export const Init: React.FC<InitProps> = props => {
 				<TrackingPlanPrompt
 					step={step}
 					token={tokenMetadata.token}
+					email={tokenMetadata.email}
 					trackingPlan={trackingPlan}
 					onSubmit={withNextStep(setTrackingPlan)}
 				/>
@@ -318,7 +320,10 @@ async function filterDirectories(path: string): Promise<string[]> {
 	}
 
 	// Now sort these directories by the query path.
-	const fuse = new Fuse([...directories].map(d => ({ name: d })), { keys: ['name'] })
+	const fuse = new Fuse(
+		[...directories].map(d => ({ name: d })),
+		{ keys: ['name'] }
+	)
 	return isPathEmpty ? [...directories] : fuse.search(path).map(d => d.name)
 }
 
@@ -383,18 +388,25 @@ type APITokenPromptProps = {
 	step: number
 	config?: Config
 	configPath: string
-	onSubmit: (tokenMetadata: { token: string; workspace: RudderAPI.Workspace }) => void
+	onSubmit: (tokenMetadata: {
+		token: string
+		email: string
+		workspace: RudderAPI.Workspace
+	}) => void
 }
 
 /** A prompt to walk a user through getting a new Segment API token. */
 const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPath, onSubmit }) => {
 	const [state, setState] = useState({
 		token: '',
+		email: '',
 		canBeSet: true,
 		workspace: undefined as RudderAPI.Workspace | undefined,
 		isLoading: true,
 		isInvalid: false,
 		foundCachedToken: false,
+		tokenSubmitted: false,
+		tokenCursor: true,
 	})
 	const { handleFatalError } = useContext(ErrorContext)
 
@@ -408,6 +420,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 				setState({
 					...state,
 					token: token.isValidToken ? token.token! : '',
+					email: token.email ? token.email! : '',
 					isInvalid: false,
 					workspace: token.workspace || state.workspace,
 					foundCachedToken: token.isValidToken,
@@ -432,10 +445,10 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 			isLoading: true,
 		})
 
-		const result = await validateToken(state.token)
+		const result = await validateToken(state.token, state.email)
 		if (result.isValid) {
 			try {
-				await storeToken(state.token)
+				await storeToken(state.token, state.email)
 			} catch (error) {
 				handleFatalError(
 					wrapError(
@@ -447,14 +460,16 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 				return
 			}
 
-			onSubmit({ token: state.token, workspace: result.workspace! })
+			onSubmit({ token: state.token, email: state.email, workspace: result.workspace! })
 		} else {
 			setState({
 				...state,
 				token: '',
+				email: '',
 				workspace: undefined,
 				isInvalid: true,
 				isLoading: false,
+				tokenSubmitted: false,
 			})
 		}
 	}
@@ -467,6 +482,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 				...state,
 				foundCachedToken: false,
 				token: '',
+				email: '',
 				workspace: undefined,
 				isInvalid: false,
 			})
@@ -476,6 +492,12 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 		}
 	}
 
+	const setTokenSubmitted = () => {
+		setState({
+			...state,
+			tokenSubmitted: true,
+		})
+	}
 	const setToken = (token: string) => {
 		setState({
 			...state,
@@ -483,8 +505,15 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 		})
 	}
 
+	const setEmail = (email: string) => {
+		setState({
+			...state,
+			email,
+		})
+	}
+
 	const tips = [
-		'An API token is used to download Tracking Plans from Segment.',
+		'An API token is used to download Tracking Plans from Rudder.',
 		<Text key="api-token-docs">
 			Documentation on generating an API token can be found{' '}
 			<Link url="https://segment.com/docs/protocols/typewriter/#api-token-configuration">here</Link>
@@ -501,52 +530,71 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 	}
 
 	return (
-		<Step name="Enter a Segment API token:" step={step} isLoading={state.isLoading} tips={tips}>
-			{/* We found a token from a typewriter.yml token script. To let the user change token
-			 * in this init command, we'd have to remove their token script. Instead, just tell
-			 * the user this and don't let them change their token. */}
-			{!state.canBeSet && (
-				<SelectInput items={[{ label: 'Ok!', value: 'ok' }]} onSelect={onConfirm} />
-			)}
-			{/* We found a token in a ~/.typewriter. Confirm that the user wants to use this token
-			 * before continuing. */}
-			{state.canBeSet && state.foundCachedToken && (
-				<SelectInput
-					items={[
-						{ label: 'Use this token', value: 'yes' },
-						{ label: 'No, provide a different token.', value: 'no' },
-					]}
-					onSelect={onConfirmCachedToken}
-				/>
-			)}
-			{/* We didn't find a token anywhere that they wanted to use, so just prompt the user for one. */}
-			{state.canBeSet && !state.foundCachedToken && (
-				<Box flexDirection="column">
-					<Box>
-						<Text>{figures.pointer}</Text>{' '}
-						<TextInput
-							value={state.token}
-							// See: https://github.com/vadimdemedes/ink-text-input/issues/41
-							showCursor={true}
-							onChange={setToken}
-							onSubmit={onConfirm}
-							mask="*"
-						/>
-					</Box>
-					{state.isInvalid && (
-						<Box textWrap="wrap" marginLeft={2}>
-							<Color red>{figures.cross} Invalid Segment API token.</Color>
+		<div>
+			<Step name="Enter a Rudder API token:" step={step} isLoading={state.isLoading} tips={tips}>
+				{/* We found a token from a typewriter.yml token script. To let the user change token
+				 * in this init command, we'd have to remove their token script. Instead, just tell
+				 * the user this and don't let them change their token. */}
+				{!state.canBeSet && (
+					<SelectInput items={[{ label: 'Ok!', value: 'ok' }]} onSelect={onConfirm} />
+				)}
+				{/* We found a token in a ~/.typewriter. Confirm that the user wants to use this token
+				 * before continuing. */}
+				{state.canBeSet && state.foundCachedToken && (
+					<SelectInput
+						items={[
+							{ label: 'Use this token', value: 'yes' },
+							{ label: 'No, provide a different token.', value: 'no' },
+						]}
+						onSelect={onConfirmCachedToken}
+					/>
+				)}
+				{/* We didn't find a token anywhere that they wanted to use, so just prompt the user for one. */}
+				{state.canBeSet && !state.foundCachedToken && (
+					<Box flexDirection="column">
+						<Box>
+							<Text>{figures.pointer}</Text>{' '}
+							<TextInput
+								value={state.token}
+								// See: https://github.com/vadimdemedes/ink-text-input/issues/41
+								onChange={setToken}
+								showCursor={true}
+								focus={!state.tokenSubmitted}
+								onSubmit={setTokenSubmitted}
+								mask="*"
+							/>
 						</Box>
-					)}
-				</Box>
+						{state.isInvalid && (
+							<Box textWrap="wrap" marginLeft={2}>
+								<Color red>{figures.cross} Invalid Rudder API token.</Color>
+							</Box>
+						)}
+					</Box>
+				)}
+			</Step>
+			{state.tokenSubmitted && (
+				<Step name="Enter your Email Id" isLoading={state.isLoading}>
+					<Box flexDirection="column">
+						<Box>
+							<Text>{figures.pointer}</Text>{' '}
+							<TextInput
+								value={state.email}
+								onChange={setEmail}
+								showCursor={true}
+								onSubmit={onConfirm}
+							/>
+						</Box>
+					</Box>
+				</Step>
 			)}
-		</Step>
+		</div>
 	)
 }
 
 type TrackingPlanPromptProps = {
 	step: number
 	token: string
+	email: string
 	trackingPlan?: RudderAPI.TrackingPlan
 	onSubmit: (trackingPlan: RudderAPI.TrackingPlan) => void
 }
@@ -556,6 +604,7 @@ type TrackingPlanPromptProps = {
 const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 	step,
 	token,
+	email,
 	trackingPlan,
 	onSubmit,
 }) => {
@@ -566,7 +615,7 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 	async function loadTrackingPlans() {
 		setIsLoading(true)
 		try {
-			setTrackingPlans(await fetchTrackingPlans({ token }))
+			setTrackingPlans(await fetchTrackingPlans({ token, email }))
 			setIsLoading(false)
 		} catch (error) {
 			if (error.statusCode === 403) {
@@ -736,7 +785,10 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 	return (
 		<Step name="Summary:" step={step} description={summary} isLoading={isLoading}>
 			<SelectInput
-				items={[{ label: 'Looks good!', value: 'lgtm' }, { label: 'Edit', value: 'edit' }]}
+				items={[
+					{ label: 'Looks good!', value: 'lgtm' },
+					{ label: 'Edit', value: 'edit' },
+				]}
 				onSelect={onSelect}
 			/>
 		</Step>

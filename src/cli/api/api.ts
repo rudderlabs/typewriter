@@ -46,9 +46,14 @@ export async function fetchTrackingPlan(options: {
 	workspaceSlug: string
 	id: string
 	token: string
+	email: string
 }): Promise<RudderAPI.TrackingPlan> {
 	const url = `trackingplans/${options.id}`
-	const response = await apiGet<RudderAPI.GetTrackingPlanResponse>(url, options.token)
+	const response = await apiGet<RudderAPI.GetTrackingPlanResponse>(
+		url,
+		options.token,
+		options.email
+	)
 
 	response.create_time = new Date(response.create_time)
 	response.update_time = new Date(response.update_time)
@@ -61,9 +66,14 @@ export async function fetchTrackingPlan(options: {
 export async function fetchTrackingPlans(options: {
 	workspaceSlug: string
 	token: string
+	email: string
 }): Promise<RudderAPI.TrackingPlan[]> {
 	const url = 'trackingplans'
-	const response = await apiGet<RudderAPI.ListTrackingPlansResponse>(url, options.token)
+	const response = await apiGet<RudderAPI.ListTrackingPlansResponse>(
+		url,
+		options.token,
+		options.email
+	)
 	return response.tracking_plans.map(tp => ({
 		...tp,
 		create_time: new Date(tp.create_time),
@@ -72,8 +82,15 @@ export async function fetchTrackingPlans(options: {
 }
 
 // fetchWorkspace lists the workspace found with a given Rudder API token.
-export async function fetchWorkspace(options: { token: string }): Promise<RudderAPI.Workspace> {
-	const resp = await apiGet<RudderAPI.ListWorkspacesResponse>('workspace', options.token)
+export async function fetchWorkspace(options: {
+	token: string
+	email: string
+}): Promise<RudderAPI.Workspace> {
+	const resp = await apiGet<RudderAPI.ListWorkspacesResponse>(
+		'workspace',
+		options.token,
+		options.email
+	)
 	return {
 		...resp,
 		create_time: new Date(resp.create_time),
@@ -88,8 +105,11 @@ type TokenValidationResult = {
 	workspace?: RudderAPI.Workspace
 }
 const tokenValidationCache: Record<string, TokenValidationResult> = {}
-export async function validateToken(token: string | undefined): Promise<TokenValidationResult> {
-	if (!token) {
+export async function validateToken(
+	token: string | undefined,
+	email: string | undefined
+): Promise<TokenValidationResult> {
+	if (!token || !email) {
 		return { isValid: false }
 	}
 
@@ -98,7 +118,7 @@ export async function validateToken(token: string | undefined): Promise<TokenVal
 	if (!tokenValidationCache[token]) {
 		const result: TokenValidationResult = { isValid: false }
 		try {
-			const workspace = await fetchWorkspace({ token })
+			const workspace = await fetchWorkspace({ token, email })
 			result.isValid = workspace ? true : false
 			result.workspace = workspace ? workspace : undefined
 		} catch (error) {
@@ -114,13 +134,12 @@ export async function validateToken(token: string | undefined): Promise<TokenVal
 	return tokenValidationCache[token]
 }
 
-async function apiGet<Response>(url: string, token: string): Promise<Response> {
+async function apiGet<Response>(url: string, token: string, email: string): Promise<Response> {
 	const resp = got(url, {
 		baseUrl: 'http://localhost:5000/v1/dg',
 		headers: {
 			'User-Agent': `Rudder (typewriter/${version})`,
-			Authorization: 'Basic dmVua2F0QHJ1ZGRlcnN0YWNrLmNvbToxdGltZmh3eHFsTXl1M1RzWXpnVEg2M1F2ak4=',
-			//Authorization: `Bearer ${token.trim()}`,
+			Authorization: `Basic ${Buffer.from(email + ':' + token).toString('base64')}`,
 		},
 		json: true,
 		timeout: 10000, // ms

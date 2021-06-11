@@ -126,6 +126,7 @@ export type ListTokensOutput = {
 
 export type TokenMetadata = {
 	token?: string
+	email?: string
 	method: 'script' | 'file'
 	isValidToken: boolean
 	workspace?: RudderAPI.Workspace
@@ -148,16 +149,20 @@ export async function listTokens(
 	// Tokens are stored here during the `init` flow, if a user generates a token.
 	try {
 		const path = resolve(homedir(), '.typewriter')
-		const token = await readFile(path, 'utf-8')
-		output.file.token = token.trim()
+		const cachedTokenData = await readFile(path, {
+			encoding: 'utf-8',
+		})
+		output.file.token = cachedTokenData.split(',')[0].trim()
+		output.file.email = cachedTokenData.split(',')[1].trim()
 	} catch (error) {
 		// Ignore errors if ~/.typewriter doesn't exist
 	}
 
 	// Attempt to read a token by executing the token script from the typewriter.yml config file.
 	// Handle token script errors gracefully, f.e., in CI where you don't need it.
-	if (cfg && cfg.scripts && cfg.scripts.token) {
+	if (cfg && cfg.scripts && cfg.scripts.token && cfg.scripts.email) {
 		const tokenScript = cfg.scripts.token
+		const email = cfg.scripts.email
 		// Since we don't know if this token script has side effects, cache (in-memory) the result
 		// s.t. we only execute it once per CLI invocation.
 		if (!tokenScriptCache[tokenScript]) {
@@ -168,11 +173,12 @@ export async function listTokens(
 		}
 
 		output.script.token = tokenScriptCache[tokenScript]
+		output.script.email = email
 	}
 
 	// Validate whether any of these tokens are valid Segment API tokens.
 	for (const metadata of Object.values(output)) {
-		const result = await validateToken(metadata.token)
+		const result = await validateToken(metadata.token, metadata.email)
 		metadata.isValidToken = result.isValid
 		metadata.workspace = result.workspace
 	}
@@ -181,9 +187,9 @@ export async function listTokens(
 }
 
 // storeToken writes a token to ~/.typewriter.
-export async function storeToken(token: string): Promise<void> {
+export async function storeToken(token: string, email: string): Promise<void> {
 	const path = resolve(homedir(), '.typewriter')
-	return writeFile(path, token, 'utf-8')
+	return writeFile(path, token + ',' + email, 'utf-8')
 }
 
 async function getPath(path: string): Promise<string> {

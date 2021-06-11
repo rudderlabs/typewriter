@@ -13,6 +13,10 @@ export type Config = {
 		 */
 		token?: string
 		/**
+		 * The Email id of the owner of the token
+		 */
+		email?: string
+		/**
 		 * An optional shell command executed after typewriter updates/builds clients
 		 * which can be used for things like applying automatic formatting to generated files.
 		 */
