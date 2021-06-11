@@ -136,20 +136,10 @@ export const javascript: Generator<
 	generateRoot: async (client, context) => {
 		// index.hbs contains all JavaScript client logic.
 		await client.generateFile<JavaScriptRootContext>(
-			client.options.client.language === Language.TYPESCRIPT ? 'index.ts' : 'index.js',
+			'index.js',
 			'generators/javascript/templates/index.hbs',
 			context
 		)
-
-		// rudder.hbs contains the TypeScript definitions for the Rudder API.
-		// It becomes an empty file for JavaScript after being transpiled.
-		if (client.options.client.language === Language.TYPESCRIPT) {
-			await client.generateFile<JavaScriptRootContext>(
-				'rudder.ts',
-				'generators/javascript/templates/rudder.hbs',
-				context
-			)
-		}
 	},
 	formatFile: (client, file) => {
 		let { contents } = file
@@ -170,7 +160,7 @@ export const javascript: Generator<
 
 		// Apply stylistic formatting, via Prettier.
 		const formattedContents = prettier.format(contents, {
-			parser: client.options.client.language === Language.TYPESCRIPT ? 'typescript' : 'babel',
+			parser: 'babel',
 			// Overwrite a few of the standard prettier settings to match with our Typewriter configuration:
 			useTabs: true,
 			singleQuote: true,

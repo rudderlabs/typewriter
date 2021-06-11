@@ -64,7 +64,6 @@ export async function fetchTrackingPlan(options: {
 // fetchTrackingPlans fetches all Tracking Plans accessible by a given API token
 // within a specified workspace.
 export async function fetchTrackingPlans(options: {
-	workspaceSlug: string
 	token: string
 	email: string
 }): Promise<RudderAPI.TrackingPlan[]> {

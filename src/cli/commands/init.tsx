@@ -240,15 +240,14 @@ type LanguagePromptProps = {
 const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, onSubmit }) => {
 	const items: Item[] = [
 		{ label: 'JavaScript', value: Language.JAVASCRIPT },
-		{ label: 'TypeScript', value: Language.TYPESCRIPT },
 		{ label: 'Objective-C', value: Language.OBJECTIVE_C },
 		{ label: 'Swift', value: Language.SWIFT },
 		{ label: 'Java', value: Language.JAVA },
 	].filter(item => {
 		// Filter out items that aren't relevant, given the selected SDK.
 		const supportedLanguages = {
-			[SDK.WEB]: [Language.JAVASCRIPT, Language.TYPESCRIPT],
-			[SDK.NODE]: [Language.JAVASCRIPT, Language.TYPESCRIPT],
+			[SDK.WEB]: [Language.JAVASCRIPT],
+			[SDK.NODE]: [Language.JAVASCRIPT],
 			[SDK.IOS]: [Language.OBJECTIVE_C, Language.SWIFT],
 			[SDK.ANDROID]: [Language.JAVA],
 		}
@@ -263,7 +262,11 @@ const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, on
 
 	return (
 		<Step name="Choose a language:" step={step}>
-			<SelectInput items={items} initialIndex={initialIndex} onSelect={onSelect} />
+			<SelectInput
+				items={items}
+				initialIndex={initialIndex != -1 ? initialIndex : 0}
+				onSelect={onSelect}
+			/>
 		</Step>
 	)
 }

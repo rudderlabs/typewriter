@@ -42,8 +42,6 @@ type Props = StandardProps & {
 	production: boolean
 	/** Whether or not to update the local `plan.json` with the latest Tracking Plan. */
 	update: boolean
-	/** Optional callback fired after building has finished. */
-	onDone?: () => void
 }
 
 enum Steps {
