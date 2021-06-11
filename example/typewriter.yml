@@ -4,13 +4,13 @@
 # You can find more documentation on configuring this client in the Segment docs.
 # See: https://rudderstack.com/docs/typewriter
 client:
-  sdk: analytics-android
-  language: java
+  sdk: analytics-ios
+  language: objective-c
 
 trackingPlans:
-  # Tracking Plan: Tracking Plan Dry Run
-  # https://app.rudderstack.com/tracking-plans/tp_1tn194pAe0XUiYCPffgGCj8HUem
-  - id: tp_1tn194pAe0XUiYCPffgGCj8HUem
+  # Tracking Plan: Kicks App
+  # https://app.rudderstack.com/tracking-plans/tp_1tkni8eylZAVQEPY60uD2bfICp8
+  - id: tp_1tkni8eylZAVQEPY60uD2bfICp8
     workspaceSlug: 1tiktfIUOBLYSnjJxsLweH525qh
     path: analytics
 

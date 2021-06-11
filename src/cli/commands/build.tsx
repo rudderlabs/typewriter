@@ -61,7 +61,6 @@ export const Build: React.FC<Props> = ({
 	update,
 	anonymousId,
 	analyticsProps,
-	onDone,
 }) => {
 	const [step, setStep] = useState(Steps.UpdatePlan)
 	const [trackingPlans, setTrackingPlans] = useState<RawTrackingPlan[]>([])
@@ -78,7 +77,7 @@ export const Build: React.FC<Props> = ({
 
 	useEffect(() => {
 		if (step === Steps.Done) {
-			onDone ? onDone() : exit()
+			exit()
 		}
 	}, [step])
 

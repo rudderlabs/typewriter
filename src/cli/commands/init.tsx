@@ -144,7 +144,7 @@ export const Init: React.FC<InitProps> = props => {
 				/>
 			)}
 			{step === Steps.Build && !props.onDone && (
-				<Build {...{ ...props, config }} production={false} update={true} onDone={onNext} />
+				<Build {...{ ...props, config }} production={false} update={true} />
 			)}
 			{/* TODO: step 8 where we show an example script showing how to import typewriter */}
 		</Box>
