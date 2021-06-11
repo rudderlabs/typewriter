@@ -30,6 +30,7 @@ import { StandardProps, DebugContext } from '../index'
 import { ErrorContext, wrapError, toUnexpectedError, WrappedError, isWrappedError } from './error'
 import figures from 'figures'
 import { Init } from './init'
+import { getEmail } from '../config/config'
 
 const readFile = promisify(fs.readFile)
 const readdir = promisify(fs.readdir)
@@ -162,12 +163,14 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
 			if (update || !previousTrackingPlan) {
 				// Attempt to read a token and use it to update the local Tracking Plan to the latest version.
 				const token = await getToken(config, configPath)
-				if (token) {
+				const email = await getEmail(config, configPath)
+				if (token && email) {
 					try {
 						newTrackingPlan = await fetchTrackingPlan({
 							id: trackingPlanConfig.id,
 							workspaceSlug: trackingPlanConfig.workspaceSlug,
 							token,
+							email,
 						})
 					} catch (error) {
 						handleError(error)

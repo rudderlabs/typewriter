@@ -96,6 +96,14 @@ export async function getToken(
 	return token ? token.token : undefined
 }
 
+export async function getEmail(
+	cfg: Partial<Config> | undefined,
+	configPath: string
+): Promise<string | undefined> {
+	const token = await getTokenMetadata(cfg, configPath)
+	return token ? token.email : undefined
+}
+
 export async function getTokenMethod(
 	cfg: Partial<Config> | undefined,
 	configPath: string
