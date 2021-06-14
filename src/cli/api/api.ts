@@ -96,7 +96,7 @@ export async function fetchWorkspace(options: {
 	}
 }
 
-// validateToken returns true if a token is a valid Segment API token.
+// validateToken returns true if a token is a valid Rudder API token.
 // Note: results are cached in-memory since it is commonly called multiple times
 // for the same token (f.e. in `config/`).
 type TokenValidationResult = {

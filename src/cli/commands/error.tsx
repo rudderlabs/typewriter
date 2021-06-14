@@ -1,7 +1,3 @@
-/**
- * For Segmenters, see:
- *   https://paper.dropbox.com/doc/Typewriter-Error-Paths--AlUBLKIIcRc_9UU3_sgAh~9YAg-bdjW1EOlEHeomztWLrYWk
- */
 import React, { createContext, useEffect } from 'react'
 import { Box, Color, useApp } from 'ink'
 import Link from 'ink-link'
@@ -172,7 +168,7 @@ const ErrorComponent: React.FC<ErrorComponentProps> = ({ error }) => {
 			<Box height={2} width={80} textWrap="wrap" marginTop={1}>
 				<Color grey>
 					If you are unable to resolve this issue,{' '}
-					<Link url="https://github.com/segmentio/typewriter/issues/new">
+					<Link url="https://github.com/rudderlabs/typewriter/issues/new">
 						open an issue on GitHub
 					</Link>
 					. Please include that you are using version <Color yellow>{version}</Color> of Typewriter.

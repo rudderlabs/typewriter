@@ -225,7 +225,6 @@ function getCommand(args: yargs.Arguments<CLIArguments>) {
 
 /**
  * Helper to generate the shared library properties shared by all analytics calls.
- * See: https://app.segment.com/segment_prod/protocols/libraries/rs_1OL4GFYCh62cOIRi3PJuIOdN7uM
  */
 async function typewriterLibraryProperties(
 	args: yargs.Arguments<CLIArguments>,

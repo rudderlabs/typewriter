@@ -100,7 +100,7 @@ export function getPropertiesSchema(event: Schema): ObjectTypeSchema {
 	let properties: ObjectTypeSchema | undefined = undefined
 
 	// Events should always be a type="object" at the root, anything
-	// else would not match on a Segment analytics event.
+	// else would not match on a RudderStack analytics event.
 	if (event.type === Type.OBJECT) {
 		const propertiesSchema = event.properties.find(
 			(schema: Schema): boolean => schema.name === 'properties'

@@ -1,4 +1,4 @@
-// Which Segment SDK to generate for.
+// Which RudderStack SDK to generate for.
 export enum SDK {
 	WEB = 'analytics.js',
 	NODE = 'analytics-node',

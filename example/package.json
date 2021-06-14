@@ -1,9 +1,9 @@
 {
   "name": "typewriter-example",
   "version": "1.0.0",
-  "description": "Example web app using Typewriter's TS analytics.js client",
-  "repository": "https://github.com/segmentio/typewriter",
-  "author": "Colin King <colin.king@segment.com>",
+  "description": "Example web app using Typewriter's Android client",
+  "repository": "https://github.com/rudderlabs/typewriter",
+  "author": "Desu Sai Venkat <venkat@rudderstack.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -23,7 +23,6 @@
   },
   "devDependencies": {
     "@types/react": "^16.9.54",
-    "@types/segment-analytics": "^0.0.32",
     "@types/styled-jsx": "^2.2.3",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.15.5",

@@ -18,12 +18,12 @@ export const Help: React.FC<StandardProps> = () => {
 			<Box marginBottom={2} textWrap="wrap">
 				<Color grey>
 					Typewriter is a tool for generating strongly-typed{' '}
-					<Link url="https://segment.com">Segment</Link> analytics libraries based on your
+					<Link url="https://rudderstack.com">RudderStack</Link> analytics libraries based on your
 					pre-defined{' '}
-					<Link url="https://segment.com/docs/protocols/tracking-plan">Tracking Plan</Link> spec.
+					<Link url="https://rudderstack.com/docs/tracking-plan">Tracking Plan</Link> spec.
 					{'\n\n'}
 					Learn more from{' '}
-					<Link url="https://segment.com/docs/protocols/typewriter">
+					<Link url="https://rudderstack.com/docs/typewriter">
 						{"Typewriter's documentation here"}
 					</Link>
 					.
@@ -48,7 +48,7 @@ export const Help: React.FC<StandardProps> = () => {
 						linesNeeded={2}
 						description={
 							<Text>
-								Syncs <Color yellow>plan.json</Color> with Segment, then generates a{' '}
+								Syncs <Color yellow>plan.json</Color> with RudderStack, then generates a{' '}
 								<Color yellow>development</Color> client.
 							</Text>
 						}
@@ -71,7 +71,7 @@ export const Help: React.FC<StandardProps> = () => {
 							</Text>
 						}
 					/>
-					<HelpRow name="token" description="Prints the local Segment API token configuration" />
+					<HelpRow name="token" description="Prints the local RudderStack API token configuration" />
 				</HelpSection>
 				<HelpSection name="Options">
 					<HelpRow name="-h, --help" description="Prints this help message" />

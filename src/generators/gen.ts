@@ -47,7 +47,7 @@ export type BaseTrackCallContext<P extends Record<string, unknown>> = {
 	functionDescription?: string
 	// The raw JSON Schema for this event.
 	rawJSONSchema: string
-	// The raw version of the name of this track call (the name sent to Segment).
+	// The raw version of the name of this track call (the name sent to RudderStack).
 	rawEventName: string
 	// The property parameters on this track call. Included if generatePropertiesObject=false.
 	properties?: (P & BasePropertyContext)[]

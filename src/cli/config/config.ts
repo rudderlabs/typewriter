@@ -84,7 +84,7 @@ export async function verifyDirectoryExists(
 	}
 }
 
-// getToken uses a Config to fetch a Segment API token. It will search for it in this order:
+// getToken uses a Config to fetch a RudderStack API token. It will search for it in this order:
 //   1. The stdout from executing the optional token script from the config.
 //   2. cat ~/.typewriter
 // Returns undefined if no token can be found.
@@ -184,7 +184,7 @@ export async function listTokens(
 		output.script.email = email
 	}
 
-	// Validate whether any of these tokens are valid Segment API tokens.
+	// Validate whether any of these tokens are valid RudderStack API tokens.
 	for (const metadata of Object.values(output)) {
 		const result = await validateToken(metadata.token, metadata.email)
 		metadata.isValidToken = result.isValid

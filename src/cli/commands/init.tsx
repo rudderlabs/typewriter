@@ -157,12 +157,12 @@ const Header: React.FC = () => {
 			<Box width={80} textWrap="wrap" marginBottom={4}>
 				<Color white>
 					Typewriter is a tool for generating strongly-typed{' '}
-					<Link url="https://segment.com">Segment</Link> analytics libraries from a{' '}
-					<Link url="https://segment.com/docs/protocols/tracking-plan">Tracking Plan</Link>.
+					<Link url="https://rudderstack.com">RudderStack</Link> analytics libraries from a{' '}
+					<Link url="https://rudderstack.com/docs/tracking-plan">Tracking Plan</Link>.
 				</Color>{' '}
 				<Color grey>
 					Learn more from{' '}
-					<Link url="https://segment.com/docs/protocols/typewriter">
+					<Link url="https://rudderstack.com/docs/typewriter">
 						{"Typewriter's documentation here"}
 					</Link>
 					. To get started, {"you'll"} need a <Color yellow>typewriter.yml</Color>. The quickstart
@@ -199,7 +199,7 @@ type SDKPromptProps = {
 	onSubmit: (sdk: SDK) => void
 }
 
-/** A prompt to identify which Segment SDK a user wants to use. */
+/** A prompt to identify which RudderStack SDK a user wants to use. */
 const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
 	const items: Item[] = [
 		{ label: 'Web (analytics.js)', value: SDK.WEB },
@@ -215,10 +215,10 @@ const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
 
 	const tips = [
 		'Use your arrow keys to select.',
-		'Typewriter clients are strongly-typed wrappers around a Segment analytics SDK.',
+		'Typewriter clients are strongly-typed wrappers around a RudderStack SDK.',
 		<Text key="sdk-docs">
-			To learn more about {"Segment's"} SDKs, see the{' '}
-			<Link url="https://segment.com/docs/sources">documentation</Link>.
+			To learn more about {"RudderStack's"} SDKs, see the{' '}
+			<Link url="https://docs.rudderstack.com/stream-sources">documentation</Link>.
 		</Text>,
 	]
 
@@ -236,7 +236,7 @@ type LanguagePromptProps = {
 	onSubmit: (language: Language) => void
 }
 
-/** A prompt to identify which Segment programming language a user wants to use. */
+/** A prompt to identify which RudderStack programming language a user wants to use. */
 const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, onSubmit }) => {
 	const items: Item[] = [
 		{ label: 'JavaScript', value: Language.JAVASCRIPT },
@@ -399,7 +399,7 @@ type APITokenPromptProps = {
 	}) => void
 }
 
-/** A prompt to walk a user through getting a new Segment API token. */
+/** A prompt to walk a user through getting a new RudderStack API token. */
 const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPath, onSubmit }) => {
 	const [state, setState] = useState({
 		token: '',
@@ -443,7 +443,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 
 	// Fired after a user enters a token.
 	const onConfirm = async () => {
-		// Validate whether the entered token is a valid Segment API token.
+		// Validate whether the entered token is a valid RudderStack API token.
 		setState({
 			...state,
 			isLoading: true,
@@ -520,7 +520,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 		'An API token is used to download Tracking Plans from Rudder.',
 		<Text key="api-token-docs">
 			Documentation on generating an API token can be found{' '}
-			<Link url="https://segment.com/docs/protocols/typewriter/#api-token-configuration">here</Link>
+			<Link url="https://docs.rudderstack.com/typewriter/#api-token-configuration">here</Link>
 			.
 		</Text>,
 	]
@@ -603,7 +603,7 @@ type TrackingPlanPromptProps = {
 	onSubmit: (trackingPlan: RudderAPI.TrackingPlan) => void
 }
 
-/** A prompt to identify which Segment Tracking Plan a user wants to use. */
+/** A prompt to identify which RudderStack Tracking Plan a user wants to use. */
 // Needs an empty state — allows users to create a Tracking Plan, then a reload button to refetch
 const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 	step,
@@ -625,7 +625,7 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 			if (error.statusCode === 403) {
 				return handleFatalError(
 					wrapError(
-						'Failed to authenticate with the Segment API',
+						'Failed to authenticate with the RudderStack API',
 						error,
 						'You may be using a malformed/invalid token or a legacy personal access token'
 					)

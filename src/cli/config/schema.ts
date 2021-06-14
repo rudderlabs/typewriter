@@ -9,7 +9,7 @@ export type Config = {
 	/** A set of optional shell commands to customize typewriter's behavior. */
 	scripts?: {
 		/**
-		 * An optional shell command that must produce a Segment API token as its only output.
+		 * An optional shell command that must produce a RudderStack API token as its only output.
 		 */
 		token?: string
 		/**
@@ -37,7 +37,7 @@ export type TrackingPlanConfig = {
 	name?: string
 	/** The id of the Tracking Plan to generate a client for. */
 	id: string
-	/** The slug of the Segment workspace that owns this Tracking Plan. */
+	/** The slug of the RudderStack workspace that owns this Tracking Plan. */
 	workspaceSlug: string
 	/**
 	 * A directory path relative to this typewriter.yml file, specifying where

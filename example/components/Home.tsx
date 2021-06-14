@@ -43,8 +43,8 @@ class HomeComponent extends React.Component<Props> {
 						<Paragraph>
 							<Text>
 								You can learn more from our documentation: {''}
-								<Link target="_blank" href="https://segment.com/docs/protocols/typewriter">
-									https://segment.com/docs/protocols/typewriter
+								<Link target="_blank" href="https://rudderstack.com/docs/typewriter">
+								https://rudderstack.com/docs/typewriter
 								</Link>
 							</Text>
 						</Paragraph>
