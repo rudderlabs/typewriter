@@ -24,7 +24,7 @@ export const Version: React.FC<StandardProps> = () => {
 					options = { version: 'next' }
 				}
 
-				const latestVersion = await latest('typewriter', options)
+				const latestVersion = await latest('rstypewriter', options)
 				setLatestVersion(latestVersion)
 			} catch (error) {
 				// If we can't access NPM, then ignore this version check.
