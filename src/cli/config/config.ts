@@ -140,9 +140,10 @@ export type TokenMetadata = {
 	workspace?: RudderAPI.Workspace
 }
 
-// Only resolve token scripts once per CLI invocation.
+// Only resolve token and email scripts once per CLI invocation.
 // Maps a token script -> output, if any
 const tokenScriptCache: Record<string, string> = {}
+const emailScriptCache: Record<string, string> = {}
 
 export async function listTokens(
 	cfg: Partial<Config> | undefined,
@@ -153,8 +154,8 @@ export async function listTokens(
 		file: { method: 'file', isValidToken: false },
 	}
 
-	// Attempt to read a token from the ~/.typewriter token file.
-	// Tokens are stored here during the `init` flow, if a user generates a token.
+	// Attempt to read a token and email from the ~/.typewriter token file.
+	// Token and email are stored here during the `init` flow, if a user generates a token.
 	try {
 		const path = resolve(homedir(), '.typewriter')
 		const cachedTokenData = await readFile(path, {
@@ -166,11 +167,11 @@ export async function listTokens(
 		// Ignore errors if ~/.typewriter doesn't exist
 	}
 
-	// Attempt to read a token by executing the token script from the typewriter.yml config file.
+	// Attempt to read a token and email by executing their respective script from the typewriter.yml config file.
 	// Handle token script errors gracefully, f.e., in CI where you don't need it.
 	if (cfg && cfg.scripts && cfg.scripts.token && cfg.scripts.email) {
 		const tokenScript = cfg.scripts.token
-		const email = cfg.scripts.email
+		const emailScript = cfg.scripts.email
 		// Since we don't know if this token script has side effects, cache (in-memory) the result
 		// s.t. we only execute it once per CLI invocation.
 		if (!tokenScriptCache[tokenScript]) {
@@ -179,9 +180,15 @@ export async function listTokens(
 				tokenScriptCache[tokenScript] = stdout.trim()
 			}
 		}
+		if (!emailScriptCache[emailScript]) {
+			const stdout = await runScript(emailScript, configPath, Scripts.Email)
+			if (!!stdout) {
+				emailScriptCache[emailScript] = stdout.trim()
+			}
+		}
 
 		output.script.token = tokenScriptCache[tokenScript]
-		output.script.email = email
+		output.script.email = emailScriptCache[emailScript]
 	}
 
 	// Validate whether any of these tokens are valid RudderStack API tokens.

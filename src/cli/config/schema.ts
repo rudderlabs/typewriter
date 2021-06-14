@@ -54,7 +54,8 @@ const ConfigSchema = Joi.object().required().keys({
 	scripts: Joi.object().optional().keys({
 		token: Joi.string().optional().min(1),
 		after: Joi.string().optional().min(1),
-	}),
+		email: Joi.string().optional().min(1),
+    }),
 	client: Joi.object().required().keys({
 		sdk: Joi.string().required().valid('analytics.js', 'analytics-node', 'analytics-android', 'analytics-ios'),
 		language: Joi.string().required().valid('javascript', 'typescript', 'java', 'swift', 'objective-c'),

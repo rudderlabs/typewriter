@@ -3,6 +3,10 @@
 
 # You can find more documentation on configuring this client in the RudderStack docs.
 # See: https://rudderstack.com/docs/typewriter
+scripts:
+  token: source .env; echo $TYPEWRITER_TOKEN
+  email: source .env; echo $EMAIL
+
 client:
   sdk: analytics-ios
   language: objective-c
