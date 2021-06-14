@@ -1,5 +1,5 @@
 {
-  "name": "typewriter",
+  "name": "rstypewriter",
   "version": "1.0.0-beta1",
   "description": "A compiler for generating strongly typed analytics clients via RudderStack",
   "repository": "ssh://git@github.com/rudderlabs/typewriter.git",
@@ -51,8 +51,7 @@
     "snyk": "^1.250.0",
     "ts-jest": "^26.4.4",
     "ts-node": "^8.1.0",
-    "tsconfig-paths": "^3.8.0",
-    "typewriter": "^7.3.0"
+    "tsconfig-paths": "^3.8.0"
   },
   "dependencies": {
     "@hapi/joi": "^15.1.1",
@@ -71,6 +70,7 @@
     "latest-version": "^5.1.0",
     "lodash": "4.17.20",
     "node-machine-id": "^1.1.12",
+    "object-assign": "^4.1.1",
     "prettier": "^1.17.0",
     "react": "^16.9.0",
     "semver": "^6.3.0",

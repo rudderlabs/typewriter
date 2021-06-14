@@ -8,8 +8,8 @@ scripts:
   email: source .env; echo $EMAIL
 
 client:
-  sdk: analytics-ios
-  language: objective-c
+  sdk: analytics-android
+  language: java
 
 trackingPlans:
   # Tracking Plan: Validate TypeWriter
