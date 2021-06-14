@@ -7,8 +7,6 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 import React, { createContext } from 'react'
 import { render } from 'ink'
 import { Token, Version, Build, Help, Init, ErrorBoundary } from './commands'
-import Analytics from 'analytics-node'
-import typewriter from '../analytics'
 import { Config, getConfig, getTokenMethod } from './config'
 import { machineId } from 'node-machine-id'
 import { version } from '../../package.json'
@@ -120,23 +118,6 @@ type DebugContextProps = {
 }
 export const DebugContext = createContext<DebugContextProps>({ debug: false })
 
-// Initialize analytics-node
-const writeKey =
-	process.env.NODE_ENV === 'production'
-		? // Production: https://app.segment.com/segment_prod/sources/typewriter/overview
-		  'ahPefUgNCh3w1BdkWX68vOpVgR2Blm5e'
-		: // Development: https://app.segment.com/segment_prod/sources/typewriter_dev/overview
-		  'NwUMoJltCrmiW5gQZyiyvKpESDcwsj1r'
-const analyticsNode = new Analytics(writeKey, {
-	flushAt: 1,
-	flushInterval: -1,
-})
-
-// Initialize the typewriter client that this CLI uses.
-typewriter.setTypewriterOptions({
-	analytics: analyticsNode,
-})
-
 function toYargsHandler<P = unknown>(
 	Command: React.FC<StandardProps & P>,
 	props: P,
@@ -147,12 +128,7 @@ function toYargsHandler<P = unknown>(
 		let anonymousId = 'unknown'
 		try {
 			anonymousId = await getAnonymousId()
-		} catch (error) {
-			typewriter.errorFired({
-				error_string: 'Failed to generate an anonymous id',
-				error,
-			})
-		}
+		} catch (error) {}
 
 		try {
 			// The '*' command is a catch-all. We want to fail the CLI if an unknown command is
@@ -162,9 +138,6 @@ function toYargsHandler<P = unknown>(
 				!cliOptions.validateDefault ||
 				args._.length === 0 ||
 				['update', 'u'].includes(args._[0])
-
-			// We'll measure how long it takes to render this command.
-			const startTime = process.hrtime()
 
 			// Attempt to read a config, if one is available.
 			const cfg = await getConfig(args.config)
@@ -214,19 +187,6 @@ function toYargsHandler<P = unknown>(
 				// Errors are handled/reported in ErrorBoundary.
 				process.exitCode = 1
 			}
-
-			// Measure how long this command took.
-			const [sec, nsec] = process.hrtime(startTime)
-			const ms = sec * 1000 + nsec / 1000000
-
-			// Fire analytics to Segment on typewriter command usage.
-			typewriter.commandRun({
-				properties: {
-					...analyticsProps,
-					duration: Math.round(ms),
-				},
-				anonymousId,
-			})
 
 			// If this isn't a valid command, make sure we exit with a non-zero exit code.
 			if (!isValidCommand) {

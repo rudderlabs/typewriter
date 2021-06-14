@@ -8,9 +8,9 @@ client:
   language: objective-c
 
 trackingPlans:
-  # Tracking Plan: Kicks App
-  # https://app.rudderstack.com/tracking-plans/tp_1tkni8eylZAVQEPY60uD2bfICp8
-  - id: tp_1tkni8eylZAVQEPY60uD2bfICp8
+  # Tracking Plan: Rudder App
+  # https://app.rudderstack.com/tracking-plans/tp_1tlcFHZ5f09O5SPsXNkAGhAPzdz
+  - id: tp_1tlcFHZ5f09O5SPsXNkAGhAPzdz
     workspaceSlug: 1tiktfIUOBLYSnjJxsLweH525qh
     path: analytics
 

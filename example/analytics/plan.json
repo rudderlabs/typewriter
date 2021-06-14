@@ -1,13 +1,13 @@
 {
-	"create_time": "2021-06-10T10:47:58.004Z",
-	"display_name": "Kicks App",
-	"name": "workspaces/1tiktfIUOBLYSnjJxsLweH525qh/tracking-plans/tp_1tkni8eylZAVQEPY60uD2bfICp8",
+	"create_time": "2021-06-10T17:43:30.150Z",
+	"display_name": "Rudder App",
+	"name": "workspaces/1tiktfIUOBLYSnjJxsLweH525qh/tracking-plans/tp_1tlcFHZ5f09O5SPsXNkAGhAPzdz",
 	"rules": {
 		"events": [
 			{
 				"description": "Who bought what",
-				"id": "ev_1tkni5zrQL7ZsqKkwhHOWyfqug3",
-				"name": "Order Completed",
+				"id": "ev_1tlcFGSSWUIk7sa5cJV1ShaDRsv",
+				"name": "Order Completed Rudder",
 				"rules": {
 					"$schema": "http://json-schema.org/draft-04/schema#",
 					"properties": {
@@ -105,6 +105,6 @@
 			"version": "1-0-0"
 		}
 	},
-	"update_time": "2021-06-10T10:47:58.004Z",
+	"update_time": "2021-06-10T17:43:30.150Z",
 	"version": 1
 }

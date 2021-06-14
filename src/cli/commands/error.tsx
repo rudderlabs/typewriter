@@ -8,7 +8,6 @@ import Link from 'ink-link'
 import figures from 'figures'
 import { version } from '../../../package.json'
 import { AnalyticsProps } from '../index'
-import typewriter from '../../analytics'
 
 type ErrorContextProps = {
 	/** Called to indicate that a non-fatal error has occurred. This will be printed only in debug mode. */
@@ -99,18 +98,6 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 	}
 
 	private reportError = async (params: { error: WrappedError; fatal: boolean }) => {
-		const { anonymousId, analyticsProps } = this.props
-
-		typewriter.errorFired({
-			properties: {
-				...analyticsProps,
-				error_string: JSON.stringify(params.error, undefined, 2),
-				unexpected: params.fatal,
-				error: params.error,
-			},
-			anonymousId,
-		})
-
 		if (this.props.debug) {
 			console.trace(params.error)
 		}
