@@ -1,36 +1,15 @@
 <p align="center">
-	<br>
-	<br>
-  <img src=".github/assets/typewriter-logo.svg?sanitize=true" alt="Typewriter logo" />
-  <br>
-  <br>
-  <br>
-  <br>
-
-  
-  <a href="http://www.npmjs.com/package/rudder-typewriter">
-    <img src="https://img.shields.io/npm/v/typewriter.svg" alt="NPM Version">
-  </a>
-  <a href="./.github/LICENSE.md">
-    <img src="https://img.shields.io/npm/l/typewriter.svg" alt="License">
-  </a>
-  <a href="https://snyk.io/test/github/segmentio/typewriter?targetFile=package.json">
-    <img src="https://snyk.io/test/github/segmentio/typewriter/badge.svg?targetFile=package.json" alt="Known Vulnerabilities" data-canonical-src="https://snyk.io/test/github/segmentio/typewriter?targetFile=package.json">
-  </a>
-  <br>
-  <br>
-  <br>
-
-  <img src=".github/assets/readme-example.gif" alt="Typewriter GIF Example" width="70%"/>
+  <h1 align="center"> Typewriter </h1>
+  <img src=".github/assets/readme-example.gif" alt="Typewriter GIF Example" width="80%"/>
 </p>
 
 - 💪 **Strongly Typed Analytics**: Generates strongly-typed [RudderStack](http://rudderstack.com) analytics clients that provide compile-time errors, along with intellisense for event/property names, types and descriptions.
 
 - 👮 **Analytics Testing**: Validate your instrumentation matches your [spec](https://docs.rudderstack.com/tracking-plan/) before deploying to production, so you can fail your CI builds without a manual analytics QA process.
 
-- 🌐 **Cross-Language Support**: Supports native clients for [`analytics.js`](https://segment.com/docs/protocols/typewriter/#browser-quickstart), [`analytics-node`](https://segment.com/docs/protocols/typewriter/#node-js-quickstart), [`analytics-android`](https://segment.com/docs/protocols/typewriter/#android-quickstart) and [`analytics-ios`](https://segment.com/docs/protocols/typewriter/#ios-quickstart).
+- 🌐 **Cross-Language Support**: Supports native clients for [`Javascript`](https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-javascript-sdk), [`Node.js`](https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk), [`Android`](https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-android-sdk) and [`analytics-ios`](https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-ios-sdk).
 
-- ✨ **Segment Protocols**: Built-in support to sync your `typewriter` clients with your [centralized Segment Tracking Plans](https://segment.com/docs/protocols/tracking-plan/).
+- ✨ **RudderStack Tracking Plans**: Built-in support to sync your `typewriter` clients with your [centralized RudderStack Tracking Plans](https://docs.rudderstack.com/tracking-plan/).
 
 ## Get Started
 
@@ -39,7 +18,7 @@
 $ npx typewriter init
 ```
 
-For more instructions on setting up your `typewriter` client, such as adding it to your CI, see our [documentation](https://segment.com/docs/protocols/typewriter).
+For more instructions on setting up your `typewriter` client, such as adding it to your CI, see our [documentation](https://docs.rudderstack.com/typewriter).
 
 ## Contributing
 
