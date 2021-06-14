@@ -135,7 +135,7 @@ export async function validateToken(
 
 async function apiGet<Response>(url: string, token: string, email: string): Promise<Response> {
 	const resp = got(url, {
-		baseUrl: 'http://localhost:5000/v1/dg',
+		baseUrl: 'http://api.rudderstack.com/v1/dg',
 		headers: {
 			'User-Agent': `Rudder (typewriter/${version})`,
 			Authorization: `Basic ${Buffer.from(email + ':' + token).toString('base64')}`,
