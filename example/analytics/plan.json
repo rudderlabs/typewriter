@@ -1,46 +1,368 @@
 {
-	"create_time": "2021-06-10T17:43:30.150Z",
-	"display_name": "Rudder App",
-	"name": "workspaces/1tiktfIUOBLYSnjJxsLweH525qh/tracking-plans/tp_1tlcFHZ5f09O5SPsXNkAGhAPzdz",
+	"create_time": "2021-06-14T09:41:02.516Z",
+	"display_name": "Validate TypeWriter",
+	"name": "workspaces/1tiktfIUOBLYSnjJxsLweH525qh/tracking-plans/tp_1tvy420mCE4uXlXwkasgJGkTLM5",
 	"rules": {
 		"events": [
 			{
-				"description": "Who bought what",
-				"id": "ev_1tlcFGSSWUIk7sa5cJV1ShaDRsv",
-				"name": "Order Completed Rudder",
+				"description": "Validates that client property sanitize enums.",
+				"id": "ev_1tvy41MClQsow03wG2LGlMyj6yP",
+				"name": "Enum Types",
 				"rules": {
-					"$schema": "http://json-schema.org/draft-04/schema#",
+					"$schema": "http://json-schema.org/draft-07/schema#",
+					"labels": {
+					},
 					"properties": {
 						"context": {
 						},
 						"properties": {
 							"properties": {
-								"amount": {
-									"type": [
-										"number"
-									]
+								"string const": {
+									"description": "A string property that only accepts a single enum value.",
+									"enum": [
+										"Rick Sanchez"
+									],
+									"type": "string"
 								},
-								"price": {
+								"string enum": {
+									"description": "A string property that accepts multiple enum values.",
+									"enum": [
+										"Evil Morty",
+										"Lawyer Morty"
+									],
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"traits": {
+							"type": "object"
+						}
+					},
+					"type": "object"
+				},
+				"version": "1-0-0"
+			},
+			{
+				"description": "This event is fired in order to trigger the default violation handler. It should be called with a JSON Schema violation.",
+				"id": "ev_1tvy40J6vYIvbhDoyA7jFNrG8dL",
+				"name": "Default Violation Handler",
+				"rules": {
+					"$schema": "http://json-schema.org/draft-07/schema#",
+					"labels": {
+					},
+					"properties": {
+						"context": {
+						},
+						"properties": {
+							"properties": {
+								"regex property": {
+									"description": "",
+									"pattern": "Lawyer Morty|Evil Morty",
+									"type": "string"
+								}
+							},
+							"required": [
+								"regex property"
+							],
+							"type": "object"
+						},
+						"traits": {
+							"type": "object"
+						}
+					},
+					"required": [
+						"properties"
+					],
+					"type": "object"
+				},
+				"version": "1-0-0"
+			},
+			{
+				"description": "Validates that clients support fields with multiple (union) types.",
+				"id": "ev_1tvy433XJasmX533Aiewar9TMCF",
+				"name": "Union Type",
+				"rules": {
+					"$schema": "http://json-schema.org/draft-07/schema#",
+					"labels": {
+					},
+					"properties": {
+						"context": {
+						},
+						"properties": {
+							"properties": {
+								"universe_name": {
+									"description": "",
 									"type": [
-										"number"
-									]
-								},
-								"product": {
-									"type": [
-										"string"
+										"string",
+										"null",
+										"integer"
 									]
 								}
 							},
 							"required": [
-								"product",
-								"price",
-								"amount"
+								"universe_name"
+							],
+							"type": "object"
+						},
+						"traits": {
+							"type": "object"
+						}
+					},
+					"required": [
+						"properties"
+					],
+					"type": "object"
+				},
+				"version": "1-0-0"
+			},
+			{
+				"description": "Validates that clients handle all of the supported field types, as nullable required fields. If a field is null, it is expected to be sent through.",
+				"id": "ev_1tvy44OtARsvHPbj9HVLuQg4t3p",
+				"name": "Every Nullable Required Type",
+				"rules": {
+					"$schema": "http://json-schema.org/draft-07/schema#",
+					"properties": {
+						"context": {
+						},
+						"properties": {
+							"properties": {
+								"required any": {
+									"description": "Required any property"
+								},
+								"required array": {
+									"description": "Required array property",
+									"type": [
+										"array",
+										"null"
+									]
+								},
+								"required array with properties": {
+									"description": "Required array with properties",
+									"items": {
+										"properties": {
+											"required any": {
+												"description": "Required any property"
+											},
+											"required array": {
+												"description": "Required array property",
+												"type": [
+													"array",
+													"null"
+												]
+											},
+											"required boolean": {
+												"description": "Required boolean property",
+												"type": [
+													"boolean",
+													"null"
+												]
+											},
+											"required int": {
+												"description": "Required integer property",
+												"type": [
+													"integer",
+													"null"
+												]
+											},
+											"required number": {
+												"description": "Required number property",
+												"type": [
+													"number",
+													"null"
+												]
+											},
+											"required object": {
+												"description": "Required object property",
+												"properties": {
+												},
+												"required": [
+												],
+												"type": [
+													"object",
+													"null"
+												]
+											},
+											"required string": {
+												"description": "Required string property",
+												"type": [
+													"string",
+													"null"
+												]
+											},
+											"required string with regex": {
+												"description": "Required string property with a regex conditional",
+												"pattern": "Evil Morty|Lawyer Morty",
+												"type": [
+													"string",
+													"null"
+												]
+											}
+										},
+										"required": [
+											"required any",
+											"required array",
+											"required boolean",
+											"required int",
+											"required number",
+											"required object",
+											"required string",
+											"required string with regex"
+										],
+										"type": [
+											"object",
+											"null"
+										]
+									},
+									"type": [
+										"array",
+										"null"
+									]
+								},
+								"required boolean": {
+									"description": "Required boolean property",
+									"type": [
+										"boolean",
+										"null"
+									]
+								},
+								"required int": {
+									"description": "Required integer property",
+									"type": [
+										"integer",
+										"null"
+									]
+								},
+								"required number": {
+									"description": "Required number property",
+									"type": [
+										"number",
+										"null"
+									]
+								},
+								"required object": {
+									"description": "Required object property",
+									"properties": {
+									},
+									"required": [
+									],
+									"type": [
+										"object",
+										"null"
+									]
+								},
+								"required object with properties": {
+									"description": "Required object with properties",
+									"properties": {
+										"required any": {
+											"description": "Required any property"
+										},
+										"required array": {
+											"description": "Required array property",
+											"type": [
+												"array",
+												"null"
+											]
+										},
+										"required boolean": {
+											"description": "Required boolean property",
+											"type": [
+												"boolean",
+												"null"
+											]
+										},
+										"required int": {
+											"description": "Required integer property",
+											"type": [
+												"integer",
+												"null"
+											]
+										},
+										"required number": {
+											"description": "Required number property",
+											"type": [
+												"number",
+												"null"
+											]
+										},
+										"required object": {
+											"description": "Required object property",
+											"properties": {
+											},
+											"required": [
+											],
+											"type": [
+												"object",
+												"null"
+											]
+										},
+										"required string": {
+											"description": "Required string property",
+											"type": [
+												"string",
+												"null"
+											]
+										},
+										"required string with regex": {
+											"description": "Required string property with a regex conditional",
+											"pattern": "Evil Morty|Lawyer Morty",
+											"type": [
+												"string",
+												"null"
+											]
+										}
+									},
+									"required": [
+										"required any",
+										"required array",
+										"required boolean",
+										"required int",
+										"required number",
+										"required object",
+										"required string",
+										"required string with regex"
+									],
+									"type": [
+										"object",
+										"null"
+									]
+								},
+								"required string": {
+									"description": "Required string property",
+									"type": [
+										"string",
+										"null"
+									]
+								},
+								"required string with regex": {
+									"description": "Required string property with a regex conditional",
+									"pattern": "Evil Morty|Lawyer Morty",
+									"type": [
+										"string",
+										"null"
+									]
+								}
+							},
+							"required": [
+								"required any",
+								"required array",
+								"required boolean",
+								"required int",
+								"required number",
+								"required object",
+								"required string",
+								"required string with regex",
+								"required object with properties",
+								"required array with properties"
 							],
 							"type": "object"
 						},
 						"traits": {
 						}
 					},
+					"required": [
+						"properties"
+					],
 					"type": "object"
 				},
 				"version": "1-0-0"
@@ -105,6 +427,6 @@
 			"version": "1-0-0"
 		}
 	},
-	"update_time": "2021-06-10T17:43:30.150Z",
+	"update_time": "2021-06-14T09:41:02.516Z",
 	"version": 1
 }

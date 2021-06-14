@@ -103,7 +103,7 @@ export const objc: Generator<
 		}
 	},
 	generateObject: async (client, schema, properties, parentPath) => {
-		const property = defaultPropertyContext(client, schema, 'SERIALIZABLE_DICT', parentPath, true)
+		const property = defaultPropertyContext(client, schema, 'NSDictionary *', parentPath, true)
 		let object: ObjCObjectContext | undefined = undefined
 
 		if (properties.length > 0) {
@@ -283,7 +283,7 @@ function generatePropertiesDictionary(
 				? property.isPointerType
 					? name
 					: `[NSNumber numberWithInteger:${name}]`
-				: property.schemaType === Type.OBJECT && !property.type.includes('SERIALIZABLE_DICT')
+				: property.schemaType === Type.OBJECT && !property.type.includes('NSDictionary')
 				? `[${name} toDictionary]`
 				: property.schemaType === Type.ARRAY
 				? `[RSTypewriterUtils toSerializableArray:${name}]`

@@ -1,16 +1,16 @@
 # RudderStack Typewriter Configuration (https://rudderstack.com/docs/typewriter)
 # Just run `npx typewriter@next` to re-generate a client with the latest versions of these events.
 
-# You can find more documentation on configuring this client in the Segment docs.
+# You can find more documentation on configuring this client in the RudderStack docs.
 # See: https://rudderstack.com/docs/typewriter
 client:
   sdk: analytics-ios
   language: objective-c
 
 trackingPlans:
-  # Tracking Plan: Rudder App
-  # https://app.rudderstack.com/tracking-plans/tp_1tlcFHZ5f09O5SPsXNkAGhAPzdz
-  - id: tp_1tlcFHZ5f09O5SPsXNkAGhAPzdz
+  # Tracking Plan: Validate TypeWriter
+  # https://app.rudderstack.com/tracking-plans/tp_1tvy420mCE4uXlXwkasgJGkTLM5
+  - id: tp_1tvy420mCE4uXlXwkasgJGkTLM5
     workspaceSlug: 1tiktfIUOBLYSnjJxsLweH525qh
     path: analytics
 
