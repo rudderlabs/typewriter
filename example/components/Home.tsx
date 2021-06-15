@@ -36,15 +36,15 @@ class HomeComponent extends React.Component<Props> {
 					<Card elevation={1} width={majorScale(70)} background="white" padding={majorScale(4)}>
 						<Paragraph>
 							<Text>
-								Getting started with Typewriter is as simple as:
-								<pre>npx typewriter@next init</pre>
+								Getting started with RudderTyper is as simple as:
+								<pre>npx rudder-typer@next init</pre>
 							</Text>
 						</Paragraph>
 						<Paragraph>
 							<Text>
 								You can learn more from our documentation: {''}
-								<Link target="_blank" href="https://rudderstack.com/docs/typewriter">
-								https://rudderstack.com/docs/typewriter
+								<Link target="_blank" href="https://docs.rudderstack.com/ruddertyper">
+								https://docs.rudderstack.com/ruddertyper
 								</Link>
 							</Text>
 						</Paragraph>

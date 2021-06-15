@@ -40,7 +40,7 @@ export type ViolationHandler = (
 ) => void
 
 /**
- * The default handler that is fired if none is supplied with setTypewriterOptions.
+ * The default handler that is fired if none is supplied with setRudderTyperOptions.
  {{#if isBrowser}}
  * This handler will log a warning message to the console.
  {{else}}
@@ -50,9 +50,9 @@ export type ViolationHandler = (
  */
 export const defaultValidationErrorHandler: ViolationHandler = (message, violations) => {
 	const msg = JSON.stringify({
-		type: 'Typewriter JSON Schema Validation Error',
+		type: 'RudderTyper JSON Schema Validation Error',
 		description:
-			`You made an analytics call (${message.event}) using Typewriter that doesn't match the ` +
+			`You made an analytics call (${message.event}) using RudderTyper that doesn't match the ` +
 			'Tracking Plan spec.',
 		errors: violations,
 	}, undefined, 2)
@@ -73,10 +73,10 @@ let onViolation = defaultValidationErrorHandler
 const missingAnalyticsNodeError = new Error(`You must set an analytics-node instance:
 
 >	const RudderAnalytics = require('@rudderstack/rudder-sdk-node');
->	const { setTypewriterOptions } = require('./analytics')
+>	const { setRudderTyperOptions } = require('./analytics')
 >
 >	const analytics = new RudderAnalytics(WRITE_KEY, DATA_PLANE_URL/v1/batch)
->	setTypewriterOptions({
+>	setRudderTyperOptions({
 >		analytics: analytics,
 >	})
 
@@ -93,8 +93,8 @@ let analytics: () => ({{#if isBrowser}}RudderAnalytics.AnalyticsJS{{else}}Rudder
 	{{/if}}
 }
 
-/** Options to customize the runtime behavior of a Typewriter client. */
-export interface TypewriterOptions {
+/** Options to customize the runtime behavior of a RudderTyper client. */
+export interface RudderTyperOptions {
 	/**
 	 * Underlying analytics instance where analytics calls are forwarded on to.
 	 {{#if isBrowser}}
@@ -113,8 +113,8 @@ export interface TypewriterOptions {
 	onViolation?: ViolationHandler
 }
 
-{{> setTypewriterOptionsDocumentation}}
-export function setTypewriterOptions(options: TypewriterOptions) {
+{{> setRudderTyperOptionsDocumentation}}
+export function setRudderTyperOptions(options: RudderTyperOptions) {
 	analytics = options.analytics ? () => options.analytics{{#if isBrowser}} || window.analytics{{/if}} : analytics
 	{{#if isDevelopment}}
 	onViolation = options.onViolation || onViolation
@@ -140,17 +140,17 @@ function validateAgainstSchema(
 {{/if}}
 
 /**
- * Helper to attach metadata on Typewriter to outbound requests.
+ * Helper to attach metadata on RudderTyper to outbound requests.
  * This is used for attribution and debugging by the RudderStack team.
  */
-function withTypewriterContext{{#unless isBrowser}}<P, T extends Rudder.TrackMessage<P>>{{/unless}}(message: {{#if isBrowser}}Rudder.Options = {}{{else}}T{{/if}}): {{#if isBrowser}}Rudder.Options{{else}}T{{/if}} {
+function withRudderTyperContext{{#unless isBrowser}}<P, T extends Rudder.TrackMessage<P>>{{/unless}}(message: {{#if isBrowser}}Rudder.Options = {}{{else}}T{{/if}}): {{#if isBrowser}}Rudder.Options{{else}}T{{/if}} {
 	return {
 		...message,
 		context: {
 			...(message.context || {}),
-			typewriter: {
+			ruddertyper: {
 				language: '{{language}}',
-				version: '{{typewriterVersion}}',
+				version: '{{rudderTyperVersion}}',
 			},
 		},
 	}
@@ -210,7 +210,7 @@ export function {{functionName}}(
 		a.track(
 			'{{rawEventName}}',
 			props || {},
-			withTypewriterContext(options),
+			withRudderTyperContext(options),
 			callback
 		)
 	}
@@ -220,7 +220,7 @@ export function {{functionName}}(
 	message: Rudder.TrackMessage<{{propertiesType}}>,
 	callback?: Rudder.Callback
 ): void {
-	const msg = withTypewriterContext({
+	const msg = withRudderTyperContext({
 		properties: {},
 		...message,
 		event: '{{rawEventName}}'
@@ -243,8 +243,8 @@ export function {{functionName}}(
 
 {{#if useProxy}}
 const clientAPI = {
-	{{> setTypewriterOptionsDocumentation}}
-	setTypewriterOptions,
+	{{> setRudderTyperOptionsDocumentation}}
+	setRudderTyperOptions,
 	{{#each tracks}}
 	{{> functionDocumentation isBrowser=../isBrowser }}
 	{{functionName}},
@@ -259,7 +259,7 @@ export default new Proxy<typeof clientAPI>(clientAPI, {
 
 		return () => {
 			console.warn(`⚠️  You made an analytics call (${String(method)}) that can't be found. Either:
-    a) Re-generate your typewriter client: \`npx typewriter\`
+    a) Re-generate your ruddertyper client: \`npx rudder-typer\`
     b) Add it to your Tracking Plan: {{trackingPlanURL}}`)
 			const a = analytics()
 			if (a) {
@@ -268,15 +268,15 @@ export default new Proxy<typeof clientAPI>(clientAPI, {
 					{
 						method,
 					},
-					withTypewriterContext()
+					withRudderTyperContext()
 				)
 				{{else}}
-				a.track(withTypewriterContext({
+				a.track(withRudderTyperContext({
 					event: 'Unknown Analytics Call Fired',
 					properties: {
 						method,
 					},
-					userId: 'typewriter'
+					userId: 'ruddertyper'
 				}))
 				{{/if}}
 			}

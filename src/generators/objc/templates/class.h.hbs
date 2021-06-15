@@ -3,13 +3,13 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "RSTypewriterSerializable.h"
-#import "RSTypewriterUtils.h"
+#import "RSRudderTyperSerializable.h"
+#import "RSRudderTyperUtils.h"
 {{#each imports}}
 #import {{this}}
 {{/each}}
 
-@interface {{name}} : NSObject<RSTypewriterSerializable>
+@interface {{name}} : NSObject<RSRudderTyperSerializable>
 
 {{#each properties}}
 {{#if description}}

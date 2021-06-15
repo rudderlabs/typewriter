@@ -1,6 +1,6 @@
-# Typewriter Example
+# RudderTyper Example
 
-This example repo demonstrates how to setup and use Typewriter in a JavaScript/TypeScript web environment, as a strongly-typed wrapper for [`analytics.js`](https://segment.com/docs/sources/website/analytics.js/).
+This example repo demonstrates how to setup and use RudderTyper in a Java Android Platfrom, as a strongly-typed wrapper for [`rudder-sdk-android`](https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-android-sdk).
 
 ## Setup
 
@@ -10,13 +10,13 @@ First, install dependencies:
 $ yarn
 ```
 
-Then, generate a Typewriter client:
+Then, generate a RudderTyper client:
 
 ```sh
-$ yarn typewriter dev
+$ yarn rudder-typer dev
 ```
 
-Update the Segment write key in [`_document.tsx`](./pages/_document.tsx#L48) for the source you want to report analytics to:
+Update the RudderStack write key in [`_document.tsx`](./pages/_document.tsx#L48) for the source you want to report analytics to:
 
 ```typescript
 const analyticsSnippet = snippetFn({
@@ -41,4 +41,4 @@ Once you run the app, go the Debugger to see events coming in!
 
 ## More Documentation
 
-See the [`Typewriter docs`](https://segment.com/docs/protocols/typewriter) for more information on instrumenting your app with Typewriter.
+See the [`RudderTyper docs`](https://docs.rudderstack.com/ruddertyper) for more information on instrumenting your app with RudderTyper.

@@ -2,11 +2,11 @@ import { Options } from 'src/generators/options'
 import Joi from '@hapi/joi'
 
 /**
- * A config, stored in a typewriter.yml file.
+ * A config, stored in a ruddertyper.yml file.
  * If you update this inferface, make sure to also update the Joi schema (ConfigSchema) below.
  */
 export type Config = {
-	/** A set of optional shell commands to customize typewriter's behavior. */
+	/** A set of optional shell commands to customize ruddertyper's behavior. */
 	scripts?: {
 		/**
 		 * An optional shell command that must produce a RudderStack API token as its only output.
@@ -17,7 +17,7 @@ export type Config = {
 		 */
 		email?: string
 		/**
-		 * An optional shell command executed after typewriter updates/builds clients
+		 * An optional shell command executed after ruddertyper updates/builds clients
 		 * which can be used for things like applying automatic formatting to generated files.
 		 */
 		after?: string
@@ -32,7 +32,7 @@ export type Config = {
 export type TrackingPlanConfig = {
 	/**
 	 * The name of the Tracking Plan. Only set during the `init` step, so it
-	 * can be added as a comment in the generated `typewriter.yml`.
+	 * can be added as a comment in the generated `ruddertyper.yml`.
 	 */
 	name?: string
 	/** The id of the Tracking Plan to generate a client for. */
@@ -40,7 +40,7 @@ export type TrackingPlanConfig = {
 	/** The slug of the RudderStack workspace that owns this Tracking Plan. */
 	workspaceSlug: string
 	/**
-	 * A directory path relative to this typewriter.yml file, specifying where
+	 * A directory path relative to this ruddertyper.yml file, specifying where
 	 * this Tracking Plan's client should be output.
 	 */
 	path: string
@@ -49,7 +49,7 @@ export type TrackingPlanConfig = {
 // Ignore Prettier here, since otherwise prettier adds quite a bit of spacing
 // that makes this schema too long+verbose.
 // prettier-ignore
-/** Joi schema for performing validation on typewriter.yml files. */
+/** Joi schema for performing validation on ruddertyper.yml files. */
 const ConfigSchema = Joi.object().required().keys({
 	scripts: Joi.object().optional().keys({
 		token: Joi.string().optional().min(1),

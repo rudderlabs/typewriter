@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Box, Color, useApp } from 'ink'
-import { version as typewriterVersion } from '../../../package.json'
+import { version as ruddertyperVersion } from '../../../package.json'
 import latest from 'latest-version'
 import { StandardProps } from '../index'
 import { ErrorContext } from './error'
@@ -19,12 +19,12 @@ export const Version: React.FC<StandardProps> = () => {
 
 				// If the user is on a pre-release, check if there's a new pre-release.
 				// Otherwise, only compare against stable versions.
-				const prerelease = semver.prerelease(typewriterVersion)
+				const prerelease = semver.prerelease(ruddertyperVersion)
 				if (prerelease && prerelease.length > 0) {
 					options = { version: 'next' }
 				}
 
-				const latestVersion = await latest('rstypewriter', options)
+				const latestVersion = await latest('rudder-typer', options)
 				setLatestVersion(latestVersion)
 			} catch (error) {
 				// If we can't access NPM, then ignore this version check.
@@ -37,7 +37,7 @@ export const Version: React.FC<StandardProps> = () => {
 		effect()
 	}, [])
 
-	const isLatest = isLoading || latestVersion === '' || latestVersion === typewriterVersion
+	const isLatest = isLoading || latestVersion === '' || latestVersion === ruddertyperVersion
 	const newVersionText = isLoading
 		? '(checking for newer versions...)'
 		: !isLatest
@@ -48,7 +48,7 @@ export const Version: React.FC<StandardProps> = () => {
 		<Box>
 			<Color grey>Version: </Color>
 			<Color green={isLatest} yellow={!isLatest}>
-				{typewriterVersion}{' '}
+				{ruddertyperVersion}{' '}
 			</Color>
 			<Color grey={isLatest} green={!isLatest}>
 				{newVersionText}

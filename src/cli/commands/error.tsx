@@ -168,10 +168,10 @@ const ErrorComponent: React.FC<ErrorComponentProps> = ({ error }) => {
 			<Box height={2} width={80} textWrap="wrap" marginTop={1}>
 				<Color grey>
 					If you are unable to resolve this issue,{' '}
-					<Link url="https://github.com/rudderlabs/typewriter/issues/new">
+					<Link url="https://github.com/rudderlabs/rudder-typer/issues/new">
 						open an issue on GitHub
 					</Link>
-					. Please include that you are using version <Color yellow>{version}</Color> of Typewriter.
+					. Please include that you are using version <Color yellow>{version}</Color> of RudderTyper.
 				</Color>
 			</Box>
 		</Box>

@@ -79,7 +79,7 @@ export const objc: Generator<
 		} else if (schema.type === Type.BOOLEAN) {
 			// BOOLs cannot nullable in Objective-C. Instead, use an NSNumber which can be
 			// initialized like a boolean like so: [NSNumber numberWithBool:YES]
-			// This is what is done behind the scenes by typewriter if this boolean is nonnull.
+			// This is what is done behind the scenes by ruddertyper if this boolean is nonnull.
 			type = isPointerType ? 'NSNumber *' : 'BOOL'
 		} else if (schema.type === Type.INTEGER) {
 			type = isPointerType ? 'NSNumber *' : 'NSInteger'
@@ -136,28 +136,28 @@ export const objc: Generator<
 	generateRoot: async (client, context) => {
 		await Promise.all([
 			client.generateFile(
-				'RSTypewriterAnalytics.h',
+				'RSRudderTyperAnalytics.h',
 				'generators/objc/templates/analytics.h.hbs',
 				context
 			),
 			client.generateFile(
-				'RSTypewriterAnalytics.m',
+				'RSRudderTyperAnalytics.m',
 				'generators/objc/templates/analytics.m.hbs',
 				context
 			),
 			client.generateFile(
-				'RSTypewriterUtils.h',
-				'generators/objc/templates/RSTypewriterUtils.h.hbs',
+				'RSRudderTyperUtils.h',
+				'generators/objc/templates/RSRudderTyperUtils.h.hbs',
 				context
 			),
 			client.generateFile(
-				'RSTypewriterUtils.m',
-				'generators/objc/templates/RSTypewriterUtils.m.hbs',
+				'RSRudderTyperUtils.m',
+				'generators/objc/templates/RSRudderTyperUtils.m.hbs',
 				context
 			),
 			client.generateFile(
-				'RSTypewriterSerializable.h',
-				'generators/objc/templates/RSTypewriterSerializable.h.hbs',
+				'RSRudderTyperSerializable.h',
+				'generators/objc/templates/RSRudderTyperSerializable.h.hbs',
 				context
 			),
 			...context.objects.map(o =>
@@ -286,7 +286,7 @@ function generatePropertiesDictionary(
 				: property.schemaType === Type.OBJECT && !property.type.includes('NSDictionary')
 				? `[${name} toDictionary]`
 				: property.schemaType === Type.ARRAY
-				? `[RSTypewriterUtils toSerializableArray:${name}]`
+				? `[RSRudderTyperUtils toSerializableArray:${name}]`
 				: name
 
 		let setter: string

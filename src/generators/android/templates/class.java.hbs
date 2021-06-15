@@ -45,7 +45,7 @@ public final class {{name}} extends SerializableProperties {
          */
         public Builder {{name}}(final {{#if isVariableNullable}}@Nullable{{else}}@NonNull{{/if}} {{type}} {{name}}) {
             {{#if isListType}}
-            List<?> p = TypewriterUtils.serializeList({{name}});
+            List<?> p = RudderTyperUtils.serializeList({{name}});
             properties.put("{{rawName}}", p);
             {{else if implementsSerializableProperties}}
             if ({{name}} != null) {

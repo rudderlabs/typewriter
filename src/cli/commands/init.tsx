@@ -146,7 +146,7 @@ export const Init: React.FC<InitProps> = props => {
 			{step === Steps.Build && !props.onDone && (
 				<Build {...{ ...props, config }} production={false} update={true} />
 			)}
-			{/* TODO: step 8 where we show an example script showing how to import typewriter */}
+			{/* TODO: step 8 where we show an example script showing how to import ruddertyper */}
 		</Box>
 	)
 }
@@ -156,16 +156,16 @@ const Header: React.FC = () => {
 		<Box flexDirection="column">
 			<Box width={80} textWrap="wrap" marginBottom={4}>
 				<Color white>
-					Typewriter is a tool for generating strongly-typed{' '}
+					RudderTyper is a tool for generating strongly-typed{' '}
 					<Link url="https://rudderstack.com">RudderStack</Link> analytics libraries from a{' '}
-					<Link url="https://rudderstack.com/docs/tracking-plan">Tracking Plan</Link>.
+					<Link url="https://docs.rudderstack.com/tracking-plan">Tracking Plan</Link>.
 				</Color>{' '}
 				<Color grey>
 					Learn more from{' '}
-					<Link url="https://rudderstack.com/docs/typewriter">
-						{"Typewriter's documentation here"}
+					<Link url="https://docs.rudderstack.com/ruddertyper">
+						{"RudderTyper's documentation here"}
 					</Link>
-					. To get started, {"you'll"} need a <Color yellow>typewriter.yml</Color>. The quickstart
+					. To get started, {"you'll"} need a <Color yellow>ruddertyper.yml</Color>. The quickstart
 					below will walk you through creating one.
 				</Color>
 			</Box>
@@ -215,7 +215,7 @@ const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
 
 	const tips = [
 		'Use your arrow keys to select.',
-		'Typewriter clients are strongly-typed wrappers around a RudderStack SDK.',
+		'RudderTyper clients are strongly-typed wrappers around a RudderStack SDK.',
 		<Text key="sdk-docs">
 			To learn more about {"RudderStack's"} SDKs, see the{' '}
 			<Link url="https://docs.rudderstack.com/stream-sources">documentation</Link>.
@@ -429,7 +429,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 					workspace: token.workspace || state.workspace,
 					foundCachedToken: token.isValidToken,
 					isLoading: false,
-					// If the user already has a typewriter.yml with a valid token script,
+					// If the user already has a ruddertyper.yml with a valid token script,
 					// then let the user know that they can't overwrite it.
 					canBeSet: method !== tokens.script.method,
 				})
@@ -456,7 +456,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 			} catch (error) {
 				handleFatalError(
 					wrapError(
-						'Unable to save token to ~/.typewriter',
+						'Unable to save token to ~/.ruddertyper',
 						error,
 						`Failed due to an ${error.code} error (${error.errno}).`
 					)
@@ -520,7 +520,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 		'An API token is used to download Tracking Plans from Rudder.',
 		<Text key="api-token-docs">
 			Documentation on generating an API token can be found{' '}
-			<Link url="https://docs.rudderstack.com/typewriter/#api-token-configuration">here</Link>
+			<Link url="https://docs.rudderstack.com/ruddertyper/#api-token-configuration">here</Link>
 			.
 		</Text>,
 	]
@@ -536,13 +536,13 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 	return (
 		<div>
 			<Step name="Enter a Rudder API token:" step={step} isLoading={state.isLoading} tips={tips}>
-				{/* We found a token from a typewriter.yml token script. To let the user change token
+				{/* We found a token from a ruddertyper.yml token script. To let the user change token
 				 * in this init command, we'd have to remove their token script. Instead, just tell
 				 * the user this and don't let them change their token. */}
 				{!state.canBeSet && (
 					<SelectInput items={[{ label: 'Ok!', value: 'ok' }]} onSelect={onConfirm} />
 				)}
-				{/* We found a token in a ~/.typewriter. Confirm that the user wants to use this token
+				{/* We found a token in a ~/.ruddertyper. Confirm that the user wants to use this token
 				 * before continuing. */}
 				{state.canBeSet && state.foundCachedToken && (
 					<SelectInput
@@ -664,7 +664,7 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 	initialIndex = initialIndex === -1 ? 0 : initialIndex
 
 	const tips = [
-		'Typewriter will generate a client from this Tracking Plan.',
+		'RudderTyper will generate a client from this Tracking Plan.',
 		<Text key="plan-path">
 			This Tracking Plan is saved locally in a <Color yellow>plan.json</Color> file.
 		</Text>,
@@ -716,7 +716,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 
 	const onSelect = async (item: Item) => {
 		if (item.value === 'lgtm') {
-			// Write the updated typewriter.yml config.
+			// Write the updated ruddertyper.yml config.
 			setIsLoading(true)
 
 			let client = ({
@@ -750,7 +750,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 			} catch (error) {
 				handleFatalError(
 					wrapError(
-						'Unable to write typewriter.yml',
+						'Unable to write ruddertyper.yml',
 						error,
 						`Failed due to an ${error.code} error (${error.errno}).`
 					)

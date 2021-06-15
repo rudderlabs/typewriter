@@ -36,7 +36,7 @@ export type BaseRootContext<
 > = {
 	isDevelopment: boolean
 	language: string
-	typewriterVersion: string
+	rudderTyperVersion: string
 	trackingPlanURL: string
 	tracks: (T & BaseTrackCallContext<P>)[]
 	objects: (O & BaseObjectContext<P>)[]
@@ -78,7 +78,7 @@ export type GeneratorClient = {
 	) => Promise<void>
 }
 /*
- * Adding a new language to Typewriter involves implementing the interface below. The logic to traverse a
+ * Adding a new language to RudderTyper involves implementing the interface below. The logic to traverse a
  * JSON Schema and apply this generator is in `runGenerator` below.
  *
  * Depending on what is idiomatic for each language, you may prefer for function calls to receive a single
@@ -133,11 +133,11 @@ export declare type Generator<
 	  })
 
 export type GenOptions = {
-	// Configuration options configured by the typewriter.yml config.
+	// Configuration options configured by the ruddertyper.yml config.
 	client: Options
-	// The version of the Typewriter CLI that is being used to generate clients.
-	// Used for analytics purposes by the Typewriter team.
-	typewriterVersion: string
+	// The version of the RudderTyper CLI that is being used to generate clients.
+	// Used for analytics purposes by the RudderTyper team.
+	rudderTyperVersion: string
 	// Whether or not to generate a development bundle. If so, analytics payloads will
 	// be validated against the full JSON Schema before being sent to the underlying
 	// analytics instance.
@@ -191,7 +191,7 @@ async function runGenerator<
 		...rootContext,
 		isDevelopment: options.isDevelopment,
 		language: options.client.language,
-		typewriterVersion: options.typewriterVersion,
+		rudderTyperVersion: options.rudderTyperVersion,
 		trackingPlanURL: trackingPlan.url,
 		tracks: [],
 		objects: [],
@@ -331,13 +331,13 @@ async function runGenerator<
 export type TemplateBaseContext = {
 	isDevelopment: boolean
 	language: string
-	typewriterVersion: string
+	rudderTyperVersion: string
 }
 
 export function baseContext(options: GenOptions): TemplateBaseContext {
 	return {
 		isDevelopment: options.isDevelopment,
 		language: options.client.language,
-		typewriterVersion: options.typewriterVersion,
+		rudderTyperVersion: options.rudderTyperVersion,
 	}
 }

@@ -1,4 +1,4 @@
-// Helpers for mapping typewriter configuration options for module/script
+// Helpers for mapping ruddertyper configuration options for module/script
 // targets to TypeScript's compiler enums.
 import { ModuleKind, ScriptTarget } from 'typescript'
 

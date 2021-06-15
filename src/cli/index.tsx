@@ -19,12 +19,12 @@ export type StandardProps = AnalyticsProps & {
 }
 
 export type AnalyticsProps = {
-	analyticsProps: AsyncReturnType<typeof typewriterLibraryProperties>
+	analyticsProps: AsyncReturnType<typeof rudderTyperLibraryProperties>
 	anonymousId: string
 }
 
 export type CLIArguments = {
-	/** An optional path to a typewriter.yml (or directory with a typewriter.yml). **/
+	/** An optional path to a ruddertyper.yml (or directory with a ruddertyper.yml). **/
 	config: string
 	/** An optional (hidden) flag for enabling Ink debug mode. */
 	debug: boolean
@@ -132,7 +132,7 @@ function toYargsHandler<P = unknown>(
 
 		try {
 			// The '*' command is a catch-all. We want to fail the CLI if an unknown command is
-			// supplied ('yarn typewriter footothebar'), instead of just running the default command.
+			// supplied ('yarn rudder-typer footothebar'), instead of just running the default command.
 			const isValidCommand =
 				!cliOptions ||
 				!cliOptions.validateDefault ||
@@ -142,7 +142,7 @@ function toYargsHandler<P = unknown>(
 			// Attempt to read a config, if one is available.
 			const cfg = await getConfig(args.config)
 
-			const analyticsProps = await typewriterLibraryProperties(args, cfg)
+			const analyticsProps = await rudderTyperLibraryProperties(args, cfg)
 
 			// Figure out which component to render.
 			let Component = Command
@@ -201,7 +201,7 @@ function toYargsHandler<P = unknown>(
 						<ErrorBoundary
 							error={error}
 							anonymousId={anonymousId}
-							analyticsProps={await typewriterLibraryProperties(args)}
+							analyticsProps={await rudderTyperLibraryProperties(args)}
 							debug={args.debug}
 						/>
 					</DebugContext.Provider>,
@@ -226,7 +226,7 @@ function getCommand(args: yargs.Arguments<CLIArguments>) {
 /**
  * Helper to generate the shared library properties shared by all analytics calls.
  */
-async function typewriterLibraryProperties(
+async function rudderTyperLibraryProperties(
 	args: yargs.Arguments<CLIArguments>,
 	cfg: Config | undefined = undefined
 ) {

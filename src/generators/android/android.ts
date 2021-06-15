@@ -115,13 +115,13 @@ export const android: Generator<
 	generateRoot: async (client, context) => {
 		await Promise.all([
 			client.generateFile(
-				'TypewriterAnalytics.java',
-				'generators/android/templates/TypewriterAnalytics.java.hbs',
+				'RudderTyperAnalytics.java',
+				'generators/android/templates/RudderTyperAnalytics.java.hbs',
 				context
 			),
 			client.generateFile(
-				'TypewriterUtils.java',
-				'generators/android/templates/TypewriterUtils.java.hbs',
+				'RudderTyperUtils.java',
+				'generators/android/templates/RudderTyperUtils.java.hbs',
 				context
 			),
 			client.generateFile(

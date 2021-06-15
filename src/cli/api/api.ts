@@ -135,9 +135,9 @@ export async function validateToken(
 
 async function apiGet<Response>(url: string, token: string, email: string): Promise<Response> {
 	const resp = got(url, {
-		baseUrl: 'http://api.rudderstack.com/v1/dg',
+		baseUrl: 'https://api.rudderstack.com/v1/dg',
 		headers: {
-			'User-Agent': `Rudder (typewriter/${version})`,
+			'User-Agent': `RudderTyper: ${version})`,
 			Authorization: `Basic ${Buffer.from(email + ':' + token).toString('base64')}`,
 		},
 		json: true,
@@ -157,7 +157,7 @@ async function apiGet<Response>(url: string, token: string, email: string): Prom
 				'Permission denied by Rudder API',
 				error,
 				`Failed while querying the ${url} endpoint`,
-				"Verify you are using the right API token by running 'npx typewriter tokens'"
+				"Verify you are using the right API token by running 'npx rudder-typer tokens'"
 			)
 		} else if (error.code === 'ETIMEDOUT') {
 			throw wrapError(

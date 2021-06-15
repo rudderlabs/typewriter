@@ -64,8 +64,8 @@ export const javascript: Generator<
 	},
 	setup: async options => {
 		await registerPartial(
-			'generators/javascript/templates/setTypewriterOptionsDocumentation.hbs',
-			'setTypewriterOptionsDocumentation'
+			'generators/javascript/templates/setRudderTyperOptionsDocumentation.hbs',
+			'setRudderTyperOptionsDocumentation'
 		)
 		await registerPartial(
 			'generators/javascript/templates/functionDocumentation.hbs',
@@ -161,7 +161,7 @@ export const javascript: Generator<
 		// Apply stylistic formatting, via Prettier.
 		const formattedContents = prettier.format(contents, {
 			parser: 'babel',
-			// Overwrite a few of the standard prettier settings to match with our Typewriter configuration:
+			// Overwrite a few of the standard prettier settings to match with our RudderTyper configuration:
 			useTabs: true,
 			singleQuote: true,
 			semi: false,

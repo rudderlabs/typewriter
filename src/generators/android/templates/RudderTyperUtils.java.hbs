@@ -9,26 +9,26 @@ import java.lang.String;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 
-public final class TypewriterUtils {
-    protected static Map<String, Object> typewriterCtx;
+public final class RudderTyperUtils {
+    protected static Map<String, Object> rudderTyperCtx;
 
     static {
-        typewriterCtx = new HashMap<>();
-        typewriterCtx.put("version", "{{typewriterVersion}}");
-        typewriterCtx.put("language", "{{language}}");
+        rudderTyperCtx = new HashMap<>();
+        rudderTyperCtx.put("version", "{{rudderTyperVersion}}");
+        rudderTyperCtx.put("language", "{{language}}");
     }
 
-    protected static RudderOption addTypewriterContext(final @NonNull RudderOption options){
-        options.putCustomContext("typewriter", typewriterCtx);
+    protected static RudderOption addRudderTyperContext(final @NonNull RudderOption options){
+        options.putCustomContext("ruddertyper", rudderTyperCtx);
 
         return options;
     }
 
-    protected static RudderOption addTypewriterContext(){
-        RudderOption typewriterContext = new RudderOption();
-        typewriterContext.putCustomContext("typewriter", typewriterCtx);
+    protected static RudderOption addRudderTyperContext(){
+        RudderOption rudderTyperContext = new RudderOption();
+        rudderTyperContext.putCustomContext("ruddertyper", rudderTyperCtx);
 
-        return typewriterContext;
+        return rudderTyperContext;
     }
 
     protected static List<?> serializeList(final @Nullable List<?> props){

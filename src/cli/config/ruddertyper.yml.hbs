@@ -1,5 +1,5 @@
-# RudderStack Typewriter Configuration (https://rudderstack.com/docs/typewriter)
-# Just run `npx typewriter@next` to re-generate a client with the latest versions of these events.
+# RudderStack RudderTyper Configuration (https://docs.rudderstack.com/ruddertyper)
+# Just run `npx rudder-typer@next` to re-generate a client with the latest versions of these events.
 {{#if scripts.token}}
 
 scripts:
@@ -7,7 +7,7 @@ scripts:
 {{/if}}
 
 # You can find more documentation on configuring this client in the RudderStack docs.
-# See: https://rudderstack.com/docs/typewriter
+# See: https://docs.rudderstack.com/ruddertyper
 client:
   {{#each client}}
   {{@key}}: {{this}}
@@ -16,7 +16,7 @@ client:
 trackingPlans:
   {{#each trackingPlans}}
   # Tracking Plan: {{name}}
-  # https://app.rudderstack.com/tracking-plans/{{id}}
+  # https://api.rudderstack.com/trackingplans/{{id}}
   - id: {{id}}
     workspaceSlug: {{workspaceSlug}}
     path: {{path}}

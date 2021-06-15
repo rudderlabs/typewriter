@@ -1,25 +1,25 @@
-# Thanks for taking the time to contribute to Typewriter!
+# Thanks for taking the time to contribute to RudderTyper!
 
-This doc provides a walkthrough of developing on, and contributing to, Typewriter.
+This doc provides a walkthrough of developing on, and contributing to, RudderTyper.
 
 Please see our [issue template](ISSUE_TEMPLATE.md) for issues specifically.
 
 ## Issues, Bugfixes and New Language Support
 
-Have an idea for improving Typewriter? [Submit an issue first](https://github.com/rudderlabs/typewriter/issues/new), and we'll be happy to help you scope it out and make sure it is a good fit for Typewriter.
+Have an idea for improving RudderTyper? [Submit an issue first](https://github.com/rudderlabs/rudder-typer/issues/new), and we'll be happy to help you scope it out and make sure it is a good fit for RudderTyper.
 
-## Developing on Typewriter
+## Developing on RudderTyper
 
 ### Adding a New Language Target
 
-> Before working towards adding a new language target, please [open an issue on GitHub](https://github.com/rudderlabs/typewriter/issues/new) that walks through your proposal for the new language support. See the [issue template](ISSUE_TEMPLATE.md) for details.
+> Before working towards adding a new language target, please [open an issue on GitHub](https://github.com/rudderlabs/rudder-typer/issues/new) that walks through your proposal for the new language support. See the [issue template](ISSUE_TEMPLATE.md) for details.
 
 ### Build and run locally
 
 ```sh
 # Install dependencies
 $ yarn
-# Test your Typewriter installation by regenerating Typewriter's typewriter client.
+# Test your RudderTyper installation by regenerating RudderTyper's ruddertyper client.
 $ yarn build && yarn dev build
 ```
 
@@ -31,7 +31,7 @@ $ yarn test
 
 ### Deploying
 
-You can deploy a new version to [`npm`](https://www.npmjs.com/package/typewriter) by running:
+You can deploy a new version to [`npm`](https://www.npmjs.com/package/rudder-typer) by running:
 
 ```
 $ yarn release
@@ -39,7 +39,7 @@ $ yarn release
 
 ## Notes on JSON Schema AST
 
-JSON Schema is a large spec, but Typewriter aims to support just the subset of JSON Schema that is relevant code generation across multiple languages:
+JSON Schema is a large spec, but RudderTyper aims to support just the subset of JSON Schema that is relevant code generation across multiple languages:
 
 - Field Types: `string`, `integer`, `number`, `boolean`, `any`, `array`, `object`
 - Union Types
@@ -68,4 +68,4 @@ We could explore supporting the following JSON Schema constructs in the future:
 - annotations: `default` (default values) and `examples` (documentation of example values)
 - definitions and references: `definitions`, `$ref`
 
-However, Typewriter will still perform full JSON Schema validation at run-time, so you can catch these errors using unit tests.
+However, RudderTyper will still perform full JSON Schema validation at run-time, so you can catch these errors using unit tests.

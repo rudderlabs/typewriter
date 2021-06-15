@@ -74,7 +74,7 @@ export const swift: Generator<
 		} else if (schema.type === Type.BOOLEAN) {
 			// BOOLs cannot nullable in Objective-C. Instead, use an NSNumber which can be
 			// initialized like a boolean like so: [NSNumber numberWithBool:YES]
-			// This is what is done behind the scenes by typewriter if this boolean is nonnull.
+			// This is what is done behind the scenes by ruddertyper if this boolean is nonnull.
 			type = 'Bool'
 		} else if (schema.type === Type.INTEGER) {
 			type = 'Int'
@@ -129,18 +129,18 @@ export const swift: Generator<
 	generateRoot: async (client, context) => {
 		await Promise.all([
 			client.generateFile(
-				'TypewriterAnalytics.swift',
+				'RudderTyperAnalytics.swift',
 				'generators/swift/templates/analytics.swift.hbs',
 				context
 			),
 			client.generateFile(
-				'TypewriterUtils.swift',
-				'generators/swift/templates/TypewriterUtils.swift.hbs',
+				'RudderTyperUtils.swift',
+				'generators/swift/templates/RudderTyperUtils.swift.hbs',
 				context
 			),
 			client.generateFile(
-				'TypewriterSerializable.swift',
-				'generators/swift/templates/TypewriterSerializable.swift.hbs',
+				'RudderTyperSerializable.swift',
+				'generators/swift/templates/RudderTyperSerializable.swift.hbs',
 				context
 			),
 			...context.objects.map(o =>

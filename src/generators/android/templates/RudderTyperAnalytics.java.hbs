@@ -12,31 +12,31 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
-public class TypewriterAnalytics {
+public class RudderTyperAnalytics {
     private RudderClient rudderClient;
 
     /**
-     * Return a reference to the global default {@link TypewriterAnalytics} instance.
+     * Return a reference to the global default {@link RudderTyperAnalytics} instance.
      *
      * This will use your the global default {@link RudderClient} instance.
      *
      * If you want to use a different {@link RudderClient} instance instance, see the
-     * {@link TypewriterAnalytics} constructor below.
+     * {@link RudderTyperAnalytics} constructor below.
      */
-    public static TypewriterAnalytics with(final Context context) {
-        return new TypewriterAnalytics(RudderClient.with(context));
+    public static RudderTyperAnalytics with(final Context context) {
+        return new RudderTyperAnalytics(RudderClient.with(context));
     }
 
     /**
-     * Initializes a new TypewriterAnalytics instance wrapping the provided RudderStack client.
+     * Initializes a new RudderTyperAnalytics instance wrapping the provided RudderStack client.
      *
-     * You very likely want to use TypewriterAnalytics.with(context) method above instead, which
+     * You very likely want to use RudderTyperAnalytics.with(context) method above instead, which
      * will utilize your existing singleton RudderStack {@link RudderClient} instance.
      *
      * @param rudderClient {@link RudderClient} configured RudderStack android client instance
      * @see <a href="https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-android-sdk#installing-the-sdk">Installing Android SDK</a>
      */
-    public TypewriterAnalytics(final @NonNull RudderClient rudderClient) {
+    public RudderTyperAnalytics(final @NonNull RudderClient rudderClient) {
         this.rudderClient = rudderClient;
     }
 
@@ -50,7 +50,7 @@ public class TypewriterAnalytics {
      * @see <a href="https://docs.rudderstack.com/rudderstack-api-spec/http-api-specification#7-track">Track Documentation</a>
      */
     public void {{functionName}}(final @Nullable {{propsType}} props) {
-        this.rudderClient.track("{{rawEventName}}", props.toRudderProperty(), TypewriterUtils.addTypewriterContext());
+        this.rudderClient.track("{{rawEventName}}", props.toRudderProperty(), RudderTyperAnalyticsUtils.addRudderTyperContext());
     }
 
     /**
@@ -61,7 +61,7 @@ public class TypewriterAnalytics {
      * @see <a href="https://docs.rudderstack.com/rudderstack-api-spec/http-api-specification#7-track">Track Documentation</a>
      */
     public void {{functionName}}(final @Nullable {{propsType}} props, final @Nullable RudderOption options) {
-        this.rudderClient.track("{{rawEventName}}", props.toRudderProperty(), TypewriterUtils.addTypewriterContext(options));
+        this.rudderClient.track("{{rawEventName}}", props.toRudderProperty(), RudderTyperUtils.addRudderTyperContext(options));
     }
     {{else}}
     /**
@@ -71,7 +71,7 @@ public class TypewriterAnalytics {
      * @see <a href="https://docs.rudderstack.com/rudderstack-api-spec/http-api-specification#7-track">Track Documentation</a>
      */
     public void {{functionName}}() {
-        this.rudderClient.track("{{rawEventName}}", new RudderProperty(), TypewriterUtils.addTypewriterContext());
+        this.rudderClient.track("{{rawEventName}}", new RudderProperty(), RudderTyperUtils.addRudderTyperContext());
     }
 
     /**
@@ -81,7 +81,7 @@ public class TypewriterAnalytics {
      * @see <a href="https://docs.rudderstack.com/rudderstack-api-spec/http-api-specification#7-track">Track Documentation</a>
      */
     public void {{functionName}}(final @Nullable RudderOption options)  {
-        this.rudderClient.track("{{rawEventName}}", new RudderProperty(), TypewriterUtils.addTypewriterContext(options));
+        this.rudderClient.track("{{rawEventName}}", new RudderProperty(), RudderTyperUtils.addRudderTyperContext(options));
     }
     {{/if}}
     {{/each}}

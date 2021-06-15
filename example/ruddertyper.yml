@@ -1,12 +1,8 @@
-# RudderStack Typewriter Configuration (https://rudderstack.com/docs/typewriter)
-# Just run `npx typewriter@next` to re-generate a client with the latest versions of these events.
+# RudderStack RudderTyper Configuration (https://rudderstack.com/docs/ruddetyper)
+# Just run `npx rudder-typer@next` to re-generate a client with the latest versions of these events.
 
 # You can find more documentation on configuring this client in the RudderStack docs.
-# See: https://rudderstack.com/docs/typewriter
-scripts:
-  token: source .env; echo $TYPEWRITER_TOKEN
-  email: source .env; echo $EMAIL
-
+# See: https://rudderstack.com/docs/ruddertyper
 client:
   sdk: analytics-android
   language: java

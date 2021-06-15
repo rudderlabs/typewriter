@@ -74,7 +74,7 @@ export function computeDelta(
 		removed: 0,
 	}
 
-	// Since we only use track calls in typewriter, we only changes to track calls.
+	// Since we only use track calls in ruddertyper, we only changes to track calls.
 	const nextByName: Record<string, RudderAPI.RuleMetadata> = {}
 	for (const rule of next.rules.events) {
 		nextByName[rule.name] = rule
