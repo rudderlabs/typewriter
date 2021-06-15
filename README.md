@@ -1,89 +1,100 @@
 # RudderTyper
-RudderTyper is a tool for generating strongly-typed [RudderStack](​https://rudderstack.com​) analytics libraries based on your pre-defined 
-Tracking Plan spec.
+
+**RudderTyper** is a tool for generating strongly-typed [**RudderStack**](https://rudderstack.com/) analytics libraries based on your pre-defined 
+tracking plan spec.
 <br>
 <br>
 <p align="center">
 <img src=".github/assets/readme-example.gif" alt="RudderTyper GIF Example" width="80%"/>
 </p>
 <br>
+
+## Features 
+
+- **Strongly Typed Clients**: Generates strongly-typed [RudderStack](http://rudderstack.com) clients that provide compile-time errors, along with intellisense for events and property names, types and descriptions.
+
+- **Analytics Testing and Validation**: Lets you validate if your instrumentation matches your spec before deploying to production, so you can fail your CI builds without a manual QA process.
+
+- **Cross-Language Support**: Supports native clients for [**Javascript**](https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-javascript-sdk), [**Node.js**](https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk), [**Android**](https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-android-sdk) and [**iOS**](https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-ios-sdk).
+
+- **RudderStack Tracking Plans**: Built-in support to sync your `ruddertyper` clients with your centralized RudderStack tracking plans.
 <br>
 
-- 💪 **Strongly Typed Clients**: Generates strongly-typed [RudderStack](http://rudderstack.com) clients that provide compile-time errors, along with intellisense for event/property names, types and descriptions.
+## Get Started
 
-- 👮 **Analytics Testing**: Validate your instrumentation matches your spec](https://docs.rudderstack.com/tracking-plan/) before deploying to production, so you can fail your CI builds without a manual analytics QA process.
-
-- 🌐 **Cross-Language Support**: Supports native clients for [`Javascript`](https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-javascript-sdk), [`Node.js`](https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk), [`Android`](https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-android-sdk) and [`analytics-ios`](https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-ios-sdk).
-
-- ✨ **RudderStack Tracking Plans**: Built-in support to sync your `ruddertyper` clients with your [centralized RudderStack Tracking Plans](https://docs.rudderstack.com/tracking-plan/).
-
-<br>
-
-# Getting Started
+To fire up a quickstart wizard to create a `ruddertyper.yml` and generate your first client with the specified configuration details, run the following command:
 
 ```sh
 $ npx rudder-typer init | initialize | quickstart
 ```
-Starts up a quickstart wizard to create a ruddertyper.yml and help you generate your first client considering the configuration details you had specified to it.
 
-# Other Commands
-## Update
+
+## Other Commands
+
+### Update
 
 ```sh
-$ npx rudder-typer update | u | *                    (default)
+$ npx rudder-typer update | u | *   (default)
 ```
-Syncs plan.json with RudderStack to pull the latest changes in your tracking plan and then generates an updated development client.
 
-## Build
+This command syncs `plan.json` with RudderStack to pull the latest changes in your tracking plan and then generates an updated development client.
+
+### Build
 
 ```sh
 $ npx rudder-typer build | b | d | dev | development                    
 ```
-Generates a development client from plan.json.
 
-## Production
+This command generates a development client from `plan.json`.
+
+### Production
 
 ```sh
 $ npx rudder-typer prod | p | production                    
 ```
-Generates a production client from plan.json.
 
-## Token
+This command generates a production client from `plan.json`.
+
+### Token
 
 ```sh
 $ npx rudder-typer token | tokens | t                    
 ```
-Prints the local RudderStack API token configuration.
+This command prints the local RudderStack API token configuration.
 
-## Version
+### Version
 
 ```sh
 $ npx rudder-typer version                    
 ```
-Prints the ruddertyper CLI version.
+This command prints the RudderTyper CLI version.
 
-## Help
+### Help
 
 ```sh
 $ npx rudder-typer help
 ```
-Prints the help message describing different commands available with RudderTyper.
+
+This command prints the help message describing different commands available with RudderTyper.
 
 
-# CLI Arguments
+## CLI Arguments
 
 | Argument | Type | Description |
 | :--- | :--- | :--- |
-| `config` | `string` | `An optional path to a ruddertyper.yml (or directory with a ruddertyper.yml).` |
-| `debug` | `boolean` | `An optional (hidden) flag for enabling Ink debug mode.` |
-| `version` | `boolean` | `Standard --version flag to print the version of this CLI.` |
-| `v` | `boolean` | `Standard -v flag to print the version of this CLI.` |
-| `help` | `boolean` | `Standard --help flag to print help on a command.` |
-| `h` | `boolean` | `Standard -h flag to print help on a command.` |
+| `config` | `string` | An optional path to a `ruddertyper.yml` (or a directory with `ruddertyper.yml`). |
+| `debug` | `boolean` | An optional (hidden) flag for enabling Ink debug mode. |
+| `version` | `boolean` | Standard `--version` flag to print the version of this CLI. |
+| `v` | `boolean` | Standard `-v` flag to print the version of this CLI. |
+| `help` | `boolean` | Standard `--help` flag to print help on a command. |
+| `h` | `boolean` | Standard `-h` flag to print help on a command. |
 
-# Configuration Reference
 
-RudderTyper stores its configuration in a ruddertyper.yml file in the root of your repo. A sample configuration might look like this:
+## Configuration Reference
+
+RudderTyper stores its configuration in a `ruddertyper.yml` file in the root of your repository. 
+
+A sample configuration looks like the following:
 
 ```sh
 # RudderStack RudderTyper Configuration Reference (https://github.com/rudderlabs/rudder-typer)
@@ -120,12 +131,15 @@ trackingPlans:
     path: ./analytics
   ```
 
-## How to integrate RudderTyper generated client with your app ?
+## How to integrate RudderTyper-generated client with your app?
 
-### Rudder Android SDK
-* You can import all the files in the client generated by RudderTyper as a package in your project.
+This section includes steps to integrate your RudderTyper-generated client with your app across different RudderStack SDKs.
 
-* Then you can directly make the calls using the ruddertyper client as shown below:
+### RudderStack Android SDK
+
+* Import all the files in the client generated by RudderTyper as a package in your project.
+
+* Then, you can directly make the calls using the RudderTyper client as shown below:
 
 ```java
 // Import your auto-generated RudderTyper client:
@@ -140,10 +154,13 @@ RudderTyperAnalytics.with(this).orderCompleted(
 );
 ```
 
-### Rudder iOS SDK
-* You can now import your new RudderTyper client into your project using XCode. If you place your generated files into a folder in your project, import the project as a group not a folder reference.
+### RudderStack iOS SDK
 
-* Then you can directly make the calls using the ruddertyper client as shown below:
+* Import your RudderTyper client into your project using XCode. 
+
+**Note**: If you place your generated files into a folder in your project, import the project as a group not a folder reference.
+
+* Then, you can directly make the calls using the RudderTyper client as shown:
 
 ```obj-c
 // Import your auto-generated RudderTyper client:
@@ -153,15 +170,17 @@ RudderTyperAnalytics.with(this).orderCompleted(
 [RSRudderTyperAnalytics orderCompletedWithOrderID: "ck-f306fe0e-cc21-445a-9caa-08245a9aa52c" total: @39.99];
 ```
 
-### Rudder JS SDK
-* You can directly import the generated client using `require()` and make calls if your framework supports that way else you can use `browserify` to generate a bundle that supports your implementation.
+### RudderStack JavaScript SDK
 
-#### Using `require()`:
+* Import the RudderTyper-generated client using `require()` and make the calls if your framework supports them. Otherwise, you can use [**Browserify**](https://browserify.org/) to generate a bundle that supports your implementation. The implementation for each of the alternatives mentioned above will be as shown:
+
+
+#### Using the `require()`method
 
 ```javascript
-// Import Rudder JS SDK and initialize it
+// Import RudderStack JS SDK and initialize it
 const rudderanalytics = require("rudder-sdk-js")
-rudderanalytics.load(WRITE_KEY, DATA_PLANE_URL)
+rudderanalytics.load(YOUR_WRITE_KEY, DATA_PLANE_URL)
 // Import your auto-generated RudderTyper client:
 const rudderTyper = require('./rudderTyperClient')
 // Pass in your rudder-sdk-js instance to RudderTyper client
@@ -173,12 +192,16 @@ rudderTyper.orderCompleted({
 })
 ```
 
-#### Using `browserify`:
+#### Using `browserify`
+
 * Execute the following command to generate a bundle from the RudderTyper client:
+
 ```sh
 browserify rudderTyperClient.js --standalone rudderTyper >  rudderTyperBundle.js
 ```
-* Now make calls from your `html` file as shown below:
+
+* Now you can make calls from your `html` file as shown:
+
 ```html
 <head>
 	<script>
@@ -211,9 +234,9 @@ browserify rudderTyperClient.js --standalone rudderTyper >  rudderTyperBundle.js
 </script>
 ```
 
-### Rudder Node.js SDK:
+### RudderStack Node.js SDK:
 
-* You can simply import the the generated rudderTyper client and start making calls using the rudderTyper client as shown below:
+* Import the the RudderTyper-generated client and start making calls using RudderTyper as shown:
 
 ```javascript
 // Import Rudder Node SDK and intialize it
@@ -230,7 +253,12 @@ ruddertyper.orderCompleted({
   total:   39.99
 })
 ```
-## Contributing
 
-- To submit a bug report or feature request, [file an issue here](issues).
-- To develop on `ruddertyper` or propose support for a new language, see [our contributors documentation](./.github/CONTRIBUTING.md).
+## Contribute
+
+- To submit a bug report or feature request, file an issue [**here**](issues).
+- To develop on `ruddertyper` or propose support for a new language, see our [**contributors documentation**](./.github/CONTRIBUTING.md).
+
+## Contact Us
+
+For queries on any of the sections in this guide, start a conversation on our [**Slack**](https://resources.rudderstack.com/join-rudderstack-slack) channel. 
