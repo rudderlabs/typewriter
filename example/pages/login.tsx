@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { LoginForm } from '../components/LoginForm'
 import { signInFailed, signInSucceeded, signInSubmitted } from '../analytics'
-import { setTypewriterOptions } from '../analytics'
+import { setRudderTyperOptions } from '../analytics'
 import { defaultValidationErrorHandler } from '../analytics'
 
 interface Props {
@@ -13,18 +13,18 @@ interface Props {
 export default class LoginPage extends React.Component<Props> {
 	public componentDidMount() {
 		// Add a custom onViolation handler for failing tests.
-		setTypewriterOptions({
+		setRudderTyperOptions({
 			onViolation: (message, violations) => {
 				if (process.env.NODE_ENV === 'test') {
 					// When running tests, throw an error:
 					console.error(
-						`Typewriter Violation found in ${message.event} event: ${violations[0].dataPath} ${
+						`RudderTyper Violation found in ${message.event} event: ${violations[0].dataPath} ${
 							violations[0].message
 						}`
 					)
 					throw new Error()
 				} else {
-					// Otherwise, print the default typewriter warnings to provide context:
+					// Otherwise, print the default ruddertyper warnings to provide context:
 					defaultValidationErrorHandler(message, violations)
 				}
 			},

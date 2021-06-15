@@ -7,6 +7,7 @@ const exec = promisify(childProcess.exec)
 export enum Scripts {
 	After = 'After',
 	Token = 'Token',
+	Email = 'Email',
 }
 
 const EXEC_TIMEOUT = 5000 // ms

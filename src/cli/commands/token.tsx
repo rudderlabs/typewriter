@@ -36,16 +36,7 @@ export const Token: React.FC<StandardProps> = props => {
 		<Box marginTop={1} marginBottom={1} marginLeft={2} flexDirection="column">
 			<Box flexDirection="column">
 				<TokenRow name="scripts.token" tokenMetadata={tokens && tokens.script} method={method} />
-				<TokenRow name="~/.typewriter" tokenMetadata={tokens && tokens.file} method={method} />
-			</Box>
-			<Box marginTop={1} width={80} textWrap="wrap">
-				<Color grey>
-					<Text bold>Tip:</Text> For more information on configuring an API token, see the{' '}
-					<Link url="https://segment.com/docs/protocols/typewriter/#api-token-configuration">
-						online docs
-					</Link>
-					.
-				</Color>
+				<TokenRow name="~/.ruddertyper" tokenMetadata={tokens && tokens.file} method={method} />
 			</Box>
 		</Box>
 	)

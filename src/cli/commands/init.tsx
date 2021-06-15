@@ -7,8 +7,8 @@ import Spinner from 'ink-spinner'
 import { Config, listTokens, getTokenMethod, setConfig, storeToken } from '../config'
 import {
 	validateToken,
-	SegmentAPI,
-	fetchAllTrackingPlans,
+	RudderAPI,
+	fetchTrackingPlans,
 	toTrackingPlanURL,
 	parseTrackingPlanName,
 } from '../api'
@@ -47,8 +47,8 @@ enum Steps {
 }
 
 export const Init: React.FC<InitProps> = props => {
-	const { config, configPath } = props
-
+	const { configPath } = props
+	const [config, setConfig] = useState(props.config)
 	const [step, setStep] = useState(Steps.Confirmation)
 	const [sdk, setSDK] = useState(config ? config.client.sdk : SDK.WEB)
 	const [language, setLanguage] = useState(config ? config.client.language : Language.JAVASCRIPT)
@@ -57,9 +57,10 @@ export const Init: React.FC<InitProps> = props => {
 	)
 	const [tokenMetadata, setTokenMetadata] = useState({
 		token: '',
-		workspace: undefined as SegmentAPI.Workspace | undefined,
+		email: '',
+		workspace: undefined as RudderAPI.Workspace | undefined,
 	})
-	const [trackingPlan, setTrackingPlan] = useState<SegmentAPI.TrackingPlan>()
+	const [trackingPlan, setTrackingPlan] = useState<RudderAPI.TrackingPlan>()
 
 	const { exit } = useApp()
 	useEffect(() => {
@@ -83,6 +84,7 @@ export const Init: React.FC<InitProps> = props => {
 	}
 
 	function onAcceptSummary(config: Config) {
+		setConfig(config)
 		onNext()
 		if (props.onDone) {
 			props.onDone(config)
@@ -120,6 +122,7 @@ export const Init: React.FC<InitProps> = props => {
 				<TrackingPlanPrompt
 					step={step}
 					token={tokenMetadata.token}
+					email={tokenMetadata.email}
 					trackingPlan={trackingPlan}
 					onSubmit={withNextStep(setTrackingPlan)}
 				/>
@@ -141,9 +144,9 @@ export const Init: React.FC<InitProps> = props => {
 				/>
 			)}
 			{step === Steps.Build && !props.onDone && (
-				<Build {...props} production={false} update={true} onDone={onNext} />
+				<Build {...{ ...props, config }} production={false} update={true} />
 			)}
-			{/* TODO: step 8 where we show an example script showing how to import typewriter */}
+			{/* TODO: step 8 where we show an example script showing how to import ruddertyper */}
 		</Box>
 	)
 }
@@ -153,16 +156,11 @@ const Header: React.FC = () => {
 		<Box flexDirection="column">
 			<Box width={80} textWrap="wrap" marginBottom={4}>
 				<Color white>
-					Typewriter is a tool for generating strongly-typed{' '}
-					<Link url="https://segment.com">Segment</Link> analytics libraries from a{' '}
-					<Link url="https://segment.com/docs/protocols/tracking-plan">Tracking Plan</Link>.
+					RudderTyper is a tool for generating strongly-typed{' '}
+					<Link url="https://rudderstack.com">RudderStack</Link> analytics libraries from a Tracking Plan
 				</Color>{' '}
 				<Color grey>
-					Learn more from{' '}
-					<Link url="https://segment.com/docs/protocols/typewriter">
-						{"Typewriter's documentation here"}
-					</Link>
-					. To get started, {"you'll"} need a <Color yellow>typewriter.yml</Color>. The quickstart
+					. To get started, {"you'll"} need a <Color yellow>ruddertyper.yml</Color>. The quickstart
 					below will walk you through creating one.
 				</Color>
 			</Box>
@@ -196,7 +194,7 @@ type SDKPromptProps = {
 	onSubmit: (sdk: SDK) => void
 }
 
-/** A prompt to identify which Segment SDK a user wants to use. */
+/** A prompt to identify which RudderStack SDK a user wants to use. */
 const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
 	const items: Item[] = [
 		{ label: 'Web (analytics.js)', value: SDK.WEB },
@@ -212,10 +210,10 @@ const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
 
 	const tips = [
 		'Use your arrow keys to select.',
-		'Typewriter clients are strongly-typed wrappers around a Segment analytics SDK.',
+		'RudderTyper clients are strongly-typed wrappers around a RudderStack SDK.',
 		<Text key="sdk-docs">
-			To learn more about {"Segment's"} SDKs, see the{' '}
-			<Link url="https://segment.com/docs/sources">documentation</Link>.
+			To learn more about {"RudderStack's"} SDKs, see the{' '}
+			<Link url="https://docs.rudderstack.com/stream-sources">documentation</Link>.
 		</Text>,
 	]
 
@@ -233,19 +231,18 @@ type LanguagePromptProps = {
 	onSubmit: (language: Language) => void
 }
 
-/** A prompt to identify which Segment programming language a user wants to use. */
+/** A prompt to identify which RudderStack programming language a user wants to use. */
 const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, onSubmit }) => {
 	const items: Item[] = [
 		{ label: 'JavaScript', value: Language.JAVASCRIPT },
-		{ label: 'TypeScript', value: Language.TYPESCRIPT },
 		{ label: 'Objective-C', value: Language.OBJECTIVE_C },
 		{ label: 'Swift', value: Language.SWIFT },
 		{ label: 'Java', value: Language.JAVA },
 	].filter(item => {
 		// Filter out items that aren't relevant, given the selected SDK.
 		const supportedLanguages = {
-			[SDK.WEB]: [Language.JAVASCRIPT, Language.TYPESCRIPT],
-			[SDK.NODE]: [Language.JAVASCRIPT, Language.TYPESCRIPT],
+			[SDK.WEB]: [Language.JAVASCRIPT],
+			[SDK.NODE]: [Language.JAVASCRIPT],
 			[SDK.IOS]: [Language.OBJECTIVE_C, Language.SWIFT],
 			[SDK.ANDROID]: [Language.JAVA],
 		}
@@ -260,7 +257,11 @@ const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, on
 
 	return (
 		<Step name="Choose a language:" step={step}>
-			<SelectInput items={items} initialIndex={initialIndex} onSelect={onSelect} />
+			<SelectInput
+				items={items}
+				initialIndex={initialIndex != -1 ? initialIndex : 0}
+				onSelect={onSelect}
+			/>
 		</Step>
 	)
 }
@@ -318,7 +319,10 @@ async function filterDirectories(path: string): Promise<string[]> {
 	}
 
 	// Now sort these directories by the query path.
-	const fuse = new Fuse([...directories].map(d => ({ name: d })), { keys: ['name'] })
+	const fuse = new Fuse(
+		[...directories].map(d => ({ name: d })),
+		{ keys: ['name'] }
+	)
 	return isPathEmpty ? [...directories] : fuse.search(path).map(d => d.name)
 }
 
@@ -383,18 +387,25 @@ type APITokenPromptProps = {
 	step: number
 	config?: Config
 	configPath: string
-	onSubmit: (tokenMetadata: { token: string; workspace: SegmentAPI.Workspace }) => void
+	onSubmit: (tokenMetadata: {
+		token: string
+		email: string
+		workspace: RudderAPI.Workspace
+	}) => void
 }
 
-/** A prompt to walk a user through getting a new Segment API token. */
+/** A prompt to walk a user through getting a new RudderStack API token. */
 const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPath, onSubmit }) => {
 	const [state, setState] = useState({
 		token: '',
+		email: '',
 		canBeSet: true,
-		workspace: undefined as SegmentAPI.Workspace | undefined,
+		workspace: undefined as RudderAPI.Workspace | undefined,
 		isLoading: true,
 		isInvalid: false,
 		foundCachedToken: false,
+		tokenSubmitted: false,
+		tokenCursor: true,
 	})
 	const { handleFatalError } = useContext(ErrorContext)
 
@@ -408,11 +419,12 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 				setState({
 					...state,
 					token: token.isValidToken ? token.token! : '',
+					email: token.email ? token.email! : '',
 					isInvalid: false,
 					workspace: token.workspace || state.workspace,
 					foundCachedToken: token.isValidToken,
 					isLoading: false,
-					// If the user already has a typewriter.yml with a valid token script,
+					// If the user already has a ruddertyper.yml with a valid token script,
 					// then let the user know that they can't overwrite it.
 					canBeSet: method !== tokens.script.method,
 				})
@@ -426,20 +438,20 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 
 	// Fired after a user enters a token.
 	const onConfirm = async () => {
-		// Validate whether the entered token is a valid Segment API token.
+		// Validate whether the entered token is a valid RudderStack API token.
 		setState({
 			...state,
 			isLoading: true,
 		})
 
-		const result = await validateToken(state.token)
+		const result = await validateToken(state.token, state.email)
 		if (result.isValid) {
 			try {
-				await storeToken(state.token)
+				await storeToken(state.token, state.email)
 			} catch (error) {
 				handleFatalError(
 					wrapError(
-						'Unable to save token to ~/.typewriter',
+						'Unable to save token to ~/.ruddertyper',
 						error,
 						`Failed due to an ${error.code} error (${error.errno}).`
 					)
@@ -447,14 +459,16 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 				return
 			}
 
-			onSubmit({ token: state.token, workspace: result.workspace! })
+			onSubmit({ token: state.token, email: state.email, workspace: result.workspace! })
 		} else {
 			setState({
 				...state,
 				token: '',
+				email: '',
 				workspace: undefined,
 				isInvalid: true,
 				isLoading: false,
+				tokenSubmitted: false,
 			})
 		}
 	}
@@ -467,6 +481,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 				...state,
 				foundCachedToken: false,
 				token: '',
+				email: '',
 				workspace: undefined,
 				isInvalid: false,
 			})
@@ -476,6 +491,12 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 		}
 	}
 
+	const setTokenSubmitted = () => {
+		setState({
+			...state,
+			tokenSubmitted: true,
+		})
+	}
 	const setToken = (token: string) => {
 		setState({
 			...state,
@@ -483,11 +504,18 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 		})
 	}
 
+	const setEmail = (email: string) => {
+		setState({
+			...state,
+			email,
+		})
+	}
+
 	const tips = [
-		'An API token is used to download Tracking Plans from Segment.',
+		'An API token is used to download Tracking Plans from Rudder.',
 		<Text key="api-token-docs">
 			Documentation on generating an API token can be found{' '}
-			<Link url="https://segment.com/docs/protocols/typewriter/#api-token-configuration">here</Link>
+			<Link url="https://docs.rudderstack.com/adding-a-new-user-transformation-in-rudderstack/api-access-token#generate-access-token">here</Link>
 			.
 		</Text>,
 	]
@@ -501,78 +529,98 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 	}
 
 	return (
-		<Step name="Enter a Segment API token:" step={step} isLoading={state.isLoading} tips={tips}>
-			{/* We found a token from a typewriter.yml token script. To let the user change token
-			 * in this init command, we'd have to remove their token script. Instead, just tell
-			 * the user this and don't let them change their token. */}
-			{!state.canBeSet && (
-				<SelectInput items={[{ label: 'Ok!', value: 'ok' }]} onSelect={onConfirm} />
-			)}
-			{/* We found a token in a ~/.typewriter. Confirm that the user wants to use this token
-			 * before continuing. */}
-			{state.canBeSet && state.foundCachedToken && (
-				<SelectInput
-					items={[
-						{ label: 'Use this token', value: 'yes' },
-						{ label: 'No, provide a different token.', value: 'no' },
-					]}
-					onSelect={onConfirmCachedToken}
-				/>
-			)}
-			{/* We didn't find a token anywhere that they wanted to use, so just prompt the user for one. */}
-			{state.canBeSet && !state.foundCachedToken && (
-				<Box flexDirection="column">
-					<Box>
-						<Text>{figures.pointer}</Text>{' '}
-						<TextInput
-							value={state.token}
-							// See: https://github.com/vadimdemedes/ink-text-input/issues/41
-							showCursor={true}
-							onChange={setToken}
-							onSubmit={onConfirm}
-							mask="*"
-						/>
-					</Box>
-					{state.isInvalid && (
-						<Box textWrap="wrap" marginLeft={2}>
-							<Color red>{figures.cross} Invalid Segment API token.</Color>
+		<div>
+			<Step name="Enter a Rudder API token:" step={step} isLoading={state.isLoading} tips={tips}>
+				{/* We found a token from a ruddertyper.yml token script. To let the user change token
+				 * in this init command, we'd have to remove their token script. Instead, just tell
+				 * the user this and don't let them change their token. */}
+				{!state.canBeSet && (
+					<SelectInput items={[{ label: 'Ok!', value: 'ok' }]} onSelect={onConfirm} />
+				)}
+				{/* We found a token in a ~/.ruddertyper. Confirm that the user wants to use this token
+				 * before continuing. */}
+				{state.canBeSet && state.foundCachedToken && (
+					<SelectInput
+						items={[
+							{ label: 'Use this token', value: 'yes' },
+							{ label: 'No, provide a different token.', value: 'no' },
+						]}
+						onSelect={onConfirmCachedToken}
+					/>
+				)}
+				{/* We didn't find a token anywhere that they wanted to use, so just prompt the user for one. */}
+				{state.canBeSet && !state.foundCachedToken && (
+					<Box flexDirection="column">
+						<Box>
+							<Text>{figures.pointer}</Text>{' '}
+							<TextInput
+								value={state.token}
+								// See: https://github.com/vadimdemedes/ink-text-input/issues/41
+								onChange={setToken}
+								showCursor={true}
+								focus={!state.tokenSubmitted}
+								onSubmit={setTokenSubmitted}
+								mask="*"
+							/>
 						</Box>
-					)}
-				</Box>
+						{state.isInvalid && (
+							<Box textWrap="wrap" marginLeft={2}>
+								<Color red>{figures.cross} Invalid Rudder API token.</Color>
+							</Box>
+						)}
+					</Box>
+				)}
+			</Step>
+			{state.tokenSubmitted && (
+				<Step name="Enter your Email Id" isLoading={state.isLoading}>
+					<Box flexDirection="column">
+						<Box>
+							<Text>{figures.pointer}</Text>{' '}
+							<TextInput
+								value={state.email}
+								onChange={setEmail}
+								showCursor={true}
+								onSubmit={onConfirm}
+							/>
+						</Box>
+					</Box>
+				</Step>
 			)}
-		</Step>
+		</div>
 	)
 }
 
 type TrackingPlanPromptProps = {
 	step: number
 	token: string
-	trackingPlan?: SegmentAPI.TrackingPlan
-	onSubmit: (trackingPlan: SegmentAPI.TrackingPlan) => void
+	email: string
+	trackingPlan?: RudderAPI.TrackingPlan
+	onSubmit: (trackingPlan: RudderAPI.TrackingPlan) => void
 }
 
-/** A prompt to identify which Segment Tracking Plan a user wants to use. */
+/** A prompt to identify which RudderStack Tracking Plan a user wants to use. */
 // Needs an empty state — allows users to create a Tracking Plan, then a reload button to refetch
 const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 	step,
 	token,
+	email,
 	trackingPlan,
 	onSubmit,
 }) => {
-	const [trackingPlans, setTrackingPlans] = useState<SegmentAPI.TrackingPlan[]>([])
+	const [trackingPlans, setTrackingPlans] = useState<RudderAPI.TrackingPlan[]>([])
 	const [isLoading, setIsLoading] = useState(true)
 	const { handleFatalError } = useContext(ErrorContext)
 
 	async function loadTrackingPlans() {
 		setIsLoading(true)
 		try {
-			setTrackingPlans(await fetchAllTrackingPlans({ token }))
+			setTrackingPlans(await fetchTrackingPlans({ token, email }))
 			setIsLoading(false)
 		} catch (error) {
 			if (error.statusCode === 403) {
 				return handleFatalError(
 					wrapError(
-						'Failed to authenticate with the Segment API',
+						'Failed to authenticate with the RudderStack API',
 						error,
 						'You may be using a malformed/invalid token or a legacy personal access token'
 					)
@@ -611,7 +659,7 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 	initialIndex = initialIndex === -1 ? 0 : initialIndex
 
 	const tips = [
-		'Typewriter will generate a client from this Tracking Plan.',
+		'RudderTyper will generate a client from this Tracking Plan.',
 		<Text key="plan-path">
 			This Tracking Plan is saved locally in a <Color yellow>plan.json</Color> file.
 		</Text>,
@@ -640,8 +688,8 @@ type SummaryPromptProps = {
 	language: Language
 	path: string
 	token: string
-	workspace: SegmentAPI.Workspace
-	trackingPlan: SegmentAPI.TrackingPlan
+	workspace: RudderAPI.Workspace
+	trackingPlan: RudderAPI.TrackingPlan
 	onConfirm: (config: Config) => void
 	onRestart: () => void
 }
@@ -663,7 +711,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 
 	const onSelect = async (item: Item) => {
 		if (item.value === 'lgtm') {
-			// Write the updated typewriter.yml config.
+			// Write the updated ruddertyper.yml config.
 			setIsLoading(true)
 
 			let client = ({
@@ -697,7 +745,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 			} catch (error) {
 				handleFatalError(
 					wrapError(
-						'Unable to write typewriter.yml',
+						'Unable to write ruddertyper.yml',
 						error,
 						`Failed due to an ${error.code} error (${error.errno}).`
 					)
@@ -736,7 +784,10 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 	return (
 		<Step name="Summary:" step={step} description={summary} isLoading={isLoading}>
 			<SelectInput
-				items={[{ label: 'Looks good!', value: 'lgtm' }, { label: 'Edit', value: 'edit' }]}
+				items={[
+					{ label: 'Looks good!', value: 'lgtm' },
+					{ label: 'Edit', value: 'edit' },
+				]}
 				onSelect={onSelect}
 			/>
 		</Step>

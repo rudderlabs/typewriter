@@ -1,0 +1,22 @@
+# RudderStack RudderTyper Configuration 
+# Just run `npx rudder-typer@next` to re-generate a client with the latest versions of these events.
+{{#if scripts.token}}
+
+scripts:
+  after: {{scripts.token}}
+{{/if}}
+
+client:
+  {{#each client}}
+  {{@key}}: {{this}}
+  {{/each}}
+
+trackingPlans:
+  {{#each trackingPlans}}
+  # Tracking Plan: {{name}}
+  # https://api.rudderstack.com/trackingplans/{{id}}
+  - id: {{id}}
+    workspaceSlug: {{workspaceSlug}}
+    path: {{path}}
+
+  {{/each}}

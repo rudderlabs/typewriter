@@ -1,14 +1,9 @@
-/**
- * For Segmenters, see:
- *   https://paper.dropbox.com/doc/Typewriter-Error-Paths--AlUBLKIIcRc_9UU3_sgAh~9YAg-bdjW1EOlEHeomztWLrYWk
- */
 import React, { createContext, useEffect } from 'react'
 import { Box, Color, useApp } from 'ink'
 import Link from 'ink-link'
 import figures from 'figures'
 import { version } from '../../../package.json'
 import { AnalyticsProps } from '../index'
-import typewriter from '../../analytics'
 
 type ErrorContextProps = {
 	/** Called to indicate that a non-fatal error has occurred. This will be printed only in debug mode. */
@@ -99,18 +94,6 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 	}
 
 	private reportError = async (params: { error: WrappedError; fatal: boolean }) => {
-		const { anonymousId, analyticsProps } = this.props
-
-		typewriter.errorFired({
-			properties: {
-				...analyticsProps,
-				error_string: JSON.stringify(params.error, undefined, 2),
-				unexpected: params.fatal,
-				error: params.error,
-			},
-			anonymousId,
-		})
-
 		if (this.props.debug) {
 			console.trace(params.error)
 		}
@@ -185,10 +168,10 @@ const ErrorComponent: React.FC<ErrorComponentProps> = ({ error }) => {
 			<Box height={2} width={80} textWrap="wrap" marginTop={1}>
 				<Color grey>
 					If you are unable to resolve this issue,{' '}
-					<Link url="https://github.com/segmentio/typewriter/issues/new">
+					<Link url="https://github.com/rudderlabs/rudder-typer/issues/new">
 						open an issue on GitHub
 					</Link>
-					. Please include that you are using version <Color yellow>{version}</Color> of Typewriter.
+					. Please include that you are using version <Color yellow>{version}</Color> of RudderTyper.
 				</Color>
 			</Box>
 		</Box>

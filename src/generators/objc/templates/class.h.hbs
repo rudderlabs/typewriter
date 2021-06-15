@@ -3,14 +3,13 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <Analytics/SEGSerializableValue.h>
-#import "SEGTypewriterSerializable.h"
-#import "SEGTypewriterUtils.h"
+#import "RSRudderTyperSerializable.h"
+#import "RSRudderTyperUtils.h"
 {{#each imports}}
 #import {{this}}
 {{/each}}
 
-@interface {{name}} : NSObject<SEGTypewriterSerializable>
+@interface {{name}} : NSObject<RSRudderTyperSerializable>
 
 {{#each properties}}
 {{#if description}}
@@ -21,6 +20,6 @@
 
 +(nonnull instancetype) {{functionSignature "init" properties false}};
 
--(nonnull SERIALIZABLE_DICT) toDictionary;
+-(nonnull NSDictionary<NSString *, id> *) toDictionary;
 
 @end

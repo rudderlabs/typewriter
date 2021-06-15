@@ -4,7 +4,7 @@ import { JSONSchema7 } from 'json-schema'
 // differs in ways that make it easier for codegen.
 // It does not seek to represent all of JSON Schema, only the subset that
 // is meaningful for codegen. Full JSON Schema validation should be done
-// at run-time and should be supported by all Typewriter clients.
+// at run-time and should be supported by all RudderTyper clients.
 export type Schema = PrimitiveTypeSchema | ArrayTypeSchema | ObjectTypeSchema | UnionTypeSchema
 
 export type PrimitiveTypeSchema = SchemaMetadata & PrimitiveTypeFields
@@ -100,12 +100,12 @@ export function getPropertiesSchema(event: Schema): ObjectTypeSchema {
 	let properties: ObjectTypeSchema | undefined = undefined
 
 	// Events should always be a type="object" at the root, anything
-	// else would not match on a Segment analytics event.
+	// else would not match on a RudderStack analytics event.
 	if (event.type === Type.OBJECT) {
 		const propertiesSchema = event.properties.find(
 			(schema: Schema): boolean => schema.name === 'properties'
 		)
-		// The schema representing `.properties` in the Segement analytics
+		// The schema representing `.properties` in the RudderStack analytics
 		// event should also always be an object.
 		if (propertiesSchema && propertiesSchema.type === Type.OBJECT) {
 			properties = propertiesSchema

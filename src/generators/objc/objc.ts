@@ -22,7 +22,7 @@ type ObjCPropertyContext = {
 	modifiers: string
 	// Whether the property is nullable (nonnull vs nullable modifier).
 	isVariableNullable: boolean
-	// Whether null is a valid value for this property when sent to Segment.
+	// Whether null is a valid value for this property when sent to Rudderstack.
 	isPayloadFieldNullable: boolean
 	// Whether the Objective-C type is a pointer (id, SERIALIZABLE_DICT, NSNumber *, ...).
 	isPointerType: boolean
@@ -79,7 +79,7 @@ export const objc: Generator<
 		} else if (schema.type === Type.BOOLEAN) {
 			// BOOLs cannot nullable in Objective-C. Instead, use an NSNumber which can be
 			// initialized like a boolean like so: [NSNumber numberWithBool:YES]
-			// This is what is done behind the scenes by typewriter if this boolean is nonnull.
+			// This is what is done behind the scenes by ruddertyper if this boolean is nonnull.
 			type = isPointerType ? 'NSNumber *' : 'BOOL'
 		} else if (schema.type === Type.INTEGER) {
 			type = isPointerType ? 'NSNumber *' : 'NSInteger'
@@ -103,7 +103,7 @@ export const objc: Generator<
 		}
 	},
 	generateObject: async (client, schema, properties, parentPath) => {
-		const property = defaultPropertyContext(client, schema, 'SERIALIZABLE_DICT', parentPath, true)
+		const property = defaultPropertyContext(client, schema, 'NSDictionary *', parentPath, true)
 		let object: ObjCObjectContext | undefined = undefined
 
 		if (properties.length > 0) {
@@ -111,7 +111,7 @@ export const objc: Generator<
 			// allowed properties.
 			const className = client.namer.register(schema.name, 'class', {
 				transform: (name: string) => {
-					return `SEG${upperFirst(camelCase(name))}`
+					return `RS${upperFirst(camelCase(name))}`
 				},
 			})
 			property.type = `${className} *`
@@ -136,28 +136,28 @@ export const objc: Generator<
 	generateRoot: async (client, context) => {
 		await Promise.all([
 			client.generateFile(
-				'SEGTypewriterAnalytics.h',
+				'RSRudderTyperAnalytics.h',
 				'generators/objc/templates/analytics.h.hbs',
 				context
 			),
 			client.generateFile(
-				'SEGTypewriterAnalytics.m',
+				'RSRudderTyperAnalytics.m',
 				'generators/objc/templates/analytics.m.hbs',
 				context
 			),
 			client.generateFile(
-				'SEGTypewriterUtils.h',
-				'generators/objc/templates/SEGTypewriterUtils.h.hbs',
+				'RSRudderTyperUtils.h',
+				'generators/objc/templates/RSRudderTyperUtils.h.hbs',
 				context
 			),
 			client.generateFile(
-				'SEGTypewriterUtils.m',
-				'generators/objc/templates/SEGTypewriterUtils.m.hbs',
+				'RSRudderTyperUtils.m',
+				'generators/objc/templates/RSRudderTyperUtils.m.hbs',
 				context
 			),
 			client.generateFile(
-				'SEGTypewriterSerializable.h',
-				'generators/objc/templates/SEGTypewriterSerializable.h.hbs',
+				'RSRudderTyperSerializable.h',
+				'generators/objc/templates/RSRudderTyperSerializable.h.hbs',
 				context
 			),
 			...context.objects.map(o =>
@@ -210,7 +210,7 @@ function generateFunctionSignature(
 	if (withOptions) {
 		parameters.push({
 			name: 'options',
-			type: 'SERIALIZABLE_DICT',
+			type: 'RSOption *',
 			isPointerType: true,
 			isVariableNullable: true,
 		})
@@ -283,10 +283,10 @@ function generatePropertiesDictionary(
 				? property.isPointerType
 					? name
 					: `[NSNumber numberWithInteger:${name}]`
-				: property.schemaType === Type.OBJECT && !property.type.includes('SERIALIZABLE_DICT')
+				: property.schemaType === Type.OBJECT && !property.type.includes('NSDictionary')
 				? `[${name} toDictionary]`
 				: property.schemaType === Type.ARRAY
-				? `[SEGTypewriterUtils toSerializableArray:${name}]`
+				? `[RSRudderTyperUtils toSerializableArray:${name}]`
 				: name
 
 		let setter: string

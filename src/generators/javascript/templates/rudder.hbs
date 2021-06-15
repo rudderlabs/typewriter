@@ -4,24 +4,23 @@
 {{#if isBrowser}}
 /**
  * The analytics.js snippet should be available via window.analytics.
- * You can install it by following instructions at: https://segment.com/docs/sources/website/analytics.js/quickstart/
- * Make sure to also include the TypeScript declarations with: `npm install --dev @types/segment-analytics`
+ * You can install it by following instructions at: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-javascript-sdk#2-installing-the-rudderstack-javascript-sdk
  */
 declare global {
 	interface Window {
-		analytics: SegmentAnalytics.AnalyticsJS
+		analytics: RudderAnalytics.AnalyticsJS
 	}
 }
 
 /** The callback exposed by analytics.js. */
 export type Callback = () => void
 {{else}}
-import AnalyticsNode from 'analytics-node'
+import AnalyticsNode from '@rudderstack/rudder-sdk-node'
 export { AnalyticsNode }
 
 /**
  * TrackMessage represents a message payload for an analytics `.track()` call.
- * See: https://segment.com/docs/spec/track/
+ * See: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#track
  */
 export interface TrackMessage<PropertiesType> extends Options, Record<string, any> {
   /** The ID for this user in your database. */
@@ -47,21 +46,19 @@ export type Callback = (err: Error) => void
 export interface Options {
   /**
   * Selectivly filter destinations. By default all destinations are enabled.
-  * https://segment.com/docs/sources/website/analytics.js/#selecting-destinations
+  * https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-javascript-sdk#4-how-to-filter-selective-destinations-to-send-event-data
   */
   integrations?: {
     [key: string]: boolean | { [key: string]: any }
   }
   /**
   * A dictionary of extra context to attach to the call.
-  * https://segment.com/docs/spec/common/#context
   */
   context?: Context
 }
 
 /**
   * Context is a dictionary of extra information that provides useful context about a datapoint.
-  * @see {@link https://segment.com/docs/spec/common/#context}
   */
 export interface Context extends Record<string, any> {
   active?: boolean

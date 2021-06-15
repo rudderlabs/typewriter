@@ -14,7 +14,7 @@
   return object;
 }
 
--(nonnull SERIALIZABLE_DICT) toDictionary {
+-(nonnull NSDictionary<NSString *, id> *) toDictionary {
   {{indent "  " (propertiesDictionary properties "self.")}}
 
   return properties;

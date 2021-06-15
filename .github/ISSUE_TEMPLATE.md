@@ -1,6 +1,6 @@
-# Thanks for taking the time to contribute to Typewriter!
+# Thanks for taking the time to contribute to RudderTyper!
 
-It is highly appreciated that you take the time to help improve Typewriter.
+It is highly appreciated that you take the time to help improve RudderTyper.
 We appreciate it if you would take the time to write up a bug report or feature request.
 
 Sadly, if we don't receive enough information, or the issue/feature request doesn't
@@ -13,7 +13,7 @@ _Bug fixes and documentation fixes are welcome._
 Please consider the following items when filing a bug report:
 
 * Issue and steps to reproduce.
-* Versions. (Typewriter, OS, language, etc.)
+* Versions. (RudderTyper, OS, language, etc.)
 * Screenshots.
 * Expected.
 * Actual.

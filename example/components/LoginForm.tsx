@@ -139,7 +139,7 @@ export class LoginForm extends React.Component<Props, State> {
 					background="white"
 				>
 					<Pane display="flex" justifyContent="center" marginBottom={majorScale(4)}>
-						<Heading size={600}>Log in to Segment</Heading>
+						<Heading size={600}>Log in to Rudderstack</Heading>
 					</Pane>
 					<Text marginBottom={majorScale(1)}>Email *</Text>
 					<TextInput

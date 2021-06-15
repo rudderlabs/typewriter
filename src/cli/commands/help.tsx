@@ -17,28 +17,22 @@ export const Help: React.FC<StandardProps> = () => {
 		<Box marginLeft={2} flexDirection="column">
 			<Box marginBottom={2} textWrap="wrap">
 				<Color grey>
-					Typewriter is a tool for generating strongly-typed{' '}
-					<Link url="https://segment.com">Segment</Link> analytics libraries based on your
-					pre-defined{' '}
-					<Link url="https://segment.com/docs/protocols/tracking-plan">Tracking Plan</Link> spec.
+					RudderTyper is a tool for generating strongly-typed{' '}
+					<Link url="https://rudderstack.com">RudderStack</Link> analytics libraries based on your
+					pre-defined Tracking Plan spec.
 					{'\n\n'}
-					Learn more from{' '}
-					<Link url="https://segment.com/docs/protocols/typewriter">
-						{"Typewriter's documentation here"}
-					</Link>
-					.
 				</Color>
 			</Box>
 			<Box flexDirection="column">
 				<Box marginBottom={1}>
-					<Color grey>$</Color> <Color>typewriter</Color> <Color grey>[command, options]</Color>
+					<Color grey>$</Color> <Color>rudder-typer</Color> <Color grey>[command, options]</Color>
 				</Box>
 				<HelpSection name="Commands">
 					<HelpRow
 						name="init"
 						description={
 							<Text>
-								Quickstart wizard to create a <Color yellow>typewriter.yml</Color>
+								Quickstart wizard to create a <Color yellow>ruddertyper.yml</Color>
 							</Text>
 						}
 					/>
@@ -48,7 +42,7 @@ export const Help: React.FC<StandardProps> = () => {
 						linesNeeded={2}
 						description={
 							<Text>
-								Syncs <Color yellow>plan.json</Color> with Segment, then generates a{' '}
+								Syncs <Color yellow>plan.json</Color> with RudderStack, then generates a{' '}
 								<Color yellow>development</Color> client.
 							</Text>
 						}
@@ -71,7 +65,7 @@ export const Help: React.FC<StandardProps> = () => {
 							</Text>
 						}
 					/>
-					<HelpRow name="token" description="Prints the local Segment API token configuration" />
+					<HelpRow name="token" description="Prints the local RudderStack API token configuration" />
 				</HelpSection>
 				<HelpSection name="Options">
 					<HelpRow name="-h, --help" description="Prints this help message" />
@@ -80,11 +74,11 @@ export const Help: React.FC<StandardProps> = () => {
 						name="-c, --config"
 						description={
 							<Text>
-								Path to a <Color yellow>typewriter.yml</Color> file
+								Path to a <Color yellow>ruddertyper.yml</Color> file
 							</Text>
 						}
 					/>
-					{/* NOTE: we only show the --debug flag when developing locally on Typewriter. */}
+					{/* NOTE: we only show the --debug flag when developing locally on RudderTyper. */}
 					<HelpRow
 						name="    --debug"
 						isHidden={process.env.NODE_ENV === 'production'}
@@ -92,15 +86,15 @@ export const Help: React.FC<StandardProps> = () => {
 					/>
 				</HelpSection>
 				<HelpSection name="Examples">
-					<ExampleRow description="Initialize Typewriter in a new repo" command="typewriter init" />
-					<ExampleRow description="Pull your latest Tracking Plan changes" command="typewriter" />
+					<ExampleRow description="Initialize RudderTyper in a new repo" command="rudder-typer init" />
+					<ExampleRow description="Pull your latest Tracking Plan changes" command="rudder-typer" />
 					<ExampleRow
 						description="Build a client without runtime validation"
-						command="typewriter prod"
+						command="rudder-typer prod"
 					/>
 					<ExampleRow
 						description="Use a config in another directory"
-						command="typewriter --config ../typewriter.yml"
+						command="rudder-typer --config ../ruddertyper.yml"
 					/>
 				</HelpSection>
 			</Box>

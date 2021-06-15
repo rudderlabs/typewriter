@@ -1,0 +1,15 @@
+# RudderStack RudderTyper Configuration 
+# Just run `npx rudder-typer@next` to re-generate a client with the latest versions of these events.
+
+client:
+  sdk: analytics-android
+  language: java
+
+
+trackingPlans:
+  # Tracking Plan: Validate TypeWriter
+  # https://api.rudderstack.com/trackingplans/tp_1tvy420mCE4uXlXwkasgJGkTLM5
+  - id: tp_1tvy420mCE4uXlXwkasgJGkTLM5
+    workspaceSlug: 1tiktfIUOBLYSnjJxsLweH525qh
+    path: analytics
+
