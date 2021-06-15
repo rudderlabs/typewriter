@@ -50,7 +50,7 @@ public class RudderTyperAnalytics {
      * @see <a href="https://docs.rudderstack.com/rudderstack-api-spec/http-api-specification#7-track">Track Documentation</a>
      */
     public void {{functionName}}(final @Nullable {{propsType}} props) {
-        this.rudderClient.track("{{rawEventName}}", props.toRudderProperty(), RudderTyperAnalyticsUtils.addRudderTyperContext());
+        this.rudderClient.track("{{rawEventName}}", props.toRudderProperty(), RudderTyperUtils.addRudderTyperContext());
     }
 
     /**
