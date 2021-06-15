@@ -145,13 +145,13 @@ This section includes steps to integrate your RudderTyper-generated client with 
 // Import your auto-generated RudderTyper client:
 import com.rudderstack.generated.*
 
-// Issue your first RudderTyper track call!
-RudderTyperAnalytics.with(this).orderCompleted(
-  OrderCompleted.Builder()
+  // Issue your first RudderTyper track call!
+  RudderTyperAnalytics.with(this).orderCompleted(
+    OrderCompleted.Builder()
     .orderID("ck-f306fe0e-cc21-445a-9caa-08245a9aa52c")
     .total(39.99)
     .build()
-);
+  );
 ```
 
 ### RudderStack iOS SDK
@@ -184,11 +184,13 @@ rudderanalytics.load(YOUR_WRITE_KEY, DATA_PLANE_URL)
 // Import your auto-generated RudderTyper client:
 const rudderTyper = require('./rudderTyperClient')
 // Pass in your rudder-sdk-js instance to RudderTyper client
-rudderTyper.setRudderTyperOptions({ analytics: rudderanalytics });
+rudderTyper.setRudderTyperOptions({
+  analytics: rudderanalytics
+});
 // Issue your first RudderTyper track call!
 rudderTyper.orderCompleted({
   orderID: 'ck-f306fe0e-cc21-445a-9caa-08245a9aa52c',
-  total:   39.99
+  total: 39.99
 })
 ```
 
@@ -204,33 +206,35 @@ browserify rudderTyperClient.js --standalone rudderTyper >  rudderTyperBundle.js
 
 ```html
 <head>
-	<script>
-		rudderanalytics = window.rudderanalytics = [];
-		var methods = ["load", "page", "track", "identify", "alias", "group", "ready", "reset", "getAnonymousId", "setAnonymousId"];
-		for (var i = 0; i < methods.length; i++) {
-			var method = methods[i];
-			rudderanalytics[method] = function (methodName) {
-				return function () {
-					rudderanalytics.push([methodName].concat(Array.prototype.slice.call(arguments)));
-				};
-			}(method);
-		}
-		rudderanalytics.load(WRITE_KEY, DATA_PLANE_URL);
-		rudderanalytics.page();
-	</script>
-	<script src="https://cdn.rudderlabs.com/v1/rudder-analytics.min.js"></script>
-	<script src="./rudderTyperBundle.js"></script>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+  <script>
+    rudderanalytics = window.rudderanalytics = [];
+    var methods = ["load", "page", "track", "identify", "alias", "group", "ready", "reset", "getAnonymousId", "setAnonymousId"];
+    for (var i = 0; i < methods.length; i++) {
+      var method = methods[i];
+      rudderanalytics[method] = function(methodName) {
+        return function() {
+          rudderanalytics.push([methodName].concat(Array.prototype.slice.call(arguments)));
+        };
+      }(method);
+    }
+    rudderanalytics.load(YOUR_WRITE_KEY, DATA_PLANE_URL);
+    rudderanalytics.page();
+  </script>
+  <script src="https://cdn.rudderlabs.com/v1/rudder-analytics.min.js"></script>
+  <script src="./rudderTyperBundle.js"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <script>
-	rudderTyper.setRudderTyperOptions({ analytics: rudderanalytics });
-    rudderTyper.orderCompleted({
+  rudderTyper.setRudderTyperOptions({
+    analytics: rudderanalytics
+  });
+  rudderTyper.orderCompleted({
     orderID: 'ck-f306fe0e-cc21-445a-9caa-08245a9aa52c',
-    total:   39.99
-    })
+    total: 39.99
+  })
 </script>
 ```
 
@@ -241,7 +245,7 @@ browserify rudderTyperClient.js --standalone rudderTyper >  rudderTyperBundle.js
 ```javascript
 // Import Rudder Node SDK and intialize it
 const Analytics = require("@rudderstack/rudder-sdk-node");
-const client = new Analytics(WRITE_KEY, DATA_PLANE_URL/v1/batch);
+const client = new Analytics(WRITE_KEY, DATA_PLANE_URL / v1 / batch);
 const ruddertyper = require("./rudderTyperClient");
 // Pass in your rudder-sdk-node instance to RudderTyper.
 ruddertyper.setRudderTyperOptions({
@@ -250,7 +254,7 @@ ruddertyper.setRudderTyperOptions({
 // Issue your first RudderTyper track call!
 ruddertyper.orderCompleted({
   orderID: 'ck-f306fe0e-cc21-445a-9caa-08245a9aa52c',
-  total:   39.99
+  total: 39.99
 })
 ```
 
