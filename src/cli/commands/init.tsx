@@ -513,6 +513,11 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 
 	const tips = [
 		'An API token is used to download Tracking Plans from Rudder.',
+		<Text key="api-token-docs">
+			Documentation on generating an API token can be found{' '}
+			<Link url="https://docs.rudderstack.com/adding-a-new-user-transformation-in-rudderstack/api-access-token#generate-access-token">here</Link>
+			.
+		</Text>,
 	]
 
 	if (state.foundCachedToken) {
