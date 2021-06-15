@@ -1,4 +1,4 @@
-# RudderStack RudderTyper Configuration (https://docs.rudderstack.com/ruddertyper)
+# RudderStack RudderTyper Configuration 
 # Just run `npx rudder-typer@next` to re-generate a client with the latest versions of these events.
 {{#if scripts.token}}
 
@@ -6,8 +6,6 @@ scripts:
   after: {{scripts.token}}
 {{/if}}
 
-# You can find more documentation on configuring this client in the RudderStack docs.
-# See: https://docs.rudderstack.com/ruddertyper
 client:
   {{#each client}}
   {{@key}}: {{this}}

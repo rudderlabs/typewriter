@@ -157,14 +157,9 @@ const Header: React.FC = () => {
 			<Box width={80} textWrap="wrap" marginBottom={4}>
 				<Color white>
 					RudderTyper is a tool for generating strongly-typed{' '}
-					<Link url="https://rudderstack.com">RudderStack</Link> analytics libraries from a{' '}
-					<Link url="https://docs.rudderstack.com/tracking-plan">Tracking Plan</Link>.
+					<Link url="https://rudderstack.com">RudderStack</Link> analytics libraries from a Tracking Plan
 				</Color>{' '}
 				<Color grey>
-					Learn more from{' '}
-					<Link url="https://docs.rudderstack.com/ruddertyper">
-						{"RudderTyper's documentation here"}
-					</Link>
 					. To get started, {"you'll"} need a <Color yellow>ruddertyper.yml</Color>. The quickstart
 					below will walk you through creating one.
 				</Color>
@@ -518,11 +513,6 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 
 	const tips = [
 		'An API token is used to download Tracking Plans from Rudder.',
-		<Text key="api-token-docs">
-			Documentation on generating an API token can be found{' '}
-			<Link url="https://docs.rudderstack.com/ruddertyper/#api-token-configuration">here</Link>
-			.
-		</Text>,
 	]
 
 	if (state.foundCachedToken) {

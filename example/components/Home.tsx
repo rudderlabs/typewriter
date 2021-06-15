@@ -40,14 +40,6 @@ class HomeComponent extends React.Component<Props> {
 								<pre>npx rudder-typer@next init</pre>
 							</Text>
 						</Paragraph>
-						<Paragraph>
-							<Text>
-								You can learn more from our documentation: {''}
-								<Link target="_blank" href="https://docs.rudderstack.com/ruddertyper">
-								https://docs.rudderstack.com/ruddertyper
-								</Link>
-							</Text>
-						</Paragraph>
 					</Card>
 				</Pane>
 			</Pane>

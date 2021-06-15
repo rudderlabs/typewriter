@@ -19,14 +19,8 @@ export const Help: React.FC<StandardProps> = () => {
 				<Color grey>
 					RudderTyper is a tool for generating strongly-typed{' '}
 					<Link url="https://rudderstack.com">RudderStack</Link> analytics libraries based on your
-					pre-defined{' '}
-					<Link url="https://docs.rudderstack.com/tracking-plan">Tracking Plan</Link> spec.
+					pre-defined Tracking Plan spec.
 					{'\n\n'}
-					Learn more from{' '}
-					<Link url="https://docs.rudderstack.com/ruddertyper">
-						{"RudderTyper's documentation here"}
-					</Link>
-					.
 				</Color>
 			</Box>
 			<Box flexDirection="column">
