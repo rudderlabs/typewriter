@@ -1,17 +1,51 @@
 {
-	"create_time": "2021-06-14T09:41:02.516Z",
-	"display_name": "Validate TypeWriter",
-	"name": "workspaces/1tiktfIUOBLYSnjJxsLweH525qh/tracking-plans/tp_1tvy420mCE4uXlXwkasgJGkTLM5",
+	"create_time": "2021-06-16T02:13:20.385Z",
+	"display_name": "Rudder Typer Validator",
+	"name": "workspaces/1tzQSBIsCxV5OP2t0ImV1qhFF8q/tracking-plans/tp_1u0jrdhXRRhPNWlHDEKaLGicbFW",
 	"rules": {
 		"events": [
 			{
+				"description": "Validates that clients support fields with multiple (union) types.",
+				"id": "ev_1u0jrcfqVMHtkbGBlni3RgV1QqT",
+				"name": "Union Type",
+				"rules": {
+					"$schema": "http://json-schema.org/draft-07/schema#",
+					"properties": {
+						"context": {
+						},
+						"properties": {
+							"properties": {
+								"universe_name": {
+									"description": "",
+									"type": [
+										"string",
+										"null",
+										"integer"
+									]
+								}
+							},
+							"required": [
+								"universe_name"
+							],
+							"type": "object"
+						},
+						"traits": {
+							"type": "object"
+						}
+					},
+					"required": [
+						"properties"
+					],
+					"type": "object"
+				},
+				"version": "1-0-0"
+			},
+			{
 				"description": "Validates that client property sanitize enums.",
-				"id": "ev_1tvy41MClQsow03wG2LGlMyj6yP",
+				"id": "ev_1u0jrcinp9mq64ME9soeINrPZGP",
 				"name": "Enum Types",
 				"rules": {
 					"$schema": "http://json-schema.org/draft-07/schema#",
-					"labels": {
-					},
 					"properties": {
 						"context": {
 						},
@@ -44,81 +78,8 @@
 				"version": "1-0-0"
 			},
 			{
-				"description": "This event is fired in order to trigger the default violation handler. It should be called with a JSON Schema violation.",
-				"id": "ev_1tvy40J6vYIvbhDoyA7jFNrG8dL",
-				"name": "Default Violation Handler",
-				"rules": {
-					"$schema": "http://json-schema.org/draft-07/schema#",
-					"labels": {
-					},
-					"properties": {
-						"context": {
-						},
-						"properties": {
-							"properties": {
-								"regex property": {
-									"description": "",
-									"pattern": "Lawyer Morty|Evil Morty",
-									"type": "string"
-								}
-							},
-							"required": [
-								"regex property"
-							],
-							"type": "object"
-						},
-						"traits": {
-							"type": "object"
-						}
-					},
-					"required": [
-						"properties"
-					],
-					"type": "object"
-				},
-				"version": "1-0-0"
-			},
-			{
-				"description": "Validates that clients support fields with multiple (union) types.",
-				"id": "ev_1tvy433XJasmX533Aiewar9TMCF",
-				"name": "Union Type",
-				"rules": {
-					"$schema": "http://json-schema.org/draft-07/schema#",
-					"labels": {
-					},
-					"properties": {
-						"context": {
-						},
-						"properties": {
-							"properties": {
-								"universe_name": {
-									"description": "",
-									"type": [
-										"string",
-										"null",
-										"integer"
-									]
-								}
-							},
-							"required": [
-								"universe_name"
-							],
-							"type": "object"
-						},
-						"traits": {
-							"type": "object"
-						}
-					},
-					"required": [
-						"properties"
-					],
-					"type": "object"
-				},
-				"version": "1-0-0"
-			},
-			{
 				"description": "Validates that clients handle all of the supported field types, as nullable required fields. If a field is null, it is expected to be sent through.",
-				"id": "ev_1tvy44OtARsvHPbj9HVLuQg4t3p",
+				"id": "ev_1u0jrf47oTKLbwZB7A9Q0BkwIFr",
 				"name": "Every Nullable Required Type",
 				"rules": {
 					"$schema": "http://json-schema.org/draft-07/schema#",
@@ -427,6 +388,6 @@
 			"version": "1-0-0"
 		}
 	},
-	"update_time": "2021-06-14T09:41:02.516Z",
+	"update_time": "2021-06-16T02:13:20.385Z",
 	"version": 1
 }

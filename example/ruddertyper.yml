@@ -2,14 +2,15 @@
 # Just run `npx rudder-typer@next` to re-generate a client with the latest versions of these events.
 
 client:
-  sdk: analytics-android
-  language: java
-
+  sdk: analytics-node
+  language: javascript
+  moduleTarget: CommonJS
+  scriptTarget: ES5
 
 trackingPlans:
-  # Tracking Plan: Validate TypeWriter
-  # https://api.rudderstack.com/trackingplans/tp_1tvy420mCE4uXlXwkasgJGkTLM5
-  - id: tp_1tvy420mCE4uXlXwkasgJGkTLM5
-    workspaceSlug: 1tiktfIUOBLYSnjJxsLweH525qh
+  # Tracking Plan: Rudder Typer Validator
+  # https://api.rudderstack.com/trackingplans/tp_1u0jrdhXRRhPNWlHDEKaLGicbFW
+  - id: tp_1u0jrdhXRRhPNWlHDEKaLGicbFW
+    workspaceSlug: 1tzQSBIsCxV5OP2t0ImV1qhFF8q
     path: analytics
 
