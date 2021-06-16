@@ -1,42 +1,15 @@
 {
-  "name": "ruddertyper-example",
+  "name": "rudder-typer-example",
   "version": "1.0.0",
-  "description": "Example web app using RudderTyper's Android client",
-  "repository": "https://github.com/rudderlabs/rudder-typer",
-  "author": "Desu Sai Venkat <venkat@rudderstack.com>",
-  "license": "MIT",
-  "private": true,
+  "description": "An Example to demonstrate the usage of rudder-type client on Node.js",
+  "main": "index.js",
   "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start",
-    "test": "jest"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "author": "venkat@rudderstack.com",
+  "license": "ISC",
   "dependencies": {
-    "@segment/snippet": "^4.13.1",
-    "evergreen-ui": "^5.1.2",
-    "next": "^10.0.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "request": "^2.88.0",
-    "typescript": "^4.0.5"
-  },
-  "devDependencies": {
-    "@types/react": "^16.9.54",
-    "@types/styled-jsx": "^2.2.3",
-    "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.15.5",
-    "fork-ts-checker-webpack-plugin": "^5.2.1",
-    "jest": "^26.6.1",
-    "rudder-typer": "file:../"
-  },
-  "resolutions": {
-    "lodash": ">=4.17.19",
-    "node-fetch": ">=2.6.1"
-  },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "<rootDir>tests/setup-tests.js"
-    ]
+    "@rudderstack/rudder-sdk-node": "^1.0.2",
+    "rudder-typer": "^1.0.0-beta.1"
   }
 }
