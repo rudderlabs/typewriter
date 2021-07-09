@@ -198,7 +198,7 @@ function generateFunctionSignature(
 	}) => {
 		const { type, isVariableNullable } = property
 		if (isVariableNullable) {
-			return `${type}?`
+			return `${type}? = nil`
 		} else {
 			return `${type}`
 		}
