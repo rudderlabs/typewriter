@@ -125,6 +125,11 @@ export function parseTrackingPlanName(name: string): { id: string; workspaceSlug
 }
 
 export function toTrackingPlanURL(name: string): string {
-	const { id, workspaceSlug } = parseTrackingPlanName(name)
+	const { id } = parseTrackingPlanName(name)
 	return `https://api.rudderstack.com/trackingplans/${id}`
+}
+
+export function toTrackingPlanId(name: string): string {
+	const { id } = parseTrackingPlanName(name)
+	return id
 }

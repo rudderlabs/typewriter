@@ -26,10 +26,13 @@ class RudderTyperUtils {
     static func addContextFields(_ options: RSOption?) -> RSOption {
         let rudderOptions = options ?? RSOption() 
         let rudderTyperContext = [
-                "language": "swift",
-                "version": "{{rudderTyperVersion}}"
+                "sdk": "{{sdk}}",
+                "language": "{{language}}",
+                "rudderTyperVersion": "{{rudderTyperVersion}}",
+                "trackingPlanId": "{{trackingPlanId}}"
+                "trackingPlanVersion": "{{trackingPlanVersion}}",
             ]
-        options?.putCustomContext(rudderTyperContext, withKey: "ruddetyper")
+        options?.putCustomContext(rudderTyperContext, withKey: "ruddertyper")
         return rudderOptions
     }
 }

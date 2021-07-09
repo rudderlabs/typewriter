@@ -31,6 +31,7 @@ import { ErrorContext, wrapError, toUnexpectedError, WrappedError, isWrappedErro
 import figures from 'figures'
 import { Init } from './init'
 import { getEmail } from '../config/config'
+import { toTrackingPlanId } from '../api/trackingplans'
 
 const readFile = promisify(fs.readFile)
 const readdir = promisify(fs.readdir)
@@ -197,6 +198,8 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
 			const trackingPlan: RawTrackingPlan = {
 				name: newTrackingPlan.display_name,
 				url: toTrackingPlanURL(newTrackingPlan.name),
+				id: toTrackingPlanId(newTrackingPlan.name),
+				version: newTrackingPlan.version,
 				path: trackingPlanConfig.path,
 				trackCalls: events
 					// RudderTyper doesn't yet support event versioning. For now, we just choose the most recent version.

@@ -11,8 +11,11 @@
 {
   options = options ?: [[RSOption alloc]init];
   NSDictionary<NSString *, id> *rudderTyperContext = @{
-      @"language": @"objective-c",
-      @"version": @"1.0.0-beta1"
+      @"sdk": @"{{sdk}}",
+      @"language": @"{{language}}",
+      @"rudderTyperVersion": @"{{rudderTyperVersion}}",
+      @"trackingPlanId": @"{{trackingPlanId}}"
+      @"trackingPlanVersion": @"{{trackingPlanVersion}}",
     };
   [options putCustomContext:rudderTyperContext withKey:@"ruddertyper"];
   return options;

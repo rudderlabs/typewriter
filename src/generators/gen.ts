@@ -17,12 +17,16 @@ export type File = {
 export type RawTrackingPlan = {
 	name: string
 	url: string
+	id: string
+	version: string
 	path: string
 	trackCalls: JSONSchema7[]
 }
 
 export type TrackingPlan = {
 	url: string
+	id: string
+	version: string
 	trackCalls: {
 		raw: JSONSchema7
 		schema: Schema
@@ -147,6 +151,8 @@ export type GenOptions = {
 export async function gen(trackingPlan: RawTrackingPlan, options: GenOptions): Promise<File[]> {
 	const parsedTrackingPlan = {
 		url: trackingPlan.url,
+		id: trackingPlan.id,
+		version: trackingPlan.version,
 		trackCalls: trackingPlan.trackCalls.map(s => {
 			const sanitizedSchema = {
 				$schema: 'http://json-schema.org/draft-07/schema#',
@@ -191,8 +197,11 @@ async function runGenerator<
 		...rootContext,
 		isDevelopment: options.isDevelopment,
 		language: options.client.language,
+		sdk: options.client.sdk,
 		rudderTyperVersion: options.rudderTyperVersion,
 		trackingPlanURL: trackingPlan.url,
+		trackingPlanId: trackingPlan.id,
+		trackingPlanVersion: trackingPlan.version,
 		tracks: [],
 		objects: [],
 	}

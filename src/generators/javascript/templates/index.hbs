@@ -149,9 +149,12 @@ function withRudderTyperContext{{#unless isBrowser}}<P, T extends Rudder.TrackMe
 		context: {
 			...(message.context || {}),
 			ruddertyper: {
+				sdk: '{{sdk}}',
 				language: '{{language}}',
-				version: '{{rudderTyperVersion}}',
-			},
+				rudderTyperVersion: '{{rudderTyperVersion}}',
+				trackingPlanId: '{{trackingPlanId}}'
+				trackingPlanVersion: '{{trackingPlanVersion}}',
+            },
 		},
 	}
 }
