@@ -14,8 +14,11 @@ public final class RudderTyperUtils {
 
     static {
         rudderTyperCtx = new HashMap<>();
-        rudderTyperCtx.put("version", "{{rudderTyperVersion}}");
+        rudderTyperCtx.put("sdk", "{{sdk}}");
         rudderTyperCtx.put("language", "{{language}}");
+        rudderTyperCtx.put("rudderTyperVersion", "{{rudderTyperVersion}}");
+        rudderTyperCtx.put("trackingPlanId", "{{trackingPlanId}}");
+        rudderTyperCtx.put("trackingPlanVersion", "{{trackingPlanVersion}}");
     }
 
     protected static RudderOption addRudderTyperContext(final @NonNull RudderOption options){

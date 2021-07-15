@@ -15,6 +15,7 @@ export namespace RudderAPI {
 	export type TrackingPlan = {
 		name: string
 		display_name: string
+		version: string
 		rules: {
 			events: RuleMetadata[]
 			global: RuleMetadata
