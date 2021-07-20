@@ -133,13 +133,17 @@ function validateAgainstSchema(
 ) {
 	let ajv;
 	if (schema.hasOwnProperty('$schema') && schema['$schema'].includes('draft-04')) {
-      ajv = new AjvDraft4({allErrors: true, verbose: true })
-    }
-	else{
-      ajv =  new Ajv({allErrors: true, verbose: true })
-	  ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
+		ajv = new AjvDraft4({
+			allErrors: true,
+			verbose: true
+		})
+	} else {
+		ajv = new Ajv({
+			allErrors: true,
+			verbose: true
+		})
+		ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
 	}
-	
 	if (!ajv.validate(schema, message) && ajv.errors) {
 		onViolation(message, ajv.errors)
 	}
