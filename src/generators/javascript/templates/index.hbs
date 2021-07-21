@@ -10,8 +10,13 @@
  * Note that the production bundle does not depend on Ajv.
  * 
  * You can install it with: `npm install --save-dev ajv`.
+ *
+ * In order to support run-time validation of draft-04 JSON Schema we are using `ajv-draft-04`.
+ * You can install it with: `npm install --save-dev ajv-draft-04`.
+ *
  */
 import Ajv from 'ajv'
+import AjvDraft4 from 'ajv-draft-04'
 {{/if}}
 import * as Rudder from './rudder'
 
@@ -130,10 +135,20 @@ function validateAgainstSchema(
 	message: {{#if isBrowser}}Record<string, any>{{else}}Rudder.TrackMessage<Record<string, any>>{{/if}},
 	schema: object
 ) {
-	const ajv = new Ajv({allErrors: true, verbose: true })
-	ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
-	
-    if (!ajv.validate(schema, message) && ajv.errors) {
+	let ajv;
+	if (schema.hasOwnProperty('$schema') && schema['$schema'].includes('draft-04')) {
+		ajv = new AjvDraft4({
+			allErrors: true,
+			verbose: true
+		})
+	} else {
+		ajv = new Ajv({
+			allErrors: true,
+			verbose: true
+		})
+		ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
+	}
+	if (!ajv.validate(schema, message) && ajv.errors) {
 		onViolation(message, ajv.errors)
 	}
 }
