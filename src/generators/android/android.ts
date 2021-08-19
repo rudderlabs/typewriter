@@ -101,13 +101,11 @@ export const android: Generator<
 		// TODO: support unions
 		return defaultPropertyContext(client, schema, 'Object', parentPath)
 	},
-	generateTrackCall: async (client, schema, propertiesObject) => {
+	generateTrackCall: async (_client, schema, functionName, propertiesObject) => {
 		const { properties } = getPropertiesSchema(schema)
 		return {
 			class: schema.name.replace(/\s/g, ''),
-			functionName: client.namer.register(schema.name, 'function->track', {
-				transform: camelCase,
-			}),
+			functionName: functionName,
 			propsType: propertiesObject.type,
 			propsParam: !!properties.length,
 		}

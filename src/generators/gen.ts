@@ -8,6 +8,7 @@ import { Options, SDK, Language } from './options'
 import { registerStandardHelpers, generateFromTemplate } from '../templates'
 import { Namer, Options as NamerOptions } from './namer'
 import stringify from 'json-stable-stringify'
+import { camelCase, upperFirst } from 'lodash'
 
 export type File = {
 	path: string
@@ -124,6 +125,7 @@ export declare type Generator<
 			generateTrackCall: (
 				client: GeneratorClient,
 				schema: Schema,
+				functionName: string,
 				propertiesObject: P & BasePropertyContext
 			) => Promise<T>
 	  }
@@ -132,9 +134,11 @@ export declare type Generator<
 			generateTrackCall: (
 				client: GeneratorClient,
 				schema: Schema,
+				functionName: string,
 				properties: (P & BasePropertyContext)[]
 			) => Promise<T>
-	  })
+	  }
+)
 
 export type GenOptions = {
 	// Configuration options configured by the ruddertyper.yml config.
@@ -236,7 +240,8 @@ async function runGenerator<
 	// templates.
 	const traverseSchema = async (
 		schema: Schema,
-		parentPath: string
+		parentPath: string,
+		eventName: string
 	): Promise<P & BasePropertyContext> => {
 		const path = `${parentPath}->${schema.name}`
 		const base = {
@@ -253,7 +258,11 @@ async function runGenerator<
 			// For objects, we need to recursively generate each property first.
 			const properties: (P & BasePropertyContext)[] = []
 			for (const property of schema.properties) {
-				properties.push(await traverseSchema(property, path))
+				properties.push(await traverseSchema(property, path, eventName))
+			}
+
+			if (parentPath !== '') {
+				schema.name = eventName + upperFirst(schema.name)
 			}
 
 			const { property, object } = await generator.generateObject(
@@ -277,7 +286,7 @@ async function runGenerator<
 				description: schema.description,
 				...schema.items,
 			}
-			const items = await traverseSchema(itemsSchema, path)
+			const items = await traverseSchema(itemsSchema, path, eventName)
 			p = await generator.generateArray(client, schema, items, parentPath)
 		} else if (schema.type === Type.UNION) {
 			// For unions, we generate a property type to represent each of the possible types
@@ -290,7 +299,7 @@ async function runGenerator<
 						...t,
 					}
 
-					return await traverseSchema(subSchema, path)
+					return await traverseSchema(subSchema, path, eventName)
 				})
 			)
 			p = await generator.generateUnion(client, schema, types, parentPath)
@@ -306,16 +315,19 @@ async function runGenerator<
 	// Generate Track Calls.
 	for (const { raw, schema } of trackingPlan.trackCalls) {
 		let t: T
+		const functionName: string = client.namer.register(schema.name, 'function->track', {
+			transform: camelCase,
+		})
 		if (generator.generatePropertiesObject) {
-			const p = await traverseSchema(getPropertiesSchema(schema), '')
-			t = await generator.generateTrackCall(client, schema, p)
+			const p = await traverseSchema(getPropertiesSchema(schema), '', functionName)
+			t = await generator.generateTrackCall(client, schema, functionName, p)
 		} else {
 			const properties: (P & BasePropertyContext)[] = []
 			for (const property of getPropertiesSchema(schema).properties) {
-				properties.push(await traverseSchema(property, schema.name))
+				properties.push(await traverseSchema(property, schema.name, functionName))
 			}
 			t = {
-				...(await generator.generateTrackCall(client, schema, properties)),
+				...(await generator.generateTrackCall(client, schema, functionName, properties)),
 				properties,
 			}
 		}

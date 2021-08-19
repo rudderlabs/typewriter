@@ -10,6 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "@rudderstack/rudder-sdk-node": "^1.0.2",
-    "rudder-typer": "^1.0.0-beta.1"
+    "rudder-typer": "file:../"
   }
 }

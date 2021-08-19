@@ -121,10 +121,8 @@ export const swift: Generator<
 		// TODO: support unions in iOS
 		return defaultPropertyContext(client, schema, 'Any', parentPath, true)
 	},
-	generateTrackCall: async (client, schema) => ({
-		functionName: client.namer.register(schema.name, 'function->track', {
-			transform: camelCase,
-		}),
+	generateTrackCall: async (_client, _schema, functionName) => ({
+		functionName: functionName,
 	}),
 	generateRoot: async (client, context) => {
 		await Promise.all([

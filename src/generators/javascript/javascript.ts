@@ -127,8 +127,8 @@ export const javascript: Generator<
 			name: client.namer.escapeString(schema.name),
 			type: types.map(t => t.type).join(' | '),
 		}),
-	generateTrackCall: async (client, schema, propertiesObject) => ({
-		functionName: client.namer.register(schema.name, 'function->track', { transform: camelCase }),
+	generateTrackCall: async (client, _schema, functionName, propertiesObject) => ({
+		functionName: functionName,
 		propertiesType: propertiesObject.type,
 		// The properties object in a.js can be omitted if no properties are required.
 		isPropertiesOptional: client.options.client.sdk === SDK.WEB && !propertiesObject.isRequired,
