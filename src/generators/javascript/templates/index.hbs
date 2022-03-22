@@ -15,7 +15,7 @@
  * You can install it with: `npm install --save-dev ajv-draft-04`.
  *
  */
-import Ajv from 'ajv'
+import Ajv, { ErrorObject } from 'ajv'
 import AjvDraft4 from 'ajv-draft-04'
 {{/if}}
 import * as Rudder from './rudder'
@@ -26,7 +26,7 @@ import * as Rudder from './rudder'
  * {{description}}
  */
 {{/if}}
-export interface {{name}} {
+export interface {{name}} {{#unless isBrowser}} extends Rudder.apiObject {{/unless}} {
 	{{#each properties}}
 	{{#if description}}
 	/**
@@ -41,7 +41,7 @@ export interface {{name}} {
 export type ViolationHandler = (
 	message: {{#if isBrowser}}Record<string, any>{{else}}Rudder.TrackMessage<Record<string, any>>{{/if}},
 	{{!-- Swap the type definitions here so we don't want depend on ajv in production just for this type definition. --}}
-	violations: {{#if isDevelopment}}Ajv.ErrorObject{{else}}any{{/if}}[]
+	violations: {{#if isDevelopment}}ErrorObject{{else}}any{{/if}}[]
 ) => void
 
 /**
@@ -90,7 +90,7 @@ For more information on analytics-node, see: https://docs.rudderstack.com/stream
 {{/unless}}
 
 {{!-- We use a closure so we can lazy-resolve window.analytics in browser environments. --}}
-let analytics: () => ({{#if isBrowser}}RudderAnalytics.AnalyticsJS{{else}}Rudder.AnalyticsNode{{/if}} | undefined) = () => {
+let analytics: () => ({{#if isBrowser}}any{{else}}Rudder.AnalyticsNode{{/if}} | undefined) = () => {
 	{{#if isBrowser}}
 	return window.analytics
 	{{else}}
@@ -106,7 +106,7 @@ export interface RudderTyperOptions {
 	 * Defaults to window.analytics.
 	 {{/if}}
 	 */
-	analytics{{#if isBrowser}}?{{/if}}: {{#if isBrowser}}RudderAnalytics.AnalyticsJS{{else}}Rudder.AnalyticsNode{{/if}}
+	analytics{{#if isBrowser}}?{{/if}}: {{#if isBrowser}}any{{else}}Rudder.AnalyticsNode{{/if}}
 	/**
 	 * Handler fired when if an event does not match its spec. This handler
 	 * does not fire in production mode, because it requires inlining the full
@@ -133,10 +133,10 @@ export function setRudderTyperOptions(options: RudderTyperOptions) {
 	*/
 function validateAgainstSchema(
 	message: {{#if isBrowser}}Record<string, any>{{else}}Rudder.TrackMessage<Record<string, any>>{{/if}},
-	schema: object
+	schema: Rudder.Schema
 ) {
 	let ajv;
-	if (schema.hasOwnProperty('$schema') && schema['$schema'].includes('draft-04')) {
+	if (schema['$schema'] && schema['$schema'].includes('draft-04')) {
 		ajv = new AjvDraft4({
 			allErrors: true,
 			verbose: true
@@ -292,7 +292,7 @@ export default new Proxy<typeof clientAPI>(clientAPI, {
 				a.track(withRudderTyperContext({
 					event: 'Unknown Analytics Call Fired',
 					properties: {
-						method,
+						method : [method as string],
 					},
 					userId: 'ruddertyper'
 				}))

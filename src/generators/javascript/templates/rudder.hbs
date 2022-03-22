@@ -8,7 +8,7 @@
  */
 declare global {
 	interface Window {
-		analytics: RudderAnalytics.AnalyticsJS
+		analytics: any
 	}
 }
 
@@ -24,9 +24,9 @@ export { AnalyticsNode }
  */
 export interface TrackMessage<PropertiesType> extends Options, Record<string, any> {
   /** The ID for this user in your database. */
-  userId?: string | number
+  userId?: string
   /** An ID to associated with the user when you don’t know who they are. */
-  anonymousId?: string | number
+  anonymousId?: string
   /** A dictionary of properties for the event. */
   properties?: PropertiesType
   /**
@@ -39,8 +39,34 @@ export interface TrackMessage<PropertiesType> extends Options, Record<string, an
 }
 
 /** The callback exposed by analytics-node. */
-export type Callback = (err: Error) => void
+export type Callback = () => void;
+
+
+/**
+ * Represents a generic object in the APIs
+ * Use for parameters like context, traits etc.
+ */
+ export interface apiObject {
+	[index: string]:
+	| string
+	| number
+	| boolean
+	| undefined
+	| apiObject
+	| (string | number | boolean | apiObject)[];
+}
 {{/if}}
+
+// Need to check what properties are mandatory and what are not in the Tracking Plan API Spec / Source Code
+/** The Schema object which is being used by Ajv to validate the message */
+export interface Schema {
+	$schema? : string 
+	description? : string
+	properties? : object
+	title? : string
+	type? : string
+}
+
 
 /** A dictionary of options. For example, enable or disable specific destinations for the call. */
 export interface Options {

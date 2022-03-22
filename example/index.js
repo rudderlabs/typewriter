@@ -1,83 +1,81 @@
-const Analytics = require('@rudderstack/rudder-sdk-node')
-
-// we need the batch endpoint of the Rudder server you are running
-const client = new Analytics(WRITE_KEY, 'DATA_PLANE_URL/v1/batch', { loglevel: 'verbose' })
-
-const rudderTyper = require('./analytics/')
-
-// Pass in your analytics-node instance to Typewriter.
-rudderTyper.setRudderTyperOptions({
-	analytics: client,
-})
-
-rudderTyper.enumTypes(
-	{
-		userId: 'john',
-		properties: {
-			'string const': 'Rick Sanchez',
-			'string enum': 'Lawyer Morty',
-			id: '4009',
-			numAttempts: 2,
-			rememberMe: false,
-		},
-	},
-	() => {
-		console.log('Enum Types Callback triggered')
-	}
-)
-
-rudderTyper.unionType(
-	{
-		userId: 'john',
-		properties: {
-			universe_name: 'Evil Morthy',
-			id: '4009',
-			numAttempts: 2,
-			rememberMe: false,
-		},
-	},
-	() => {
-		console.log('Union Type Callback triggered')
-	}
-)
-
-rudderTyper.everyNullableRequiredType(
-	{
-		properties: {
-			'required any': 'Rick Sanchez',
-			'required array': [137, 'C-137'],
-			'required boolean': false,
-			'required int': 97,
-			'required number': 3.14,
-			'required object': {},
-			'required string': 'Alpha-Betrium',
-			'required string with regex': 'Lawyer Morty',
-			'required array with properties': [
-				{
-					'required any': 'Rick Sanchez',
-					'required array': [137, 'C-137'],
-					'required boolean': false,
-					'required int': 97,
-					'required number': 3.14,
-					'required object': {},
-					'required string': 'Alpha-Betrium',
-					'required string with regex': 'Lawyer Morty',
-				},
-			],
-			'required object with properties': {
-				'required any': 'Rick Sanchez',
-				'required array': [137, 'C-137'],
-				'required boolean': false,
-				'required int': 97,
-				'required number': 3.14,
-				'required object': {},
-				'required string': 'Alpha-Betrium',
-				'required string with regex': 'Lawyer Morty',
-			},
-		},
-		userId: 'john',
-	},
-	() => {
-		console.log('Every nullable required type callback triggered')
-	}
-)
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+exports.__esModule = true;
+var rudder_sdk_node_1 = __importDefault(require("@rudderstack/rudder-sdk-node"));
+var ruddertyper_1 = __importDefault(require("./analytics/ruddertyper"));
+var client = new rudder_sdk_node_1["default"]('26Sr4BnWAAm3xCIBL9Equ1uKB4N', 'https://4466-157-47-60-34.ngrok.io/v1/batch', { logLevel: 'verbose' });
+client.track({
+    event: 'Test Event',
+    userId: 'desusaidesu'
+});
+ruddertyper_1["default"].setRudderTyperOptions({
+    analytics: client
+});
+var orderpurchased = {
+    category: 'Fashion',
+    list_id: '001',
+    products: [
+        {
+            brand: 'Nike',
+            category: 'Shoes',
+            coupon: 'SUMMER10',
+            name: 'KnitFly',
+            position: 3,
+            price: 4550,
+            product_id: 'Knit-001',
+            quantity: 1,
+            sku: 'BK-02',
+            variant: 'Dark'
+        },
+    ]
+};
+ruddertyper_1["default"].orderPurchased({
+    userId: 'desusai',
+    properties: orderpurchased
+}, function () { return console.log('Call back through Rudder Typer for Order Purchased'); });
+var productAdded = {
+    category: 'Clothing',
+    list_id: '32',
+    productAddedDetails: {
+        brand: 'Nike',
+        category: 'Shoes',
+        coupon: 'SUMMER10',
+        name: 'KnitFly',
+        position: 3,
+        price: 4550,
+        product_id: 'Knit-001',
+        quantity: 1,
+        sku: 'BK-02',
+        variant: 'Dark',
+        image_url: 'dummy_image',
+        url: 'dummy_url'
+    }
+};
+ruddertyper_1["default"].productAdded({
+    userId: 'desusai',
+    properties: productAdded
+}, function () { return console.log('Call back through Rudder Typer for Product Added'); });
+var productListViewed = {
+    category: 'Fashion',
+    list_id: '001',
+    products: [
+        {
+            brand: 'Nike',
+            category: 'Shoes',
+            coupon: 'SUMMER10',
+            name: 'KnitFly',
+            position: 3,
+            price: 4550,
+            product_id: 'Knit-001',
+            quantity: 1,
+            sku: 'BK-02',
+            variant: 'Dark'
+        },
+    ]
+};
+ruddertyper_1["default"].productListViewed({
+    userId: 'desusai',
+    properties: productListViewed
+}, function () { return console.log('Call back through Rudder Typer for Product List Viewed'); });
