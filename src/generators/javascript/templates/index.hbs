@@ -26,7 +26,7 @@ import * as Rudder from './rudder'
  * {{description}}
  */
 {{/if}}
-export interface {{name}} {{#unless isBrowser}} extends Rudder.apiObject {{/unless}} {
+export interface {{name}} {{#unless ../isBrowser}} extends Rudder.apiObject {{/unless}} {
 	{{#each properties}}
 	{{#if description}}
 	/**
