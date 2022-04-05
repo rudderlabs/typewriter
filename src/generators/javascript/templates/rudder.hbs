@@ -12,8 +12,6 @@ declare global {
 	}
 }
 
-/** The callback exposed by analytics.js. */
-export type Callback = () => void
 {{else}}
 import AnalyticsNode from '@rudderstack/rudder-sdk-node'
 export { AnalyticsNode }
@@ -38,26 +36,8 @@ export interface TrackMessage<PropertiesType> extends Options, Record<string, an
   timestamp?: Date
 }
 
-/** The callback exposed by analytics-node. */
-export type Callback = () => void;
-
-
-/**
- * Represents a generic object in the APIs
- * Use for parameters like context, traits etc.
- */
- export interface apiObject {
-	[index: string]:
-	| string
-	| number
-	| boolean
-	| undefined
-	| apiObject
-	| (string | number | boolean | apiObject)[];
-}
 {{/if}}
 
-// Need to check what properties are mandatory and what are not in the Tracking Plan API Spec / Source Code
 /** The Schema object which is being used by Ajv to validate the message */
 export interface Schema {
 	$schema? : string 
