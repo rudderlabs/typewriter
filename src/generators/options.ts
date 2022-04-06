@@ -8,10 +8,16 @@ export enum SDK {
 
 // Which language to generate clients for.
 export enum Language {
+	TYPESCRIPT = 'typescript',
 	JAVASCRIPT = 'javascript',
 	OBJECTIVE_C = 'objective-c',
 	SWIFT = 'swift',
 	JAVA = 'java',
+}
+
+export type TypeScriptOptions = {
+	sdk: SDK.WEB | SDK.NODE
+	language: Language.TYPESCRIPT
 }
 
 export type JavaScriptOptions = {
@@ -46,4 +52,9 @@ export type JavaOptions = {
 	language: Language.JAVA
 }
 
-export type Options = JavaScriptOptions | ObjectiveCOptions | SwiftOptions | JavaOptions
+export type Options =
+	| JavaScriptOptions
+	| ObjectiveCOptions
+	| SwiftOptions
+	| JavaOptions
+	| TypeScriptOptions

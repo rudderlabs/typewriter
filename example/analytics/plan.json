@@ -1,393 +1,255 @@
 {
-	"create_time": "2021-06-16T02:13:20.385Z",
-	"display_name": "Rudder Typer Validator",
-	"name": "workspaces/1tzQSBIsCxV5OP2t0ImV1qhFF8q/tracking-plans/tp_1u0jrdhXRRhPNWlHDEKaLGicbFW",
+	"create_time": "2021-06-28T06:50:42.905Z",
+	"display_name": "Ecommerce Spec",
+	"name": "workspaces/1iSatLbk9xhE4qBXXzdWajZ3HVF/tracking-plans/tp_1uZB4vCgfpXnpDv2Yqfgva5FiIk",
 	"rules": {
 		"events": [
 			{
-				"description": "Validates that clients support fields with multiple (union) types.",
-				"id": "ev_1u0jrcfqVMHtkbGBlni3RgV1QqT",
-				"name": "Union Type",
+				"description": "This event is triggered whenever a user completes a order on your website or app",
+				"id": "ev_1uZIYdFmncTAAET6hdSzQkfz2Qq",
+				"name": "Order Purchased",
 				"rules": {
-					"$schema": "http://json-schema.org/draft-07/schema#",
+					"$schema": "http://json-schema.org/draft-04/schema#",
 					"properties": {
 						"context": {
 						},
 						"properties": {
 							"properties": {
-								"universe_name": {
-									"description": "",
-									"type": [
-										"string",
-										"null",
-										"integer"
-									]
-								}
-							},
-							"required": [
-								"universe_name"
-							],
-							"type": "object"
-						},
-						"traits": {
-							"type": "object"
-						}
-					},
-					"required": [
-						"properties"
-					],
-					"type": "object"
-				},
-				"version": "1-0-0"
-			},
-			{
-				"description": "Validates that client property sanitize enums.",
-				"id": "ev_1u0jrcinp9mq64ME9soeINrPZGP",
-				"name": "Enum Types",
-				"rules": {
-					"$schema": "http://json-schema.org/draft-07/schema#",
-					"properties": {
-						"context": {
-						},
-						"properties": {
-							"properties": {
-								"string const": {
-									"description": "A string property that only accepts a single enum value.",
-									"enum": [
-										"Rick Sanchez"
-									],
+								"category": {
 									"type": "string"
 								},
-								"string enum": {
-									"description": "A string property that accepts multiple enum values.",
-									"enum": [
-										"Evil Morty",
-										"Lawyer Morty"
-									],
+								"list_id": {
 									"type": "string"
-								}
-							},
-							"type": "object"
-						},
-						"traits": {
-							"type": "object"
-						}
-					},
-					"type": "object"
-				},
-				"version": "1-0-0"
-			},
-			{
-				"description": "Validates that clients handle all of the supported field types, as nullable required fields. If a field is null, it is expected to be sent through.",
-				"id": "ev_1u0jrf47oTKLbwZB7A9Q0BkwIFr",
-				"name": "Every Nullable Required Type",
-				"rules": {
-					"$schema": "http://json-schema.org/draft-07/schema#",
-					"properties": {
-						"context": {
-						},
-						"properties": {
-							"properties": {
-								"required any": {
-									"description": "Required any property"
 								},
-								"required array": {
-									"description": "Required array property",
-									"type": [
-										"array",
-										"null"
-									]
-								},
-								"required array with properties": {
-									"description": "Required array with properties",
+								"products": {
 									"items": {
 										"properties": {
-											"required any": {
-												"description": "Required any property"
+											"brand": {
+												"type": "string"
 											},
-											"required array": {
-												"description": "Required array property",
-												"type": [
-													"array",
-													"null"
-												]
+											"category": {
+												"type": "string"
 											},
-											"required boolean": {
-												"description": "Required boolean property",
-												"type": [
-													"boolean",
-													"null"
-												]
+											"coupon": {
+												"type": "string"
 											},
-											"required int": {
-												"description": "Required integer property",
-												"type": [
-													"integer",
-													"null"
-												]
+											"image_url": {
+												"type": "string"
 											},
-											"required number": {
-												"description": "Required number property",
-												"type": [
-													"number",
-													"null"
-												]
+											"name": {
+												"type": "string"
 											},
-											"required object": {
-												"description": "Required object property",
-												"properties": {
-												},
-												"required": [
-												],
-												"type": [
-													"object",
-													"null"
-												]
+											"position": {
+												"type": "number"
 											},
-											"required string": {
-												"description": "Required string property",
-												"type": [
-													"string",
-													"null"
-												]
+											"price": {
+												"type": "number"
 											},
-											"required string with regex": {
-												"description": "Required string property with a regex conditional",
-												"pattern": "Evil Morty|Lawyer Morty",
-												"type": [
-													"string",
-													"null"
-												]
+											"product_id": {
+												"type": "string"
+											},
+											"quantity": {
+												"type": "number"
+											},
+											"sku": {
+												"type": "string"
+											},
+											"url": {
+												"type": "string"
+											},
+											"variant": {
+												"type": "string"
 											}
 										},
 										"required": [
-											"required any",
-											"required array",
-											"required boolean",
-											"required int",
-											"required number",
-											"required object",
-											"required string",
-											"required string with regex"
+											"product_id",
+											"sku",
+											"category",
+											"name",
+											"brand",
+											"variant",
+											"price",
+											"quantity",
+											"position",
+											"coupon"
 										],
-										"type": [
-											"object",
-											"null"
-										]
+										"type": "object"
 									},
-									"type": [
-										"array",
-										"null"
-									]
+									"type": "array"
+								}
+							},
+							"type": "object"
+						}
+					},
+					"type": "object"
+				},
+				"version": "1-0-0"
+			},
+			{
+				"description": "This events is triggered whenever a visitor views a list or category of products on your website or app",
+				"id": "ev_1uZB4pTVXgTelgNz7nYSuR4RBsr",
+				"name": "Product List Viewed",
+				"rules": {
+					"$schema": "http://json-schema.org/draft-04/schema#",
+					"properties": {
+						"context": {
+						},
+						"properties": {
+							"properties": {
+								"category": {
+									"type": "string"
 								},
-								"required boolean": {
-									"description": "Required boolean property",
-									"type": [
-										"boolean",
-										"null"
-									]
+								"list_id": {
+									"type": "string"
 								},
-								"required int": {
-									"description": "Required integer property",
-									"type": [
-										"integer",
-										"null"
-									]
-								},
-								"required number": {
-									"description": "Required number property",
-									"type": [
-										"number",
-										"null"
-									]
-								},
-								"required object": {
-									"description": "Required object property",
-									"properties": {
-									},
-									"required": [
-									],
-									"type": [
-										"object",
-										"null"
-									]
-								},
-								"required object with properties": {
-									"description": "Required object with properties",
-									"properties": {
-										"required any": {
-											"description": "Required any property"
-										},
-										"required array": {
-											"description": "Required array property",
-											"type": [
-												"array",
-												"null"
-											]
-										},
-										"required boolean": {
-											"description": "Required boolean property",
-											"type": [
-												"boolean",
-												"null"
-											]
-										},
-										"required int": {
-											"description": "Required integer property",
-											"type": [
-												"integer",
-												"null"
-											]
-										},
-										"required number": {
-											"description": "Required number property",
-											"type": [
-												"number",
-												"null"
-											]
-										},
-										"required object": {
-											"description": "Required object property",
-											"properties": {
+								"products": {
+									"items": {
+										"properties": {
+											"brand": {
+												"type": "string"
 											},
-											"required": [
-											],
-											"type": [
-												"object",
-												"null"
-											]
+											"category": {
+												"type": "string"
+											},
+											"coupon": {
+												"type": "string"
+											},
+											"image_url": {
+												"type": "string"
+											},
+											"name": {
+												"type": "string"
+											},
+											"position": {
+												"type": "number"
+											},
+											"price": {
+												"type": "number"
+											},
+											"product_id": {
+												"type": "string"
+											},
+											"quantity": {
+												"type": "number"
+											},
+											"sku": {
+												"type": "string"
+											},
+											"url": {
+												"type": "string"
+											},
+											"variant": {
+												"type": "string"
+											}
 										},
-										"required string": {
-											"description": "Required string property",
-											"type": [
-												"string",
-												"null"
-											]
+										"required": [
+											"product_id",
+											"sku",
+											"category",
+											"name",
+											"brand",
+											"variant",
+											"price",
+											"quantity",
+											"position",
+											"coupon"
+										],
+										"type": "object"
+									},
+									"type": "array"
+								}
+							},
+							"type": "object"
+						}
+					},
+					"type": "object"
+				},
+				"version": "3-0-0"
+			},
+			{
+				"description": "This Event indicates that a product has been added to cart and its details",
+				"id": "ev_1wwUhOV2VbYc3eXcCJc65KQxenq",
+				"name": "Product Added",
+				"rules": {
+					"$schema": "http://json-schema.org/draft-06/schema#",
+					"properties": {
+						"context": {
+						},
+						"properties": {
+							"properties": {
+								"category": {
+									"type": "string"
+								},
+								"details": {
+									"properties": {
+										"brand": {
+											"type": "string"
 										},
-										"required string with regex": {
-											"description": "Required string property with a regex conditional",
-											"pattern": "Evil Morty|Lawyer Morty",
-											"type": [
-												"string",
-												"null"
-											]
+										"category": {
+											"type": "string"
+										},
+										"coupon": {
+											"type": "string"
+										},
+										"image_url": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"position": {
+											"type": "number"
+										},
+										"price": {
+											"type": "number"
+										},
+										"product_id": {
+											"type": "string"
+										},
+										"quantity": {
+											"type": "number"
+										},
+										"sku": {
+											"type": "string"
+										},
+										"url": {
+											"type": "string"
+										},
+										"variant": {
+											"type": "string"
 										}
 									},
 									"required": [
-										"required any",
-										"required array",
-										"required boolean",
-										"required int",
-										"required number",
-										"required object",
-										"required string",
-										"required string with regex"
+										"product_id",
+										"sku",
+										"category",
+										"name",
+										"price",
+										"position",
+										"url",
+										"image_url"
 									],
-									"type": [
-										"object",
-										"null"
-									]
+									"type": "object"
 								},
-								"required string": {
-									"description": "Required string property",
-									"type": [
-										"string",
-										"null"
-									]
-								},
-								"required string with regex": {
-									"description": "Required string property with a regex conditional",
-									"pattern": "Evil Morty|Lawyer Morty",
-									"type": [
-										"string",
-										"null"
-									]
+								"list_id": {
+									"type": "string"
 								}
 							},
 							"required": [
-								"required any",
-								"required array",
-								"required boolean",
-								"required int",
-								"required number",
-								"required object",
-								"required string",
-								"required string with regex",
-								"required object with properties",
-								"required array with properties"
+								"list_id",
+								"category"
 							],
 							"type": "object"
 						},
 						"traits": {
 						}
 					},
-					"required": [
-						"properties"
-					],
 					"type": "object"
 				},
-				"version": "1-0-0"
+				"version": "3-0-0"
 			}
-		],
-		"group": {
-			"$schema": "http://json-schema.org/draft-04/schema#",
-			"properties": {
-				"context": {
-				},
-				"properties": {
-				},
-				"traits": {
-					"properties": {
-						"company": {
-							"type": [
-								"object"
-							]
-						}
-					},
-					"required": [
-						"company"
-					],
-					"type": "object"
-				}
-			},
-			"type": "object",
-			"version": "1-0-0"
-		},
-		"identify": {
-			"$schema": "http://json-schema.org/draft-04/schema#",
-			"properties": {
-				"context": {
-				},
-				"properties": {
-				},
-				"traits": {
-					"properties": {
-						"age": {
-							"type": [
-								"number"
-							]
-						},
-						"name": {
-							"type": [
-								"string"
-							]
-						},
-						"occupation": {
-							"type": [
-								"string"
-							]
-						}
-					},
-					"required": [
-						"name"
-					],
-					"type": "object"
-				}
-			},
-			"type": "object",
-			"version": "1-0-0"
-		}
+		]
 	},
-	"update_time": "2021-06-16T02:13:20.385Z",
-	"version": 1
+	"update_time": "2022-03-22T07:52:25.809Z",
+	"version": 11
 }

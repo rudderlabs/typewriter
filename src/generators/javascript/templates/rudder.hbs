@@ -8,12 +8,10 @@
  */
 declare global {
 	interface Window {
-		analytics: RudderAnalytics.AnalyticsJS
+		analytics: any
 	}
 }
 
-/** The callback exposed by analytics.js. */
-export type Callback = () => void
 {{else}}
 import AnalyticsNode from '@rudderstack/rudder-sdk-node'
 export { AnalyticsNode }
@@ -24,9 +22,9 @@ export { AnalyticsNode }
  */
 export interface TrackMessage<PropertiesType> extends Options, Record<string, any> {
   /** The ID for this user in your database. */
-  userId?: string | number
+  userId?: string
   /** An ID to associated with the user when you don’t know who they are. */
-  anonymousId?: string | number
+  anonymousId?: string
   /** A dictionary of properties for the event. */
   properties?: PropertiesType
   /**
@@ -38,9 +36,17 @@ export interface TrackMessage<PropertiesType> extends Options, Record<string, an
   timestamp?: Date
 }
 
-/** The callback exposed by analytics-node. */
-export type Callback = (err: Error) => void
 {{/if}}
+
+/** The Schema object which is being used by Ajv to validate the message */
+export interface Schema {
+	$schema? : string 
+	description? : string
+	properties? : object
+	title? : string
+	type? : string
+}
+
 
 /** A dictionary of options. For example, enable or disable specific destinations for the call. */
 export interface Options {

@@ -3,14 +3,12 @@
 
 client:
   sdk: analytics-node
-  language: javascript
-  moduleTarget: CommonJS
-  scriptTarget: ES5
+  language: typescript
 
 trackingPlans:
-  # Tracking Plan: Rudder Typer Validator
-  # https://api.rudderstack.com/trackingplans/tp_1u0jrdhXRRhPNWlHDEKaLGicbFW
-  - id: tp_1u0jrdhXRRhPNWlHDEKaLGicbFW
-    workspaceSlug: 1tzQSBIsCxV5OP2t0ImV1qhFF8q
+  # Tracking Plan: Ecommerce Spec
+  # https://api.rudderstack.com/trackingplans/tp_1uZB4vCgfpXnpDv2Yqfgva5FiIk
+  - id: tp_1uZB4vCgfpXnpDv2Yqfgva5FiIk
+    workspaceSlug: 1iSatLbk9xhE4qBXXzdWajZ3HVF
     path: analytics
 
