@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "TS_NODE_FILES=true NODE_ENV=development ts-node ./src/cli",
     "build": "rm -rf dist && yarn rudder-typer prod && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist/src/",
-    "test": "jest --testPathIgnorePatterns 'tests/e2e/.*' 'example'",
+    "test": "jest --testPathIgnorePatterns 'tests/e2e/.*' 'example' --coverage",
     "e2e": "make e2e",
     "update": "make update",
     "lint": "eslint './src/**/*.{ts,tsx}'",
