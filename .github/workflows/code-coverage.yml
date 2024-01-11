@@ -1,6 +1,11 @@
-name: Tests
+name: Tests & Code Coverage
 
 on:
+  push:
+    branches:
+      - master
+      - main
+      - "release/*"
   pull_request:
     branches:
       - main
@@ -12,12 +17,11 @@ on:
 permissions: read-all
 
 jobs:
-  main-branch-tests:
-    name: Run Tests on Main Branch PR
+  upload-code-coverage:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v2
 
       - name: Check Current Working Directory
