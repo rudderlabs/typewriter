@@ -14,8 +14,6 @@ on:
       - opened
       - synchronize
 
-permissions: read-all
-
 jobs:
   upload-code-coverage:
     runs-on: ubuntu-latest
