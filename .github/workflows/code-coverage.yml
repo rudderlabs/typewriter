@@ -24,11 +24,6 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
 
-      - name: Check Current Working Directory
-        run: |
-          pwd
-        working-directory: .
-
       - name: Set Node 20
         uses: actions/setup-node@v3
         with:
@@ -36,11 +31,9 @@ jobs:
 
       - name: Install Node.js Dependencies
         run: npm i
-        working-directory: .
 
       - name: Run Tests
         run: npm test
-        working-directory: .
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
