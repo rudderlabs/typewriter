@@ -1,0 +1,40 @@
+name: Tests & Code Coverage
+
+on:
+  push:
+    branches:
+      - master
+      - main
+      - "release/*"
+  pull_request:
+    branches:
+      - main
+      - master
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  upload-code-coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: Set Node 10
+        uses: actions/setup-node@v3
+        with:
+          node-version: 10
+
+      - name: Install Node.js Dependencies
+        run: npm i
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
