@@ -75,9 +75,7 @@ export const defaultValidationErrorHandler: ViolationHandler = (message, violati
 	{{/unless}}
 	console.warn(msg)
 }
-{{/if}}
 
-{{#if isDevelopment}}
 let onViolation = defaultValidationErrorHandler
 {{/if}}
 
@@ -276,13 +274,18 @@ const clientAPI = {
 	{{/each}}
 }
 
-export const Analytics = new Proxy<typeof clientAPI>(clientAPI, {
+export const RudderTyperAnalytics = new Proxy<typeof clientAPI>(clientAPI, {
 	get(target, method) {
 		if (typeof method === 'string' && Object.keys(target).includes(method)) {
 			return target[method as keyof typeof clientAPI]
 		}
 
 		return () => {
+			{{#if isDevelopment}}
+			console.warn(`⚠️  You made an analytics call (${String(method)}) that can't be found. Either:
+    a) Re-generate your ruddertyper client: \`npx rudder-typer\`
+    b) Add it to your Tracking Plan: {{trackingPlanURL}}`)
+			{{/if}}
 			const a = analytics()
 			if (a) {
 				{{#if isBrowser}}
