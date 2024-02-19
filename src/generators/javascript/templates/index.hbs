@@ -58,6 +58,7 @@ export type ViolationHandler = (
  * a warning message to the console.
  {{/if}}
  */
+{{#if isDevelopment}}
 export const defaultValidationErrorHandler: ViolationHandler = (message, violations) => {
 	const msg = JSON.stringify({
 		type: 'RudderTyper JSON Schema Validation Error',
@@ -75,7 +76,6 @@ export const defaultValidationErrorHandler: ViolationHandler = (message, violati
 	console.warn(msg)
 }
 
-{{#if isDevelopment}}
 let onViolation = defaultValidationErrorHandler
 {{/if}}
 
@@ -274,16 +274,18 @@ const clientAPI = {
 	{{/each}}
 }
 
-export default new Proxy<typeof clientAPI>(clientAPI, {
+export const RudderTyperAnalytics = new Proxy<typeof clientAPI>(clientAPI, {
 	get(target, method) {
-		if (typeof method === 'string' && target.hasOwnProperty(method)) {
+		if (typeof method === 'string' && Object.keys(target).includes(method)) {
 			return target[method as keyof typeof clientAPI]
 		}
 
 		return () => {
+			{{#if isDevelopment}}
 			console.warn(`⚠️  You made an analytics call (${String(method)}) that can't be found. Either:
     a) Re-generate your ruddertyper client: \`npx rudder-typer\`
     b) Add it to your Tracking Plan: {{trackingPlanURL}}`)
+			{{/if}}
 			const a = analytics()
 			if (a) {
 				{{#if isBrowser}}
