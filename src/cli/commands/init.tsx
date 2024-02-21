@@ -21,7 +21,8 @@ import { orderBy } from 'lodash'
 import { Build } from './build'
 import Fuse from 'fuse.js'
 import { StandardProps, DebugContext } from '../index'
-import { ErrorContext, wrapError } from './error'
+import { ErrorContext, WrappedError, wrapError } from './error'
+import { APIError } from '../types'
 
 const readir = promisify(fs.readdir)
 
@@ -430,7 +431,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 					canBeSet: method !== tokens.script.method,
 				})
 			} catch (error) {
-				handleFatalError(error)
+				handleFatalError(error as WrappedError)
 			}
 		}
 
@@ -450,11 +451,12 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 			try {
 				await storeToken(state.token, state.email)
 			} catch (error) {
+				const err = error as APIError
 				handleFatalError(
 					wrapError(
 						'Unable to save token to ~/.ruddertyper',
-						error,
-						`Failed due to an ${error.code} error (${error.errno}).`
+						error as Error,
+						`Failed due to an ${err.code} error (${err.errno}).`
 					)
 				)
 				return
@@ -618,11 +620,12 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 			setTrackingPlans(await fetchTrackingPlans({ token, email }))
 			setIsLoading(false)
 		} catch (error) {
-			if (error.statusCode === 403) {
+			const err = error as APIError
+			if (err.statusCode === 403) {
 				return handleFatalError(
 					wrapError(
 						'Failed to authenticate with the RudderStack API',
-						error,
+						error as Error,
 						'You may be using a malformed/invalid token or a legacy personal access token'
 					)
 				)
@@ -630,7 +633,7 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 				return handleFatalError(
 					wrapError(
 						'Unable to fetch Tracking Plans',
-						error,
+						error as Error,
 						'Check your internet connectivity and try again'
 					)
 				)
@@ -744,11 +747,12 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 				setIsLoading(false)
 				onConfirm(config)
 			} catch (error) {
+				const err = error as APIError
 				handleFatalError(
 					wrapError(
 						'Unable to write ruddertyper.yml',
-						error,
-						`Failed due to an ${error.code} error (${error.errno}).`
+						error as Error,
+						`Failed due to an ${err.code} error (${err.errno}).`
 					)
 				)
 				return

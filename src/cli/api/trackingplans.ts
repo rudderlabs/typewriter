@@ -41,7 +41,7 @@ export async function writeTrackingPlan(
 	await verifyDirectoryExists(path, 'file')
 
 	// Perform some pre-processing on the Tracking Plan before writing it.
-	const planJSON = flow<RudderAPI.TrackingPlan, RudderAPI.TrackingPlan, string>(
+	const planJSON = flow<RudderAPI.TrackingPlan [], RudderAPI.TrackingPlan, string>(
 		// Enforce a deterministic ordering to reduce verson control deltas.
 		plan => sanitizeTrackingPlan(plan),
 		plan => stringify(plan, { space: '\t' })

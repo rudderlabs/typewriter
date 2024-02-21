@@ -8,6 +8,7 @@ import { Config, validateConfig } from './schema'
 import { validateToken, RudderAPI } from '../api'
 import { wrapError } from '../commands/error'
 import { runScript, Scripts } from './scripts'
+import { APIError } from '../types'
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
@@ -35,17 +36,18 @@ export async function getConfig(path = './'): Promise<Config | undefined> {
 			encoding: 'utf-8',
 		})
 	} catch (error) {
+		const err = error as APIError
 		throw wrapError(
 			'Unable to open ruddertyper.yml',
-			error,
-			`Failed due to an ${error.code} error (${error.errno}).`,
+			error as Error,
+			`Failed due to an ${err.code} error (${err.errno}).`,
 			configPath
 		)
 	}
 
 	const rawConfig = yaml.safeLoad(file)
 
-	return validateConfig(rawConfig)
+	return validateConfig(rawConfig as Config)
 }
 
 // setConfig writes a config out to a ruddertyper.yml file.

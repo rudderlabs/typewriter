@@ -137,7 +137,7 @@ function toYargsHandler<P = unknown>(
 				!cliOptions ||
 				!cliOptions.validateDefault ||
 				args._.length === 0 ||
-				['update', 'u'].includes(args._[0])
+				['update', 'u'].includes(args._[0] as string)
 
 			// Attempt to read a config, if one is available.
 			const cfg = await getConfig(args.config)
@@ -199,7 +199,7 @@ function toYargsHandler<P = unknown>(
 				const { waitUntilExit } = render(
 					<DebugContext.Provider value={{ debug: args.debug }}>
 						<ErrorBoundary
-							error={error}
+							error={error as Error}
 							anonymousId={anonymousId}
 							analyticsProps={await rudderTyperLibraryProperties(args)}
 							debug={args.debug}

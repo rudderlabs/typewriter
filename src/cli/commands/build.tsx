@@ -32,6 +32,7 @@ import figures from 'figures'
 import { Init } from './init'
 import { getEmail } from '../config/config'
 import { toTrackingPlanId } from '../api/trackingplans'
+import { APIError } from '../types'
 
 const readFile = promisify(fs.readFile)
 const readdir = promisify(fs.readdir)
@@ -171,7 +172,7 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
 							email,
 						})
 					} catch (error) {
-						handleError(error)
+						handleError(error as WrappedError)
 						if (isWrappedError(error)) {
 							setAPIError(error.description)
 						} else {
@@ -284,11 +285,12 @@ export const ClearFilesStep: React.FC<ClearFilesProps> = ({ config, configPath, 
 				try {
 					await clearFolder(path)
 				} catch (error) {
+					const err = error as Error;
 					return wrapError(
 						'Failed to clear generated files',
-						error,
+						error as Error,
 						`Failed on: '${trackingPlanConfig.path}'`,
-						error.message
+						err.message
 					)
 				}
 			})
@@ -317,10 +319,11 @@ export const ClearFilesStep: React.FC<ClearFilesProps> = ({ config, configPath, 
 					await unlink(fullPath)
 				}
 			} catch (error) {
+				const err = error as APIError;
 				// Note: none of our generators produce folders, but if we ever do, then we'll need to
 				// update this logic to handle recursively traversing directores. For now, we just ignore
 				// any directories.
-				if (error.code !== 'EISDIR') {
+				if (err.code !== 'EISDIR') {
 					throw error
 				}
 			}
@@ -450,7 +453,7 @@ function useStep<Arg>(
 				onDone(result)
 			}
 		} catch (error) {
-			handleFatalError(toUnexpectedError(error))
+			handleFatalError(toUnexpectedError(error as Error))
 		}
 	}
 
