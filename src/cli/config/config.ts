@@ -39,7 +39,7 @@ export async function getConfig(path = './'): Promise<Config | undefined> {
 		const err = error as APIError
 		throw wrapError(
 			'Unable to open ruddertyper.yml',
-			error as Error,
+			err,
 			`Failed due to an ${err.code} error (${err.errno}).`,
 			configPath
 		)

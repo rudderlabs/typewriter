@@ -455,7 +455,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 				handleFatalError(
 					wrapError(
 						'Unable to save token to ~/.ruddertyper',
-						error as Error,
+						err,
 						`Failed due to an ${err.code} error (${err.errno}).`
 					)
 				)
@@ -625,7 +625,7 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 				return handleFatalError(
 					wrapError(
 						'Failed to authenticate with the RudderStack API',
-						error as Error,
+						err,
 						'You may be using a malformed/invalid token or a legacy personal access token'
 					)
 				)
@@ -633,7 +633,7 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
 				return handleFatalError(
 					wrapError(
 						'Unable to fetch Tracking Plans',
-						error as Error,
+						err,
 						'Check your internet connectivity and try again'
 					)
 				)
@@ -751,7 +751,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 				handleFatalError(
 					wrapError(
 						'Unable to write ruddertyper.yml',
-						error as Error,
+						err,
 						`Failed due to an ${err.code} error (${err.errno}).`
 					)
 				)

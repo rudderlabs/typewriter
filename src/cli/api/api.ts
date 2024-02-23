@@ -154,19 +154,19 @@ async function apiGet<Response>(url: string, token: string, email: string): Prom
 		const err = error as APIError
 		// Don't include the user's authorization token. Overwrite the header value from this error.
 		const tokenHeader = `Bearer ${token.trim().substring(0, 10)}... (token redacted)`
-		error = set(error as Error, 'gotOptions.headers.authorization', tokenHeader)
+		error = set(err, 'gotOptions.headers.authorization', tokenHeader)
 
 		if (err.statusCode === 401 || err.statusCode === 403) {
 			throw wrapError(
 				'Permission denied by Rudder API',
-				error as Error,
+				err,
 				`Failed while querying the ${url} endpoint`,
 				"Verify you are using the right API token by running 'npx rudder-typer tokens'"
 			)
 		} else if (err.code === 'ETIMEDOUT') {
 			throw wrapError(
 				'Rudder API request timed out',
-				error as Error,
+				err,
 				`Failed while querying the ${url} endpoint`
 			)
 		}

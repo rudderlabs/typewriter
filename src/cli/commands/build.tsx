@@ -288,7 +288,7 @@ export const ClearFilesStep: React.FC<ClearFilesProps> = ({ config, configPath, 
 					const err = error as Error;
 					return wrapError(
 						'Failed to clear generated files',
-						error as Error,
+						err,
 						`Failed on: '${trackingPlanConfig.path}'`,
 						err.message
 					)
