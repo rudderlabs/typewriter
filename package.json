@@ -7,17 +7,18 @@
   "bugs": "https://github.com/rudderlabs/rudder-typer/issues",
   "author": "Desu Sai Venkat <venkat@rudderstack.com>",
   "license": "MIT",
-  "main": "./dist/src/cli/index.js",
-  "bin": "./dist/src/cli/index.js",
+  "main": "./src/cli/index.js",
+  "bin": "./src/cli/index.js",
   "scripts": {
     "dev": "TS_NODE_FILES=true NODE_ENV=development ts-node ./src/cli",
-    "build": "rm -rf dist && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist/src/",
+    "build": "rm -rf dist && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist/src/ && copyfiles \"README.*\" dist/ && copyfiles \"CHANGELOG.*\" dist/",
     "test": "jest --testPathIgnorePatterns 'tests/e2e/.*' 'example' --coverage",
     "e2e": "make e2e",
     "update": "make update",
     "lint": "eslint './src/**/*.{ts,tsx}'",
-    "release": "yarn run build && np --any-branch",
-    "release:pre": "yarn run build && np prerelease --any-branch --tag next --no-release-draft"
+    "release": "yarn run build && np --any-branch --contents dist",
+    "release:pre": "yarn run build && np prerelease --any-branch --tag next --no-release-draft --contents dist",
+    "release:ci": "yarn publish dist --tag next --new-version $NPM_PACKAGE_NEW_VERSION"
   },
   "engines": {
     "node": ">=0.10.18"
@@ -49,7 +50,6 @@
     "jest-expect-message": "^1.0.2",
     "lint-staged": "^8.1.7",
     "np": "^5.0.1",
-    "snyk": "^1.250.0",
     "ts-jest": "^26.4.4",
     "ts-node": "^8.1.0",
     "tsconfig-paths": "^3.8.0"
@@ -77,7 +77,8 @@
     "semver": "^6.3.1",
     "sort-keys": "^3.0.0",
     "typescript": "^4.1.2",
-    "yargs": "^16.1.1"
+    "yargs": "^16.1.1",
+    "yarn": "^1.22.21"
   },
   "files": [
     "dist",

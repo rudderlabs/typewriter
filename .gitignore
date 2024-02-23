@@ -70,6 +70,7 @@ package-lock.json
 
 # VSCode
 .vscode
+.idea
 
 
 # Example RudderTyper client
