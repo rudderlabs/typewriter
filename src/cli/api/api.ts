@@ -4,6 +4,7 @@ import { version } from '../../../package.json'
 import { wrapError, isWrappedError } from '../commands/error'
 import { sanitizeTrackingPlan } from './trackingplans'
 import { set } from 'lodash'
+import { APIError } from '../types'
 
 export namespace RudderAPI {
 	export type GetTrackingPlanResponse = TrackingPlan
@@ -150,25 +151,25 @@ async function apiGet<Response>(url: string, token: string, email: string): Prom
 		const { body } = await resp
 		return body
 	} catch (error) {
+		const err = error as APIError
 		// Don't include the user's authorization token. Overwrite the header value from this error.
 		const tokenHeader = `Bearer ${token.trim().substring(0, 10)}... (token redacted)`
-		error = set(error, 'gotOptions.headers.authorization', tokenHeader)
+		error = set(err, 'gotOptions.headers.authorization', tokenHeader)
 
-		if (error.statusCode === 401 || error.statusCode === 403) {
+		if (err.statusCode === 401 || err.statusCode === 403) {
 			throw wrapError(
 				'Permission denied by Rudder API',
-				error,
+				err,
 				`Failed while querying the ${url} endpoint`,
 				"Verify you are using the right API token by running 'npx rudder-typer tokens'"
 			)
-		} else if (error.code === 'ETIMEDOUT') {
+		} else if (err.code === 'ETIMEDOUT') {
 			throw wrapError(
 				'Rudder API request timed out',
-				error,
+				err,
 				`Failed while querying the ${url} endpoint`
 			)
 		}
-
 		throw error
 	}
 }

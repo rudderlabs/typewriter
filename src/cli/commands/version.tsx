@@ -3,7 +3,7 @@ import { Box, Color, useApp } from 'ink'
 import { version as ruddertyperVersion } from '../../../package.json'
 import latest from 'latest-version'
 import { StandardProps } from '../index'
-import { ErrorContext } from './error'
+import { ErrorContext, WrappedError } from './error'
 import semver from 'semver'
 
 export const Version: React.FC<StandardProps> = () => {
@@ -28,7 +28,7 @@ export const Version: React.FC<StandardProps> = () => {
 				setLatestVersion(latestVersion)
 			} catch (error) {
 				// If we can't access NPM, then ignore this version check.
-				handleError(error)
+				handleError(error as WrappedError)
 			}
 			setIsLoading(false)
 			exit()
