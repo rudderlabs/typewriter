@@ -49,6 +49,7 @@ export type ViolationHandler = (
 	violations: {{#if isDevelopment}}ErrorObject{{else}}any{{/if}}[]
 ) => void
 
+{{#if isDevelopment}}
 /**
  * The default handler that is fired if none is supplied with setRudderTyperOptions.
  {{#if isBrowser}}
@@ -58,7 +59,6 @@ export type ViolationHandler = (
  * a warning message to the console.
  {{/if}}
  */
-{{#if isDevelopment}}
 export const defaultValidationErrorHandler: ViolationHandler = (message, violations) => {
 	const msg = JSON.stringify({
 		type: 'RudderTyper JSON Schema Validation Error',
