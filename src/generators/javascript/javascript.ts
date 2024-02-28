@@ -172,7 +172,7 @@ export const javascript: Generator<
 		const formattedContents = prettier.format(contents, {
 			parser: client.options.client.language === Language.TYPESCRIPT ? 'typescript' : 'babel',
 			// Overwrite a few of the standard prettier settings to match with our RudderTyper configuration:
-			useTabs: true,
+			tabWidth: 2,
 			singleQuote: true,
 			semi: false,
 			trailingComma:

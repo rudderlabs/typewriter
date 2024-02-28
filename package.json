@@ -11,6 +11,7 @@
   "bin": "./src/cli/index.js",
   "scripts": {
     "dev": "TS_NODE_FILES=true NODE_ENV=development ts-node ./src/cli",
+    "prod": "TS_NODE_FILES=true NODE_ENV=production ts-node ./src/cli prod",
     "build": "rm -rf dist && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist/src/ && copyfiles \"README.*\" dist/ && copyfiles \"CHANGELOG.*\" dist/",
     "test": "jest --testPathIgnorePatterns 'tests/e2e/.*' 'example' --coverage",
     "e2e": "make e2e",
