@@ -94,10 +94,10 @@ For more information on analytics-node, see: https://docs.rudderstack.com/stream
 `)
 {{/unless}}
 
-{{!-- We use a closure so we can lazy-resolve window.analytics in browser environments. --}}
+{{!-- We use a closure so we can lazy-resolve window.rudderanalytics in browser environments. --}}
 let analytics: () => ({{#if isBrowser}}any{{else}}Rudder.AnalyticsNode{{/if}} | undefined) = () => {
 	{{#if isBrowser}}
-	return window.analytics
+	return window.rudderanalytics
 	{{else}}
 	throw missingAnalyticsNodeError
 	{{/if}}
@@ -108,7 +108,7 @@ export interface RudderTyperOptions {
 	/**
 	 * Underlying analytics instance where analytics calls are forwarded on to.
 	 {{#if isBrowser}}
-	 * Defaults to window.analytics.
+	 * Defaults to window.rudderanalytics.
 	 {{/if}}
 	 */
 	analytics{{#if isBrowser}}?{{/if}}: {{#if isBrowser}}any{{else}}Rudder.AnalyticsNode{{/if}}
@@ -125,7 +125,7 @@ export interface RudderTyperOptions {
 
 {{> setRudderTyperOptionsDocumentation}}
 export function setRudderTyperOptions(options: RudderTyperOptions) {
-	analytics = options.analytics ? () => options.analytics{{#if isBrowser}} || window.analytics{{/if}} : analytics
+	analytics = options.analytics ? () => options.analytics{{#if isBrowser}} || window.rudderanalytics{{/if}} : analytics
 	{{#if isDevelopment}}
 	onViolation = options.onViolation || onViolation
 	{{/if}}
