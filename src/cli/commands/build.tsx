@@ -148,7 +148,7 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
     for (const trackingPlanConfig of config.trackingPlans) {
       // Load the local copy of this Tracking Plan, we'll either use this for generation
       // or use it to identify what changed with the latest copy of this Tracking Plan.
-      const previousTrackingPlan = await loadTrackingPlan(configPath, trackingPlanConfig);
+      const previousTrackingPlan = undefined;
 
       // If we don't have a copy of the Tracking Plan, then we would fatal error. Instead,
       // fallback to pulling down a new copy of the Tracking Plan.
@@ -188,7 +188,6 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
           setFailedToFindToken(true);
         }
       }
-
       newTrackingPlan = newTrackingPlan || previousTrackingPlan;
       if (!newTrackingPlan) {
         handleFatalError(wrapError('Unable to fetch Tracking Plan from local cache or API'));
@@ -197,19 +196,16 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
 
       const { events } = newTrackingPlan.rules;
       const trackingPlan: RawTrackingPlan = {
-        name: newTrackingPlan.display_name,
-        url: toTrackingPlanURL(newTrackingPlan.name),
-        id: toTrackingPlanId(newTrackingPlan.name),
+        name: newTrackingPlan.name,
+        url: `https://api.rudderstack.com/trackingplans/${newTrackingPlan.id}`,
+        id: newTrackingPlan.id,
         version: newTrackingPlan.version,
         path: trackingPlanConfig.path,
-        trackCalls: events
-          // RudderTyper doesn't yet support event versioning. For now, we just choose the most recent version.
-          .filter(e => events.every(e2 => e.name !== e2.name || e.version >= e2.version))
-          .map<JSONSchema7>(e => ({
-            ...e.rules,
-            title: e.name,
-            description: e.description,
-          })),
+        trackCalls: events.map<JSONSchema7>(e => ({
+          ...e.rules,
+          title: e.name,
+          description: e.description,
+        })),
       };
 
       loadedTrackingPlans.push({

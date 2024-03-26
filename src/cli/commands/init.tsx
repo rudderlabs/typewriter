@@ -656,7 +656,7 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
   // Sort the Tracking Plan alphabetically by display name.
   const choices = orderBy(
     trackingPlans.map(tp => ({
-      label: tp.display_name,
+      label: tp.name,
       value: tp.name,
     })),
     'label',
@@ -739,7 +739,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
           client,
           trackingPlans: [
             {
-              name: trackingPlan.display_name,
+              name: trackingPlan.name,
               id: tp.id,
               workspaceSlug: tp.workspaceSlug,
               path,
@@ -772,7 +772,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
     { label: 'API Token', value: `${workspace.name} (${token.slice(0, 10)}...)` },
     {
       label: 'Tracking Plan',
-      value: <Link url={toTrackingPlanURL(trackingPlan.name)}>{trackingPlan.display_name}</Link>,
+      value: <Link url={toTrackingPlanURL(trackingPlan.name)}>{trackingPlan.name}</Link>,
     },
   ];
 

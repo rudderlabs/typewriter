@@ -244,7 +244,7 @@ async function rudderTyperLibraryProperties(
     if (cfg && cfg.trackingPlans.length > 0) {
       const tp = await loadTrackingPlan(args.config, cfg.trackingPlans[0]);
       if (tp) {
-        trackingPlanName = tp.display_name;
+        trackingPlanName = tp.name;
       }
     }
   } catch {}
