@@ -151,7 +151,9 @@ function validateAgainstSchema(
 			allErrors: true,
 			verbose: true
 		})
-		ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
+		import('ajv/lib/refs/json-schema-draft-06.json').then((module) => {
+			ajv.addMetaSchema(module);
+		});
 	}
 	if (!ajv.validate(schema, message) && ajv.errors) {
 		onViolation(message, ajv.errors)
