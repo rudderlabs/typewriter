@@ -20,7 +20,7 @@ import AjvDraft4 from 'ajv-draft-04'
 {{/if}}
 import * as Rudder from './rudder'
 {{#if isBrowser}}
-import { apiCallback } from "rudder-sdk-js"
+type apiCallback = (data?: any) => void;
 {{else}}
 import { apiObject, apiCallback } from '@rudderstack/rudder-sdk-node'
 {{/if}}
@@ -136,7 +136,7 @@ export function setRudderTyperOptions(options: RudderTyperOptions) {
 	* Validates a message against a JSON Schema using Ajv. If the message
 	* is invalid, the `onViolation` handler will be called.
 	*/
-function validateAgainstSchema(
+async function validateAgainstSchema(
 	message: {{#if isBrowser}}Record<string, any>{{else}}Rudder.TrackMessage<Record<string, any>>{{/if}},
 	schema: Rudder.Schema
 ) {
@@ -151,7 +151,8 @@ function validateAgainstSchema(
 			allErrors: true,
 			verbose: true
 		})
-		ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
+		const schemaDraft06 =await import('ajv/lib/refs/json-schema-draft-06.json');
+		ajv.addMetaSchema(schemaDraft06);
 	}
 	if (!ajv.validate(schema, message) && ajv.errors) {
 		onViolation(message, ajv.errors)
@@ -186,10 +187,10 @@ function withRudderTyperContext{{#unless isBrowser}}<P, T extends Rudder.TrackMe
  *
  * @typedef TrackMessage<PropertiesType>
  * @property {string | number} [userId] - The ID for this user in your database.
- * @property {string | number} [anonymousId] - An ID to associated with the user when you don’t know who they are.
+ * @property {string | number} [anonymousId] - An ID to associated with the user when you don't know who they are.
  * @property {PropertiesType} [properties] - A dictionary of properties for the event.
  * @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
- * 		just happened, leave it out and we’ll use the server’s time. If you’re importing data from the past make
+ * 		just happened, leave it out and we'll use the server's time. If you're importing data from the past make
  * 		sure you to send a timestamp.
  * @template PropertiesType
  */
@@ -218,6 +219,7 @@ export function {{functionName}}(
 	options?: Rudder.Options,
 	callback?: apiCallback
 ): void {
+	const a = analytics()
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
 	const message = {
@@ -225,10 +227,17 @@ export function {{functionName}}(
 		properties: props || {},
 		options,
 	}
-	validateAgainstSchema(message, schema)
-	{{/if}}
-
-	const a = analytics()
+	validateAgainstSchema(message, schema).then(()=>{
+		if (a) {
+			a.track(
+				'{{rawEventName}}',
+				props || {},
+				withRudderTyperContext(options),
+				callback
+			)
+		}
+	})
+	{{else}}
 	if (a) {
 		a.track(
 			'{{rawEventName}}',
@@ -237,6 +246,7 @@ export function {{functionName}}(
 			callback
 		)
 	}
+	{{/if}}
 }
 {{else}}
 export function {{functionName}}(
@@ -248,18 +258,24 @@ export function {{functionName}}(
 		...message,
 		event: '{{rawEventName}}'
 	})
-
+	const a = analytics()
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}	
-	validateAgainstSchema(msg, schema)
-	{{/if}}
-
-	const a = analytics()
+	validateAgainstSchema(msg, schema).then(()=>{
+		if (a) {
+			a.track(msg, callback)
+		} else {
+			throw missingAnalyticsNodeError
+		}
+	})
+	{{else}}
 	if (a) {
 		a.track(msg, callback)
 	} else {
 		throw missingAnalyticsNodeError
 	}
+	{{/if}}
+
 }
 {{/if}}
 {{/each}}
