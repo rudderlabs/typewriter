@@ -91,8 +91,13 @@ export async function fetchTrackingPlan(options: {
     options.email,
   );
 
-  response.createdAt = new Date(response.createdAt);
-  response.updatedAt = new Date(response.updatedAt);
+  if (options.APIVersion === 'v1') {
+    response.create_time = new Date(response.create_time);
+    response.update_time = new Date(response.update_time);
+  } else {
+    response.createdAt = new Date(response.createdAt);
+    response.updatedAt = new Date(response.updatedAt);
+  }
 
   if (!response.rules) {
     const url = `tracking-plans/${options.id}/events`;
