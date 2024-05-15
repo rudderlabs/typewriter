@@ -1,1 +1,1 @@
-declare module 'sort-keys'
+declare module 'sort-keys';
