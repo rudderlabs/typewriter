@@ -1,21 +1,21 @@
-import * as fs from 'fs'
-import { promisify } from 'util'
-import { resolve, dirname } from 'path'
-import * as yaml from 'js-yaml'
-import { generateFromTemplate } from '../../templates'
-import { homedir } from 'os'
-import { Config, validateConfig } from './schema'
-import { validateToken, RudderAPI } from '../api'
-import { wrapError } from '../commands/error'
-import { runScript, Scripts } from './scripts'
-import { APIError } from '../types'
+import * as fs from 'fs';
+import { promisify } from 'util';
+import { resolve, dirname } from 'path';
+import * as yaml from 'js-yaml';
+import { generateFromTemplate } from '../../templates';
+import { homedir } from 'os';
+import { Config, validateConfig } from './schema';
+import { validateToken, RudderAPI } from '../api';
+import { wrapError } from '../commands/error';
+import { runScript, Scripts } from './scripts';
+import { APIError } from '../types';
 
-const readFile = promisify(fs.readFile)
-const writeFile = promisify(fs.writeFile)
-const exists = promisify(fs.exists)
-const mkdir = promisify(fs.mkdir)
+const readFile = promisify(fs.readFile);
+const writeFile = promisify(fs.writeFile);
+const exists = promisify(fs.exists);
+const mkdir = promisify(fs.mkdir);
 
-export const CONFIG_NAME = 'ruddertyper.yml'
+export const CONFIG_NAME = 'ruddertyper.yml';
 
 // getConfig looks for, and reads, a ruddertyper.yml configuration file.
 // If it does not exist, it will return undefined. If the configuration
@@ -23,67 +23,67 @@ export const CONFIG_NAME = 'ruddertyper.yml'
 // Note: path is relative to the directory where the ruddertyper command
 // was run.
 export async function getConfig(path = './'): Promise<Config | undefined> {
-	// Check if a ruddertyper.yml exists.
-	const configPath = await getPath(path)
-	if (!(await exists(configPath))) {
-		return undefined
-	}
+  // Check if a ruddertyper.yml exists.
+  const configPath = await getPath(path);
+  if (!(await exists(configPath))) {
+    return undefined;
+  }
 
-	// If so, read it's contents.
-	let file
-	try {
-		file = await readFile(configPath, {
-			encoding: 'utf-8',
-		})
-	} catch (error) {
-		const err = error as APIError
-		throw wrapError(
-			'Unable to open ruddertyper.yml',
-			err,
-			`Failed due to an ${err.code} error (${err.errno}).`,
-			configPath
-		)
-	}
+  // If so, read it's contents.
+  let file;
+  try {
+    file = await readFile(configPath, {
+      encoding: 'utf-8',
+    });
+  } catch (error) {
+    const err = error as APIError;
+    throw wrapError(
+      'Unable to open ruddertyper.yml',
+      err,
+      `Failed due to an ${err.code} error (${err.errno}).`,
+      configPath,
+    );
+  }
 
-	const rawConfig = yaml.safeLoad(file)
+  const rawConfig = yaml.safeLoad(file);
 
-	return validateConfig(rawConfig as Config)
+  return validateConfig(rawConfig as Config);
 }
 
 // setConfig writes a config out to a ruddertyper.yml file.
 // Note path is relative to the directory where the ruddertyper command
 // was run.
 export async function setConfig(config: Config, path = './'): Promise<void> {
-	const file = await generateFromTemplate<Config>('cli/config/ruddertyper.yml.hbs', config, false)
+  const file = await generateFromTemplate<Config>('cli/config/ruddertyper.yml.hbs', config, false);
 
-	await writeFile(await getPath(path), file)
+  await writeFile(await getPath(path), file);
 }
 
 // resolveRelativePath resolves a relative path from the directory of the `ruddertyper.yml` config
 // file. It supports file and directory paths.
 export function resolveRelativePath(
-	configPath: string | undefined,
-	path: string,
-	...otherPaths: string[]
+  configPath: string | undefined,
+  path: string,
+  ...otherPaths: string[]
 ): string {
-	// Resolve the path based on the optional --config flag.
-	return configPath
-		? resolve(configPath.replace(/ruddertyper\.yml$/, ''), path, ...otherPaths)
-		: resolve(path, ...otherPaths)
+  // Resolve the path based on the optional --config flag.
+  return configPath
+    ? resolve(configPath.replace(/ruddertyper\.yml$/, ''), path, ...otherPaths)
+    : resolve(path, ...otherPaths);
 }
 
 export async function verifyDirectoryExists(
-	path: string,
-	type: 'directory' | 'file' = 'directory'
+  path: string,
+  type: 'directory' | 'file' = 'directory',
 ): Promise<void> {
-	// If this is a file, we need to verify it's parent directory exists.
-	// If it is a directory, then we need to verify the directory itself exists.
-	const dirPath = type === 'directory' ? path : dirname(path)
-	if (!(await exists(dirPath))) {
-		await mkdir(dirPath, {
-			recursive: true,
-		})
-	}
+  // If this is a file, we need to verify it's parent directory exists.
+  // If it is a directory, then we need to verify the directory itself exists.
+  const dirPath = type === 'directory' ? path : dirname(path);
+  if (!(await exists(dirPath))) {
+    await mkdir(dirPath, {
+      recursive: true,
+    });
+  }
 }
 
 // getToken uses a Config to fetch a RudderStack API token. It will search for it in this order:
@@ -91,126 +91,126 @@ export async function verifyDirectoryExists(
 //   2. cat ~/.ruddertyper
 // Returns undefined if no token can be found.
 export async function getToken(
-	cfg: Partial<Config> | undefined,
-	configPath: string
+  cfg: Partial<Config> | undefined,
+  configPath: string,
 ): Promise<string | undefined> {
-	const token = await getTokenMetadata(cfg, configPath)
-	return token ? token.token : undefined
+  const token = await getTokenMetadata(cfg, configPath);
+  return token ? token.token : undefined;
 }
 
 export async function getEmail(
-	cfg: Partial<Config> | undefined,
-	configPath: string
+  cfg: Partial<Config> | undefined,
+  configPath: string,
 ): Promise<string | undefined> {
-	const token = await getTokenMetadata(cfg, configPath)
-	return token ? token.email : undefined
+  const token = await getTokenMetadata(cfg, configPath);
+  return token ? token.email : undefined;
 }
 
 export async function getTokenMethod(
-	cfg: Partial<Config> | undefined,
-	configPath: string
+  cfg: Partial<Config> | undefined,
+  configPath: string,
 ): Promise<string | undefined> {
-	const token = await getTokenMetadata(cfg, configPath)
-	return token ? token.method : undefined
+  const token = await getTokenMetadata(cfg, configPath);
+  return token ? token.method : undefined;
 }
 
 async function getTokenMetadata(
-	cfg: Partial<Config> | undefined,
-	configPath: string
+  cfg: Partial<Config> | undefined,
+  configPath: string,
 ): Promise<TokenMetadata | undefined> {
-	const tokens = await listTokens(cfg, configPath)
-	const resolutionOrder = [tokens.script, tokens.file]
-	for (const metadata of resolutionOrder) {
-		if (metadata.isValidToken) {
-			return metadata
-		}
-	}
+  const tokens = await listTokens(cfg, configPath);
+  const resolutionOrder = [tokens.script, tokens.file];
+  for (const metadata of resolutionOrder) {
+    if (metadata.isValidToken) {
+      return metadata;
+    }
+  }
 
-	return undefined
+  return undefined;
 }
 
 export type ListTokensOutput = {
-	script: TokenMetadata
-	file: TokenMetadata
-}
+  script: TokenMetadata;
+  file: TokenMetadata;
+};
 
 export type TokenMetadata = {
-	token?: string
-	email?: string
-	method: 'script' | 'file'
-	isValidToken: boolean
-	workspace?: RudderAPI.Workspace
-}
+  token?: string;
+  email?: string;
+  method: 'script' | 'file';
+  isValidToken: boolean;
+  workspace?: RudderAPI.Workspace;
+};
 
 // Only resolve token and email scripts once per CLI invocation.
 // Maps a token script -> output, if any
-const tokenScriptCache: Record<string, string> = {}
-const emailScriptCache: Record<string, string> = {}
+const tokenScriptCache: Record<string, string> = {};
+const emailScriptCache: Record<string, string> = {};
 
 export async function listTokens(
-	cfg: Partial<Config> | undefined,
-	configPath: string
+  cfg: Partial<Config> | undefined,
+  configPath: string,
 ): Promise<ListTokensOutput> {
-	const output: ListTokensOutput = {
-		script: { method: 'script', isValidToken: false },
-		file: { method: 'file', isValidToken: false },
-	}
+  const output: ListTokensOutput = {
+    script: { method: 'script', isValidToken: false },
+    file: { method: 'file', isValidToken: false },
+  };
 
-	// Attempt to read a token and email from the ~/.ruddertyper token file.
-	// Token and email are stored here during the `init` flow, if a user generates a token.
-	try {
-		const path = resolve(homedir(), '.ruddertyper')
-		const cachedTokenData = await readFile(path, {
-			encoding: 'utf-8',
-		})
-		output.file.token = cachedTokenData.split(',')[0].trim()
-		output.file.email = cachedTokenData.split(',')[1].trim()
-	} catch (error) {
-		// Ignore errors if ~/.ruddertyper doesn't exist
-	}
+  // Attempt to read a token and email from the ~/.ruddertyper token file.
+  // Token and email are stored here during the `init` flow, if a user generates a token.
+  try {
+    const path = resolve(homedir(), '.ruddertyper');
+    const cachedTokenData = await readFile(path, {
+      encoding: 'utf-8',
+    });
+    output.file.token = cachedTokenData.split(',')[0].trim();
+    output.file.email = cachedTokenData.split(',')[1].trim();
+  } catch (error) {
+    // Ignore errors if ~/.ruddertyper doesn't exist
+  }
 
-	// Attempt to read a token and email by executing their respective script from the ruddertyper.yml config file.
-	// Handle token script errors gracefully, f.e., in CI where you don't need it.
-	if (cfg && cfg.scripts && cfg.scripts.token && cfg.scripts.email) {
-		const tokenScript = cfg.scripts.token
-		const emailScript = cfg.scripts.email
-		// Since we don't know if this token script has side effects, cache (in-memory) the result
-		// s.t. we only execute it once per CLI invocation.
-		if (!tokenScriptCache[tokenScript]) {
-			const stdout = await runScript(tokenScript, configPath, Scripts.Token)
-			if (!!stdout) {
-				tokenScriptCache[tokenScript] = stdout.trim()
-			}
-		}
-		if (!emailScriptCache[emailScript]) {
-			const stdout = await runScript(emailScript, configPath, Scripts.Email)
-			if (!!stdout) {
-				emailScriptCache[emailScript] = stdout.trim()
-			}
-		}
+  // Attempt to read a token and email by executing their respective script from the ruddertyper.yml config file.
+  // Handle token script errors gracefully, f.e., in CI where you don't need it.
+  if (cfg && cfg.scripts && cfg.scripts.token && cfg.scripts.email) {
+    const tokenScript = cfg.scripts.token;
+    const emailScript = cfg.scripts.email;
+    // Since we don't know if this token script has side effects, cache (in-memory) the result
+    // s.t. we only execute it once per CLI invocation.
+    if (!tokenScriptCache[tokenScript]) {
+      const stdout = await runScript(tokenScript, configPath, Scripts.Token);
+      if (!!stdout) {
+        tokenScriptCache[tokenScript] = stdout.trim();
+      }
+    }
+    if (!emailScriptCache[emailScript]) {
+      const stdout = await runScript(emailScript, configPath, Scripts.Email);
+      if (!!stdout) {
+        emailScriptCache[emailScript] = stdout.trim();
+      }
+    }
 
-		output.script.token = tokenScriptCache[tokenScript]
-		output.script.email = emailScriptCache[emailScript]
-	}
+    output.script.token = tokenScriptCache[tokenScript];
+    output.script.email = emailScriptCache[emailScript];
+  }
 
-	// Validate whether any of these tokens are valid RudderStack API tokens.
-	for (const metadata of Object.values(output)) {
-		const result = await validateToken(metadata.token, metadata.email)
-		metadata.isValidToken = result.isValid
-		metadata.workspace = result.workspace
-	}
+  // Validate whether any of these tokens are valid RudderStack API tokens.
+  for (const metadata of Object.values(output)) {
+    const result = await validateToken(metadata.token, metadata.email);
+    metadata.isValidToken = result.isValid;
+    metadata.workspace = result.workspace;
+  }
 
-	return output
+  return output;
 }
 
 // storeToken writes a token to ~/.ruddertyper.
 export async function storeToken(token: string, email: string): Promise<void> {
-	const path = resolve(homedir(), '.ruddertyper')
-	return writeFile(path, token + ',' + email, 'utf-8')
+  const path = resolve(homedir(), '.ruddertyper');
+  return writeFile(path, token + ',' + email, 'utf-8');
 }
 
 async function getPath(path: string): Promise<string> {
-	path = path.replace(/ruddertyper\.yml$/, '')
-	// TODO: recursively move back folders until you find it, ala package.json
-	return resolve(path, CONFIG_NAME)
+  path = path.replace(/ruddertyper\.yml$/, '');
+  // TODO: recursively move back folders until you find it, ala package.json
+  return resolve(path, CONFIG_NAME);
 }
