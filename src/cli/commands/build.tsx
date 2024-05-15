@@ -31,7 +31,7 @@ import { ErrorContext, wrapError, toUnexpectedError, WrappedError, isWrappedErro
 import figures from 'figures';
 import { Init } from './init';
 import { getEmail } from '../config/config';
-import { toTrackingPlanId } from '../api/trackingplans';
+import { getTrackingPlanName, toTrackingPlanId } from '../api/trackingplans';
 import { APIError } from '../types';
 
 const readFile = promisify(fs.readFile);
@@ -148,7 +148,7 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
     for (const trackingPlanConfig of config.trackingPlans) {
       // Load the local copy of this Tracking Plan, we'll either use this for generation
       // or use it to identify what changed with the latest copy of this Tracking Plan.
-      const previousTrackingPlan = undefined;
+      const previousTrackingPlan = await loadTrackingPlan(configPath, trackingPlanConfig);
 
       // If we don't have a copy of the Tracking Plan, then we would fatal error. Instead,
       // fallback to pulling down a new copy of the Tracking Plan.
@@ -170,6 +170,7 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
               workspaceSlug: trackingPlanConfig.workspaceSlug,
               token,
               email,
+              APIVersion: trackingPlanConfig.APIVersion,
             });
           } catch (error) {
             handleError(error as WrappedError);
@@ -196,9 +197,9 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
 
       const { events } = newTrackingPlan.rules;
       const trackingPlan: RawTrackingPlan = {
-        name: newTrackingPlan.name,
-        url: `https://api.rudderstack.com/trackingplans/${newTrackingPlan.id}`,
-        id: newTrackingPlan.id,
+        name: getTrackingPlanName(newTrackingPlan),
+        url: toTrackingPlanURL(newTrackingPlan),
+        id: toTrackingPlanId(newTrackingPlan),
         version: newTrackingPlan.version,
         path: trackingPlanConfig.path,
         trackCalls: events.map<JSONSchema7>(e => ({
