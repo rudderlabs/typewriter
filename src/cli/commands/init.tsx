@@ -737,7 +737,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
         client.moduleTarget = 'CommonJS';
         client.scriptTarget = 'ES5';
       }
-      const tp = !!trackingPlan.creationType
+      const tp = trackingPlan.creationType
         ? { id: trackingPlan.id, workspaceSlug: trackingPlan.workspaceId, APIVersion: 'v2' }
         : parseTrackingPlanName(trackingPlan.name);
       try {

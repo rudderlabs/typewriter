@@ -144,11 +144,8 @@ export function toTrackingPlanId(trackingPlan: RudderAPI.TrackingPlan): string {
   return trackingPlan.id;
 }
 
-export function getTrackingPlanName(trackingPlan: RudderAPI.TrackingPlan): string {
-  // throw new Error(`Unable to parse Tracking Plan name: ${JSON.stringify(trackingPlan)}`);
-  if (!trackingPlan.creationType) {
-    return trackingPlan.display_name;
-  }
-
-  return trackingPlan.name;
+export function getTrackingPlanName(
+  trackingPlan: Pick<RudderAPI.TrackingPlan, 'creationType' | 'display_name' | 'name'>,
+): string {
+  return !trackingPlan.creationType ? trackingPlan.display_name : trackingPlan.name;
 }

@@ -91,22 +91,21 @@ export async function fetchTrackingPlan(options: {
     options.email,
   );
 
-  if (options.APIVersion === 'v1') {
-    response.create_time = new Date(response.create_time);
-    response.update_time = new Date(response.update_time);
-  } else {
+  if (options.APIVersion === 'v2') {
     response.createdAt = new Date(response.createdAt);
     response.updatedAt = new Date(response.updatedAt);
+  } else {
+    response.create_time = new Date(response.create_time);
+    response.update_time = new Date(response.update_time);
   }
 
-  if (!response.rules) {
+  if (options.APIVersion === 'v2') {
     const url = `tracking-plans/${options.id}/events`;
     const eventsResponse = await apiGet<RudderAPI.GetTrackingPlanEventsResponse>(
       url,
       options.token,
       options.email,
     );
-    let eventsRulesResponse: RudderAPI.RuleMetadata[];
     if (eventsResponse) {
       const eventsRulesResponsePromise = eventsResponse.data
         .filter(ev => ev.eventType === 'track')
@@ -123,7 +122,9 @@ export async function fetchTrackingPlan(options: {
             rules: eventsRulesResponse.rules,
           };
         });
-      eventsRulesResponse = await Promise.all(eventsRulesResponsePromise);
+      const eventsRulesResponse: RudderAPI.RuleMetadata[] = await Promise.all(
+        eventsRulesResponsePromise,
+      );
       response.rules = {
         events: eventsRulesResponse,
       };
@@ -138,9 +139,8 @@ export async function fetchTrackingPlans(options: {
   token: string;
   email: string;
 }): Promise<RudderAPI.TrackingPlan[]> {
-  let url = 'trackingplans';
   const response = await apiGet<RudderAPI.ListTrackingPlansResponse>(
-    url,
+    'trackingplans',
     options.token,
     options.email,
   );
@@ -150,9 +150,8 @@ export async function fetchTrackingPlans(options: {
     updatedAt: new Date(tp.update_time),
   }));
 
-  url = 'tracking-plans';
   const responseV2 = await apiGet<RudderAPI.ListTrackingPlansResponseV2>(
-    url,
+    'tracking-plans',
     options.token,
     options.email,
   );
