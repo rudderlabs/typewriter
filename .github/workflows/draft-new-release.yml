@@ -47,7 +47,6 @@ jobs:
           git fetch origin master --depth=1
           git fetch --tags origin
           echo "Merging master into $source_branch_name"
-          git merge origin/master
           current_version=$(jq -r .version package.json)
 
           yarn config set version-git-tag false
