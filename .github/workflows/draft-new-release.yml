@@ -44,6 +44,7 @@ jobs:
           source_branch_name=${GITHUB_REF##*/}
           release_type=release
           grep -q "hotfix/" <<< "${GITHUB_REF}" && release_type=hotfix-release
+          git remote show origin
           git fetch origin master --depth=1
           git fetch --tags origin
           echo "Merging master into $source_branch_name"
@@ -94,4 +95,4 @@ jobs:
           github_token: ${{ secrets.PAT }}
           pr_title: 'chore(release): pulling ${{ steps.create-release.outputs.branch_name }} into master'
           pr_body: ':crown: *An automated PR*'
-          pr_reviewer: 'bardisg,MoumitaM,saikumarrs'
+          pr_reviewer: 'ssbeefeater,akashrpo,MoumitaM,1abhishekpandey,saikumarrs'
