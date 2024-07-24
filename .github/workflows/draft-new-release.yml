@@ -44,9 +44,10 @@ jobs:
           source_branch_name=${GITHUB_REF##*/}
           release_type=release
           grep -q "hotfix/" <<< "${GITHUB_REF}" && release_type=hotfix-release
-          git fetch origin master
+          git fetch origin master --depth=1
           git fetch --tags origin
-          git rebase origin/master
+          echo "Merging master into $source_branch_name"
+          git merge origin/master
           current_version=$(jq -r .version package.json)
 
           yarn config set version-git-tag false
