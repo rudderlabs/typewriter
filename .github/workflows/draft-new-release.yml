@@ -46,7 +46,7 @@ jobs:
           grep -q "hotfix/" <<< "${GITHUB_REF}" && release_type=hotfix-release
           git fetch origin master
           git fetch --tags origin
-          git merge origin/master --allow-unrelated-histories
+          git rebase origin/master
           current_version=$(jq -r .version package.json)
 
           yarn config set version-git-tag false
