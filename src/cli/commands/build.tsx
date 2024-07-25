@@ -241,11 +241,11 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
             Loaded <Link url={trackingPlan.url}>{trackingPlan.name}</Link>{' '}
             {(deltas.added !== 0 || deltas.modified !== 0 || deltas.removed !== 0) && (
               <>
-                (<Text color={deltas.added > 0 ? 'green' : 'grey'}>{deltas.added} added</Text>,{' '}
+                (<Text color={deltas.added > 0 ? 'green' : 'grey'}>{deltas.added} added, </Text>
                 <Text color={deltas.modified > 0 ? 'yellow' : 'grey'}>
-                  {deltas.modified} modified
+                  {deltas.modified} modified,{' '}
                 </Text>
-                , <Text color={deltas.removed > 0 ? 'red' : 'grey'}>{deltas.removed} removed</Text>)
+                <Text color={deltas.removed > 0 ? 'red' : 'grey'}>{deltas.removed} removed</Text>)
               </>
             )}
           </Note>
@@ -485,12 +485,10 @@ const Step: React.FC<StepProps> = ({ name, isSkipped, isRunning, isDone, childre
             ) : (
               <Spinner type="dots" />
             )
-          ) : (
-            ''
-          )}
+          ) : null}
         </Box>
         <Box marginLeft={1} width={70}>
-          {name}
+          <Text>{name}</Text>
         </Box>
       </Text>
       {(isRunning || isDone) && children}
@@ -506,8 +504,10 @@ const Note: React.FC<NoteProps> = ({ isWarning, children }) => {
   return (
     <Text italic>
       <Text color={!isWarning ? 'grey' : 'yellow'}>
-        <Box marginLeft={4}>{isWarning ? '⚠' : '↪'}</Box>
-        <Box marginLeft={2} width={80} textWrap="wrap">
+        <Box marginLeft={4}>
+          <Text>{isWarning ? '⚠' : '↪'}</Text>
+        </Box>
+        <Box marginLeft={2} width={80}>
           {children}
         </Box>
       </Text>

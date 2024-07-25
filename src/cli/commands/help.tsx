@@ -15,7 +15,7 @@ export const Help: React.FC<StandardProps> = () => {
 
   return (
     <Box marginLeft={2} flexDirection="column">
-      <Box marginBottom={2} textWrap="wrap">
+      <Box marginBottom={2}>
         <Text color="grey">
           RudderTyper is a tool for generating strongly-typed{' '}
           <Link url="https://rudderstack.com">RudderStack</Link> analytics libraries based on your
@@ -25,7 +25,7 @@ export const Help: React.FC<StandardProps> = () => {
       </Box>
       <Box flexDirection="column">
         <Box marginBottom={1}>
-          <Text color="grey">$</Text> <Text>rudder-typer</Text>{' '}
+          <Text color="grey">$</Text> <Text>rudder-typer </Text>
           <Text color="grey">[command, options]</Text>
         </Box>
         <HelpSection name="Commands">
@@ -78,7 +78,7 @@ export const Help: React.FC<StandardProps> = () => {
             name="-c, --config"
             description={
               <Text>
-                Path to a <Text color="yellow">ruddertyper.yml</Text> file
+                Path to a <Text color="yellow">ruddertyper.yml</Text> <Text>file</Text>
               </Text>
             }
           />
@@ -146,9 +146,7 @@ const HelpRow: React.FC<HelpRowProps> = ({
   return (
     <Box height={linesNeeded || 1}>
       <Box width="20%">{name}</Box>
-      <Box width="65%" textWrap="wrap">
-        {description}
-      </Box>
+      <Box width="65%">{description}</Box>
       <Box width="15%">{!!isDefault ? <Text color="blue">(default)</Text> : ''}</Box>
     </Box>
   );

@@ -149,7 +149,7 @@ const ErrorComponent: React.FC<ErrorComponentProps> = ({ error }) => {
 
   return (
     <Box flexDirection="column" marginLeft={2} marginRight={2} marginTop={1} marginBottom={1}>
-      <Box width={80} textWrap="wrap">
+      <Box width={80}>
         <Text color="red">
           {figures.cross} Error: {error.description}
         </Text>
@@ -160,12 +160,12 @@ const ErrorComponent: React.FC<ErrorComponentProps> = ({ error }) => {
             <Box marginLeft={1} marginRight={1}>
               <Text color="grey">{figures.arrowRight}</Text>
             </Box>
-            <Box width={80} textWrap="wrap">
+            <Box width={80}>
               <Text color="grey">{n}</Text>
             </Box>
           </Box>
         ))}
-      <Box height={2} width={80} textWrap="wrap" marginTop={1}>
+      <Box height={2} width={80} marginTop={1}>
         <Text color="grey">
           If you are unable to resolve this issue,{' '}
           <Link url="https://github.com/rudderlabs/rudder-typer/issues/new">
