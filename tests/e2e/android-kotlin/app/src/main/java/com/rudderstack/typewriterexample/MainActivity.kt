@@ -1,5 +1,6 @@
 package com.rudderstack.typewriterexample
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.rudderstack.android.sdk.core.RudderClient
 import com.rudderstack.typewriterexample.ui.theme.TypeWriterExampleTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             TypeWriterExampleTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MakeEvents(modifier = Modifier.padding(innerPadding))
+                    AnalyticsEvent(modifier = Modifier.padding(innerPadding), context = this)
                 }
             }
         }
@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun MakeEvents(modifier: Modifier = Modifier) {
+private fun AnalyticsEvent(modifier: Modifier = Modifier, context: Context) {
     Row(
         modifier = modifier
             .fillMaxSize()
@@ -44,16 +44,14 @@ private fun MakeEvents(modifier: Modifier = Modifier) {
     ) {
         Button(
             onClick = {
-                makeEvents()
+                makeRudderTyperEvent(context)
             }
         ) {
-            Text(text = "Make RudderTyper Events")
+            Text(text = "Trigger Event")
         }
     }
 }
 
-private fun makeEvents() {
-    // Make RudderTyper events here
-    val analytics: RudderClient? = RudderClient.getInstance()
-    analytics?.track("New track Event")
+private fun makeRudderTyperEvent(context: Context) {
+    // Add your RudderTyper event here
 }
