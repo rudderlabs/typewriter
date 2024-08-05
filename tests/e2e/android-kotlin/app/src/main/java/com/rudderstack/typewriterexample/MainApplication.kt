@@ -18,6 +18,7 @@ class MainApplication: Application() {
             RudderConfig.Builder()
                 .withDataPlaneUrl(BuildConfig.DATA_PLANE_URL)
                 .withControlPlaneUrl(BuildConfig.CONTROL_PLANE_URL)
+                .withTrackLifecycleEvents(false)
                 .withLogLevel(RudderLogger.RudderLogLevel.VERBOSE)
                 .build()
         )
