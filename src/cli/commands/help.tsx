@@ -18,8 +18,8 @@ export const Help: React.FC<StandardProps> = () => {
       <Box marginBottom={2} textWrap="wrap">
         <Color grey>
           RudderTyper is a tool for generating strongly-typed{' '}
-          <Link url="https://rudderstack.com">RudderStack</Link> analytics libraries based on your
-          pre-defined Tracking Plan spec.
+          <Link url="https://www.rudderstack.com/">RudderStack</Link> analytics libraries based on
+          your pre-defined Tracking Plan spec.
           {'\n\n'}
         </Color>
       </Box>
