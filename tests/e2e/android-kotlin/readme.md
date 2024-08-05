@@ -14,12 +14,13 @@ This is a sample Android Kotlin app designed to demonstrate how to use the Rudde
 
 ### Step 2: Sync Gradle
 
-- Sync the Gradle files by clicking on the `Sync Now` link in the top right corner of the Android Studio window. Or, you can click on the `File` menu and select `Sync Project with Gradle Files`.
-![syncGradle](images/syncGradle.png)
+- Sync the Gradle files by clicking on the `Sync Now` link in the top right corner of the Android Studio window. Or, you can click on the `File` menu and select `Sync Project with Gradle Files`:
+
+    ![syncGradle](images/syncGradle.png)
 
 ### Step 3: Add Generated Files
 - Crete a new package `ruddertyper` under `app/src/main/java/com/rudderstack/typewriterexample`:
-![createNewRudderTyperPackage.png](images/createNewRudderTyperPackage.png)
+    ![createNewRudderTyperPackage.png](images/createNewRudderTyperPackage.png)
 - Place the RudderTyper-generated files in the `ruddertyper` package.
 
 ### Step 4: Implement Event Tracking
