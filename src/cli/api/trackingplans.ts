@@ -137,7 +137,7 @@ export function toTrackingPlanURL(trackingPlan: RudderAPI.TrackingPlan): string 
     const { id } = parseTrackingPlanName(trackingPlan.name);
     return `https://app.rudderstack.com/trackingplans/${id}`;
   }
-  return `https://app.rudderstack.com/tracking-plans/${trackingPlan.id}`;
+  return `https://app.rudderstack.com/trackingplans/${trackingPlan.id}`;
 }
 
 export function toTrackingPlanId(trackingPlan: RudderAPI.TrackingPlan): string {
