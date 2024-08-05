@@ -1,6 +1,6 @@
 # RudderTyper
 
-**RudderTyper** is a tool for generating strongly-typed [**RudderStack**](https://rudderstack.com/) analytics libraries based on your pre-defined
+**RudderTyper** is a tool for generating strongly-typed [**RudderStack**](https://www.rudderstack.com/) analytics libraries based on your pre-defined
 tracking plan spec.
 <br>
 <br>
@@ -101,26 +101,26 @@ A sample configuration looks like the following:
 # Just run `npx rudder-typer` to re-generate a client with the latest versions of these events.
 
 scripts:
-  # You can supply a RudderStack API token using a `script.token` command. The output of `script.token` command should be a valid RudderStack API token.
+  # You can supply a RudderStack API token using a `scripts.token` command. The output of `script.token` command should be a valid RudderStack API token.
   token: source .env; echo $RUDDERTYPER_TOKEN
-  # You can supply email address linked to your workspace using a `script.email` command.The output of `script.email` command should be an email address registered with your workspace.
-  email: source .env: echo $EMAIL
-  # You can format any of RudderTyper's auto-generated files using a `script.after` command.
+  # You can supply email address linked to your workspace using a `scripts.email` command.The output of `script.email` command should be an email address registered with your workspace.
+  email: source .env; echo $EMAIL
+  # You can format any of RudderTyper's auto-generated files using a `scripts.after` command.
   # See `Formatting Generated Files` below.
   after: ./node_modules/.bin/prettier --write analytics/plan.json
 
 client:
-  # Which RudderStack SDK you are generating for.
+  # Which RudderStack SDK you are generating for
   # Valid values: analytics.js, analytics-node, analytics-ios, analytics-android.
-  sdk: analytics-node
+  sdk: analytics.js
   # The target language for your RudderTyper client.
-  # Valid values: javascript, java, objective-c, swift.
-  language: javascript
-  # Javascript Transpilation Settings
+  # Valid values: javascript, typescript, objective-c, swift, java.
+  language: typescript
+  # JavaScript Transpilation Settings
   # Valid values: 'ES3','ES5','ES2015','ES2016','ES2017','ES2018','ES2019','ESNext','Latest'
-  scriptTarget: 'ES6'
+  scriptTarget: "ES5"
   # Valid values: 'CommonJS','AMD','UMD','System','ES2015','ESNext'
-  moduleTarget: 'ESNext'
+  moduleTarget: "ESNext"
 
 trackingPlans:
   # The RudderStack Tracking Plan that you are generating a client for.
@@ -129,6 +129,8 @@ trackingPlans:
   - id: rs_QhWHOgp7xg8wkYxilH3scd2uRID
     workspaceSlug: rudderstack-demo
     path: ./analytics
+    # Valid values: v1 (old tracking plan), v2 (new tracking plan format)
+    APIVersion: v2
 ```
 
 ## How to integrate RudderTyper-generated client with your app?
@@ -270,7 +272,7 @@ ruddertyper.orderCompleted({
 
 ## Contribute
 
-- To submit a bug report or feature request, file an issue [**here**](issues).
+- To submit a bug report or feature request, file an issue [**here**](https://github.com/rudderlabs/rudder-typer/issues).
 - To develop on `ruddertyper` or propose support for a new language, see our [**contributors documentation**](./.github/CONTRIBUTING.md).
 
 ## Contact Us

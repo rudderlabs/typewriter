@@ -110,7 +110,11 @@ export function computeDelta(
 
 export function parseTrackingPlanName(
   name: string,
-): { id: string; workspaceSlug: string; APIVersion: string } {
+): {
+  id: string;
+  workspaceSlug: string;
+  APIVersion: string;
+} {
   const parts = name.split('/');
 
   // Sane fallback:
@@ -131,9 +135,9 @@ export function parseTrackingPlanName(
 export function toTrackingPlanURL(trackingPlan: RudderAPI.TrackingPlan): string {
   if (!trackingPlan.creationType) {
     const { id } = parseTrackingPlanName(trackingPlan.name);
-    return `https://api.rudderstack.com/trackingplans/${id}`;
+    return `https://app.rudderstack.com/trackingplans/${id}`;
   }
-  return `https://api.rudderstack.com/tracking-plans/${trackingPlan.id}`;
+  return `https://app.rudderstack.com/tracking-plans/${trackingPlan.id}`;
 }
 
 export function toTrackingPlanId(trackingPlan: RudderAPI.TrackingPlan): string {

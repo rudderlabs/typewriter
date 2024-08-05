@@ -1,4 +1,4 @@
-# RudderStack RudderTyper Configuration 
+# RudderStack RudderTyper Configuration
 # Just run `npx rudder-typer@next` to re-generate a client with the latest versions of these events.
 
 client:
@@ -7,8 +7,7 @@ client:
 
 trackingPlans:
   # Tracking Plan: Ecommerce Spec
-  # https://api.rudderstack.com/trackingplans/tp_1uZB4vCgfpXnpDv2Yqfgva5FiIk
+  # https://app.rudderstack.com/trackingplans/tp_1uZB4vCgfpXnpDv2Yqfgva5FiIk
   - id: tp_1uZB4vCgfpXnpDv2Yqfgva5FiIk
     workspaceSlug: 1iSatLbk9xhE4qBXXzdWajZ3HVF
     path: analytics
-
