@@ -8,8 +8,10 @@ import com.rudderstack.android.sdk.core.RudderLogger
 class MainApplication: Application() {
     override fun onCreate() {
         super.onCreate()
+        initAnalyticsSdk()
+    }
 
-        // Initialize RudderStack SDK
+    private fun initAnalyticsSdk() {
         RudderClient.getInstance(
             this,
             BuildConfig.WRITE_KEY,
