@@ -51,6 +51,9 @@ android {
 
 dependencies {
 
+    // RudderStack Android SDK
+    implementation(libs.rudderstack.android.sdk)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
