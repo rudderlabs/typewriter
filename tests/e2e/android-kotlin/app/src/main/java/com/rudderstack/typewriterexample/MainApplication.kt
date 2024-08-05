@@ -12,9 +12,10 @@ class MainApplication: Application() {
         // Initialize RudderStack SDK
         RudderClient.getInstance(
             this,
-            "<WRITE_KEY>",
+            BuildConfig.WRITE_KEY,
             RudderConfig.Builder()
-                .withDataPlaneUrl("<DATA_PLANE_URL>")
+                .withDataPlaneUrl(BuildConfig.DATA_PLANE_URL)
+                .withControlPlaneUrl(BuildConfig.CONTROL_PLANE_URL)
                 .withLogLevel(RudderLogger.RudderLogLevel.VERBOSE)
                 .build()
         )
