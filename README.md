@@ -105,7 +105,6 @@ scripts:
   token: source .env; echo $RUDDERTYPER_TOKEN
   # You can supply email address linked to your workspace using a `scripts.email` command.The output of `script.email` command should be an email address registered with your workspace.
   email: source .env; echo $EMAIL
-  # You can format any of RudderTyper's auto-generated files using a `scripts.after` command.
   # See `Formatting Generated Files` below.
   after: ./node_modules/.bin/prettier --write analytics/plan.json
 
