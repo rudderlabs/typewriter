@@ -1,6 +1,14 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+}
+
+val sampleRudderPropertiesFile: File = rootProject.file("${projectDir}/rudderstack.properties")
+val sampleRudderProperties = Properties().apply {
+    sampleRudderPropertiesFile.canRead().apply { load(FileInputStream(sampleRudderPropertiesFile)) }
 }
 
 android {
@@ -18,6 +26,19 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField(
+            "String", "WRITE_KEY",
+            sampleRudderProperties.getProperty("writeKey")
+        )
+        buildConfigField(
+            "String", "CONTROL_PLANE_URL",
+            sampleRudderProperties.getProperty("controlPlaneUrl")
+        )
+        buildConfigField(
+            "String", "DATA_PLANE_URL",
+            sampleRudderProperties.getProperty("dataPlaneUrl")
+        )
     }
 
     buildTypes {
@@ -38,6 +59,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -50,6 +72,8 @@ android {
 }
 
 dependencies {
+    // RudderStack Android SDK
+    implementation(libs.rudderstack.android.sdk)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
