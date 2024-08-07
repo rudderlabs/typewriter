@@ -20,21 +20,20 @@ export { AnalyticsNode }
  * TrackMessage represents a message payload for an analytics `.track()` call.
  * See: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#track
  */
-export interface TrackMessage<PropertiesType> extends Options, Record<string, any> {
-  /** The ID for this user in your database. */
-  userId?: string
-  /** An ID to associated with the user when you don’t know who they are. */
-  anonymousId?: string
+export type TrackMessage<PropertiesType> = (
+  | { userId: string; anonymousId?: string }
+  | { userId?: string; anonymousId: string }
+) & {
   /** A dictionary of properties for the event. */
-  properties?: PropertiesType
+  properties?: PropertiesType;
   /**
-  * A Javascript date object representing when the track took place.
-  * If the track just happened, leave it out and we’ll use the server’s
-  * time. If you’re importing data from the past make sure you to send
-  * a timestamp.
-  */
-  timestamp?: Date
-}
+   * A JavaScript date object representing when the track took place.
+   * If the track just happened, leave it out and we’ll use the server’s
+   * time. If you’re importing data from the past make sure to send
+   * a timestamp.
+   */
+  timestamp?: Date;
+} & Options & Record<string, any>;
 
 {{/if}}
 
