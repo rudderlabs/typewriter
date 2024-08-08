@@ -6,6 +6,7 @@
 //
 
 #import "ViewController.h"
+#import <Rudder/Rudder.h>
 
 @interface ViewController ()
 
@@ -18,5 +19,8 @@
     // Do any additional setup after loading the view.
 }
 
+- (IBAction)triggerEventAction:(UIButton *)sender {
+    [[RSClient sharedInstance] track:@"New track Event"];
+}
 
 @end
