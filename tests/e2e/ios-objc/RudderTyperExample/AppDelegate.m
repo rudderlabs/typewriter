@@ -6,6 +6,8 @@
 //
 
 #import "AppDelegate.h"
+#import <Rudder/Rudder.h>
+
 @interface AppDelegate ()
 
 @end
@@ -14,6 +16,11 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    RSConfigBuilder *builder = [[RSConfigBuilder alloc] init];
+    [builder withDataPlaneUrl:<#DATA_PLANE_URL#>];
+    [RSClient getInstance:<#WRITE_KEY#> config:[builder build]];
+    
     return YES;
 }
 
