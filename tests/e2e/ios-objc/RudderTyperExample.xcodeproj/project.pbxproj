@@ -14,6 +14,8 @@
 		534017F32C64A91300CB4254 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 534017F22C64A91300CB4254 /* Assets.xcassets */; };
 		534017F62C64A91300CB4254 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 534017F52C64A91300CB4254 /* Base */; };
 		534017F92C64A91300CB4254 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 534017F82C64A91300CB4254 /* main.m */; };
+		5351AA1C2C653BCD003C3C47 /* RudderConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5351AA1B2C653BCD003C3C47 /* RudderConfig.plist */; };
+		5351AA232C653FC2003C3C47 /* RudderConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 5351AA222C653FC2003C3C47 /* RudderConfig.m */; };
 		DB775A8C632FCD49D768970E /* Pods_RudderTyperExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E170222C40381D64B6A251E /* Pods_RudderTyperExample.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +33,9 @@
 		534017F52C64A91300CB4254 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		534017F72C64A91300CB4254 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		534017F82C64A91300CB4254 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		5351AA1B2C653BCD003C3C47 /* RudderConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = RudderConfig.plist; sourceTree = "<group>"; };
+		5351AA212C653FC2003C3C47 /* RudderConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RudderConfig.h; sourceTree = "<group>"; };
+		5351AA222C653FC2003C3C47 /* RudderConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RudderConfig.m; sourceTree = "<group>"; };
 		7A77D36CE5FDC040E0F75084 /* Pods-RudderTyperExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RudderTyperExample.release.xcconfig"; path = "Target Support Files/Pods-RudderTyperExample/Pods-RudderTyperExample.release.xcconfig"; sourceTree = "<group>"; };
 		D0056F57695B314888A72806 /* Pods-RudderTyperExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RudderTyperExample.debug.xcconfig"; path = "Target Support Files/Pods-RudderTyperExample/Pods-RudderTyperExample.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -68,6 +73,7 @@
 		534017E52C64A91200CB4254 /* RudderTyperExample */ = {
 			isa = PBXGroup;
 			children = (
+				5351AA202C653C29003C3C47 /* RudderConfig */,
 				534017E62C64A91200CB4254 /* AppDelegate.h */,
 				534017E72C64A91200CB4254 /* AppDelegate.m */,
 				534017E92C64A91200CB4254 /* SceneDelegate.h */,
@@ -81,6 +87,16 @@
 				534017F82C64A91300CB4254 /* main.m */,
 			);
 			path = RudderTyperExample;
+			sourceTree = "<group>";
+		};
+		5351AA202C653C29003C3C47 /* RudderConfig */ = {
+			isa = PBXGroup;
+			children = (
+				5351AA1B2C653BCD003C3C47 /* RudderConfig.plist */,
+				5351AA212C653FC2003C3C47 /* RudderConfig.h */,
+				5351AA222C653FC2003C3C47 /* RudderConfig.m */,
+			);
+			path = RudderConfig;
 			sourceTree = "<group>";
 		};
 		89E1ED2095CF2AF66FEB02C2 /* Frameworks */ = {
@@ -97,7 +113,6 @@
 				D0056F57695B314888A72806 /* Pods-RudderTyperExample.debug.xcconfig */,
 				7A77D36CE5FDC040E0F75084 /* Pods-RudderTyperExample.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -160,6 +175,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5351AA1C2C653BCD003C3C47 /* RudderConfig.plist in Resources */,
 				534017F32C64A91300CB4254 /* Assets.xcassets in Resources */,
 				534017F62C64A91300CB4254 /* Base in Resources */,
 				534017F12C64A91200CB4254 /* Base in Resources */,
@@ -219,6 +235,7 @@
 				534017E82C64A91200CB4254 /* AppDelegate.m in Sources */,
 				534017F92C64A91300CB4254 /* main.m in Sources */,
 				534017EB2C64A91200CB4254 /* SceneDelegate.m in Sources */,
+				5351AA232C653FC2003C3C47 /* RudderConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,6 +385,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RudderTyperExample/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -395,6 +413,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RudderTyperExample/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

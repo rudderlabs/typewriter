@@ -20,7 +20,7 @@
 }
 
 - (IBAction)triggerEventAction:(UIButton *)sender {
-    [[RSClient sharedInstance] track:@"New track Event"];
+
 }
 
 @end

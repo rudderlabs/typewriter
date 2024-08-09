@@ -7,6 +7,7 @@
 
 #import "AppDelegate.h"
 #import <Rudder/Rudder.h>
+#import "RudderConfig/RudderConfig.h"
 
 @interface AppDelegate ()
 
@@ -17,11 +18,29 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    RSConfigBuilder *builder = [[RSConfigBuilder alloc] init];
-    [builder withDataPlaneUrl:<#DATA_PLANE_URL#>];
-    [RSClient getInstance:<#WRITE_KEY#> config:[builder build]];
+    [self initAnalyticsSDK];
     
     return YES;
+}
+
+- (void)initAnalyticsSDK {
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"RudderConfig" ofType:@"plist"];
+    if (path != nil) {
+        NSDictionary *plistDict = [NSDictionary dictionaryWithContentsOfFile: path];
+        
+        if (plistDict != nil) {
+            RudderConfig *config = [[RudderConfig alloc] initWithDictionary:plistDict];
+            
+            RSConfigBuilder *builder = [[RSConfigBuilder alloc] init];
+            
+            [builder withDataPlaneUrl:config.dataPlaneUrl];
+            [builder withControlPlaneUrl:config.controlPlaneUrl];
+            [builder withLoglevel:RSLogLevelVerbose];
+            [builder withTrackLifecycleEvens:NO];
+            
+            [RSClient getInstance:config.writeKey config:[builder build]];
+        }
+    }
 }
 
 
