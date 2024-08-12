@@ -7,6 +7,7 @@
 
 #import "ViewController.h"
 #import <Rudder/Rudder.h>
+#import "RSRudderTyperAnalytics.h"
 
 @interface ViewController ()
 
@@ -20,7 +21,7 @@
 }
 
 - (IBAction)triggerEventAction:(UIButton *)sender {
-
+    [RSRudderTyperAnalytics sampleEvent1];
 }
 
 @end
