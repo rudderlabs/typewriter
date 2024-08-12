@@ -6,5 +6,6 @@ target 'RudderTyperSwiftExample' do
   use_frameworks!
 
   # Pods for RudderTyperSwiftExample
-
+  pod 'Rudder', '1.28.0'
+  
 end

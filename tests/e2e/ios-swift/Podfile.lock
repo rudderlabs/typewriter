@@ -1,3 +1,28 @@
-PODFILE CHECKSUM: d8ae1678ece94e4a520eb44818c919dff4ffadff
+PODS:
+  - MetricsReporter (1.2.1):
+    - RSCrashReporter (= 1.0.1)
+    - RudderKit (= 1.4.0)
+  - RSCrashReporter (1.0.1)
+  - Rudder (1.28.0):
+    - MetricsReporter (= 1.2.1)
+  - RudderKit (1.4.0)
+
+DEPENDENCIES:
+  - Rudder (= 1.28.0)
+
+SPEC REPOS:
+  trunk:
+    - MetricsReporter
+    - RSCrashReporter
+    - Rudder
+    - RudderKit
+
+SPEC CHECKSUMS:
+  MetricsReporter: 99596ee5003c69949ed2f50acc34aee83c42f843
+  RSCrashReporter: 6b8376ac729b0289ebe0908553e5f56d8171f313
+  Rudder: 9f1f6fdec5bd0e8845e2ac2d4f7b4584d069bf88
+  RudderKit: f272f9872183946452ac94cd7bb2244a71e6ca8f
+
+PODFILE CHECKSUM: a392a4f760aded6d323a42647cbde46a798d935b
 
 COCOAPODS: 1.15.2

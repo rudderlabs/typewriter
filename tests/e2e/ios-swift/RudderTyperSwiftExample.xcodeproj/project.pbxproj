@@ -103,6 +103,7 @@
 				5351AA332C6A82FE003C3C47 /* Sources */,
 				5351AA342C6A82FE003C3C47 /* Frameworks */,
 				5351AA352C6A82FE003C3C47 /* Resources */,
+				3539EBC04061FF4D30144E4C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -160,6 +161,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		3539EBC04061FF4D30144E4C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RudderTyperSwiftExample/Pods-RudderTyperSwiftExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RudderTyperSwiftExample/Pods-RudderTyperSwiftExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RudderTyperSwiftExample/Pods-RudderTyperSwiftExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A06410CC37AACDF2982A219F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
