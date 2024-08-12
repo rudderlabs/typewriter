@@ -13,6 +13,8 @@
 		5351AA422C6A82FE003C3C47 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 5351AA412C6A82FE003C3C47 /* Base */; };
 		5351AA442C6A8300003C3C47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5351AA432C6A8300003C3C47 /* Assets.xcassets */; };
 		5351AA472C6A8300003C3C47 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 5351AA462C6A8300003C3C47 /* Base */; };
+		5351AA4F2C6A8632003C3C47 /* RudderConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5351AA4E2C6A8632003C3C47 /* RudderConfig.plist */; };
+		5351AA512C6A8659003C3C47 /* RudderConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5351AA502C6A8659003C3C47 /* RudderConfig.swift */; };
 		EF9CE2B8EBEA944A6200D3FD /* Pods_RudderTyperSwiftExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFDDA119ECF775CB7B3C9C1A /* Pods_RudderTyperSwiftExample.framework */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +27,8 @@
 		5351AA432C6A8300003C3C47 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5351AA462C6A8300003C3C47 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5351AA482C6A8300003C3C47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5351AA4E2C6A8632003C3C47 /* RudderConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = RudderConfig.plist; sourceTree = "<group>"; };
+		5351AA502C6A8659003C3C47 /* RudderConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RudderConfig.swift; sourceTree = "<group>"; };
 		88AB398068A8C3B1CE2AEEED /* Pods-RudderTyperSwiftExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RudderTyperSwiftExample.release.xcconfig"; path = "Target Support Files/Pods-RudderTyperSwiftExample/Pods-RudderTyperSwiftExample.release.xcconfig"; sourceTree = "<group>"; };
 		E786F02C45DB3325A002D2E3 /* Pods-RudderTyperSwiftExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RudderTyperSwiftExample.debug.xcconfig"; path = "Target Support Files/Pods-RudderTyperSwiftExample/Pods-RudderTyperSwiftExample.debug.xcconfig"; sourceTree = "<group>"; };
 		EFDDA119ECF775CB7B3C9C1A /* Pods_RudderTyperSwiftExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RudderTyperSwiftExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,6 +75,7 @@
 		5351AA392C6A82FE003C3C47 /* RudderTyperSwiftExample */ = {
 			isa = PBXGroup;
 			children = (
+				5351AA522C6A8665003C3C47 /* RudderConfig */,
 				5351AA3A2C6A82FE003C3C47 /* AppDelegate.swift */,
 				5351AA3C2C6A82FE003C3C47 /* SceneDelegate.swift */,
 				5351AA3E2C6A82FE003C3C47 /* ViewController.swift */,
@@ -82,13 +87,21 @@
 			path = RudderTyperSwiftExample;
 			sourceTree = "<group>";
 		};
+		5351AA522C6A8665003C3C47 /* RudderConfig */ = {
+			isa = PBXGroup;
+			children = (
+				5351AA4E2C6A8632003C3C47 /* RudderConfig.plist */,
+				5351AA502C6A8659003C3C47 /* RudderConfig.swift */,
+			);
+			path = RudderConfig;
+			sourceTree = "<group>";
+		};
 		ECAC7B06589DCFABDEDADFDB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
 				E786F02C45DB3325A002D2E3 /* Pods-RudderTyperSwiftExample.debug.xcconfig */,
 				88AB398068A8C3B1CE2AEEED /* Pods-RudderTyperSwiftExample.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -152,6 +165,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5351AA4F2C6A8632003C3C47 /* RudderConfig.plist in Resources */,
 				5351AA442C6A8300003C3C47 /* Assets.xcassets in Resources */,
 				5351AA472C6A8300003C3C47 /* Base in Resources */,
 				5351AA422C6A82FE003C3C47 /* Base in Resources */,
@@ -208,6 +222,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5351AA3F2C6A82FE003C3C47 /* ViewController.swift in Sources */,
+				5351AA512C6A8659003C3C47 /* RudderConfig.swift in Sources */,
 				5351AA3B2C6A82FE003C3C47 /* AppDelegate.swift in Sources */,
 				5351AA3D2C6A82FE003C3C47 /* SceneDelegate.swift in Sources */,
 			);
@@ -362,6 +377,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RudderTyperSwiftExample/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -390,6 +406,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RudderTyperSwiftExample/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

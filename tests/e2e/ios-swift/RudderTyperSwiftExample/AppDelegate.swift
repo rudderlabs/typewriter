@@ -6,14 +6,15 @@
 //
 
 import UIKit
+import Rudder
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        self.initAnalyticsSDK()
+        
         return true
     }
 
@@ -30,7 +31,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-
-
 }
 
+// MARK: - Rudder SDK Initialization
+
+extension AppDelegate {
+    func initAnalyticsSDK() {
+        guard let path = Bundle.main.path(forResource: "RudderConfig", ofType: "plist"),
+                let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
+                let rudderConfig = try? PropertyListDecoder().decode(RudderConfig.self, from: data)
+        else { return }
+        
+        let builder = RSConfigBuilder()
+            .withDataPlaneUrl(rudderConfig.dataPlaneUrl)
+            .withControlPlaneUrl(rudderConfig.controlPlaneUrl)
+            .withTrackLifecycleEvens(false)
+            .withLoglevel(RSLogLevelVerbose)
+        
+        RSClient.getInstance(rudderConfig.writeKey, config: builder.build())
+    }
+}
