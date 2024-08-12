@@ -16,6 +16,9 @@
 		534017F92C64A91300CB4254 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 534017F82C64A91300CB4254 /* main.m */; };
 		5351AA1C2C653BCD003C3C47 /* RudderConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5351AA1B2C653BCD003C3C47 /* RudderConfig.plist */; };
 		5351AA232C653FC2003C3C47 /* RudderConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 5351AA222C653FC2003C3C47 /* RudderConfig.m */; };
+		5351AA2B2C69EAB2003C3C47 /* plan.json in Resources */ = {isa = PBXBuildFile; fileRef = 5351AA242C69EAB2003C3C47 /* plan.json */; };
+		5351AA2C2C69EAB2003C3C47 /* RSRudderTyperAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 5351AA262C69EAB2003C3C47 /* RSRudderTyperAnalytics.m */; };
+		5351AA2D2C69EAB2003C3C47 /* RSRudderTyperUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5351AA292C69EAB2003C3C47 /* RSRudderTyperUtils.m */; };
 		DB775A8C632FCD49D768970E /* Pods_RudderTyperExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E170222C40381D64B6A251E /* Pods_RudderTyperExample.framework */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +39,12 @@
 		5351AA1B2C653BCD003C3C47 /* RudderConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = RudderConfig.plist; sourceTree = "<group>"; };
 		5351AA212C653FC2003C3C47 /* RudderConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RudderConfig.h; sourceTree = "<group>"; };
 		5351AA222C653FC2003C3C47 /* RudderConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RudderConfig.m; sourceTree = "<group>"; };
+		5351AA242C69EAB2003C3C47 /* plan.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = plan.json; sourceTree = "<group>"; };
+		5351AA252C69EAB2003C3C47 /* RSRudderTyperAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSRudderTyperAnalytics.h; sourceTree = "<group>"; };
+		5351AA262C69EAB2003C3C47 /* RSRudderTyperAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSRudderTyperAnalytics.m; sourceTree = "<group>"; };
+		5351AA272C69EAB2003C3C47 /* RSRudderTyperSerializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSRudderTyperSerializable.h; sourceTree = "<group>"; };
+		5351AA282C69EAB2003C3C47 /* RSRudderTyperUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSRudderTyperUtils.h; sourceTree = "<group>"; };
+		5351AA292C69EAB2003C3C47 /* RSRudderTyperUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSRudderTyperUtils.m; sourceTree = "<group>"; };
 		7A77D36CE5FDC040E0F75084 /* Pods-RudderTyperExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RudderTyperExample.release.xcconfig"; path = "Target Support Files/Pods-RudderTyperExample/Pods-RudderTyperExample.release.xcconfig"; sourceTree = "<group>"; };
 		D0056F57695B314888A72806 /* Pods-RudderTyperExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RudderTyperExample.debug.xcconfig"; path = "Target Support Files/Pods-RudderTyperExample/Pods-RudderTyperExample.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,6 +82,7 @@
 		534017E52C64A91200CB4254 /* RudderTyperExample */ = {
 			isa = PBXGroup;
 			children = (
+				5351AA2A2C69EAB2003C3C47 /* generated */,
 				5351AA202C653C29003C3C47 /* RudderConfig */,
 				534017E62C64A91200CB4254 /* AppDelegate.h */,
 				534017E72C64A91200CB4254 /* AppDelegate.m */,
@@ -97,6 +107,19 @@
 				5351AA222C653FC2003C3C47 /* RudderConfig.m */,
 			);
 			path = RudderConfig;
+			sourceTree = "<group>";
+		};
+		5351AA2A2C69EAB2003C3C47 /* generated */ = {
+			isa = PBXGroup;
+			children = (
+				5351AA242C69EAB2003C3C47 /* plan.json */,
+				5351AA252C69EAB2003C3C47 /* RSRudderTyperAnalytics.h */,
+				5351AA262C69EAB2003C3C47 /* RSRudderTyperAnalytics.m */,
+				5351AA272C69EAB2003C3C47 /* RSRudderTyperSerializable.h */,
+				5351AA282C69EAB2003C3C47 /* RSRudderTyperUtils.h */,
+				5351AA292C69EAB2003C3C47 /* RSRudderTyperUtils.m */,
+			);
+			path = generated;
 			sourceTree = "<group>";
 		};
 		89E1ED2095CF2AF66FEB02C2 /* Frameworks */ = {
@@ -175,6 +198,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5351AA2B2C69EAB2003C3C47 /* plan.json in Resources */,
 				5351AA1C2C653BCD003C3C47 /* RudderConfig.plist in Resources */,
 				534017F32C64A91300CB4254 /* Assets.xcassets in Resources */,
 				534017F62C64A91300CB4254 /* Base in Resources */,
@@ -233,9 +257,11 @@
 			files = (
 				534017EE2C64A91200CB4254 /* ViewController.m in Sources */,
 				534017E82C64A91200CB4254 /* AppDelegate.m in Sources */,
+				5351AA2C2C69EAB2003C3C47 /* RSRudderTyperAnalytics.m in Sources */,
 				534017F92C64A91300CB4254 /* main.m in Sources */,
 				534017EB2C64A91200CB4254 /* SceneDelegate.m in Sources */,
 				5351AA232C653FC2003C3C47 /* RudderConfig.m in Sources */,
+				5351AA2D2C69EAB2003C3C47 /* RSRudderTyperUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
