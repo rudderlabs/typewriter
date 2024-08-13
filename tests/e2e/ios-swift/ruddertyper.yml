@@ -1,0 +1,14 @@
+# RudderStack RudderTyper Configuration 
+# Just run `npx rudder-typer@next` to re-generate a client with the latest versions of these events.
+
+client:
+  sdk: analytics-ios
+  language: swift
+
+trackingPlans:
+  # Tracking Plan: Sample Tracking plan
+  # https://app.rudderstack.com/trackingplans/trackingPlanId
+  - id: trackingPlanId
+    workspaceSlug: workspaceId
+    path: RudderTyperExample/generated
+    APIVersion: v2

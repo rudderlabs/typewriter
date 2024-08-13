@@ -15,6 +15,10 @@
 		5351AA472C6A8300003C3C47 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 5351AA462C6A8300003C3C47 /* Base */; };
 		5351AA4F2C6A8632003C3C47 /* RudderConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5351AA4E2C6A8632003C3C47 /* RudderConfig.plist */; };
 		5351AA512C6A8659003C3C47 /* RudderConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5351AA502C6A8659003C3C47 /* RudderConfig.swift */; };
+		5351AA582C6B45E6003C3C47 /* plan.json in Resources */ = {isa = PBXBuildFile; fileRef = 5351AA532C6B45E6003C3C47 /* plan.json */; };
+		5351AA592C6B45E6003C3C47 /* RudderTyperAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5351AA542C6B45E6003C3C47 /* RudderTyperAnalytics.swift */; };
+		5351AA5A2C6B45E6003C3C47 /* RudderTyperSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5351AA552C6B45E6003C3C47 /* RudderTyperSerializable.swift */; };
+		5351AA5B2C6B45E6003C3C47 /* RudderTyperUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5351AA562C6B45E6003C3C47 /* RudderTyperUtils.swift */; };
 		EF9CE2B8EBEA944A6200D3FD /* Pods_RudderTyperSwiftExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFDDA119ECF775CB7B3C9C1A /* Pods_RudderTyperSwiftExample.framework */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +33,10 @@
 		5351AA482C6A8300003C3C47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5351AA4E2C6A8632003C3C47 /* RudderConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = RudderConfig.plist; sourceTree = "<group>"; };
 		5351AA502C6A8659003C3C47 /* RudderConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RudderConfig.swift; sourceTree = "<group>"; };
+		5351AA532C6B45E6003C3C47 /* plan.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = plan.json; sourceTree = "<group>"; };
+		5351AA542C6B45E6003C3C47 /* RudderTyperAnalytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RudderTyperAnalytics.swift; sourceTree = "<group>"; };
+		5351AA552C6B45E6003C3C47 /* RudderTyperSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RudderTyperSerializable.swift; sourceTree = "<group>"; };
+		5351AA562C6B45E6003C3C47 /* RudderTyperUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RudderTyperUtils.swift; sourceTree = "<group>"; };
 		88AB398068A8C3B1CE2AEEED /* Pods-RudderTyperSwiftExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RudderTyperSwiftExample.release.xcconfig"; path = "Target Support Files/Pods-RudderTyperSwiftExample/Pods-RudderTyperSwiftExample.release.xcconfig"; sourceTree = "<group>"; };
 		E786F02C45DB3325A002D2E3 /* Pods-RudderTyperSwiftExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RudderTyperSwiftExample.debug.xcconfig"; path = "Target Support Files/Pods-RudderTyperSwiftExample/Pods-RudderTyperSwiftExample.debug.xcconfig"; sourceTree = "<group>"; };
 		EFDDA119ECF775CB7B3C9C1A /* Pods_RudderTyperSwiftExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RudderTyperSwiftExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +83,7 @@
 		5351AA392C6A82FE003C3C47 /* RudderTyperSwiftExample */ = {
 			isa = PBXGroup;
 			children = (
+				5351AA572C6B45E6003C3C47 /* generated */,
 				5351AA522C6A8665003C3C47 /* RudderConfig */,
 				5351AA3A2C6A82FE003C3C47 /* AppDelegate.swift */,
 				5351AA3C2C6A82FE003C3C47 /* SceneDelegate.swift */,
@@ -94,6 +103,17 @@
 				5351AA502C6A8659003C3C47 /* RudderConfig.swift */,
 			);
 			path = RudderConfig;
+			sourceTree = "<group>";
+		};
+		5351AA572C6B45E6003C3C47 /* generated */ = {
+			isa = PBXGroup;
+			children = (
+				5351AA532C6B45E6003C3C47 /* plan.json */,
+				5351AA542C6B45E6003C3C47 /* RudderTyperAnalytics.swift */,
+				5351AA552C6B45E6003C3C47 /* RudderTyperSerializable.swift */,
+				5351AA562C6B45E6003C3C47 /* RudderTyperUtils.swift */,
+			);
+			path = generated;
 			sourceTree = "<group>";
 		};
 		ECAC7B06589DCFABDEDADFDB /* Pods */ = {
@@ -165,6 +185,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5351AA582C6B45E6003C3C47 /* plan.json in Resources */,
 				5351AA4F2C6A8632003C3C47 /* RudderConfig.plist in Resources */,
 				5351AA442C6A8300003C3C47 /* Assets.xcassets in Resources */,
 				5351AA472C6A8300003C3C47 /* Base in Resources */,
@@ -224,7 +245,10 @@
 				5351AA3F2C6A82FE003C3C47 /* ViewController.swift in Sources */,
 				5351AA512C6A8659003C3C47 /* RudderConfig.swift in Sources */,
 				5351AA3B2C6A82FE003C3C47 /* AppDelegate.swift in Sources */,
+				5351AA5A2C6B45E6003C3C47 /* RudderTyperSerializable.swift in Sources */,
+				5351AA592C6B45E6003C3C47 /* RudderTyperAnalytics.swift in Sources */,
 				5351AA3D2C6A82FE003C3C47 /* SceneDelegate.swift in Sources */,
+				5351AA5B2C6B45E6003C3C47 /* RudderTyperUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
