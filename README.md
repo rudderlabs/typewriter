@@ -1,9 +1,23 @@
+<p align="center">
+  <a href="https://rudderstack.com/">
+    <img alt="RudderStack" width="512" src="https://raw.githubusercontent.com/rudderlabs/rudder-typer/master/assets/rs-logo-full-light.jpg">
+  </a>
+  <br />
+  <caption>The Customer Data Platform for Developers</caption>
+</p>
+<p align="center">
+  <b>
+    <a href="https://rudderstack.com">Website</a>
+    ·
+    <a href="https://rudderstack.com/docs/stream-sources/rudderstack-sdk-integration-guides/rudderstack-javascript-sdk/">Documentation</a>
+    ·
+    <a href="https://rudderstack.com/join-rudderstack-slack-community">Community Slack</a>
+  </b>
+</p>
+
 # RudderTyper
 
-**RudderTyper** is a tool for generating strongly-typed [**RudderStack**](https://www.rudderstack.com/) analytics libraries based on your pre-defined
-tracking plan spec.
-<br>
-<br>
+**RudderTyper** is a tool for generating strongly-typed [**RudderStack**](https://www.rudderstack.com/) analytics libraries based on your pre-defined tracking plan spec.
 
 <p align="center">
 <img src=".github/assets/readme-example.gif" alt="RudderTyper GIF Example" width="80%"/>
@@ -272,9 +286,38 @@ ruddertyper.orderCompleted({
 
 ## Contribute
 
-- To submit a bug report or feature request, file an issue [**here**](https://github.com/rudderlabs/rudder-typer/issues).
-- To develop on `ruddertyper` or propose support for a new language, see our [**contributors documentation**](./.github/CONTRIBUTING.md).
+We encourage contributions to this project. For detailed guidelines on how to contribute, please refer to [**here**](./CONTRIBUTING.md).
 
-## Contact Us
+## Contact us
 
-For queries on any of the sections in this guide, start a conversation on our [**Slack**](https://resources.rudderstack.com/join-rudderstack-slack) channel.
+For more information on any of the sections covered in this readme, you can [**contact us**](mailto:%20docs@rudderstack.com) or start a conversation on our [**Slack**](https://resources.rudderstack.com/join-rudderstack-slack) channel.
+
+## Follow Us
+
+- [RudderStack Blog][rudderstack-blog]
+- [Slack][slack]
+- [Twitter][twitter]
+- [LinkedIn][linkedin]
+- [dev.to][devto]
+- [Medium][medium]
+- [YouTube][youtube]
+- [HackerNews][hackernews]
+- [Product Hunt][producthunt]
+
+## :clap: Our Supporters
+
+[![Stargazers repo roster for @rudderlabs/rudder-typer](https://reporoster.com/stars/rudderlabs/rudder-typer)](https://github.com/rudderlabs/rudder-typer/stargazers)
+
+[![Forkers repo roster for @rudderlabs/rudder-typer](https://reporoster.com/forks/rudderlabs/rudder-typer)](https://github.com/rudderlabs/rudder-typer/network/members)
+
+<!----variables---->
+
+[rudderstack-blog]: https://rudderstack.com/blog/
+[slack]: https://resources.rudderstack.com/join-rudderstack-slack
+[twitter]: https://twitter.com/rudderstack
+[linkedin]: https://www.linkedin.com/company/rudderlabs/
+[devto]: https://dev.to/rudderstack
+[medium]: https://rudderstack.medium.com/
+[youtube]: https://www.youtube.com/channel/UCgV-B77bV_-LOmKYHw8jvBw
+[hackernews]: https://news.ycombinator.com/item?id=21081756
+[producthunt]: https://www.producthunt.com/posts/rudderstack
