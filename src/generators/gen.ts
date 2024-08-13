@@ -37,7 +37,7 @@ export type TrackingPlan = {
 export type BaseRootContext<
   T extends Record<string, unknown>,
   O extends Record<string, unknown>,
-  P extends Record<string, unknown>
+  P extends Record<string, unknown>,
 > = {
   isDevelopment: boolean;
   language: string;
@@ -94,7 +94,7 @@ export declare type Generator<
   R extends Record<string, unknown>,
   T extends Record<string, unknown>,
   O extends Record<string, unknown>,
-  P extends Record<string, unknown>
+  P extends Record<string, unknown>,
 > = {
   namer: NamerOptions;
   setup: (options: GenOptions) => Promise<R>;
@@ -157,7 +157,7 @@ export async function gen(trackingPlan: RawTrackingPlan, options: GenOptions): P
     url: trackingPlan.url,
     id: trackingPlan.id,
     version: trackingPlan.version,
-    trackCalls: trackingPlan.trackCalls.map(s => {
+    trackCalls: trackingPlan.trackCalls.map((s) => {
       const sanitizedSchema = {
         $schema: 'http://json-schema.org/draft-07/schema#',
         ...s,
@@ -188,7 +188,7 @@ async function runGenerator<
   R extends Record<string, unknown>,
   T extends Record<string, unknown>,
   O extends Record<string, unknown>,
-  P extends Record<string, unknown>
+  P extends Record<string, unknown>,
 >(
   generator: Generator<R, T, O, P>,
   trackingPlan: TrackingPlan,
@@ -292,7 +292,7 @@ async function runGenerator<
       // For unions, we generate a property type to represent each of the possible types
       // then use that list of possible property types to generate a union.
       const types = await Promise.all(
-        schema.types.map(async t => {
+        schema.types.map(async (t) => {
           const subSchema = {
             name: schema.name,
             description: schema.description,
@@ -345,7 +345,7 @@ async function runGenerator<
   await generator.generateRoot(client, context);
 
   // Format and output all generated files.
-  return files.map(f => (generator.formatFile ? generator.formatFile(client, f) : f));
+  return files.map((f) => (generator.formatFile ? generator.formatFile(client, f) : f));
 }
 
 // Legacy Code:

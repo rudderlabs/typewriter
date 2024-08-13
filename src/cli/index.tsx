@@ -11,8 +11,9 @@ import { Config, getConfig, getTokenMethod } from './config';
 import { machineId } from 'node-machine-id';
 import { version } from '../../package.json';
 import { loadTrackingPlan } from './api';
-import yargs from 'yargs';
+import yargs, { ArgumentsCamelCase, Options } from 'yargs';
 import { getTrackingPlanName } from './api/trackingplans';
+import { hideBin } from 'yargs/helpers';
 
 export type StandardProps = AnalyticsProps & {
   configPath: string;
@@ -40,7 +41,7 @@ export type CLIArguments = {
 };
 
 const commandDefaults: {
-  builder: Record<string, yargs.Options>;
+  builder: Record<string, Options>;
 } = {
   builder: {
     config: {
@@ -71,7 +72,7 @@ const commandDefaults: {
 };
 
 // The `.argv` below will boot a Yargs CLI.
-yargs
+yargs(hideBin(process.argv))
   .command({
     ...commandDefaults,
     command: ['init', 'initialize', 'quickstart'],
@@ -125,7 +126,7 @@ function toYargsHandler<P = unknown>(
   cliOptions?: { validateDefault?: boolean },
 ) {
   // Return a closure which yargs will execute if this command is run.
-  return async (args: yargs.Arguments<CLIArguments>) => {
+  return async (args: ArgumentsCamelCase<CLIArguments>) => {
     let anonymousId = 'unknown';
     try {
       anonymousId = await getAnonymousId();
@@ -220,7 +221,7 @@ function toYargsHandler<P = unknown>(
 }
 
 /** Helper to fetch the name of the current yargs CLI command. */
-function getCommand(args: yargs.Arguments<CLIArguments>) {
+function getCommand(args: ArgumentsCamelCase<CLIArguments>) {
   return args._.length === 0 ? 'update' : args._.join(' ');
 }
 
@@ -228,7 +229,7 @@ function getCommand(args: yargs.Arguments<CLIArguments>) {
  * Helper to generate the shared library properties shared by all analytics calls.
  */
 async function rudderTyperLibraryProperties(
-  args: yargs.Arguments<CLIArguments>,
+  args: ArgumentsCamelCase<CLIArguments>,
   cfg: Config | undefined = undefined,
 ) {
   // In CI environments, or if there is no internet, we may not be able to execute the

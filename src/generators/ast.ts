@@ -176,7 +176,7 @@ function parseTypeSpecificFields(raw: JSONSchema7, type: Type): TypeSpecificFiel
       const definitions = raw.items instanceof Array ? raw.items : [raw.items];
 
       // Convert from JSONSchema7Definition -> JSONSchema7
-      const schemas = definitions.filter(def => typeof def !== 'boolean') as JSONSchema7[];
+      const schemas = definitions.filter((def) => typeof def !== 'boolean') as JSONSchema7[];
 
       if (schemas.length === 1) {
         const schema = schemas[0];
@@ -184,7 +184,7 @@ function parseTypeSpecificFields(raw: JSONSchema7, type: Type): TypeSpecificFiel
       } else if (schemas.length > 1) {
         fields.items = {
           type: Type.UNION,
-          types: schemas.map(schema => parseTypeSpecificFields(schema, getType(schema))),
+          types: schemas.map((schema) => parseTypeSpecificFields(schema, getType(schema))),
         };
       }
     }
@@ -233,7 +233,7 @@ function getRawTypes(raw: JSONSchema7): Set<string> {
   if (typeof raw.type === 'string') {
     rawTypes.add(raw.type);
   } else if (raw.type instanceof Array) {
-    raw.type.forEach(t => rawTypes.add(t));
+    raw.type.forEach((t) => rawTypes.add(t));
   }
 
   return rawTypes;
@@ -270,7 +270,7 @@ function getEnum(raw: JSONSchema7): EnumValue[] | undefined {
   }
 
   const enm = raw.enum.filter(
-    val => ['boolean', 'number', 'string'].includes(typeof val) || val === null,
+    (val) => ['boolean', 'number', 'string'].includes(typeof val) || val === null,
   ) as EnumValue[];
 
   return enm;

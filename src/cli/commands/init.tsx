@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Text, Box, Color, useApp } from 'ink';
+import { Text, Box, useApp } from 'ink';
 import Link from 'ink-link';
 import SelectInput, { Item } from 'ink-select-input';
 import TextInput from 'ink-text-input';
@@ -156,16 +156,16 @@ export const Init: React.FC<InitProps> = props => {
 const Header: React.FC = () => {
   return (
     <Box flexDirection="column">
-      <Box width={80} textWrap="wrap" marginBottom={4}>
-        <Color white>
+      <Box width={80}  marginBottom={4}>
+        <Text color="white" wrap="wrap">
           RudderTyper is a tool for generating strongly-typed{' '}
           <Link url="https://www.rudderstack.com/">RudderStack</Link> analytics libraries from a
           Tracking Plan
-        </Color>{' '}
-        <Color grey>
-          . To get started, {"you'll"} need a <Color yellow>ruddertyper.yml</Color>. The quickstart
+        </Text>{' '}
+        <Text color="grey">
+          . To get started, {"you'll"} need a <Text color="yellow">ruddertyper.yml</Text>. The quickstart
           below will walk you through creating one.
-        </Color>
+        </Text>
       </Box>
     </Box>
   );
@@ -199,7 +199,7 @@ type SDKPromptProps = {
 
 /** A prompt to identify which RudderStack SDK a user wants to use. */
 const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
-  const items: Item[] = [
+  const items = [
     { label: 'Web (analytics.js)', value: SDK.WEB },
     { label: 'Node.js (analytics-node)', value: SDK.NODE },
     { label: 'iOS (analytics-ios)', value: SDK.IOS },
@@ -207,7 +207,7 @@ const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
   ];
   const initialIndex = items.findIndex(i => i.value === sdk);
 
-  const onSelect = (item: Item) => {
+  const onSelect = (item: any) => {
     onSubmit(item.value as SDK);
   };
 
@@ -236,7 +236,7 @@ type LanguagePromptProps = {
 
 /** A prompt to identify which RudderStack programming language a user wants to use. */
 const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, onSubmit }) => {
-  const items: Item[] = [
+  const items = [
     { label: 'JavaScript', value: Language.JAVASCRIPT },
     { label: 'TypeScript', value: Language.TYPESCRIPT },
     { label: 'Objective-C', value: Language.OBJECTIVE_C },
@@ -255,7 +255,7 @@ const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, on
   });
   const initialIndex = items.findIndex(i => i.value === language);
 
-  const onSelect = (item: Item) => {
+  const onSelect = (item: any) => {
     onSubmit(item.value as Language);
   };
 
@@ -327,7 +327,7 @@ async function filterDirectories(path: string): Promise<string[]> {
     [...directories].map(d => ({ name: d })),
     { keys: ['name'] },
   );
-  return isPathEmpty ? [...directories] : fuse.search(path).map(d => d.name);
+  return isPathEmpty ? [...directories] : fuse.search(path).map(d => d.item.name);
 }
 
 /** A prompt to identify where to store the new client on the user's filesystem. */
@@ -364,7 +364,7 @@ const PathPrompt: React.FC<PathPromptProps> = ({ step, path: initialPath, onSubm
   const directoryRows: (string | JSX.Element)[] = isNewDirectory
     ? [
         <Text key="new-directory">
-          {path} <Color blue>(new)</Color>
+          {path} <Text color="blue">(new)</Text>
         </Text>,
       ]
     : [];
@@ -378,9 +378,9 @@ const PathPrompt: React.FC<PathPromptProps> = ({ step, path: initialPath, onSubm
       </Box>
       <Box height={10} marginLeft={2} flexDirection="column">
         {directoryRows.map((d, i) => (
-          <Color key={i} grey>
+          <Text key={i} color="grey">
             {d}
-          </Color>
+          </Text>
         ))}
       </Box>
     </Step>
@@ -479,7 +479,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
   };
 
   // Fired if a user confirms a cached token.
-  const onConfirmCachedToken = async (item: Item) => {
+  const onConfirmCachedToken = async (item: any) => {
     if (item.value === 'no') {
       // Clear the selected token so they can enter their own.
       setState({
@@ -529,9 +529,9 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
 
   if (state.foundCachedToken) {
     tips.push(
-      <Color yellow>
+      <Text color="yellow">
         A cached token for {state.workspace!.name} is already in your environment.
-      </Color>,
+      </Text>,
     );
   }
 
@@ -571,8 +571,8 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
               />
             </Box>
             {state.isInvalid && (
-              <Box textWrap="wrap" marginLeft={2}>
-                <Color red>{figures.cross} Invalid Rudder API token.</Color>
+              <Box  marginLeft={2}>
+                <Text color="red" wrap="wrap">{figures.cross} Invalid Rudder API token.</Text>
               </Box>
             )}
           </Box>
@@ -649,7 +649,7 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
     loadTrackingPlans();
   }, []);
 
-  const onSelect = (item: Item) => {
+  const onSelect = (item: any) => {
     const trackingPlan = trackingPlans.find(tp => getTrackingPlanName(tp) === item.value)!;
     onSubmit(trackingPlan);
   };
@@ -672,7 +672,7 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
   const tips = [
     'RudderTyper will generate a client from this Tracking Plan.',
     <Text key="plan-path">
-      This Tracking Plan is saved locally in a <Color yellow>plan.json</Color> file.
+      This Tracking Plan is saved locally in a <Text color="yellow">plan.json</Text> file.
     </Text>,
   ];
 
@@ -720,7 +720,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const { handleFatalError } = useContext(ErrorContext);
 
-  const onSelect = async (item: Item) => {
+  const onSelect = async (item: any) => {
     if (item.value === 'lgtm') {
       // Write the updated ruddertyper.yml config.
       setIsLoading(true);
@@ -789,9 +789,9 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
       {summaryRows.map(r => (
         <Box key={r.label}>
           <Box width={20}>
-            <Color grey>{r.label}:</Color>
+            <Text color="grey">{r.label}:</Text>
           </Box>
-          <Color yellow>{r.value}</Color>
+          <Text color="yellow">{r.value}</Text>
         </Box>
       ))}
     </Box>
@@ -816,6 +816,7 @@ type StepProps = {
   isLoading?: boolean;
   description?: JSX.Element;
   tips?: (string | JSX.Element)[];
+  children: React.ReactNode;
 };
 
 const Step: React.FC<StepProps> = ({
@@ -832,32 +833,32 @@ const Step: React.FC<StepProps> = ({
     <Box flexDirection="column">
       <Box flexDirection="row" width={80} justifyContent="space-between">
         <Box>
-          <Color white>{name}</Color>
+          <Text color="white">{name}</Text>
         </Box>
         {step && (
           <Box>
-            <Color yellow>[{step}/6]</Color>
+            <Text color="yellow">[{step}/6]</Text>
           </Box>
         )}
       </Box>
       <Box marginLeft={1} flexDirection="column">
         {tips &&
           tips.map((t, i) => (
-            <Color grey key={i}>
+            <Text color="grey" key={i}>
               {figures.arrowRight} {t}
-            </Color>
+            </Text>
           ))}
         {description}
         <Box marginTop={1} flexDirection="column">
           {isLoading && (
-            <Color grey>
+            <Text color="grey">
               {!debug && (
                 <>
                   <Spinner type="dots" />{' '}
                 </>
               )}
               Loading...
-            </Color>
+            </Text>
           )}
           {!isLoading && children}
         </Box>

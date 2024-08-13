@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Box, Color, useApp } from 'ink';
+import { Box, useApp, Text } from 'ink';
 import { version as ruddertyperVersion } from '../../../package.json';
-import latest from 'latest-version';
+import latest, { Options } from 'latest-version';
 import { StandardProps } from '../index';
 import { ErrorContext, WrappedError } from './error';
 import semver from 'semver';
@@ -15,7 +15,7 @@ export const Version: React.FC<StandardProps> = () => {
   useEffect(() => {
     async function effect() {
       try {
-        let options: latest.Options = {};
+        let options: Options = {};
 
         // If the user is on a pre-release, check if there's a new pre-release.
         // Otherwise, only compare against stable versions.
@@ -46,13 +46,13 @@ export const Version: React.FC<StandardProps> = () => {
 
   return (
     <Box>
-      <Color grey>Version: </Color>
-      <Color green={isLatest} yellow={!isLatest}>
+      <Text color="grey">Version: </Text>
+      <Text color={isLatest ? "green" : "yellow"}>
         {ruddertyperVersion}{' '}
-      </Color>
-      <Color grey={isLatest} green={!isLatest}>
+      </Text>
+      <Text color={isLatest ? "grey" : "green"}>
         {newVersionText}
-      </Color>
+      </Text>
     </Box>
   );
 };

@@ -45,7 +45,7 @@ export async function getConfig(path = './'): Promise<Config | undefined> {
     );
   }
 
-  const rawConfig = yaml.safeLoad(file);
+  const rawConfig = yaml.load(file);
 
   return validateConfig(rawConfig as Config);
 }

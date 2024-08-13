@@ -1,4 +1,4 @@
-import got from 'got';
+import got, { type Response } from 'got';
 import { JSONSchema7 } from 'json-schema';
 import { version } from '../../../package.json';
 import { wrapError, isWrappedError } from '../commands/error';
@@ -217,27 +217,27 @@ export async function validateToken(
   return tokenValidationCache[token];
 }
 
-async function apiGet<Response>(url: string, token: string, email: string): Promise<Response> {
-  const resp = got(url, {
-    baseUrl:
-      url === 'workspace'
-        ? 'https://api.rudderstack.com/v1'
-        : url.includes('trackingplans')
-        ? 'https://api.rudderstack.com/v1/dg'
-        : 'https://api.rudderstack.com/v2/catalog',
-    headers: {
-      authorization:
-        url === 'workspace' || url.includes('trackingplans')
-          ? `Basic ${Buffer.from(email + ':' + token).toString('base64')}`
-          : 'Bearer ' + token,
-    },
-    json: true,
-    timeout: 10000, // ms
-  });
-
+async function apiGet<T>(url: string, token: string, email: string): Promise<T> {
   try {
-    const { body } = await resp;
-    return body;
+    const resp = await got(url, {
+      prefixUrl:
+        url === 'workspace'
+          ? 'https://api.rudderstack.com/v1'
+          : url.includes('trackingplans')
+          ? 'https://api.rudderstack.com/v1/dg'
+          : 'https://api.rudderstack.com/v2/catalog',
+      headers: {
+        authorization:
+          url === 'workspace' || url.includes('trackingplans')
+            ? `Basic ${Buffer.from(email + ':' + token).toString('base64')}`
+            : 'Bearer ' + token,
+      },
+      timeout: {
+        request: 10000 //ms
+      }
+    }).json();
+
+    return resp as T;
   } catch (error) {
     const err = error as APIError;
     // Don't include the user's authorization token. Overwrite the header value from this error.
