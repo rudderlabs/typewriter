@@ -18,7 +18,7 @@ export async function runScript(
   type: Scripts,
 ): Promise<string> {
   const scriptWithCD = `cd ${configPath}; ${script}`;
-  const { stdout } = await exec(scriptWithCD, { timeout: EXEC_TIMEOUT }).catch(err => {
+  const { stdout } = await exec(scriptWithCD, { timeout: EXEC_TIMEOUT }).catch((err) => {
     const { stderr = '' } = err;
     const firstStdErrLine = stderr.split('\n')[0];
     // This child process will be SIGTERM-ed if it times out.

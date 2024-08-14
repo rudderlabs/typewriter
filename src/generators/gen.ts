@@ -8,7 +8,8 @@ import { Options, SDK, Language } from './options';
 import { registerStandardHelpers, generateFromTemplate } from '../templates';
 import { Namer, Options as NamerOptions } from './namer';
 import stringify from 'json-stable-stringify';
-import { camelCase, upperFirst } from 'lodash';
+import camelCase from 'lodash/camelCase';
+import upperFirst from 'lodash/upperFirst';
 
 export type File = {
   path: string;
@@ -345,7 +346,9 @@ async function runGenerator<
   await generator.generateRoot(client, context);
 
   // Format and output all generated files.
-  return await Promise.all(files.map(async (f) => (generator.formatFile ? generator.formatFile(client, f) : f)));
+  return await Promise.all(
+    files.map(async (f) => (generator.formatFile ? generator.formatFile(client, f) : f)),
+  );
 }
 
 // Legacy Code:

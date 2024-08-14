@@ -156,19 +156,21 @@ const ErrorComponent: React.FC<ErrorComponentProps> = ({ error }) => {
         </Text>
       </Box>
       {error.notes &&
-        error.notes.map(n => (
+        error.notes.map((n) => (
           <Box key={n}>
             <Box marginLeft={1} marginRight={1}>
               <Text color="grey">{figures.arrowRight}</Text>
             </Box>
-            <Box width={80} >
-              <Text color="grey" wrap="wrap">{n}</Text>
+            <Box width={80}>
+              <Text color="grey" wrap="wrap">
+                {n}
+              </Text>
             </Box>
           </Box>
         ))}
-      <Box height={2} width={80}  marginTop={1}>
+      <Box height={2} width={80} marginTop={1}>
         <Text color="grey" wrap="wrap">
-          If you are unable to resolve this issue,{' '}
+          If you are unable to resolve this issue,
           <Link url="https://github.com/rudderlabs/rudder-typer/issues/new">
             open an issue on GitHub
           </Link>

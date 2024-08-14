@@ -1,4 +1,5 @@
-import { camelCase, upperFirst } from 'lodash';
+import camelCase from 'lodash/camelCase';
+import upperFirst from 'lodash/upperFirst';
 import { Type, Schema } from '../ast';
 import * as Handlebars from 'handlebars';
 import { Generator, BasePropertyContext, GeneratorClient } from '../gen';
@@ -118,7 +119,7 @@ export const objc: Generator<
       property.importName = `"${className}.h"`;
       object = {
         name: className,
-        imports: properties.filter(p => !!p.importName).map(p => p.importName!),
+        imports: properties.filter((p) => !!p.importName).map((p) => p.importName!),
       };
     }
 
@@ -158,10 +159,10 @@ export const objc: Generator<
         'generators/objc/templates/RSRudderTyperSerializable.h.hbs',
         context,
       ),
-      ...context.objects.map(o =>
+      ...context.objects.map((o) =>
         client.generateFile(`${o.name}.h`, 'generators/objc/templates/class.h.hbs', o),
       ),
-      ...context.objects.map(o =>
+      ...context.objects.map((o) =>
         client.generateFile(`${o.name}.m`, 'generators/objc/templates/class.m.hbs', o),
       ),
     ]);
@@ -243,7 +244,7 @@ function generateFunctionCall(
   extraParameterValue?: string,
 ): string {
   let functionCall = functionName;
-  const parameters: { name: string; value: string }[] = properties.map(p => ({
+  const parameters: { name: string; value: string }[] = properties.map((p) => ({
     name: p.name,
     value: p.name,
   }));
@@ -278,14 +279,14 @@ function generatePropertiesDictionary(
           ? name
           : `[NSNumber numberWithBool:${name}]`
         : property.schemaType === Type.INTEGER
-        ? property.isPointerType
-          ? name
-          : `[NSNumber numberWithInteger:${name}]`
-        : property.schemaType === Type.OBJECT && !property.type.includes('NSDictionary')
-        ? `[${name} toDictionary]`
-        : property.schemaType === Type.ARRAY
-        ? `[RSRudderTyperUtils toSerializableArray:${name}]`
-        : name;
+          ? property.isPointerType
+            ? name
+            : `[NSNumber numberWithInteger:${name}]`
+          : property.schemaType === Type.OBJECT && !property.type.includes('NSDictionary')
+            ? `[${name} toDictionary]`
+            : property.schemaType === Type.ARRAY
+              ? `[RSRudderTyperUtils toSerializableArray:${name}]`
+              : name;
 
     let setter: string;
     if (property.isPointerType) {

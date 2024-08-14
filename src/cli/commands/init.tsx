@@ -17,7 +17,7 @@ import figures from 'figures';
 import * as fs from 'fs';
 import { promisify } from 'util';
 import { join, normalize } from 'path';
-import { orderBy } from 'lodash';
+import orderBy from 'lodash/orderBy';
 import { Build } from './build';
 import Fuse from 'fuse.js';
 import { StandardProps, DebugContext } from '../index';
@@ -48,7 +48,7 @@ enum Steps {
   Done = 8,
 }
 
-export const Init: React.FC<InitProps> = props => {
+export const Init: React.FC<InitProps> = (props) => {
   const { configPath } = props;
   const [config, setConfig] = useState(props.config);
   const [step, setStep] = useState(Steps.Confirmation);
@@ -156,15 +156,16 @@ export const Init: React.FC<InitProps> = props => {
 const Header: React.FC = () => {
   return (
     <Box flexDirection="column">
-      <Box width={80}  marginBottom={4}>
+      <Box width={80} marginBottom={4}>
         <Text color="white" wrap="wrap">
-          RudderTyper is a tool for generating strongly-typed{' '}
+          RudderTyper is a tool for generating strongly-typed
           <Link url="https://www.rudderstack.com/">RudderStack</Link> analytics libraries from a
           Tracking Plan
-        </Text>{' '}
+        </Text>
+        <Text> </Text>
         <Text color="grey">
-          . To get started, {"you'll"} need a <Text color="yellow">ruddertyper.yml</Text>. The quickstart
-          below will walk you through creating one.
+          . To get started, {"you'll"} need a <Text color="yellow">ruddertyper.yml</Text>. The
+          quickstart below will walk you through creating one.
         </Text>
       </Box>
     </Box>
@@ -182,12 +183,12 @@ const ConfirmationPrompt: React.FC<ConfirmationPromptProps> = ({ onSubmit }) => 
   const tips = ['Hit return to continue.'];
 
   return (
-    <>
+    <Box flexDirection="column">
       <Header />
       <Step name="Ready?" tips={tips}>
         <SelectInput items={items} onSelect={onSubmit} />
       </Step>
-    </>
+    </Box>
   );
 };
 
@@ -205,7 +206,7 @@ const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
     { label: 'iOS (analytics-ios)', value: SDK.IOS },
     { label: 'Android (analytics-android)', value: SDK.ANDROID },
   ];
-  const initialIndex = items.findIndex(i => i.value === sdk);
+  const initialIndex = items.findIndex((i) => i.value === sdk);
 
   const onSelect = (item: any) => {
     onSubmit(item.value as SDK);
@@ -215,7 +216,7 @@ const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
     'Use your arrow keys to select.',
     'RudderTyper clients are strongly-typed wrappers around a RudderStack SDK.',
     <Text key="sdk-docs">
-      To learn more about {"RudderStack's"} SDKs, see the{' '}
+      To learn more about {"RudderStack's"} SDKs, see the
       <Link url="https://docs.rudderstack.com/stream-sources">documentation</Link>.
     </Text>,
   ];
@@ -242,7 +243,7 @@ const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, on
     { label: 'Objective-C', value: Language.OBJECTIVE_C },
     { label: 'Swift', value: Language.SWIFT },
     { label: 'Java', value: Language.JAVA },
-  ].filter(item => {
+  ].filter((item) => {
     // Filter out items that aren't relevant, given the selected SDK.
     const supportedLanguages = {
       [SDK.WEB]: [Language.JAVASCRIPT, Language.TYPESCRIPT],
@@ -253,7 +254,7 @@ const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, on
 
     return supportedLanguages[sdk].includes(item.value);
   });
-  const initialIndex = items.findIndex(i => i.value === language);
+  const initialIndex = items.findIndex((i) => i.value === language);
 
   const onSelect = (item: any) => {
     onSubmit(item.value as Language);
@@ -286,11 +287,11 @@ async function filterDirectories(path: string): Promise<string[]> {
       });
       const directoryBlocklist = ['node_modules'];
       return files
-        .filter(f => f.isDirectory())
-        .filter(f => !f.name.startsWith('.'))
-        .filter(f => !directoryBlocklist.some(b => f.name.startsWith(b)))
-        .map(f => join(path, f.name))
-        .filter(f => normalize(f).startsWith(normalize(path).replace(/^\.\/?/, '')));
+        .filter((f) => f.isDirectory())
+        .filter((f) => !f.name.startsWith('.'))
+        .filter((f) => !directoryBlocklist.some((b) => f.name.startsWith(b)))
+        .map((f) => join(path, f.name))
+        .filter((f) => normalize(f).startsWith(normalize(path).replace(/^\.\/?/, '')));
     } catch {
       // If we can't read this path, then return an empty list of sub-directories.
       return [];
@@ -303,13 +304,13 @@ async function filterDirectories(path: string): Promise<string[]> {
   // First look for all directories in the same directory as the current query path.
   const parentPath = join(path, isPathEmpty || path.endsWith('/') ? '.' : '..');
   const parentDirectories = await listDirectories(parentPath);
-  parentDirectories.forEach(f => directories.add(f));
+  parentDirectories.forEach((f) => directories.add(f));
 
   const queryPath = join(parentPath, path);
   // Next, if the current query IS a directory, then we want to prioritize results from inside that directory.
   if (directories.has(queryPath)) {
     const queryDirectories = await listDirectories(queryPath);
-    queryDirectories.forEach(f => directories.add(f));
+    queryDirectories.forEach((f) => directories.add(f));
   }
 
   // Otherwise, show results from inside any other directories at the level of the current query path.
@@ -319,15 +320,15 @@ async function filterDirectories(path: string): Promise<string[]> {
     }
 
     const otherDirectories = await listDirectories(dirPath);
-    otherDirectories.forEach(f => directories.add(f));
+    otherDirectories.forEach((f) => directories.add(f));
   }
 
   // Now sort these directories by the query path.
   const fuse = new Fuse(
-    [...directories].map(d => ({ name: d })),
+    [...directories].map((d) => ({ name: d })),
     { keys: ['name'] },
   );
-  return isPathEmpty ? [...directories] : fuse.search(path).map(d => d.item.name);
+  return isPathEmpty ? [...directories] : fuse.search(path).map((d) => d.item.name);
 }
 
 /** A prompt to identify where to store the new client on the user's filesystem. */
@@ -373,7 +374,8 @@ const PathPrompt: React.FC<PathPromptProps> = ({ step, path: initialPath, onSubm
   return (
     <Step name="Enter a directory:" step={step} tips={tips}>
       <Box>
-        <Text>{figures.pointer}</Text>{' '}
+        <Text>{figures.pointer}</Text>
+        <Text> </Text>
         <TextInput value={path} showCursor={true} onChange={setPath} onSubmit={onSubmitPath} />
       </Box>
       <Box height={10} marginLeft={2} flexDirection="column">
@@ -519,7 +521,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
   const tips = [
     'An API token is used to download Tracking Plans from Rudder.',
     <Text key="api-token-docs">
-      Documentation on generating an API token can be found{' '}
+      Documentation on generating an API token can be found
       <Link url="https://www.rudderstack.com/docs/dashboard-guides/personal-access-token/">
         here
       </Link>
@@ -534,6 +536,65 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
       </Text>,
     );
   }
+
+  return (
+    <>
+      <Step name="Enter a Rudder API token:" step={step} isLoading={state.isLoading} tips={tips}>
+        {!state.canBeSet && (
+          <SelectInput items={[{ label: 'Ok!', value: 'ok' }]} onSelect={onConfirm} />
+        )}
+        {state.canBeSet && state.foundCachedToken && (
+          <SelectInput
+            items={[
+              { label: 'Use this token', value: 'yes' },
+              { label: 'No, provide a different token.', value: 'no' },
+            ]}
+            onSelect={onConfirmCachedToken}
+          />
+        )}
+        {state.canBeSet && !state.foundCachedToken && (
+          <Box flexDirection="column">
+            <Box>
+              <Text>{figures.pointer}</Text>
+              <Text> </Text>
+              <TextInput
+                value={state.token}
+                // See: https://github.com/vadimdemedes/ink-text-input/issues/41
+                onChange={setToken}
+                showCursor={true}
+                focus={!state.tokenSubmitted}
+                onSubmit={setTokenSubmitted}
+                mask="*"
+              />
+            </Box>
+            {state.isInvalid && (
+              <Box marginLeft={2}>
+                <Text color="red" wrap="wrap">
+                  {figures.cross} Invalid Rudder API token.
+                </Text>
+              </Box>
+            )}
+          </Box>
+        )}
+      </Step>
+      {state.tokenSubmitted && (
+        <Step name="Enter your Email Id" isLoading={state.isLoading}>
+          <Box flexDirection="column">
+            <Box>
+              <Text>{figures.pointer}</Text>
+              <Text> </Text>
+              <TextInput
+                value={state.email}
+                onChange={setEmail}
+                showCursor={true}
+                onSubmit={onConfirm}
+              />
+            </Box>
+          </Box>
+        </Step>
+      )}
+    </>
+  );
 
   return (
     <div>
@@ -559,7 +620,8 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
         {state.canBeSet && !state.foundCachedToken && (
           <Box flexDirection="column">
             <Box>
-              <Text>{figures.pointer}</Text>{' '}
+              <Text>{figures.pointer}</Text>
+              <Text> </Text>
               <TextInput
                 value={state.token}
                 // See: https://github.com/vadimdemedes/ink-text-input/issues/41
@@ -571,8 +633,10 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
               />
             </Box>
             {state.isInvalid && (
-              <Box  marginLeft={2}>
-                <Text color="red" wrap="wrap">{figures.cross} Invalid Rudder API token.</Text>
+              <Box marginLeft={2}>
+                <Text color="red" wrap="wrap">
+                  {figures.cross} Invalid Rudder API token.
+                </Text>
               </Box>
             )}
           </Box>
@@ -582,7 +646,8 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
         <Step name="Enter your Email Id" isLoading={state.isLoading}>
           <Box flexDirection="column">
             <Box>
-              <Text>{figures.pointer}</Text>{' '}
+              <Text>{figures.pointer}</Text>
+              <Text> </Text>
               <TextInput
                 value={state.email}
                 onChange={setEmail}
@@ -650,13 +715,13 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
   }, []);
 
   const onSelect = (item: any) => {
-    const trackingPlan = trackingPlans.find(tp => getTrackingPlanName(tp) === item.value)!;
+    const trackingPlan = trackingPlans.find((tp) => getTrackingPlanName(tp) === item.value)!;
     onSubmit(trackingPlan);
   };
 
   // Sort the Tracking Plan alphabetically by display name.
   const choices = orderBy(
-    trackingPlans.map(tp => ({
+    trackingPlans.map((tp) => ({
       label: getTrackingPlanName(tp),
       value: getTrackingPlanName(tp),
     })),
@@ -665,7 +730,7 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
     'asc',
   );
   let initialIndex = choices.findIndex(
-    c => !!trackingPlan && c.value === getTrackingPlanName(trackingPlan),
+    (c) => !!trackingPlan && c.value === getTrackingPlanName(trackingPlan),
   );
   initialIndex = initialIndex === -1 ? 0 : initialIndex;
 
@@ -725,10 +790,10 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
       // Write the updated ruddertyper.yml config.
       setIsLoading(true);
 
-      let client = ({
+      let client = {
         sdk,
         language,
-      } as unknown) as Options;
+      } as unknown as Options;
       // Default to ES5 syntax for analytics-node in JS, since node doesn't support things
       // like ES6 modules. TypeScript transpiles for you, so we don't need it there.
       // See https://node.green
@@ -786,7 +851,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
 
   const summary = (
     <Box flexDirection="column">
-      {summaryRows.map(r => (
+      {summaryRows.map((r) => (
         <Box key={r.label}>
           <Box width={20}>
             <Text color="grey">{r.label}:</Text>
@@ -852,11 +917,7 @@ const Step: React.FC<StepProps> = ({
         <Box marginTop={1} flexDirection="column">
           {isLoading && (
             <Text color="grey">
-              {!debug && (
-                <>
-                  <Spinner type="dots" />{' '}
-                </>
-              )}
+              {!debug && <Spinner type="dots" />}
               Loading...
             </Text>
           )}

@@ -6,9 +6,9 @@ export {
   getToken,
   getTokenMethod,
   listTokens,
-  ListTokensOutput,
-  TokenMetadata,
+  type ListTokensOutput,
+  type TokenMetadata,
   storeToken,
 } from './config';
-export { Config, TrackingPlanConfig } from './schema';
+export { type Config, type TrackingPlanConfig } from './schema';
 export { runScript, Scripts } from './scripts';

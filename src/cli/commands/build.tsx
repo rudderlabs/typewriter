@@ -202,7 +202,7 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
         id: toTrackingPlanId(newTrackingPlan),
         version: newTrackingPlan.version,
         path: trackingPlanConfig.path,
-        trackCalls: events.map<JSONSchema7>(e => ({
+        trackCalls: events.map<JSONSchema7>((e) => ({
           ...e.rules,
           title: e.name,
           description: e.description,
@@ -223,7 +223,7 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
   const stepName = isDone ? `Loaded Tracking Plan${s}` : `Loading Tracking Plan${s}...`;
   return (
     <Step name={stepName} isRunning={isRunning} isDone={isDone}>
-      {update && <Note>Downloading the latest version{s} from Rudder...</Note>}
+      {update && <Note>Downloading the latest version{s ? 's' : ''} from Rudder...</Note>}
       {fellbackToUpdate && (
         <Note isWarning>No local copy of this Tracking Plan, fetching from API.</Note>
       )}
@@ -238,22 +238,18 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
       {trackingPlans.map(({ trackingPlan, deltas }) => (
         <Box flexDirection="column" key={trackingPlan.url}>
           <Note>
-            Loaded <Link url={trackingPlan.url}>{trackingPlan.name}</Link>{' '}
+            <Text>Loaded </Text>
+            <Link url={trackingPlan.url}>{trackingPlan.name}</Link>
+            <Text> </Text>
             {(deltas.added !== 0 || deltas.modified !== 0 || deltas.removed !== 0) && (
               <>
-                (
-                <Text color={deltas.added === 0 ? "grey" : "green"}>
-                  {deltas.added} added
-                </Text>
-                ,{' '}
-                <Text color={deltas.modified === 0 ? "grey" : "yellow"}>
+                (<Text color={deltas.added === 0 ? 'grey' : 'green'}>{deltas.added} added</Text>
+                <Text>, </Text>
+                <Text color={deltas.modified === 0 ? 'grey' : 'yellow'}>
                   {deltas.modified} modified
                 </Text>
-                ,{' '}
-                <Text color={deltas.removed === 0 ? "grey" : "red"}>
-                  {deltas.removed} removed
-                </Text>
-                )
+                <Text>, </Text>
+                <Text color={deltas.removed === 0 ? 'grey' : 'red'}>{deltas.removed} removed</Text>)
               </>
             )}
           </Note>
@@ -276,7 +272,7 @@ export const ClearFilesStep: React.FC<ClearFilesProps> = ({ config, configPath, 
 
   async function clearGeneratedFiles() {
     const errors = await Promise.all(
-      config.trackingPlans.map(async trackingPlanConfig => {
+      config.trackingPlans.map(async (trackingPlanConfig) => {
         const path = resolveRelativePath(configPath, trackingPlanConfig.path);
         await verifyDirectoryExists(path);
         try {
@@ -293,7 +289,7 @@ export const ClearFilesStep: React.FC<ClearFilesProps> = ({ config, configPath, 
       }),
     );
 
-    const error = errors.find(error => isWrappedError(error));
+    const error = errors.find((error) => isWrappedError(error));
     if (error) {
       handleFatalError(error);
       return null;
@@ -375,7 +371,7 @@ export const GenerationStep: React.FC<GenerationProps> = ({
   return (
     <Step name={stepName} isRunning={isRunning} isDone={isDone}>
       <Note>Building for {production ? 'production' : 'development'}</Note>
-      {trackingPlans.map(trackingPlan => (
+      {trackingPlans.map((trackingPlan) => (
         <Note key={trackingPlan.url}>
           <Link url={trackingPlan.url}>{trackingPlan.name}</Link>
         </Note>
@@ -418,16 +414,16 @@ export const AfterStep: React.FC<AfterStepProps> = ({ config, configPath, step, 
     <Step name={stepName} isRunning={isRunning} isDone={isDone} isSkipped={!afterScript}>
       {afterScript && <Note>{afterScript}</Note>}
       {error && (
-        <>
+        <Box flexDirection="column">
           <Note isWarning>{error.description}</Note>
           {error.notes
-            .filter(n => !!n)
-            .map(n => (
+            .filter((n) => !!n)
+            .map((n) => (
               <Note isWarning key={n}>
                 {n}
               </Note>
             ))}
-        </>
+        </Box>
       )}
     </Step>
   );
@@ -483,8 +479,8 @@ const Step: React.FC<StepProps> = ({ name, isSkipped, isRunning, isDone, childre
 
   return (
     <Box flexDirection="column">
-      <Text color="white">
-        <Box width={3} justifyContent="flex-end">
+      <Box width={3} justifyContent="flex-end">
+        <Text color="white">
           {/* In debug mode, skip the Spinner to reduce noise */}
           {isDone ? (
             <Text color="green"> ✔</Text>
@@ -497,11 +493,11 @@ const Step: React.FC<StepProps> = ({ name, isSkipped, isRunning, isDone, childre
           ) : (
             ''
           )}
-        </Box>
-        <Box marginLeft={1} width={70}>
-          {name}
-        </Box>
-      </Text>
+        </Text>
+      </Box>
+      <Box marginLeft={1} width={70}>
+        <Text color="white">{name}</Text>
+      </Box>
       {(isRunning || isDone) && children}
     </Box>
   );
@@ -513,14 +509,20 @@ type NoteProps = {
 };
 
 const Note: React.FC<NoteProps> = ({ isWarning, children }) => {
+  console.log('children', children);
   return (
-    <Text italic>
-      <Text color={isWarning ? "yellow" : "grey"}>
-        <Box marginLeft={4}>{isWarning ? '⚠' : '↪'}</Box>
-        <Box marginLeft={2} width={80} >
+    <Box flexDirection="row">
+      <Box marginLeft={4}>
+        <Text color={isWarning ? 'yellow' : 'grey'} italic>
+          {isWarning ? '⚠' : '↪'}
+        </Text>
+      </Box>
+      <Box marginLeft={2} width={80}>
+        {/* Ensure children are correctly rendered inside <Text> */}
+        <Text color={isWarning ? 'yellow' : 'grey'} italic>
           {children}
-        </Box>
-      </Text>
-    </Text>
+        </Text>
+      </Box>
+    </Box>
   );
 };

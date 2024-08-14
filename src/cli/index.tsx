@@ -8,7 +8,6 @@ import React, { createContext } from 'react';
 import { render } from 'ink';
 import { Token, Version, Build, Help, Init, ErrorBoundary } from './commands';
 import { Config, getConfig, getTokenMethod } from './config';
-import { machineId } from 'node-machine-id';
 import { version } from '../../package.json';
 import { loadTrackingPlan } from './api';
 import yargs, { ArgumentsCamelCase, Options } from 'yargs';
@@ -276,5 +275,6 @@ async function rudderTyperLibraryProperties(
  * the same user together.
  */
 async function getAnonymousId() {
+  const { machineId } = await import('node-machine-id');
   return await machineId(false);
 }

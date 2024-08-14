@@ -1,5 +1,6 @@
 import { Type, Schema } from '../ast';
-import { camelCase, upperFirst } from 'lodash';
+import camelCase from 'lodash/camelCase';
+import upperFirst from 'lodash/upperFirst';
 import * as prettier from 'prettier';
 import { transpileModule } from 'typescript';
 import { Language, SDK } from '../options';
@@ -62,7 +63,7 @@ export const javascript: Generator<
     allowedIdentifierStartingChars: 'A-Za-z_$',
     allowedIdentifierChars: 'A-Za-z0-9_$',
   },
-  setup: async options => {
+  setup: async (options) => {
     await registerPartial(
       'generators/javascript/templates/setRudderTyperOptionsDocumentation.hbs',
       'setRudderTyperOptionsDocumentation',
@@ -125,7 +126,7 @@ export const javascript: Generator<
   generateUnion: async (client, schema, types) =>
     conditionallyNullable(schema, {
       name: client.namer.escapeString(schema.name),
-      type: types.map(t => t.type).join(' | '),
+      type: types.map((t) => t.type).join(' | '),
     }),
   generateTrackCall: async (client, _schema, functionName, propertiesObject) => ({
     functionName: functionName,

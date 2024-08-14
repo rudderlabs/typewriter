@@ -15,9 +15,9 @@ export const Help: React.FC<StandardProps> = () => {
 
   return (
     <Box marginLeft={2} flexDirection="column">
-      <Box marginBottom={2} >
+      <Box marginBottom={2}>
         <Text color="grey" wrap="wrap">
-          RudderTyper is a tool for generating strongly-typed{' '}
+          RudderTyper is a tool for generating strongly-typed
           <Link url="https://www.rudderstack.com/">RudderStack</Link> analytics libraries based on
           your pre-defined Tracking Plan spec.
           {'\n\n'}
@@ -25,7 +25,8 @@ export const Help: React.FC<StandardProps> = () => {
       </Box>
       <Box flexDirection="column">
         <Box marginBottom={1}>
-          <Text color="grey">$</Text> <Text>rudder-typer</Text> <Text color="grey">[command, options]</Text>
+          <Text color="grey">$</Text> <Text>rudder-typer</Text>{' '}
+          <Text color="grey">[command, options]</Text>
         </Box>
         <HelpSection name="Commands">
           <HelpRow
@@ -42,7 +43,7 @@ export const Help: React.FC<StandardProps> = () => {
             linesNeeded={2}
             description={
               <Text>
-                Syncs <Text color="yellow">plan.json</Text> with RudderStack, then generates a{' '}
+                Syncs <Text color="yellow">plan.json</Text> with RudderStack, then generates a
                 <Text color="yellow">development</Text> client.
               </Text>
             }
@@ -51,7 +52,7 @@ export const Help: React.FC<StandardProps> = () => {
             name="dev"
             description={
               <Text>
-                Generates a <Text color="yellow">development</Text> client from{' '}
+                Generates a <Text color="yellow">development</Text> client from
                 <Text color="yellow">plan.json</Text>
               </Text>
             }
@@ -60,7 +61,7 @@ export const Help: React.FC<StandardProps> = () => {
             name="prod"
             description={
               <Text>
-                Generates a <Text color="yellow">production</Text> client from{' '}
+                Generates a <Text color="yellow">production</Text> client from
                 <Text color="yellow">plan.json</Text>
               </Text>
             }

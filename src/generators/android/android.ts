@@ -1,4 +1,5 @@
-import { camelCase, upperFirst } from 'lodash';
+import camelCase from 'lodash/camelCase';
+import upperFirst from 'lodash/upperFirst';
 import { Type, Schema, getPropertiesSchema } from '../ast';
 import { Generator, GeneratorClient } from '../gen';
 
@@ -127,7 +128,7 @@ export const android: Generator<
         'generators/android/templates/SerializableProperties.java.hbs',
         context,
       ),
-      ...context.objects.map(o =>
+      ...context.objects.map((o) =>
         client.generateFile(`${o.name}.java`, 'generators/android/templates/class.java.hbs', o),
       ),
     ]);

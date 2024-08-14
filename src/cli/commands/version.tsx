@@ -41,18 +41,14 @@ export const Version: React.FC<StandardProps> = () => {
   const newVersionText = isLoading
     ? '(checking for newer versions...)'
     : !isLatest
-    ? `(new! ${latestVersion})`
-    : '';
+      ? `(new! ${latestVersion})`
+      : '';
 
   return (
     <Box>
       <Text color="grey">Version: </Text>
-      <Text color={isLatest ? "green" : "yellow"}>
-        {ruddertyperVersion}{' '}
-      </Text>
-      <Text color={isLatest ? "grey" : "green"}>
-        {newVersionText}
-      </Text>
+      <Text color={isLatest ? 'green' : 'yellow'}>{ruddertyperVersion}</Text>
+      <Text color={isLatest ? 'grey' : 'green'}>{newVersionText}</Text>
     </Box>
   );
 };

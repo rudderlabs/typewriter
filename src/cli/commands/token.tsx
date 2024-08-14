@@ -5,7 +5,7 @@ import { listTokens, ListTokensOutput, getTokenMethod, TokenMetadata } from '../
 import { StandardProps } from '../index';
 import { ErrorContext } from './error';
 
-export const Token: React.FC<StandardProps> = props => {
+export const Token: React.FC<StandardProps> = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [method, setMethod] = useState<string | undefined>();
   const [tokens, setTokens] = useState<ListTokensOutput | undefined>();
@@ -52,7 +52,7 @@ const TokenRow: React.FC<TokenRowProps> = ({ tokenMetadata, method, name }) => {
 
   return (
     <Box flexDirection="row">
-      <Text color={isSelected ? "green" : "grey"}>
+      <Text color={isSelected ? 'green' : 'grey'}>
         <Box width={20}>{name}:</Box>
         <Box width={15}>
           {tokenMetadata && tokenMetadata.token

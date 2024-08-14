@@ -1,4 +1,5 @@
-import { camelCase, upperFirst } from 'lodash';
+import camelCase from 'lodash/camelCase';
+import upperFirst from 'lodash/upperFirst';
 import { Type, Schema } from '../ast';
 import * as Handlebars from 'handlebars';
 import { Generator, BasePropertyContext, GeneratorClient } from '../gen';
@@ -111,7 +112,7 @@ export const swift: Generator<
       property.importName = `"${className}.h"`;
       object = {
         name: className,
-        imports: properties.filter(p => !!p.importName).map(p => p.importName!),
+        imports: properties.filter((p) => !!p.importName).map((p) => p.importName!),
       };
     }
 
@@ -141,7 +142,7 @@ export const swift: Generator<
         'generators/swift/templates/RudderTyperSerializable.swift.hbs',
         context,
       ),
-      ...context.objects.map(o =>
+      ...context.objects.map((o) =>
         client.generateFile(`${o.name}.swift`, 'generators/swift/templates/class.swift.hbs', o),
       ),
     ]);
@@ -223,7 +224,7 @@ function generateFunctionCall(
   extraParameterValue?: string,
 ): string {
   let functionCall = functionName;
-  const parameters: { name: string; value: string }[] = properties.map(p => ({
+  const parameters: { name: string; value: string }[] = properties.map((p) => ({
     name: p.name,
     value: p.name,
   }));
@@ -260,16 +261,16 @@ function generatePropertiesDictionary(
       property.schemaType === Type.BOOLEAN
         ? name
         : property.schemaType === Type.INTEGER
-        ? name
-        : property.schemaType === Type.OBJECT && !property.type.includes('[String: Any]')
-        ? property.isVariableNullable
-          ? `${name}?.serializableDictionary()`
-          : `${name}.serializableDictionary()`
-        : property.schemaType === Type.ARRAY
-        ? property.isVariableNullable
-          ? `${name}?.serializableArray()`
-          : `${name}.serializableArray()`
-        : name;
+          ? name
+          : property.schemaType === Type.OBJECT && !property.type.includes('[String: Any]')
+            ? property.isVariableNullable
+              ? `${name}?.serializableDictionary()`
+              : `${name}.serializableDictionary()`
+            : property.schemaType === Type.ARRAY
+              ? property.isVariableNullable
+                ? `${name}?.serializableArray()`
+                : `${name}.serializableArray()`
+              : name;
 
     let setter: string;
     if (property.isPointerType) {

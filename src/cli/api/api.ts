@@ -2,7 +2,7 @@ import got from 'got';
 import { JSONSchema7 } from 'json-schema';
 import { wrapError, isWrappedError } from '../commands/error';
 import { sanitizeTrackingPlan } from './trackingplans';
-import { set } from 'lodash';
+import set from 'lodash/set';
 import { APIError } from '../types';
 
 export namespace RudderAPI {
@@ -107,8 +107,8 @@ export async function fetchTrackingPlan(options: {
     );
     if (eventsResponse) {
       const eventsRulesResponsePromise = eventsResponse.data
-        .filter(ev => ev.eventType === 'track')
-        .map(async ev => {
+        .filter((ev) => ev.eventType === 'track')
+        .map(async (ev) => {
           const url = `tracking-plans/${options.id}/events/${ev.id}`;
           const eventsRulesResponse = await apiGet<RudderAPI.GetTrackingPlanEventsRulesResponse>(
             url,
@@ -143,7 +143,7 @@ export async function fetchTrackingPlans(options: {
     options.token,
     options.email,
   );
-  response.tracking_plans.map(tp => ({
+  response.tracking_plans.map((tp) => ({
     ...tp,
     createdAt: new Date(tp.create_time),
     updatedAt: new Date(tp.update_time),
@@ -154,7 +154,7 @@ export async function fetchTrackingPlans(options: {
     options.token,
     options.email,
   );
-  responseV2.trackingPlans.map(tp => ({
+  responseV2.trackingPlans.map((tp) => ({
     ...tp,
     createdAt: new Date(tp.createdAt),
     updatedAt: new Date(tp.updatedAt),
@@ -223,8 +223,8 @@ async function apiGet<T>(url: string, token: string, email: string): Promise<T> 
         url === 'workspace'
           ? 'https://api.rudderstack.com/v1'
           : url.includes('trackingplans')
-          ? 'https://api.rudderstack.com/v1/dg'
-          : 'https://api.rudderstack.com/v2/catalog',
+            ? 'https://api.rudderstack.com/v1/dg'
+            : 'https://api.rudderstack.com/v2/catalog',
       headers: {
         authorization:
           url === 'workspace' || url.includes('trackingplans')
@@ -232,8 +232,8 @@ async function apiGet<T>(url: string, token: string, email: string): Promise<T> 
             : 'Bearer ' + token,
       },
       timeout: {
-        request: 10000 //ms
-      }
+        request: 10000, //ms
+      },
     }).json();
 
     return resp as T;
