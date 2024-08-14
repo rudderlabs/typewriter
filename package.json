@@ -13,6 +13,7 @@
   "author": "RudderStack",
   "license": "MIT",
   "main": "./dist/src/cli/index.js",
+  "type": "module",
   "scripts": {
     "init": "TS_NODE_FILES=true ts-node ./src/cli init",
     "dev": "TS_NODE_FILES=true NODE_ENV=development ts-node ./src/cli",
@@ -63,6 +64,7 @@
     "ink-select-input": "6.0.0",
     "ink-spinner": "5.0.0",
     "ink-text-input": "6.0.0",
+    "joi": "17.13.3",
     "js-yaml": "4.1.0",
     "json-stable-stringify": "1.1.1",
     "latest-version": "9.0.0",

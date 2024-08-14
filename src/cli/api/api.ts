@@ -1,6 +1,5 @@
-import got, { type Response } from 'got';
+import got from 'got';
 import { JSONSchema7 } from 'json-schema';
-import { version } from '../../../package.json';
 import { wrapError, isWrappedError } from '../commands/error';
 import { sanitizeTrackingPlan } from './trackingplans';
 import { set } from 'lodash';

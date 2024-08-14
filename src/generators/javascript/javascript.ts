@@ -3,7 +3,7 @@ import { camelCase, upperFirst } from 'lodash';
 import * as prettier from 'prettier';
 import { transpileModule } from 'typescript';
 import { Language, SDK } from '../options';
-import { Generator } from '../gen';
+import { Generator, GeneratorClient, type File } from '../gen';
 import { toTarget, toModule } from './targets';
 import { registerPartial } from '../../templates';
 
@@ -151,7 +151,7 @@ export const javascript: Generator<
       );
     }
   },
-  formatFile: (client, file) => {
+  formatFile: async (client: GeneratorClient, file: File): Promise<File> => {
     let { contents } = file;
     // If we are generating a JavaScript client, transpile the client
     // from TypeScript into JavaScript.
@@ -169,7 +169,7 @@ export const javascript: Generator<
     }
 
     // Apply stylistic formatting, via Prettier.
-    const formattedContents = prettier.format(contents, {
+    const formattedContents = await prettier.format(contents, {
       parser: client.options.client.language === Language.TYPESCRIPT ? 'typescript' : 'babel',
       // Overwrite a few of the standard prettier settings to match with our RudderTyper configuration:
       tabWidth: 2,

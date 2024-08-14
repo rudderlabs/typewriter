@@ -1,5 +1,5 @@
 import { Options } from 'src/generators/options';
-import Joi from '@hapi/joi';
+import Joi from 'joi';
 
 /**
  * A config, stored in a ruddertyper.yml file.
@@ -92,7 +92,7 @@ const ConfigSchema = Joi.object().required().keys({
 
 export const validateConfig = (rawConfig: Record<string, unknown>): Config => {
   // Validate the provided configuration file using our Joi schema.
-  const result = Joi.validate(rawConfig, ConfigSchema, {
+  const result = ConfigSchema.validate(rawConfig, {
     abortEarly: false,
     convert: false,
   });

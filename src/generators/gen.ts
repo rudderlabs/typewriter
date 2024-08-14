@@ -118,7 +118,7 @@ export declare type Generator<
     parentPath: string,
   ) => Promise<P>;
   generateRoot: (client: GeneratorClient, context: R & BaseRootContext<T, O, P>) => Promise<void>;
-  formatFile?: (client: GeneratorClient, file: File) => File;
+  formatFile?: (client: GeneratorClient, file: File) => Promise<File>;
 } & (
   | {
       generatePropertiesObject: true;
@@ -345,7 +345,7 @@ async function runGenerator<
   await generator.generateRoot(client, context);
 
   // Format and output all generated files.
-  return files.map((f) => (generator.formatFile ? generator.formatFile(client, f) : f));
+  return await Promise.all(files.map(async (f) => (generator.formatFile ? generator.formatFile(client, f) : f)));
 }
 
 // Legacy Code:
