@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Box, useApp, Text } from 'ink';
 import { version as ruddertyperVersion } from '../../../package.json';
-import latest, { Options } from 'latest-version';
+import latest from 'latest-version';
 import { StandardProps } from '../index';
 import { ErrorContext, WrappedError } from './error';
-import semver from 'semver';
 
 export const Version: React.FC<StandardProps> = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -15,16 +14,7 @@ export const Version: React.FC<StandardProps> = () => {
   useEffect(() => {
     async function effect() {
       try {
-        let options: Options = {};
-
-        // If the user is on a pre-release, check if there's a new pre-release.
-        // Otherwise, only compare against stable versions.
-        const prerelease = semver.prerelease(ruddertyperVersion);
-        if (prerelease && prerelease.length > 0) {
-          options = { version: 'next' };
-        }
-
-        const latestVersion = await latest('rudder-typer', options);
+        const latestVersion = await latest('rudder-typer');
         setLatestVersion(latestVersion);
       } catch (error) {
         // If we can't access NPM, then ignore this version check.
