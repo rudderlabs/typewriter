@@ -158,7 +158,7 @@ const Header: React.FC = () => {
     <Box flexDirection="column">
       <Box width={80} marginBottom={4} flexDirection="column">
         <Text color="white" wrap="wrap">
-          RudderTyper is a tool for generating strongly-typed{' '}
+          RudderTyper is a tool for generating strongly-typed
           <Link url="https://www.rudderstack.com/">RudderStack</Link> analytics libraries based on a
           Tracking Plan.
         </Text>
@@ -216,7 +216,7 @@ const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
     'Use the arrow keys to navigate.',
     'RudderTyper clients are strongly-typed wrappers for the RudderStack SDK.',
     <Text key="sdk-docs">
-      To learn more about the {'RudderStack'} SDKs, visit the{' '}
+      To learn more about the {'RudderStack'} SDKs, visit the
       <Link url="https://docs.rudderstack.com/stream-sources">documentation</Link>.
     </Text>,
   ];
@@ -521,7 +521,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
   const tips = [
     'An API token is required to download Tracking Plans from RudderStack.',
     <Text key="api-token-docs">
-      You can find documentation on generating an API token{' '}
+      You can find documentation on generating an API token
       <Link url="https://www.rudderstack.com/docs/dashboard-guides/personal-access-token/">
         here
       </Link>

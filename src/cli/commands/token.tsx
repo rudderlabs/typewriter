@@ -26,7 +26,8 @@ export const Token: React.FC<StandardProps> = (props) => {
   if (isLoading) {
     return (
       <Box marginLeft={2} marginTop={1} marginBottom={1}>
-        <Spinner type="dots" /> <Text color="grey">Loading...</Text>
+        <Spinner type="dots" />
+        <Text color="grey">Loading...</Text>
       </Box>
     );
   }
@@ -52,23 +53,27 @@ const TokenRow: React.FC<TokenRowProps> = ({ tokenMetadata, method, name }) => {
 
   return (
     <Box flexDirection="row">
-      <Text color={isSelected ? 'green' : 'grey'}>
-        <Box width={20}>{name}:</Box>
-        <Box width={15}>
+      <Box width={20}>
+        <Text color={isSelected ? 'green' : 'grey'}>{name}:</Text>
+      </Box>
+      <Box width={15}>
+        <Text color={isSelected ? 'green' : 'grey'}>
           {tokenMetadata && tokenMetadata.token
             ? `${tokenMetadata.token.slice(0, 10)}...`
             : '(None)'}
+        </Text>
+      </Box>
+      {tokenMetadata && !!tokenMetadata.token && !tokenMetadata.isValidToken ? (
+        <Box width={10}>
+          <Text color="red">(invalid token)</Text>
         </Box>
-        {tokenMetadata && !!tokenMetadata.token && !tokenMetadata.isValidToken ? (
-          <Box width={10}>
-            <Text color="red">(invalid token)</Text>
-          </Box>
-        ) : (
-          <Box width={10}>
+      ) : (
+        <Box width={10}>
+          <Text color={isSelected ? 'green' : 'grey'}>
             {tokenMetadata && tokenMetadata.workspace ? tokenMetadata.workspace.name : ''}
-          </Box>
-        )}
-      </Text>
+          </Text>
+        </Box>
+      )}
     </Box>
   );
 };

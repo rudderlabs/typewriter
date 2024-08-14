@@ -17,7 +17,7 @@ export const Help: React.FC<StandardProps> = () => {
     <Box marginLeft={2} flexDirection="column">
       <Box marginBottom={2}>
         <Text color="grey" wrap="wrap">
-          RudderTyper is a tool for generating strongly-typed
+          RudderTyper is a tool for generating strongly-typed<Text> </Text>
           <Link url="https://www.rudderstack.com/">RudderStack</Link> analytics libraries based on
           your pre-defined Tracking Plan spec.
           {'\n\n'}
@@ -25,7 +25,8 @@ export const Help: React.FC<StandardProps> = () => {
       </Box>
       <Box flexDirection="column">
         <Box marginBottom={1}>
-          <Text color="grey">$</Text> <Text>rudder-typer</Text>{' '}
+          <Text color="grey">$</Text>
+          <Text> rudder-typer </Text>
           <Text color="grey">[command, options]</Text>
         </Box>
         <HelpSection name="Commands">
@@ -43,7 +44,7 @@ export const Help: React.FC<StandardProps> = () => {
             linesNeeded={2}
             description={
               <Text>
-                Syncs <Text color="yellow">plan.json</Text> with RudderStack, then generates a
+                Syncs <Text color="yellow">plan.json</Text> with RudderStack, then generates a{' '}
                 <Text color="yellow">development</Text> client.
               </Text>
             }
@@ -52,7 +53,7 @@ export const Help: React.FC<StandardProps> = () => {
             name="dev"
             description={
               <Text>
-                Generates a <Text color="yellow">development</Text> client from
+                Generates a <Text color="yellow">development</Text> client from{' '}
                 <Text color="yellow">plan.json</Text>
               </Text>
             }
@@ -61,7 +62,7 @@ export const Help: React.FC<StandardProps> = () => {
             name="prod"
             description={
               <Text>
-                Generates a <Text color="yellow">production</Text> client from
+                Generates a <Text color="yellow">production</Text> client from{' '}
                 <Text color="yellow">plan.json</Text>
               </Text>
             }
@@ -146,11 +147,13 @@ const HelpRow: React.FC<HelpRowProps> = ({
 
   return (
     <Box height={linesNeeded || 1}>
-      <Box width="20%">{name}</Box>
+      <Box width="20%">
+        <Text>{name}</Text>
+      </Box>
       <Box width="65%">
         <Text wrap="wrap">{description}</Text>
       </Box>
-      <Box width="15%">{!!isDefault ? <Text color="blue">(default)</Text> : ''}</Box>
+      <Box width="15%">{!!isDefault ? <Text color="blue">(default)</Text> : <Text></Text>}</Box>
     </Box>
   );
 };
@@ -163,7 +166,7 @@ type ExampleRowProps = {
 const ExampleRow: React.FC<ExampleRowProps> = ({ description, command }) => {
   return (
     <Box flexDirection="column">
-      {description}
+      <Text>{description}</Text>
       <Box marginLeft={2}>
         <Text color="redBright">$ {command}</Text>
       </Box>
