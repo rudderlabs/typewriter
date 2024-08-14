@@ -14,6 +14,9 @@ export default [
   {
     ignores: ['tests/e2e/**/analytics/*', 'src/analytics/**/*', 'example/analytics/**/*'],
   },
+  ...compat.extends('plugin:@typescript-eslint/recommended'),
+  ...compat.extends('plugin:prettier/recommended'),
+  ...compat.extends('plugin:react/recommended'),
   {
     files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
@@ -45,7 +48,4 @@ export default [
       'react/prop-types': 'off',
     },
   },
-  ...compat.extends('plugin:@typescript-eslint/recommended'),
-  ...compat.extends('plugin:prettier/recommended'),
-  ...compat.extends('plugin:react/recommended'),
 ];

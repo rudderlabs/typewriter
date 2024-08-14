@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Text, Box, useApp } from 'ink';
 import Link from 'ink-link';
-import SelectInput, { Item } from 'ink-select-input';
+import SelectInput from 'ink-select-input';
 import TextInput from 'ink-text-input';
 import Spinner from 'ink-spinner';
 import { Config, listTokens, getTokenMethod, setConfig, storeToken } from '../config';
@@ -540,65 +540,6 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
   return (
     <>
       <Step name="Enter a Rudder API token:" step={step} isLoading={state.isLoading} tips={tips}>
-        {!state.canBeSet && (
-          <SelectInput items={[{ label: 'Ok!', value: 'ok' }]} onSelect={onConfirm} />
-        )}
-        {state.canBeSet && state.foundCachedToken && (
-          <SelectInput
-            items={[
-              { label: 'Use this token', value: 'yes' },
-              { label: 'No, provide a different token.', value: 'no' },
-            ]}
-            onSelect={onConfirmCachedToken}
-          />
-        )}
-        {state.canBeSet && !state.foundCachedToken && (
-          <Box flexDirection="column">
-            <Box>
-              <Text>{figures.pointer}</Text>
-              <Text> </Text>
-              <TextInput
-                value={state.token}
-                // See: https://github.com/vadimdemedes/ink-text-input/issues/41
-                onChange={setToken}
-                showCursor={true}
-                focus={!state.tokenSubmitted}
-                onSubmit={setTokenSubmitted}
-                mask="*"
-              />
-            </Box>
-            {state.isInvalid && (
-              <Box marginLeft={2}>
-                <Text color="red" wrap="wrap">
-                  {figures.cross} Invalid Rudder API token.
-                </Text>
-              </Box>
-            )}
-          </Box>
-        )}
-      </Step>
-      {state.tokenSubmitted && (
-        <Step name="Enter your Email Id" isLoading={state.isLoading}>
-          <Box flexDirection="column">
-            <Box>
-              <Text>{figures.pointer}</Text>
-              <Text> </Text>
-              <TextInput
-                value={state.email}
-                onChange={setEmail}
-                showCursor={true}
-                onSubmit={onConfirm}
-              />
-            </Box>
-          </Box>
-        </Step>
-      )}
-    </>
-  );
-
-  return (
-    <div>
-      <Step name="Enter a Rudder API token:" step={step} isLoading={state.isLoading} tips={tips}>
         {/* We found a token from a ruddertyper.yml token script. To let the user change token
          * in this init command, we'd have to remove their token script. Instead, just tell
          * the user this and don't let them change their token. */}
@@ -658,7 +599,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
           </Box>
         </Step>
       )}
-    </div>
+    </>
   );
 };
 
