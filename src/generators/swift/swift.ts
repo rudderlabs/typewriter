@@ -1,7 +1,7 @@
 import camelCase from 'lodash/camelCase';
 import upperFirst from 'lodash/upperFirst';
 import { Type, Schema } from '../ast';
-import * as Handlebars from 'handlebars';
+import Handlebars from 'handlebars';
 import { Generator, BasePropertyContext, GeneratorClient } from '../gen';
 
 // These contexts are what will be passed to Handlebars to perform rendering.
