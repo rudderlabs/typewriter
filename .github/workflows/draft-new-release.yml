@@ -12,21 +12,21 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/heads/develop') || startsWith(github.ref, 'refs/heads/hotfix/')
     steps:
-      - name: Checkout source branch
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Yarn setup
-        uses: DerYeger/yarn-setup-action@master
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 10
+          node-version-file: '.nvmrc'
+          cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         env:
           HUSKY: 0
-        run: |
-          yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile
 
       # In order to make a commit, we need to initialize a user.
       # You may choose to write something less generic here if you want, it doesn't matter functionality wise.
