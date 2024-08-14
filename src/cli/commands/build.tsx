@@ -509,7 +509,6 @@ type NoteProps = {
 };
 
 const Note: React.FC<NoteProps> = ({ isWarning, children }) => {
-  console.log('children', children);
   return (
     <Box flexDirection="row">
       <Box marginLeft={4}>
