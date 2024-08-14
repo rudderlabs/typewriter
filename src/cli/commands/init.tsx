@@ -158,14 +158,14 @@ const Header: React.FC = () => {
     <Box flexDirection="column">
       <Box width={80} marginBottom={4} flexDirection="column">
         <Text color="white" wrap="wrap">
-          RudderTyper is a tool for generating strongly-typed
-          <Link url="https://www.rudderstack.com/">RudderStack</Link> analytics libraries from a
-          Tracking Plan
+          RudderTyper is a tool for generating strongly-typed{' '}
+          <Link url="https://www.rudderstack.com/">RudderStack</Link> analytics libraries based on a
+          Tracking Plan.
         </Text>
         <Text> </Text>
         <Text color="grey">
-          . To get started, {"you'll"} need a <Text color="yellow">ruddertyper.yml</Text>. The
-          quickstart below will walk you through creating one.
+          To get started, you&apos;ll need a <Text color="yellow">ruddertyper.yml</Text> file. The
+          quickstart guide below will walk you through the process of creating one.
         </Text>
       </Box>
     </Box>
@@ -213,10 +213,10 @@ const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
   };
 
   const tips = [
-    'Use your arrow keys to select.',
-    'RudderTyper clients are strongly-typed wrappers around a RudderStack SDK.',
+    'Use the arrow keys to navigate.',
+    'RudderTyper clients are strongly-typed wrappers for the RudderStack SDK.',
     <Text key="sdk-docs">
-      To learn more about {"RudderStack's"} SDKs, see the
+      To learn more about the {'RudderStack'} SDKs, visit the{' '}
       <Link url="https://docs.rudderstack.com/stream-sources">documentation</Link>.
     </Text>,
   ];
@@ -351,9 +351,9 @@ const PathPrompt: React.FC<PathPromptProps> = ({ step, path: initialPath, onSubm
   }, [path]);
 
   const tips = [
-    'The generated client will be stored in this directory.',
-    'Start typing to filter existing directories. Hit return to submit.',
-    'Directories will be automatically created, if needed.',
+    'The generated client will be stored in the selected directory.',
+    'Start typing to filter existing directories, and press return to submit.',
+    'Directories will be automatically created if needed.',
   ];
 
   const onSubmitPath = () => {
@@ -519,9 +519,9 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
   };
 
   const tips = [
-    'An API token is used to download Tracking Plans from Rudder.',
+    'An API token is required to download Tracking Plans from RudderStack.',
     <Text key="api-token-docs">
-      Documentation on generating an API token can be found
+      You can find documentation on generating an API token{' '}
       <Link url="https://www.rudderstack.com/docs/dashboard-guides/personal-access-token/">
         here
       </Link>

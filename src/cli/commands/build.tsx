@@ -479,24 +479,26 @@ const Step: React.FC<StepProps> = ({ name, isSkipped, isRunning, isDone, childre
 
   return (
     <Box flexDirection="column">
-      <Box width={3} justifyContent="flex-end">
-        <Text color="white">
-          {/* In debug mode, skip the Spinner to reduce noise */}
-          {isDone ? (
-            <Text color="green"> ✔</Text>
-          ) : isRunning ? (
-            debug ? (
-              figures.ellipsis
+      <Box>
+        <Box width={3} justifyContent="flex-end">
+          <Text color="white">
+            {/* In debug mode, skip the Spinner to reduce noise */}
+            {isDone ? (
+              <Text color="green"> ✔</Text>
+            ) : isRunning ? (
+              debug ? (
+                figures.ellipsis
+              ) : (
+                <Spinner type="dots" />
+              )
             ) : (
-              <Spinner type="dots" />
-            )
-          ) : (
-            ''
-          )}
-        </Text>
-      </Box>
-      <Box marginLeft={1} width={70}>
-        <Text color="white">{name}</Text>
+              ''
+            )}
+          </Text>
+        </Box>
+        <Box marginLeft={1} width={70}>
+          <Text color="white">{name}</Text>
+        </Box>
       </Box>
       {(isRunning || isDone) && children}
     </Box>
