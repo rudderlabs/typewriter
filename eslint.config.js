@@ -12,11 +12,7 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: [
-      'tests/e2e/**/analytics/*',
-      'src/analytics/**/*',
-      'example/analytics/**/*',
-    ],
+    ignores: ['tests/e2e/**/analytics/*', 'src/analytics/**/*', 'example/analytics/**/*'],
   },
   {
     files: ['**/*.ts', '**/*.tsx'],
@@ -40,7 +36,7 @@ export default [
       '@typescript-eslint/no-namespace': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/interface-name-prefix': 'off',
-      '@typescript-eslint/no-empty-function': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
   {
