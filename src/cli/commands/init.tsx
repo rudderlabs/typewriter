@@ -156,7 +156,7 @@ export const Init: React.FC<InitProps> = (props) => {
 const Header: React.FC = () => {
   return (
     <Box flexDirection="column">
-      <Box width={80} marginBottom={4}>
+      <Box width={80} marginBottom={4} flexDirection="column">
         <Text color="white" wrap="wrap">
           RudderTyper is a tool for generating strongly-typed
           <Link url="https://www.rudderstack.com/">RudderStack</Link> analytics libraries from a
