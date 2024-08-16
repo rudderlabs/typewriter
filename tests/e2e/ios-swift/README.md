@@ -8,7 +8,8 @@ This is a sample iOS (Swift) app designed to demonstrate how to use the RudderSt
 
 ## Getting Started
 
-### Step 1: Open the `RudderTyperSwiftExample.xcworkspace`, located under `tests/e2e/ios-objc`, in Xcode
+### Step 1: Open project in Xcode
+- Open project path in Terminal & run `pod update`. Next open the `RudderTyperSwiftExample.xcworkspace`, located under `tests/e2e/ios-swift`, in Xcode.
 
 ### Step 2: Configure RudderStack Properties
 - Update the `writeKey`, `dataPlaneUrl`, and `controlPlaneUrl` with your specific values in the `RudderConfig.plist`.

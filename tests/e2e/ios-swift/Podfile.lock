@@ -8,7 +8,7 @@ PODS:
   - RudderKit (1.4.0)
 
 DEPENDENCIES:
-  - Rudder (= 1.28.0)
+  - Rudder (< 2.0.0)
 
 SPEC REPOS:
   trunk:
@@ -23,6 +23,6 @@ SPEC CHECKSUMS:
   Rudder: 9f1f6fdec5bd0e8845e2ac2d4f7b4584d069bf88
   RudderKit: f272f9872183946452ac94cd7bb2244a71e6ca8f
 
-PODFILE CHECKSUM: a392a4f760aded6d323a42647cbde46a798d935b
+PODFILE CHECKSUM: c39eabd98fb70cc7fa740e1b73da8200e4e1b7fb
 
 COCOAPODS: 1.15.2
