@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://rudderstack.com/">
-    <img alt="RudderStack" width="512" src="https://raw.githubusercontent.com/rudderlabs/rudder-typer/master/assets/rs-logo-full-light.jpg">
+    <img alt="RudderStack" width="512" src="./assets/rs-logo-full-light.jpg">
   </a>
   <br />
   <caption>The Customer Data Platform for Developers</caption>
@@ -110,15 +110,17 @@ RudderTyper stores its configuration in a `ruddertyper.yml` file in the root of 
 
 A sample configuration looks like the following:
 
-```sh
+```yaml
 # RudderStack RudderTyper Configuration Reference (https://github.com/rudderlabs/rudder-typer)
 # Just run `npx rudder-typer` to re-generate a client with the latest versions of these events.
 
 scripts:
   # You can supply a RudderStack API token using a `scripts.token` command. The output of `script.token` command should be a valid RudderStack API token.
   token: source .env; echo $RUDDERTYPER_TOKEN
+
   # You can supply email address linked to your workspace using a `scripts.email` command.The output of `script.email` command should be an email address registered with your workspace.
   email: source .env; echo $EMAIL
+
   # You can format any of RudderTyper's auto-generated files using a `scripts.after` command.
   # See `Formatting Generated Files` below.
   after: ./node_modules/.bin/prettier --write analytics/plan.json
@@ -127,14 +129,17 @@ client:
   # Which RudderStack SDK you are generating for
   # Valid values: analytics.js, analytics-node, analytics-ios, analytics-android.
   sdk: analytics.js
+
   # The target language for your RudderTyper client.
   # Valid values: javascript, typescript, objective-c, swift, java.
   language: typescript
+
   # JavaScript Transpilation Settings
   # Valid values: 'ES3','ES5','ES2015','ES2016','ES2017','ES2018','ES2019','ESNext','Latest'
-  scriptTarget: "ES5"
+  scriptTarget: 'ES5'
+
   # Valid values: 'CommonJS','AMD','UMD','System','ES2015','ESNext'
-  moduleTarget: "ESNext"
+  moduleTarget: 'ESNext'
 
 trackingPlans:
   # The RudderStack Tracking Plan that you are generating a client for.
@@ -143,6 +148,7 @@ trackingPlans:
   - id: rs_QhWHOgp7xg8wkYxilH3scd2uRID
     workspaceSlug: rudderstack-demo
     path: ./analytics
+
     # Valid values: v1 (old tracking plan), v2 (new tracking plan format)
     APIVersion: v2
 ```
@@ -194,14 +200,19 @@ import com.rudderstack.generated.*
 
 ```javascript
 // Import RudderStack JS SDK and initialize it
-const rudderanalytics = require('rudder-sdk-js');
-rudderanalytics.load(YOUR_WRITE_KEY, DATA_PLANE_URL);
+var RudderAnalytics = require('@rudderstack/analytics-js');
+
+const rudderAnalytics = new RudderAnalytics();
+rudderAnalytics.load(WRITE_KEY, DATA_PLANE_URL, {});
+
 // Import your auto-generated RudderTyper client:
 const rudderTyper = require('./rudderTyperClient');
-// Pass in your rudder-sdk-js instance to RudderTyper client
+
+// Pass in your @rudderstack/analytics-js instance to RudderTyper client
 rudderTyper.setRudderTyperOptions({
-  analytics: rudderanalytics,
+  analytics: rudderAnalytics,
 });
+
 // Issue your first RudderTyper track call!
 rudderTyper.orderCompleted({
   orderID: 'ck-f306fe0e-cc21-445a-9caa-08245a9aa52c',
@@ -237,8 +248,8 @@ browserify rudderTyperClient.js --standalone rudderTyper >  rudderTyperBundle.js
     ];
     for (var i = 0; i < methods.length; i++) {
       var method = methods[i];
-      rudderanalytics[method] = (function(methodName) {
-        return function() {
+      rudderanalytics[method] = (function (methodName) {
+        return function () {
           rudderanalytics.push([methodName].concat(Array.prototype.slice.call(arguments)));
         };
       })(method);
@@ -264,19 +275,25 @@ browserify rudderTyperClient.js --standalone rudderTyper >  rudderTyperBundle.js
 </script>
 ```
 
-### RudderStack Node.js SDK:
+### RudderStack Node.js SDK
 
 - Import the the RudderTyper-generated client and start making calls using RudderTyper as shown:
 
 ```javascript
-// Import Rudder Node SDK and intialize it
-const Analytics = require('@rudderstack/rudder-sdk-node');
-const client = new Analytics(WRITE_KEY, DATA_PLANE_URL / v1 / batch);
+// Import Rudder Node SDK and initialize it
+const RudderAnalytics = require('@rudderstack/rudder-sdk-node');
+
+const client = new RudderAnalytics(WRITE_KEY, {
+  dataPlaneUrl: DATA_PLANE_URL,
+  // More initialization options
+});
+
 const ruddertyper = require('./rudderTyperClient');
 // Pass in your rudder-sdk-node instance to RudderTyper.
 ruddertyper.setRudderTyperOptions({
   analytics: client,
 });
+
 // Issue your first RudderTyper track call!
 ruddertyper.orderCompleted({
   orderID: 'ck-f306fe0e-cc21-445a-9caa-08245a9aa52c',
