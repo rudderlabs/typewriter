@@ -1,1250 +1,1364 @@
 {
-  "create_time": "2019-06-25T22:44:43.000Z",
-  "display_name": "Typewriter E2E Testing Tracking Plan",
-  "name": "workspaces/segment_prod/tracking-plans/rs_1N9oTnc5O8cv1peY65iXsSPnzGP",
+  "createdAt": "2024-08-13T12:46:29.848Z",
+  "creationType": "Template",
+  "description": "",
+  "id": "tp_2kbXKu4KM3SW2U0ghbAV9n1VC01",
+  "name": "Test TP",
   "rules": {
     "events": [
       {
-        "description": "Validates that clients properly sanitize event names.",
-        "name": "42_--terrible==\\\"event'++name~!3",
+        "description": "When a visitor shares their cart",
+        "name": "Cart Shared",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
+          "description": "When a visitor shares their cart",
           "properties": {
-            "context": {},
             "properties": {
-              "type": "object"
-            },
-            "traits": {
-              "type": "object"
-            }
-          },
-          "type": "object"
-        },
-        "version": 1
-      },
-      {
-        "description": "Fired before an analytics instance has been set, which should throw an error.",
-        "name": "Analytics Instance Missing",
-        "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
-          "properties": {
-            "context": {},
-            "properties": {
-              "type": "object"
-            },
-            "traits": {
-              "type": "object"
-            }
-          },
-          "type": "object"
-        },
-        "version": 1
-      },
-      {
-        "description": "Fired after a client throws an \"Analytics Instance Missing\" error to mark the test as successful.",
-        "name": "Analytics Instance Missing Threw Error",
-        "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
-          "properties": {
-            "context": {},
-            "properties": {
-              "type": "object"
-            },
-            "traits": {
-              "type": "object"
-            }
-          },
-          "type": "object"
-        },
-        "version": 1
-      },
-      {
-        "description": "This event is fired in order to trigger a custom violation handler. It should be called with a JSON Schema violation.",
-        "name": "Custom Violation Handler",
-        "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
-          "properties": {
-            "context": {},
-            "properties": {
+              "additionalProperties": true,
               "properties": {
-                "regex property": {
-                  "description": "",
-                  "pattern": "Lawyer Morty|Evil Morty",
-                  "type": "string"
+                "cart_id": {
+                  "description": "Contains the ID of the shopping cart that is being shared",
+                  "type": ["string"]
+                },
+                "recipient": {
+                  "description": "Contains information of the recipient",
+                  "type": ["string"]
+                },
+                "share_message": {
+                  "description": "Contains the message sent by the customer",
+                  "type": ["string"]
+                },
+                "share_via": {
+                  "description": "Contains information on the method of sharing the cart",
+                  "type": ["string"]
                 }
               },
-              "required": ["regex property"],
-              "type": "object"
-            },
-            "traits": {
-              "type": "object"
-            }
-          },
-          "required": ["properties"],
-          "type": "object"
-        },
-        "version": 1
-      },
-      {
-        "description": "This event should be fired if a custom violation handler is correctly called due to a call to `Custom Violation Handler` with a violation.",
-        "name": "Custom Violation Handler Called",
-        "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
-          "properties": {
-            "context": {},
-            "properties": {
-              "type": "object"
-            },
-            "traits": {
+              "required": [],
               "type": "object"
             }
           },
           "type": "object"
-        },
-        "version": 1
+        }
       },
       {
-        "description": "This event is fired in order to trigger the default violation handler. It should be called with a JSON Schema violation.",
-        "name": "Default Violation Handler",
+        "description": "When a visitor views their cart",
+        "name": "Cart Viewed",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
+          "description": "When a visitor views their cart",
           "properties": {
-            "context": {},
             "properties": {
+              "additionalProperties": true,
               "properties": {
-                "regex property": {
-                  "description": "",
-                  "pattern": "Lawyer Morty|Evil Morty",
-                  "type": "string"
+                "cart_id": {
+                  "description": "Contains the cart ID of the cart to which the product was added",
+                  "type": ["string"]
+                },
+                "products": {
+                  "description": "Contains the list of products displayed in the product list",
+                  "type": ["array"]
                 }
               },
-              "required": ["regex property"],
-              "type": "object"
-            },
-            "traits": {
-              "type": "object"
-            }
-          },
-          "required": ["properties"],
-          "type": "object"
-        },
-        "version": 1
-      },
-      {
-        "description": "This event should be fired if the default violation handler is correctly called due to a call to `Default Violation Handler` with a violation.",
-        "name": "Default Violation Handler Called",
-        "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
-          "properties": {
-            "context": {},
-            "properties": {
-              "type": "object"
-            },
-            "traits": {
+              "required": [],
               "type": "object"
             }
           },
           "type": "object"
-        },
-        "version": 1
+        }
       },
       {
-        "description": "Validates that a generated client supports events with no explicit properties. It is expected that this event accepts ANY properties.",
-        "name": "Empty Event",
+        "description": "When a visitor initiates the checkout process for their cart",
+        "name": "Checkout Started",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
+          "description": "When a visitor initiates the checkout process for their cart",
           "properties": {
-            "context": {},
             "properties": {
-              "type": "object"
-            },
-            "traits": {
-              "type": "object"
-            }
-          },
-          "type": "object"
-        },
-        "version": 1
-      },
-      {
-        "description": "Validates that a generated client handles even naming collisions.",
-        "name": "Event Collided",
-        "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
-          "properties": {
-            "context": {},
-            "properties": {
-              "type": "object"
-            },
-            "traits": {
-              "type": "object"
-            }
-          },
-          "type": "object"
-        },
-        "version": 1
-      },
-      {
-        "description": "Validates that clients handle all of the supported field types, as nullable optional fields. If a field is null, it is expected to be NOT sent through.",
-        "name": "Every Nullable Optional Type",
-        "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "properties": {
-            "context": {},
-            "properties": {
+              "additionalProperties": true,
               "properties": {
-                "optional any": {
-                  "description": "Optional any property"
+                "affiliation": {
+                  "description": "Contains the store or affiliation details from where the transaction was started",
+                  "type": ["string"]
                 },
-                "optional array": {
-                  "description": "Optional array property",
-                  "type": ["array", "null"]
+                "coupon": {
+                  "description": "Contains details of the transaction coupon which can be redeemed with the transaction",
+                  "type": ["string"]
                 },
-                "optional array with properties": {
-                  "description": "Optional array with properties",
-                  "items": {
-                    "properties": {
-                      "optional any": {
-                        "description": "Optional any property"
-                      },
-                      "optional array": {
-                        "description": "Optional array property",
-                        "type": ["array", "null"]
-                      },
-                      "optional boolean": {
-                        "description": "Optional boolean property",
-                        "type": ["boolean", "null"]
-                      },
-                      "optional int": {
-                        "description": "Optional integer property",
-                        "type": ["integer", "null"]
-                      },
-                      "optional number": {
-                        "description": "Optional number property",
-                        "type": ["number", "null"]
-                      },
-                      "optional object": {
-                        "description": "Optional object property",
-                        "properties": {},
-                        "required": [],
-                        "type": ["object", "null"]
-                      },
-                      "optional string": {
-                        "description": "Optional string property",
-                        "type": ["string", "null"]
-                      },
-                      "optional string with regex": {
-                        "description": "Optional string property with a regex conditional",
-                        "pattern": "Evil Morty|Lawyer Morty",
-                        "type": ["string", "null"]
-                      }
-                    },
-                    "type": ["object", "null"]
-                  },
-                  "type": ["array", "null"]
+                "currency": {
+                  "description": "Contains the currency code associated with an order or transaction",
+                  "type": ["string"]
                 },
-                "optional boolean": {
-                  "description": "Optional boolean property",
-                  "type": ["boolean", "null"]
+                "discount": {
+                  "description": "Contains the total discount associated with the transaction",
+                  "type": ["number"]
                 },
-                "optional int": {
-                  "description": "Optional integer property",
-                  "type": ["integer", "null"]
+                "order_id": {
+                  "description": "Contains the order ID or transaction ID, whichever is applicable",
+                  "type": ["string"]
                 },
-                "optional number": {
-                  "description": "Optional number property",
-                  "type": ["number", "null"]
+                "products": {
+                  "description": "Contains the list of products in the order or transaction",
+                  "type": ["array"]
                 },
-                "optional object": {
-                  "description": "Optional object property",
-                  "properties": {},
-                  "required": [],
-                  "type": ["object", "null"]
+                "revenue": {
+                  "description": "Contains the revenue associated with the transaction, excluding the shipping and tax details",
+                  "type": ["number"]
                 },
-                "optional object with properties": {
-                  "description": "Optional object with properties",
-                  "properties": {
-                    "optional any": {
-                      "description": "Optional any property"
-                    },
-                    "optional array": {
-                      "description": "Optional array property",
-                      "type": ["array", "null"]
-                    },
-                    "optional boolean": {
-                      "description": "Optional boolean property",
-                      "type": ["boolean", "null"]
-                    },
-                    "optional int": {
-                      "description": "Optional integer property",
-                      "type": ["integer", "null"]
-                    },
-                    "optional number": {
-                      "description": "Optional number property",
-                      "type": ["number", "null"]
-                    },
-                    "optional object": {
-                      "description": "Optional object property",
-                      "properties": {},
-                      "required": [],
-                      "type": ["object", "null"]
-                    },
-                    "optional string": {
-                      "description": "Optional string property",
-                      "type": ["string", "null"]
-                    },
-                    "optional string with regex": {
-                      "description": "Optional string property with a regex conditional",
-                      "pattern": "Evil Morty|Lawyer Morty",
-                      "type": ["string", "null"]
-                    }
-                  },
-                  "required": [],
-                  "type": ["object", "null"]
+                "shipping": {
+                  "description": "Contains the shipping cost associated with the order or transaction",
+                  "type": ["number"]
                 },
-                "optional string": {
-                  "description": "Optional string property",
-                  "type": ["string", "null"]
+                "tax": {
+                  "description": "Contains the total tax associated with the order or the transaction",
+                  "type": ["number"]
                 },
-                "optional string with regex": {
-                  "description": "Optional string property with a regex conditional",
-                  "pattern": "Evil Morty|Lawyer Morty",
-                  "type": ["string", "null"]
+                "value": {
+                  "description": "Contains the details of the revenue with the discount and coupons factored in",
+                  "type": ["number"]
                 }
               },
-              "type": "object"
-            },
-            "traits": {}
-          },
-          "type": "object"
-        },
-        "version": 1
-      },
-      {
-        "description": "Validates that clients handle all of the supported field types, as nullable required fields. If a field is null, it is expected to be sent through.",
-        "name": "Every Nullable Required Type",
-        "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "properties": {
-            "context": {},
-            "properties": {
-              "properties": {
-                "required any": {
-                  "description": "Required any property"
-                },
-                "required array": {
-                  "description": "Required array property",
-                  "type": ["array", "null"]
-                },
-                "required array with properties": {
-                  "description": "Required array with properties",
-                  "items": {
-                    "properties": {
-                      "required any": {
-                        "description": "Required any property"
-                      },
-                      "required array": {
-                        "description": "Required array property",
-                        "type": ["array", "null"]
-                      },
-                      "required boolean": {
-                        "description": "Required boolean property",
-                        "type": ["boolean", "null"]
-                      },
-                      "required int": {
-                        "description": "Required integer property",
-                        "type": ["integer", "null"]
-                      },
-                      "required number": {
-                        "description": "Required number property",
-                        "type": ["number", "null"]
-                      },
-                      "required object": {
-                        "description": "Required object property",
-                        "properties": {},
-                        "required": [],
-                        "type": ["object", "null"]
-                      },
-                      "required string": {
-                        "description": "Required string property",
-                        "type": ["string", "null"]
-                      },
-                      "required string with regex": {
-                        "description": "Required string property with a regex conditional",
-                        "pattern": "Evil Morty|Lawyer Morty",
-                        "type": ["string", "null"]
-                      }
-                    },
-                    "required": [
-                      "required any",
-                      "required array",
-                      "required boolean",
-                      "required int",
-                      "required number",
-                      "required object",
-                      "required string",
-                      "required string with regex"
-                    ],
-                    "type": ["object", "null"]
-                  },
-                  "type": ["array", "null"]
-                },
-                "required boolean": {
-                  "description": "Required boolean property",
-                  "type": ["boolean", "null"]
-                },
-                "required int": {
-                  "description": "Required integer property",
-                  "type": ["integer", "null"]
-                },
-                "required number": {
-                  "description": "Required number property",
-                  "type": ["number", "null"]
-                },
-                "required object": {
-                  "description": "Required object property",
-                  "properties": {},
-                  "required": [],
-                  "type": ["object", "null"]
-                },
-                "required object with properties": {
-                  "description": "Required object with properties",
-                  "properties": {
-                    "required any": {
-                      "description": "Required any property"
-                    },
-                    "required array": {
-                      "description": "Required array property",
-                      "type": ["array", "null"]
-                    },
-                    "required boolean": {
-                      "description": "Required boolean property",
-                      "type": ["boolean", "null"]
-                    },
-                    "required int": {
-                      "description": "Required integer property",
-                      "type": ["integer", "null"]
-                    },
-                    "required number": {
-                      "description": "Required number property",
-                      "type": ["number", "null"]
-                    },
-                    "required object": {
-                      "description": "Required object property",
-                      "properties": {},
-                      "required": [],
-                      "type": ["object", "null"]
-                    },
-                    "required string": {
-                      "description": "Required string property",
-                      "type": ["string", "null"]
-                    },
-                    "required string with regex": {
-                      "description": "Required string property with a regex conditional",
-                      "pattern": "Evil Morty|Lawyer Morty",
-                      "type": ["string", "null"]
-                    }
-                  },
-                  "required": [
-                    "required any",
-                    "required array",
-                    "required boolean",
-                    "required int",
-                    "required number",
-                    "required object",
-                    "required string",
-                    "required string with regex"
-                  ],
-                  "type": ["object", "null"]
-                },
-                "required string": {
-                  "description": "Required string property",
-                  "type": ["string", "null"]
-                },
-                "required string with regex": {
-                  "description": "Required string property with a regex conditional",
-                  "pattern": "Evil Morty|Lawyer Morty",
-                  "type": ["string", "null"]
-                }
-              },
-              "required": [
-                "required any",
-                "required array",
-                "required boolean",
-                "required int",
-                "required number",
-                "required object",
-                "required string",
-                "required string with regex",
-                "required object with properties",
-                "required array with properties"
-              ],
-              "type": "object"
-            },
-            "traits": {}
-          },
-          "required": ["properties"],
-          "type": "object"
-        },
-        "version": 1
-      },
-      {
-        "description": "Validates that clients handle all of the supported field types, as optional fields.",
-        "name": "Every Optional Type",
-        "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "properties": {
-            "context": {},
-            "properties": {
-              "properties": {
-                "optional any": {
-                  "description": "Optional any property"
-                },
-                "optional array": {
-                  "description": "Optional array property",
-                  "type": "array"
-                },
-                "optional array with properties": {
-                  "description": "Optional array with properties",
-                  "items": {
-                    "properties": {
-                      "optional any": {
-                        "description": "Optional any property"
-                      },
-                      "optional array": {
-                        "description": "Optional array property",
-                        "type": "array"
-                      },
-                      "optional boolean": {
-                        "description": "Optional boolean property",
-                        "type": "boolean"
-                      },
-                      "optional int": {
-                        "description": "Optional integer property",
-                        "type": "integer"
-                      },
-                      "optional number": {
-                        "description": "Optional number property",
-                        "type": "number"
-                      },
-                      "optional object": {
-                        "description": "Optional object property",
-                        "key": "optional object",
-                        "properties": {},
-                        "type": "object"
-                      },
-                      "optional string": {
-                        "description": "Optional string property",
-                        "type": "string"
-                      },
-                      "optional string with regex": {
-                        "description": "Optional string property with a regex conditional",
-                        "pattern": "Evil Morty|Lawyer Morty",
-                        "type": "string"
-                      }
-                    },
-                    "type": "object"
-                  },
-                  "type": "array"
-                },
-                "optional boolean": {
-                  "description": "Optional boolean property",
-                  "type": "boolean"
-                },
-                "optional int": {
-                  "description": "Optional integer property",
-                  "type": "integer"
-                },
-                "optional number": {
-                  "description": "Optional number property",
-                  "type": "number"
-                },
-                "optional object": {
-                  "description": "Optional object property",
-                  "key": "optional object",
-                  "properties": {},
-                  "type": "object"
-                },
-                "optional object with properties": {
-                  "description": "Optional object with properties",
-                  "properties": {
-                    "optional any": {
-                      "description": "Optional any property"
-                    },
-                    "optional array": {
-                      "description": "Optional array property",
-                      "type": "array"
-                    },
-                    "optional boolean": {
-                      "description": "Optional boolean property",
-                      "type": "boolean"
-                    },
-                    "optional int": {
-                      "description": "Optional integer property",
-                      "type": "integer"
-                    },
-                    "optional number": {
-                      "description": "Optional number property",
-                      "type": "number"
-                    },
-                    "optional object": {
-                      "description": "Optional object property",
-                      "key": "optional object",
-                      "properties": {},
-                      "type": "object"
-                    },
-                    "optional string": {
-                      "description": "Optional string property",
-                      "type": "string"
-                    },
-                    "optional string with regex": {
-                      "description": "Optional string property with a regex conditional",
-                      "pattern": "Evil Morty|Lawyer Morty",
-                      "type": "string"
-                    }
-                  },
-                  "type": "object"
-                },
-                "optional string": {
-                  "description": "Optional string property",
-                  "type": "string"
-                },
-                "optional string with regex": {
-                  "description": "Optional string property with a regex conditional",
-                  "pattern": "Evil Morty|Lawyer Morty",
-                  "type": "string"
-                }
-              },
-              "type": "object"
-            },
-            "traits": {}
-          },
-          "type": "object"
-        },
-        "version": 1
-      },
-      {
-        "description": "Validates that clients handle all of the supported field types, as required fields. ",
-        "name": "Every Required Type",
-        "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "properties": {
-            "context": {},
-            "properties": {
-              "properties": {
-                "required any": {
-                  "description": "Required any property"
-                },
-                "required array": {
-                  "description": "Required array property",
-                  "type": "array"
-                },
-                "required array with properties": {
-                  "description": "Required array with properties",
-                  "items": {
-                    "properties": {
-                      "required any": {
-                        "description": "Required any property"
-                      },
-                      "required array": {
-                        "description": "Required array property",
-                        "type": "array"
-                      },
-                      "required boolean": {
-                        "description": "Required boolean property",
-                        "type": "boolean"
-                      },
-                      "required int": {
-                        "description": "Required integer property",
-                        "type": "integer"
-                      },
-                      "required number": {
-                        "description": "Required number property",
-                        "type": "number"
-                      },
-                      "required object": {
-                        "description": "Required object property",
-                        "key": "required object",
-                        "properties": {},
-                        "required": [],
-                        "type": "object"
-                      },
-                      "required string": {
-                        "description": "Required string property",
-                        "type": "string"
-                      },
-                      "required string with regex": {
-                        "description": "Required string property with a regex conditional",
-                        "pattern": "Evil Morty|Lawyer Morty",
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "required any",
-                      "required array",
-                      "required boolean",
-                      "required int",
-                      "required number",
-                      "required object",
-                      "required string",
-                      "required string with regex"
-                    ],
-                    "type": "object"
-                  },
-                  "type": "array"
-                },
-                "required boolean": {
-                  "description": "Required boolean property",
-                  "type": "boolean"
-                },
-                "required int": {
-                  "description": "Required integer property",
-                  "type": "integer"
-                },
-                "required number": {
-                  "description": "Required number property",
-                  "type": "number"
-                },
-                "required object": {
-                  "description": "Required object property",
-                  "key": "required object",
-                  "properties": {},
-                  "required": [],
-                  "type": "object"
-                },
-                "required object with properties": {
-                  "description": "Required object with properties",
-                  "properties": {
-                    "required any": {
-                      "description": "Required any property"
-                    },
-                    "required array": {
-                      "description": "Required array property",
-                      "type": "array"
-                    },
-                    "required boolean": {
-                      "description": "Required boolean property",
-                      "type": "boolean"
-                    },
-                    "required int": {
-                      "description": "Required integer property",
-                      "type": "integer"
-                    },
-                    "required number": {
-                      "description": "Required number property",
-                      "type": "number"
-                    },
-                    "required object": {
-                      "description": "Required object property",
-                      "key": "required object",
-                      "properties": {},
-                      "required": [],
-                      "type": "object"
-                    },
-                    "required string": {
-                      "description": "Required string property",
-                      "type": "string"
-                    },
-                    "required string with regex": {
-                      "description": "Required string property with a regex conditional",
-                      "pattern": "Evil Morty|Lawyer Morty",
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "required any",
-                    "required array",
-                    "required boolean",
-                    "required int",
-                    "required number",
-                    "required object",
-                    "required string",
-                    "required string with regex"
-                  ],
-                  "type": "object"
-                },
-                "required string": {
-                  "description": "Required string property",
-                  "type": "string"
-                },
-                "required string with regex": {
-                  "description": "Required string property with a regex conditional",
-                  "pattern": "Evil Morty|Lawyer Morty",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "required any",
-                "required array",
-                "required boolean",
-                "required int",
-                "required number",
-                "required object",
-                "required string",
-                "required string with regex",
-                "required object with properties",
-                "required array with properties"
-              ],
-              "type": "object"
-            },
-            "traits": {}
-          },
-          "required": ["properties"],
-          "type": "object"
-        },
-        "version": 1
-      },
-      {
-        "description": "Validates that clients correctly serialize large numbers (integers and floats).",
-        "name": "Large Numbers Event",
-        "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
-          "properties": {
-            "context": {},
-            "properties": {
-              "properties": {
-                "large nullable optional integer": {
-                  "description": "",
-                  "type": ["integer", "null"]
-                },
-                "large nullable optional number": {
-                  "description": "",
-                  "type": ["number", "null"]
-                },
-                "large nullable required integer": {
-                  "description": "",
-                  "type": ["integer", "null"]
-                },
-                "large nullable required number": {
-                  "description": "",
-                  "type": ["number", "null"]
-                },
-                "large optional integer": {
-                  "description": "",
-                  "type": "integer"
-                },
-                "large optional number": {
-                  "description": "",
-                  "type": "number"
-                },
-                "large required integer": {
-                  "description": "",
-                  "type": "integer"
-                },
-                "large required number": {
-                  "description": "",
-                  "type": "number"
-                }
-              },
-              "required": [
-                "large required integer",
-                "large required number",
-                "large nullable required integer",
-                "large nullable required number"
-              ],
-              "type": "object"
-            },
-            "traits": {
-              "type": "object"
-            }
-          },
-          "required": ["properties"],
-          "type": "object"
-        },
-        "version": 1
-      },
-      {
-        "description": "Validates that clients handle arrays-within-arrays.",
-        "name": "Nested Arrays",
-        "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
-          "properties": {
-            "context": {},
-            "properties": {
-              "properties": {
-                "universeCharacters": {
-                  "description": "All known characters from each universe.",
-                  "items": {
-                    "description": "",
-                    "items": {
-                      "description": "",
-                      "properties": {
-                        "name": {
-                          "description": "The character's name.",
-                          "type": "string"
-                        }
-                      },
-                      "required": ["name"],
-                      "type": "object"
-                    },
-                    "type": "array"
-                  },
-                  "type": "array"
-                }
-              },
-              "required": ["universeCharacters"],
-              "type": "object"
-            },
-            "traits": {
-              "type": "object"
-            }
-          },
-          "required": ["properties"],
-          "type": "object"
-        },
-        "version": 1
-      },
-      {
-        "description": "Validates that clients handle objects-within-objects.",
-        "name": "Nested Objects",
-        "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
-          "properties": {
-            "context": {},
-            "properties": {
-              "properties": {
-                "garage": {
-                  "description": "",
-                  "properties": {
-                    "tunnel": {
-                      "description": "",
-                      "properties": {
-                        "subterranean lab": {
-                          "description": "",
-                          "properties": {
-                            "jerry's memories": {
-                              "description": "",
-                              "type": "array"
-                            },
-                            "morty's memories": {
-                              "description": "",
-                              "type": "array"
-                            },
-                            "summer's contingency plan": {
-                              "description": "",
-                              "type": "string"
-                            }
-                          },
-                          "required": [],
-                          "type": "object"
-                        }
-                      },
-                      "required": ["subterranean lab"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["tunnel"],
-                  "type": "object"
-                }
-              },
-              "required": ["garage"],
-              "type": "object"
-            },
-            "traits": {
-              "type": "object"
-            }
-          },
-          "required": ["properties"],
-          "type": "object"
-        },
-        "version": 1
-      },
-      {
-        "description": "Validates that clients handle collisions in property names within a single event.",
-        "name": "Properties Collided",
-        "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
-          "properties": {
-            "context": {},
-            "properties": {
-              "properties": {
-                "Property Collided": {
-                  "description": "",
-                  "type": "string"
-                },
-                "property_collided": {
-                  "description": "",
-                  "type": "string"
-                }
-              },
-              "required": ["property_collided", "Property Collided"],
-              "type": "object"
-            },
-            "traits": {
-              "type": "object"
-            }
-          },
-          "required": ["properties"],
-          "type": "object"
-        },
-        "version": 1
-      },
-      {
-        "description": "Validates that clients handle collisions in object names across multiple events.",
-        "name": "Property Object Name Collision #1",
-        "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
-          "properties": {
-            "context": {},
-            "properties": {
-              "properties": {
-                "universe": {
-                  "description": "",
-                  "properties": {
-                    "name": {
-                      "description": "The common name of this universe.",
-                      "type": "string"
-                    },
-                    "occupants": {
-                      "description": "The most important occupants in this universe.",
-                      "items": {
-                        "description": "",
-                        "properties": {
-                          "name": {
-                            "description": "The name of this occupant.",
-                            "type": "string"
-                          }
-                        },
-                        "required": ["name"],
-                        "type": "object"
-                      },
-                      "type": "array"
-                    }
-                  },
-                  "required": ["name", "occupants"],
-                  "type": "object"
-                }
-              },
-              "type": "object"
-            },
-            "traits": {
+              "required": [],
               "type": "object"
             }
           },
           "type": "object"
-        },
-        "version": 1
+        }
       },
       {
-        "description": "Validates that clients handle collisions in object names across multiple events.",
-        "name": "Property Object Name Collision #2",
+        "description": "When a visitor completes a step in the checkout funnel",
+        "name": "Checkout Step Completed",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
+          "description": "When a visitor completes a step in the checkout funnel",
           "properties": {
-            "context": {},
             "properties": {
+              "additionalProperties": true,
               "properties": {
-                "universe": {
-                  "description": "",
-                  "properties": {
-                    "name": {
-                      "description": "The common name of this universe.",
-                      "type": "string"
-                    },
-                    "occupants": {
-                      "description": "The most important occupants in this universe.",
-                      "items": {
-                        "description": "",
-                        "properties": {
-                          "name": {
-                            "description": "The name of this occupant.",
-                            "type": "string"
-                          }
-                        },
-                        "required": ["name"],
-                        "type": "object"
-                      },
-                      "type": "array"
-                    }
-                  },
-                  "required": ["name", "occupants"],
-                  "type": "object"
+                "checkout_id": {
+                  "description": "Contains the checkout transaction ID",
+                  "type": ["string"]
+                },
+                "payment_method": {
+                  "description": "Contains the payment method information",
+                  "type": ["string"]
+                },
+                "shipping_method": {
+                  "description": "Contains the information associated with the chosen shipping method",
+                  "type": ["string"]
+                },
+                "step": {
+                  "description": "Contains the number associated with the checkout process step",
+                  "type": ["number"]
                 }
               },
-              "type": "object"
-            },
-            "traits": {
+              "required": ["step"],
               "type": "object"
             }
           },
           "type": "object"
-        },
-        "version": 1
+        }
       },
       {
-        "description": "Validates that clients sanitize property names that contain invalid identifier characters.",
-        "name": "Property Sanitized",
+        "description": "When a visitor views a step in the checkout funnel",
+        "name": "Checkout Step Viewed",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
+          "description": "When a visitor views a step in the checkout funnel",
           "properties": {
-            "context": {},
             "properties": {
+              "additionalProperties": true,
               "properties": {
-                "0000---terrible-property-name~!3": {
-                  "description": "",
-                  "type": "string"
+                "checkout_id": {
+                  "description": "Contains the checkout transaction ID",
+                  "type": ["string"]
+                },
+                "payment_method": {
+                  "description": "Contains the payment method information",
+                  "type": ["string"]
+                },
+                "shipping_method": {
+                  "description": "Contains the information associated with the chosen shipping method",
+                  "type": ["string"]
+                },
+                "step": {
+                  "description": "Contains the number associated with the checkout process step",
+                  "type": ["number"]
                 }
               },
-              "required": ["0000---terrible-property-name~!3"],
-              "type": "object"
-            },
-            "traits": {
+              "required": ["step"],
               "type": "object"
             }
           },
-          "required": ["properties"],
           "type": "object"
-        },
-        "version": 1
+        }
       },
       {
-        "description": "Validates that clients support fields with various types of arrays.",
-        "name": "Simple Array Types",
+        "description": "When a visitor successfully applies a coupon to their transaction",
+        "name": "Coupon Applied",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
+          "description": "When a visitor successfully applies a coupon to their transaction",
           "properties": {
-            "context": {},
             "properties": {
+              "additionalProperties": true,
               "properties": {
-                "any": {
-                  "description": "",
-                  "items": {
-                    "description": ""
-                  },
-                  "type": "array"
+                "cart_id": {
+                  "description": "Contains the cart ID, if applicable",
+                  "type": ["string"]
                 },
-                "boolean": {
-                  "description": "",
-                  "items": {
-                    "description": "",
-                    "type": "boolean"
-                  },
-                  "type": "array"
+                "coupon_id": {
+                  "description": "Contains the coupon ID",
+                  "type": ["string"]
                 },
-                "integer": {
-                  "description": "",
-                  "items": {
-                    "description": "",
-                    "type": "integer"
-                  },
-                  "type": "array"
+                "coupon_name": {
+                  "description": "Contains the name of the coupon",
+                  "type": ["string"]
                 },
-                "nullable": {
-                  "description": "",
-                  "items": {
-                    "description": "",
-                    "type": ["string", "null"]
-                  },
-                  "type": "array"
+                "discount": {
+                  "description": "Contains the amount of discount availed by applying the coupon",
+                  "type": ["number"]
                 },
-                "number": {
-                  "description": "",
-                  "items": {
-                    "description": "",
-                    "type": "number"
-                  },
-                  "type": "array"
-                },
-                "object": {
-                  "description": "",
-                  "items": {
-                    "description": "",
-                    "properties": {
-                      "name": {
-                        "description": "",
-                        "type": "string"
-                      }
-                    },
-                    "required": [],
-                    "type": "object"
-                  },
-                  "type": "array"
-                },
-                "string": {
-                  "description": "",
-                  "items": {
-                    "description": "",
-                    "type": "string"
-                  },
-                  "type": "array"
+                "order_id": {
+                  "description": "Contains the order ID or the transaction ID, if applicable",
+                  "type": ["string"]
                 }
               },
-              "type": "object"
-            },
-            "traits": {
+              "required": [],
               "type": "object"
             }
           },
           "type": "object"
-        },
-        "version": 1
+        }
       },
       {
-        "description": "Validates that clients support fields with multiple (union) types.",
-        "name": "Union Type",
+        "description": "When a visitor attempts to apply an invalid coupon code",
+        "name": "Coupon Denied",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
+          "description": "When a visitor attempts to apply an invalid coupon code",
           "properties": {
-            "context": {},
             "properties": {
+              "additionalProperties": true,
               "properties": {
-                "universe_name": {
-                  "description": "",
-                  "type": ["string", "null", "integer"]
+                "cart_id": {
+                  "description": "Contains the cart ID, if applicable",
+                  "type": ["string"]
+                },
+                "coupon_id": {
+                  "description": "Contains the coupon ID",
+                  "type": ["string"]
+                },
+                "coupon_name": {
+                  "description": "Contains the name of the coupon",
+                  "type": ["string"]
+                },
+                "order_id": {
+                  "description": "Contains the order ID or the transaction ID, if applicable",
+                  "type": ["string"]
+                },
+                "reason": {
+                  "description": "Contains the reason why the coupon was declined",
+                  "type": ["string"]
                 }
               },
-              "required": ["universe_name"],
-              "type": "object"
-            },
-            "traits": {
+              "required": [],
               "type": "object"
             }
           },
-          "required": ["properties"],
           "type": "object"
-        },
-        "version": 1
+        }
       },
       {
-        "description": "Validates that a generated client handles even naming collisions.",
-        "name": "event_collided",
+        "description": "When a visitor enters a coupon code during checkout",
+        "name": "Coupon Entered",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
-          "labels": {},
+          "description": "When a visitor enters a coupon code during checkout",
           "properties": {
-            "context": {},
             "properties": {
-              "type": "object"
-            },
-            "traits": {
+              "additionalProperties": true,
+              "properties": {
+                "cart_id": {
+                  "description": "Contains the cart ID, if applicable",
+                  "type": ["string"]
+                },
+                "coupon_id": {
+                  "description": "Contains the coupon ID",
+                  "type": ["string"]
+                },
+                "order_id": {
+                  "description": "Contains the order ID or the transaction ID, if applicable",
+                  "type": ["string"]
+                }
+              },
+              "required": [],
               "type": "object"
             }
           },
           "type": "object"
-        },
-        "version": 1
+        }
+      },
+      {
+        "description": "When a visitor removes an already-applied coupon code",
+        "name": "Coupon Removed",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor removes an already-applied coupon code",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "cart_id": {
+                  "description": "Contains the cart ID, if applicable",
+                  "type": ["string"]
+                },
+                "coupon_id": {
+                  "description": "Contains the coupon ID",
+                  "type": ["string"]
+                },
+                "coupon_name": {
+                  "description": "Contains the name of the coupon",
+                  "type": ["string"]
+                },
+                "discount": {
+                  "description": "Contains the amount of discount availed by applying the coupon",
+                  "type": ["number"]
+                },
+                "order_id": {
+                  "description": "Contains the order ID or the transaction ID, if applicable",
+                  "type": ["string"]
+                }
+              },
+              "required": [],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor succesfully cancels their order",
+        "name": "Order Cancelled",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor succesfully cancels their order",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "affiliation": {
+                  "description": "Contains the store or affiliation details from where the transaction was started",
+                  "type": ["string"]
+                },
+                "coupon": {
+                  "description": "Contains details of the transaction coupon which can be redeemed with the transaction",
+                  "type": ["string"]
+                },
+                "currency": {
+                  "description": "Contains the currency code associated with an order or transaction",
+                  "type": ["string"]
+                },
+                "discount": {
+                  "description": "Contains the total discount associated with the transaction",
+                  "type": ["number"]
+                },
+                "order_id": {
+                  "description": "Contains the order ID or transaction ID, whicheveris applicable",
+                  "type": ["string"]
+                },
+                "products": {
+                  "description": "Contains the list of products in the order or transaction",
+                  "type": ["array"]
+                },
+                "revenue": {
+                  "description": "Contains the revenue associated with the transaction, excluding the shipping and tax details",
+                  "type": ["number"]
+                },
+                "shipping": {
+                  "description": "Contains the shipping cost associated with the order or transaction",
+                  "type": ["number"]
+                },
+                "tax": {
+                  "description": "Contains the total tax associated with the order or the transaction",
+                  "type": ["number"]
+                },
+                "total": {
+                  "description": "Contains the details of the revenue with the discount and coupons factored in",
+                  "type": ["number"]
+                }
+              },
+              "required": ["order_id"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor successfully places an order",
+        "name": "Order Completed",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor successfully places an order",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "affiliation": {
+                  "description": "Contains the store or affiliation details from where the transaction was started",
+                  "type": ["string"]
+                },
+                "checkout_id": {
+                  "description": "Contains the checkout ID",
+                  "type": ["string"]
+                },
+                "coupon": {
+                  "description": "Contains details of the transaction coupon which can be redeemed with the transaction",
+                  "type": ["string"]
+                },
+                "currency": {
+                  "description": "Contains the currency code associated with an order or transaction",
+                  "type": ["string"]
+                },
+                "discount": {
+                  "description": "Contains the total discount associated with the transaction",
+                  "type": ["number"]
+                },
+                "order_id": {
+                  "description": "Contains the order ID or transaction ID, whichever is applicable",
+                  "type": ["string"]
+                },
+                "products": {
+                  "description": "Contains the list of products in the order or transaction",
+                  "type": ["array"]
+                },
+                "revenue": {
+                  "description": "Contains the revenue associated with the transaction, excluding the shipping and tax details",
+                  "type": ["number"]
+                },
+                "shipping": {
+                  "description": "Contains the shipping cost associated with the order or transaction",
+                  "type": ["number"]
+                },
+                "subtotal": {
+                  "description": "Contains the order total after discounts but not including the taxes and shipping charges",
+                  "type": ["number"]
+                },
+                "tax": {
+                  "description": "Contains the total tax associated with the order or the transaction",
+                  "type": ["number"]
+                },
+                "total": {
+                  "description": "Contains the details of the revenue with the discount and coupons factored in",
+                  "type": ["number"]
+                }
+              },
+              "required": ["order_id", "revenue", "currency", "products"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor successfully refunds their order",
+        "name": "Order Refunded",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor successfully refunds their order",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "order_id": {
+                  "description": "Contains the order ID or transaction ID, whichever is applicable",
+                  "type": ["string"]
+                }
+              },
+              "required": ["order_id"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor updates their order or transaction",
+        "name": "Order Updated",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor updates their order or transaction",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "affiliation": {
+                  "description": "Contains the store or affiliation details from where the transaction was started",
+                  "type": ["string"]
+                },
+                "coupon": {
+                  "description": "Contains details of the transaction coupon which can be redeemed with the transaction",
+                  "type": ["string"]
+                },
+                "currency": {
+                  "description": "Contains the currency code associated with an order or transaction",
+                  "type": ["string"]
+                },
+                "discount": {
+                  "description": "Contains the total discount associated with the transaction",
+                  "type": ["number"]
+                },
+                "order_id": {
+                  "description": "Contains the order ID or transaction ID, whichever is applicable",
+                  "type": ["string"]
+                },
+                "products": {
+                  "description": "Contains the list of products in the order or transaction",
+                  "type": ["array"]
+                },
+                "revenue": {
+                  "description": "Contains the revenue associated with the transaction, excluding the shipping and tax details",
+                  "type": ["number"]
+                },
+                "shipping": {
+                  "description": "Contains the shipping cost associated with the order or transaction",
+                  "type": ["number"]
+                },
+                "tax": {
+                  "description": "Contains the total tax associated with the order or the transaction",
+                  "type": ["number"]
+                },
+                "total": {
+                  "description": "Contains the details of the revenue with the discount and coupons factored in",
+                  "type": ["number"]
+                }
+              },
+              "required": [],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor successfully enters payment information during the checkout process",
+        "name": "Payment Info Entered",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor successfully enters payment information during the checkout process",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "checkout_id": {
+                  "description": "Contains the checkout transaction ID",
+                  "type": ["string"]
+                },
+                "order_id": {
+                  "description": "An optional string that contains the order ID",
+                  "type": ["string"]
+                },
+                "payment_method": {
+                  "description": "Contains the payment method information",
+                  "type": ["string"]
+                },
+                "shipping_method": {
+                  "description": "Contains the information associated with the chosen shipping method",
+                  "type": ["string"]
+                },
+                "step": {
+                  "description": "Contains the number associated with the checkout process step",
+                  "type": ["number"]
+                }
+              },
+              "required": ["step"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "User added a product to their shopping cart",
+        "name": "Product Added",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "User added a product to their shopping cart",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "brand": {
+                  "description": "Brand of the product",
+                  "type": ["string"]
+                },
+                "cart_id": {
+                  "description": "Cart ID associated with the product displayed",
+                  "type": ["string"]
+                },
+                "category": {
+                  "description": "Product category being viewed",
+                  "type": ["string"]
+                },
+                "coupon": {
+                  "description": "Coupon code associated with the product",
+                  "type": ["string"]
+                },
+                "image_url": {
+                  "description": "Image url of the product",
+                  "type": ["string"]
+                },
+                "name": {
+                  "description": "Name of the product",
+                  "type": ["string"]
+                },
+                "position": {
+                  "description": "Position of product in the list",
+                  "type": ["integer"]
+                },
+                "price": {
+                  "description": "Price of the product",
+                  "type": ["number"]
+                },
+                "product_id": {
+                  "description": "Database ID of the product",
+                  "type": ["string"]
+                },
+                "quantity": {
+                  "description": "Quantity of the product",
+                  "type": ["integer"]
+                },
+                "sku": {
+                  "description": "Sku of the product",
+                  "type": ["string"]
+                },
+                "url": {
+                  "description": "URL of the product page for product",
+                  "type": ["string"]
+                },
+                "variant": {
+                  "description": "Variant of the product",
+                  "type": ["string"]
+                }
+              },
+              "required": ["product_id", "price"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor adds a product to their wishlist",
+        "name": "Product Added to Wishlist",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor adds a product to their wishlist",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "brand": {
+                  "description": "Contains the name of the brand associated with the product",
+                  "type": ["string"]
+                },
+                "category": {
+                  "description": "Contains the category of the product being viewed",
+                  "type": ["string"]
+                },
+                "coupon": {
+                  "description": "Contains information about the coupon code associated with the product",
+                  "type": ["string"]
+                },
+                "image_url": {
+                  "description": "Contains the image URL of the product",
+                  "type": ["string"]
+                },
+                "name": {
+                  "description": "Contains the name of the product",
+                  "type": ["string"]
+                },
+                "position": {
+                  "description": "Contains the position of the product in the product list",
+                  "type": ["number"]
+                },
+                "price": {
+                  "description": "Contains the price of the product being viewed (in USD)",
+                  "type": ["number"]
+                },
+                "product_id": {
+                  "description": "Contains the database ID of the product being viewed",
+                  "type": ["string"]
+                },
+                "quantity": {
+                  "description": "Contains information on the quantity of the product",
+                  "type": ["number"]
+                },
+                "sku": {
+                  "description": "Contains the SKU of the product",
+                  "type": ["string"]
+                },
+                "url": {
+                  "description": "Contains the URL of the product page",
+                  "type": ["string"]
+                },
+                "variant": {
+                  "description": "Contains the name of the variant associated with the product",
+                  "type": ["string"]
+                },
+                "wishlist_id": {
+                  "description": "Contains the wishlist ID to which the product was added",
+                  "type": ["string"]
+                },
+                "wishlist_name": {
+                  "description": "Contains the name of the wishlist to which the product was added",
+                  "type": ["string"]
+                }
+              },
+              "required": [],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor clicks on a product from a Product List",
+        "name": "Product Clicked",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor clicks on a product from a Product List",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "brand": {
+                  "description": "Contains the name of the brand associated with the product",
+                  "type": ["string"]
+                },
+                "category": {
+                  "description": "Contains the category of the product",
+                  "type": ["string"]
+                },
+                "coupon": {
+                  "description": "Contains information on the coupon code associated with a product",
+                  "type": ["string"]
+                },
+                "image_url": {
+                  "description": "Contains the image URL of the product",
+                  "type": ["string"]
+                },
+                "name": {
+                  "description": "Contains the name of the product being viewed",
+                  "type": ["string"]
+                },
+                "position": {
+                  "description": "Contains the position of the product in the product list",
+                  "type": ["number"]
+                },
+                "price": {
+                  "description": "Contains the price of the product being viewed",
+                  "type": ["number"]
+                },
+                "product_id": {
+                  "description": "Contains the database ID of the product being viewed",
+                  "type": ["string"]
+                },
+                "quantity": {
+                  "description": "Contains the quantity of the product",
+                  "type": ["number"]
+                },
+                "sku": {
+                  "description": "Contains the SKU of the product",
+                  "type": ["string"]
+                },
+                "url": {
+                  "description": "Contains the URL of the product page",
+                  "type": ["string"]
+                },
+                "variant": {
+                  "description": "Contains information of the variant associated with the product",
+                  "type": ["string"]
+                }
+              },
+              "required": ["product_id"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When the user clicks to generate a product comparison",
+        "name": "Product Compared",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When the user clicks to generate a product comparison",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "products": {
+                  "description": "Contains the list of products shared with the recipient",
+                  "type": ["array"]
+                }
+              },
+              "required": [],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor filters a list or category of products",
+        "name": "Product List Filtered",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor filters a list or category of products",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "category": {
+                  "description": "Contains the name of the product category being viewed",
+                  "type": ["string"]
+                },
+                "filters": {
+                  "description": "Contain the product filters that the customer has applied",
+                  "type": ["array"]
+                },
+                "list_id": {
+                  "description": "Contains the name of the product list being viewed",
+                  "type": ["string"]
+                },
+                "products": {
+                  "description": "Contains the products displayed in the product list",
+                  "type": ["array"]
+                },
+                "sorts": {
+                  "description": "Represents the product sorting used by the customer",
+                  "type": ["array"]
+                }
+              },
+              "required": [],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor views a list or category of products",
+        "name": "Product List Viewed",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor views a list or category of products",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "category": {
+                  "description": "Contains the category of the product being viewed",
+                  "type": ["string"]
+                },
+                "list_id": {
+                  "description": "Contains the name of the product list being viewed",
+                  "type": ["string"]
+                },
+                "products": {
+                  "description": "Contains the array of products displayed in the product list",
+                  "type": ["array"]
+                }
+              },
+              "required": [],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor removes a product from their cart",
+        "name": "Product Removed",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor removes a product from their cart",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "brand": {
+                  "description": "Contains the name of the brand associated with the product",
+                  "type": ["string"]
+                },
+                "cart_id": {
+                  "description": "Contains the cart ID of the cart to which the product was added",
+                  "type": ["string"]
+                },
+                "category": {
+                  "description": "Contains the category of the product",
+                  "type": ["string"]
+                },
+                "coupon": {
+                  "description": "Contains information on the coupon code associated with a product",
+                  "type": ["string"]
+                },
+                "image_url": {
+                  "description": "Contains the image URL of the product",
+                  "type": ["string"]
+                },
+                "name": {
+                  "description": "Contains the name of the product being viewed",
+                  "type": ["string"]
+                },
+                "position": {
+                  "description": "Contains the position of the product in the product list",
+                  "type": ["number"]
+                },
+                "price": {
+                  "description": "Contains the price of the product being viewed",
+                  "type": ["number"]
+                },
+                "product_id": {
+                  "description": "Contains the database ID of the product being viewed",
+                  "type": ["string"]
+                },
+                "quantity": {
+                  "description": "Contains the quantity of the product",
+                  "type": ["number"]
+                },
+                "sku": {
+                  "description": "Contains the SKU of the product",
+                  "type": ["string"]
+                },
+                "url": {
+                  "description": "Contains the URL of the product page",
+                  "type": ["string"]
+                },
+                "variant": {
+                  "description": "Contains information of the variant associated with the product",
+                  "type": ["string"]
+                }
+              },
+              "required": ["product_id", "price"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor removes a product from their wishlist",
+        "name": "Product Removed from Wishlist",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor removes a product from their wishlist",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "brand": {
+                  "description": "Contains the name of the brand associated with the product",
+                  "type": ["string"]
+                },
+                "category": {
+                  "description": "Contains the category of the product being viewed",
+                  "type": ["string"]
+                },
+                "coupon": {
+                  "description": "Contains information about the coupon code associated with the product",
+                  "type": ["string"]
+                },
+                "image_url": {
+                  "description": "Contains the image URL of the product",
+                  "type": ["string"]
+                },
+                "name": {
+                  "description": "Contains the name of the product",
+                  "type": ["string"]
+                },
+                "position": {
+                  "description": "Contains the position of the product in the product list",
+                  "type": ["number"]
+                },
+                "price": {
+                  "description": "Contains the price of the product being viewed (in USD)",
+                  "type": ["number"]
+                },
+                "product_id": {
+                  "description": "Contains the database ID of the product being viewed",
+                  "type": ["string"]
+                },
+                "quantity": {
+                  "description": "Contains information on the quantity of the product",
+                  "type": ["number"]
+                },
+                "sku": {
+                  "description": "Contains the SKU of the product",
+                  "type": ["string"]
+                },
+                "url": {
+                  "description": "Contains the URL of the product page",
+                  "type": ["string"]
+                },
+                "variant": {
+                  "description": "Contains the name of the variant associated with the product",
+                  "type": ["string"]
+                },
+                "wishlist_id": {
+                  "description": "Contains the wishlist ID to which the product was added",
+                  "type": ["string"]
+                },
+                "wishlist_name": {
+                  "description": "Contains the name of the wishlist to which the product was added",
+                  "type": ["string"]
+                }
+              },
+              "required": [],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor successfully submits a product review",
+        "name": "Product Reviewed",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor successfully submits a product review",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "product_id": {
+                  "description": "Contains the ID of the product being reviewed",
+                  "type": ["string"]
+                },
+                "rating": {
+                  "description": "Contains the rating of the product added by the customer in the review",
+                  "type": ["string"]
+                },
+                "review_body": {
+                  "description": "Contains the body or the content of the review posted by the customer",
+                  "type": ["string"]
+                },
+                "review_id": {
+                  "description": "Contains the unique ID of the review being posted by the customer",
+                  "type": ["string"]
+                }
+              },
+              "required": [],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor shares a product",
+        "name": "Product Shared",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor shares a product",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "brand": {
+                  "description": "Contains the brand associated with the product",
+                  "type": ["string"]
+                },
+                "category": {
+                  "description": "Contains the category of the product",
+                  "type": ["string"]
+                },
+                "image_url": {
+                  "description": "Contains the image URL of the product",
+                  "type": ["string"]
+                },
+                "name": {
+                  "description": "Contains the name of the product",
+                  "type": ["string"]
+                },
+                "price": {
+                  "description": "Contains the price of the product (in USD)",
+                  "type": ["number"]
+                },
+                "product_id": {
+                  "description": "Contains the Database ID of the product being shared",
+                  "type": ["string"]
+                },
+                "recipient": {
+                  "description": "Contains information on the recipient with whom the product is shared",
+                  "type": ["string"]
+                },
+                "share_message": {
+                  "description": "Contains the message sent by the customer",
+                  "type": ["string"]
+                },
+                "share_via": {
+                  "description": "Contains information on the method of sharing the product",
+                  "type": ["string"]
+                },
+                "sku": {
+                  "description": "Contains the SKU of the product",
+                  "type": ["string"]
+                },
+                "url": {
+                  "description": "Contains the URL of the product's page",
+                  "type": ["string"]
+                },
+                "variant": {
+                  "description": "Contains the variant associated with the product",
+                  "type": ["string"]
+                }
+              },
+              "required": [],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor performs a product search",
+        "name": "Products Searched",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor performs a product search",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "query": {
+                  "description": "Contains the query that has been searched by the user",
+                  "type": ["object", "string"]
+                }
+              },
+              "required": ["query"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor views details about a specific product",
+        "name": "Product Viewed",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor views details about a specific product",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "brand": {
+                  "description": "Contains the name of the brand associated with the product",
+                  "type": ["string"]
+                },
+                "category": {
+                  "description": "Contains the category of the product",
+                  "type": ["string"]
+                },
+                "coupon": {
+                  "description": "Contains information on the coupon code associated with a product",
+                  "type": ["string"]
+                },
+                "currency": {
+                  "description": "Contains the currency of the transaction",
+                  "type": ["string"]
+                },
+                "image_url": {
+                  "description": "Contains the image URL of the product",
+                  "type": ["string"]
+                },
+                "name": {
+                  "description": "Containsthe name of the product being viewed",
+                  "type": ["string"]
+                },
+                "position": {
+                  "description": "Contains the position of the product in the product list",
+                  "type": ["number"]
+                },
+                "price": {
+                  "description": "Contains the price of the product being viewed",
+                  "type": ["number"]
+                },
+                "product_id": {
+                  "description": "Contains the database ID of the product being viewed",
+                  "type": ["string"]
+                },
+                "quantity": {
+                  "description": "Contains the quantity of the product",
+                  "type": ["number"]
+                },
+                "sku": {
+                  "description": "Contains the SKU of the product",
+                  "type": ["string"]
+                },
+                "url": {
+                  "description": "Contains the URL of the product page",
+                  "type": ["string"]
+                },
+                "variant": {
+                  "description": "Contains information of the variant associated with the product",
+                  "type": ["string"]
+                }
+              },
+              "required": ["product_id"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "This event is fired whenever a visitor clicks on a promotion or offer.",
+        "name": "Promotion Clicked",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "This event is fired whenever a visitor clicks on a promotion or offer.",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "creative": {
+                  "description": "Contains the creative details of the promotion",
+                  "type": ["string"]
+                },
+                "name": {
+                  "description": "Contains the name of the promotion",
+                  "type": ["string"]
+                },
+                "position": {
+                  "description": "Contains information about the promotion’s position on the website/app",
+                  "type": ["string"]
+                },
+                "promotion_id": {
+                  "description": "Contains the ID of the promotion",
+                  "type": ["string"]
+                }
+              },
+              "required": ["promotion_id"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "This event is fired whenever a user views a website promotion or offer. ",
+        "name": "Promotion Viewed",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "This event is fired whenever a user views a website promotion or offer. ",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "creative": {
+                  "description": "Contains the creative details of the promotion",
+                  "type": ["string"]
+                },
+                "name": {
+                  "description": "Contains the name of the promotion",
+                  "type": ["string"]
+                },
+                "position": {
+                  "description": "Contains information about the promotion’s position on the website/app",
+                  "type": ["string"]
+                },
+                "promotion_id": {
+                  "description": "Contains the ID of the promotion",
+                  "type": ["string"]
+                }
+              },
+              "required": ["promotion_id"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor adds a wishlisted product to their cart",
+        "name": "Wishlist Product Added to Cart",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor adds a wishlisted product to their cart",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "brand": {
+                  "description": "Contains the name of the brand associated with the product",
+                  "type": ["string"]
+                },
+                "category": {
+                  "description": "Contains the category of the product being viewed",
+                  "type": ["string"]
+                },
+                "coupon": {
+                  "description": "Contains information about the coupon code associated with the product",
+                  "type": ["string"]
+                },
+                "image_url": {
+                  "description": "Contains the image URLof the product",
+                  "type": ["string"]
+                },
+                "name": {
+                  "description": "Contains the name of the product",
+                  "type": ["string"]
+                },
+                "position": {
+                  "description": "Contains the position of the product in the product list",
+                  "type": ["number"]
+                },
+                "price": {
+                  "description": "Contains the price of the product being viewed (in USD)",
+                  "type": ["number"]
+                },
+                "product_id": {
+                  "description": "Contains the database ID of the product being viewed",
+                  "type": ["string"]
+                },
+                "quantity": {
+                  "description": "Contains information on the quantity of the product",
+                  "type": ["number"]
+                },
+                "sku": {
+                  "description": "Contains the SKU of the product",
+                  "type": ["string"]
+                },
+                "url": {
+                  "description": "Contains the URL of the product page",
+                  "type": ["string"]
+                },
+                "variant": {
+                  "description": "Contains the name of the variant associated with the product",
+                  "type": ["string"]
+                },
+                "wishlist_id": {
+                  "description": "Contains the wishlist ID to which the product was added",
+                  "type": ["string"]
+                },
+                "wishlist_name": {
+                  "description": "Contains the name of the wishlist to which the product was added",
+                  "type": ["string"]
+                }
+              },
+              "required": [],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
       }
-    ],
-    "group_traits": [],
-    "identify_traits": []
+    ]
   },
-  "update_time": "2019-12-05T01:01:39.000Z"
+  "updatedAt": "2024-08-13T12:46:30.480Z",
+  "version": 2,
+  "workspaceId": "1wefk9dqF6OoX5I4w7wgPvgVRsd"
 }

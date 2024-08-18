@@ -289,7 +289,7 @@ const client = new RudderAnalytics(WRITE_KEY, {
 });
 
 const ruddertyper = require('./rudderTyperClient');
-// Pass in your rudder-sdk-node instance to RudderTyper.
+// Pass in your @rudderstack/rudder-sdk-node instance to RudderTyper.
 ruddertyper.setRudderTyperOptions({
   analytics: client,
 });

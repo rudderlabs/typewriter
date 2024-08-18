@@ -1,16 +1,19 @@
 {
   "name": "typewriter-e2e-node-javascript",
   "version": "1.0.0",
-  "description": "e2e test for Typewriter JS node client",
+  "description": "e2e test for Typewriter Node.js client",
   "main": "index.js",
   "repository": "https://github.com/segmentio/typewriter",
-  "author": "Colin King <colin.king@segment.com>",
+  "author": "RudderStack",
   "license": "MIT",
   "private": true,
   "scripts": {
     "test": "node index.js"
   },
   "dependencies": {
-    "analytics-node": "^3.3.0"
+    "@rudderstack/rudder-sdk-node": "2.0.9",
+    "ajv": "8.17.1",
+    "ajv-draft-04": "1.0.0",
+    "dotenv": "16.4.5"
   }
 }
