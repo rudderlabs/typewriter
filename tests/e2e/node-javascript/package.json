@@ -8,7 +8,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "node index.js"
+    "test": "node index.js",
+    "ruddertyper": "cd ../../.. && yarn run cli --config=tests/e2e/node-javascript"
   },
   "dependencies": {
     "@rudderstack/rudder-sdk-node": "2.0.9",
