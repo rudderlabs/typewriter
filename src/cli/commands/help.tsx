@@ -5,7 +5,7 @@
 import React, { useEffect } from 'react';
 import { Box, Text, useApp } from 'ink';
 import Link from 'ink-link';
-import { StandardProps } from '../index';
+import { StandardProps } from '../index.js';
 
 export const Help: React.FC<StandardProps> = () => {
   const { exit } = useApp();

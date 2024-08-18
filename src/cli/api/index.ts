@@ -1,4 +1,4 @@
-export { type RudderAPI, validateToken, fetchTrackingPlan, fetchTrackingPlans } from './api';
+export { type RudderAPI, validateToken, fetchTrackingPlan, fetchTrackingPlans } from './api.js';
 export {
   loadTrackingPlan,
   writeTrackingPlan,
@@ -7,4 +7,4 @@ export {
   toTrackingPlanURL,
   parseTrackingPlanName,
   type TrackingPlanDeltas,
-} from './trackingplans';
+} from './trackingplans.js';

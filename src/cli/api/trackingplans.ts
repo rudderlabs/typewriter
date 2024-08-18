@@ -1,12 +1,12 @@
-import { RudderAPI } from './api';
-import { TrackingPlanConfig, resolveRelativePath, verifyDirectoryExists } from '../config';
+import { RudderAPI } from './api.js';
+import { TrackingPlanConfig, resolveRelativePath, verifyDirectoryExists } from '../config/index.js';
 import sortKeys from 'sort-keys';
 import * as fs from 'fs';
 import { promisify } from 'util';
-import flow from 'lodash/flow';
-import pickBy from 'lodash/pickBy';
+import lodash from 'lodash';
 import stringify from 'json-stable-stringify';
 
+const { flow, pickBy } = lodash;
 const writeFile = promisify(fs.writeFile);
 const readFile = promisify(fs.readFile);
 

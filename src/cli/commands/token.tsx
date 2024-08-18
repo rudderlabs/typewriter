@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Box, Text, useApp } from 'ink';
 import Spinner from 'ink-spinner';
-import { listTokens, ListTokensOutput, getTokenMethod, TokenMetadata } from '../config';
-import { StandardProps } from '../index';
-import { ErrorContext } from './error';
+import { listTokens, ListTokensOutput, getTokenMethod, TokenMetadata } from '../config/index.js';
+import { StandardProps } from '../index.js';
+import { ErrorContext } from './error.js';
 
 export const Token: React.FC<StandardProps> = (props) => {
   const [isLoading, setIsLoading] = useState(true);

@@ -2,8 +2,8 @@ import React, { createContext, useEffect } from 'react';
 import { Box, Text, useApp } from 'ink';
 import Link from 'ink-link';
 import figures from 'figures';
-import { version } from '../../../package.json';
-import { AnalyticsProps } from '../index';
+import packageJson from '../../../package.json' assert { type: 'json' };
+import { AnalyticsProps } from '../index.js';
 
 type ErrorContextProps = {
   /** Called to indicate that a non-fatal error has occurred. This will be printed only in debug mode. */
@@ -174,8 +174,8 @@ const ErrorComponent: React.FC<ErrorComponentProps> = ({ error }) => {
           <Link url="https://github.com/rudderlabs/rudder-typer/issues/new">
             open an issue on GitHub
           </Link>
-          . Please include that you are using version <Text color="yellow">{version}</Text> of
-          RudderTyper.
+          . Please include that you are using version<Text> </Text>
+          <Text color="yellow">{packageJson.version}</Text> of RudderTyper.
         </Text>
       </Box>
     </Box>

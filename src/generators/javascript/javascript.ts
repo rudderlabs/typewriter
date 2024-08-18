@@ -1,12 +1,13 @@
-import { Type, Schema } from '../ast';
-import camelCase from 'lodash/camelCase';
-import upperFirst from 'lodash/upperFirst';
+import { Type, Schema } from '../ast.js';
 import * as prettier from 'prettier';
 import { transpileModule } from 'typescript';
-import { Language, SDK } from '../options';
-import { Generator, GeneratorClient, type File } from '../gen';
-import { toTarget, toModule } from './targets';
-import { registerPartial } from '../../templates';
+import { Language, SDK } from '../options.js';
+import { Generator, GeneratorClient, type File } from '../gen.js';
+import { toTarget, toModule } from './targets.js';
+import { registerPartial } from '../../templates.js';
+import lodash from 'lodash';
+
+const { camelCase, upperFirst } = lodash;
 
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.

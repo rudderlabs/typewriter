@@ -4,27 +4,28 @@ import Link from 'ink-link';
 import SelectInput from 'ink-select-input';
 import TextInput from 'ink-text-input';
 import Spinner from 'ink-spinner';
-import { Config, listTokens, getTokenMethod, setConfig, storeToken } from '../config';
+import { Config, listTokens, getTokenMethod, setConfig, storeToken } from '../config/index.js';
 import {
   validateToken,
   RudderAPI,
   fetchTrackingPlans,
   toTrackingPlanURL,
   parseTrackingPlanName,
-} from '../api';
-import { SDK, Language, Options, JavaScriptOptions } from '../../generators/options';
+} from '../api/index.js';
+import { SDK, Language, Options, JavaScriptOptions } from '../../generators/options.js';
 import figures from 'figures';
 import * as fs from 'fs';
 import { promisify } from 'util';
 import { join, normalize } from 'path';
-import orderBy from 'lodash/orderBy';
-import { Build } from './build';
+import lodash from 'lodash';
+import { Build } from './build.js';
 import Fuse from 'fuse.js';
-import { StandardProps, DebugContext } from '../index';
-import { ErrorContext, WrappedError, wrapError } from './error';
-import { APIError } from '../types';
-import { getTrackingPlanName } from '../api/trackingplans';
+import { StandardProps, DebugContext } from '../index.js';
+import { ErrorContext, WrappedError, wrapError } from './error.js';
+import { APIError } from '../types.js';
+import { getTrackingPlanName } from '../api/trackingplans.js';
 
+const { orderBy } = lodash;
 const readir = promisify(fs.readdir);
 
 type InitProps = StandardProps & {
@@ -158,7 +159,7 @@ const Header: React.FC = () => {
     <Box flexDirection="column">
       <Box width={80} marginBottom={4} flexDirection="column">
         <Text color="white" wrap="wrap">
-          RudderTyper is a tool for generating strongly-typed
+          RudderTyper is a tool for generating strongly-typed<Text> </Text>
           <Link url="https://www.rudderstack.com/">RudderStack</Link> analytics libraries based on a
           Tracking Plan.
         </Text>

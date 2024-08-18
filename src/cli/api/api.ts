@@ -1,9 +1,11 @@
 import got from 'got';
 import { JSONSchema7 } from 'json-schema';
-import { wrapError, isWrappedError } from '../commands/error';
-import { sanitizeTrackingPlan } from './trackingplans';
-import set from 'lodash/set';
-import { APIError } from '../types';
+import { wrapError, isWrappedError } from '../commands/error.js';
+import { sanitizeTrackingPlan } from './trackingplans.js';
+import lodash from 'lodash';
+import { APIError } from '../types.js';
+
+const { set } = lodash;
 
 export namespace RudderAPI {
   export type GetTrackingPlanResponse = TrackingPlan;

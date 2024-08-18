@@ -1,8 +1,9 @@
-import camelCase from 'lodash/camelCase';
-import upperFirst from 'lodash/upperFirst';
-import { Type, Schema } from '../ast';
+import { Type, Schema } from '../ast.js';
 import Handlebars from 'handlebars';
-import { Generator, BasePropertyContext, GeneratorClient } from '../gen';
+import { Generator, BasePropertyContext, GeneratorClient } from '../gen.js';
+import lodash from 'lodash';
+
+const { camelCase, upperFirst } = lodash;
 
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.

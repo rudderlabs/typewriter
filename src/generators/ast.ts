@@ -73,7 +73,7 @@ export enum Type {
   UNION,
 }
 
-function toType(t: string): Type {
+function toType(t: string | undefined): Type {
   switch (t) {
     case 'string':
       return Type.STRING;

@@ -6,12 +6,12 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 
 import React, { createContext } from 'react';
 import { render } from 'ink';
-import { Token, Version, Build, Help, Init, ErrorBoundary } from './commands';
-import { Config, getConfig, getTokenMethod } from './config';
-import { version } from '../../package.json';
-import { loadTrackingPlan } from './api';
+import { Token, Version, Build, Help, Init, ErrorBoundary } from './commands/index.js';
+import { Config, getConfig, getTokenMethod } from './config/index.js';
+import packageJson from '../../package.json' assert { type: 'json' };
+import { loadTrackingPlan } from './api/index.js';
 import yargs, { ArgumentsCamelCase, Options } from 'yargs';
-import { getTrackingPlanName } from './api/trackingplans';
+import { getTrackingPlanName } from './api/trackingplans.js';
 import { hideBin } from 'yargs/helpers';
 
 export type StandardProps = AnalyticsProps & {
@@ -71,6 +71,7 @@ const commandDefaults: {
 };
 
 // The `.argv` below will boot a Yargs CLI.
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 yargs(hideBin(process.argv))
   .command({
     ...commandDefaults,
@@ -129,6 +130,7 @@ function toYargsHandler<P = unknown>(
     let anonymousId = 'unknown';
     try {
       anonymousId = await getAnonymousId();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {}
 
     try {
@@ -184,6 +186,7 @@ function toYargsHandler<P = unknown>(
           { debug: !!args.debug },
         );
         await waitUntilExit();
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
         // Errors are handled/reported in ErrorBoundary.
         process.exitCode = 1;
@@ -251,7 +254,7 @@ async function rudderTyperLibraryProperties(
   } catch {}
 
   return {
-    version,
+    version: packageJson.version,
     client: cfg && {
       language: cfg.client.language,
       sdk: cfg.client.sdk,

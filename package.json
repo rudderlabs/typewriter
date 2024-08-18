@@ -29,11 +29,10 @@
     "release": "yarn run build && np --any-branch --contents dist",
     "release:pre": "yarn run build && np prerelease --any-branch --no-release-draft --contents dist",
     "release:ci": "yarn publish dist --new-version $NPM_PACKAGE_NEW_VERSION",
-    "pre-commit": "yarn build && npx lint-staged",
+    "pre-commit": "yarn build && yarn run lint-staged",
     "prepare": "husky"
   },
   "devDependencies": {
-    "@types/got": "9.6.12",
     "@types/jest": "29.5.12",
     "@types/js-yaml": "4.0.9",
     "@types/json-schema": "7.0.15",
@@ -88,27 +87,8 @@
     "dist",
     "src"
   ],
-  "jest": {
-    "modulePaths": [
-      "<rootDir>/"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/node_modules/"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "setupFilesAfterEnv": [
-      "jest-expect-message"
-    ]
-  },
   "lint-staged": {
     "*.{ts,tsx}": "eslint --fix",
     "*.{json,js,md,ts,tsx}": "prettier --write"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "make precommit"
-    }
   }
 }

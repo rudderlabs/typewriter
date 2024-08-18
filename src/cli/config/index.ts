@@ -9,6 +9,6 @@ export {
   type ListTokensOutput,
   type TokenMetadata,
   storeToken,
-} from './config';
-export { type Config, type TrackingPlanConfig } from './schema';
-export { runScript, Scripts } from './scripts';
+} from './config.js';
+export { type Config, type TrackingPlanConfig } from './schema.js';
+export { runScript, Scripts } from './scripts.js';
