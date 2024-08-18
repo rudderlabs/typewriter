@@ -138,9 +138,7 @@ export const javascript: Generator<
   generateRoot: async (client, context) => {
     // index.hbs contains all JavaScript client logic.
     await client.generateFile<JavaScriptRootContext>(
-      client.options.client.language === Language.TYPESCRIPT
-        ? 'rudderTyperClient.ts'
-        : 'rudderTyperClient.js',
+      client.options.client.language === Language.TYPESCRIPT ? 'index.ts' : 'index.js',
       'generators/javascript/templates/index.hbs',
       context,
     );

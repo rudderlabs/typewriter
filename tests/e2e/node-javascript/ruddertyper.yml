@@ -12,5 +12,5 @@ trackingPlans:
   # https://app.rudderstack.com/trackingplans/tp_2kbXKu4KM3SW2U0ghbAV9n1VC01
   - id: tp_2kbXKu4KM3SW2U0ghbAV9n1VC01
     workspaceSlug: 1wefk9dqF6OoX5I4w7wgPvgVRsd
-    path: .
+    path: analytics
     APIVersion: v2

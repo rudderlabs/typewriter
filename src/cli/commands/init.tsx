@@ -131,12 +131,18 @@ export const Init: React.FC<InitProps> = (props) => {
         />
       )}
       {step === Steps.Path && (
-        <PathPrompt step={step} path={path} onSubmit={withNextStep(setPath)} />
+        <PathPrompt
+          step={step}
+          path={path}
+          configPath={configPath}
+          onSubmit={withNextStep(setPath)}
+        />
       )}
       {step === Steps.Summary && (
         <SummaryPrompt
           step={step}
           sdk={sdk}
+          configPath={configPath}
           language={language}
           path={path}
           token={tokenMetadata.token}
@@ -273,17 +279,18 @@ const LanguagePrompt: React.FC<LanguagePromptProps> = ({ step, sdk, language, on
 };
 
 type PathPromptProps = {
+  configPath: string;
   step: number;
   path: string;
   onSubmit: (path: string) => void;
 };
 
 /** Helper to list and filter all directories under a given filesystem path. */
-async function filterDirectories(path: string): Promise<string[]> {
+async function filterDirectories(path: string, configPath: string): Promise<string[]> {
   /** Helper to list all directories in a given path. */
   const listDirectories = async (path: string): Promise<string[]> => {
     try {
-      const files = await readir(path, {
+      const files = await readir(normalize(join(configPath, path)), {
         withFileTypes: true,
       });
       const directoryBlocklist = ['node_modules'];
@@ -333,7 +340,12 @@ async function filterDirectories(path: string): Promise<string[]> {
 }
 
 /** A prompt to identify where to store the new client on the user's filesystem. */
-const PathPrompt: React.FC<PathPromptProps> = ({ step, path: initialPath, onSubmit }) => {
+const PathPrompt: React.FC<PathPromptProps> = ({
+  step,
+  configPath,
+  path: initialPath,
+  onSubmit,
+}) => {
   const [path, setPath] = useState(initialPath);
   const [directories, setDirectories] = useState<string[]>([]);
 
@@ -342,7 +354,7 @@ const PathPrompt: React.FC<PathPromptProps> = ({ step, path: initialPath, onSubm
     (async () => {
       let directories: string[] = [];
       try {
-        directories = await filterDirectories(path);
+        directories = await filterDirectories(path, configPath);
       } catch (err) {
         console.error(err);
       }
@@ -707,6 +719,7 @@ type SummaryPromptProps = {
   path: string;
   token: string;
   workspace: RudderAPI.Workspace;
+  configPath: string;
   trackingPlan: RudderAPI.TrackingPlan;
   onConfirm: (config: Config) => void;
   onRestart: () => void;
@@ -716,6 +729,7 @@ type SummaryPromptProps = {
 const SummaryPrompt: React.FC<SummaryPromptProps> = ({
   step,
   sdk,
+  configPath,
   language,
   path,
   token,
@@ -760,7 +774,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
             },
           ],
         };
-        await setConfig(config);
+        await setConfig(config, configPath);
         setIsLoading(false);
         onConfirm(config);
       } catch (error) {

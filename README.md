@@ -206,7 +206,7 @@ const rudderAnalytics = new RudderAnalytics();
 rudderAnalytics.load(WRITE_KEY, DATA_PLANE_URL, {});
 
 // Import your auto-generated RudderTyper client:
-const rudderTyper = require('./rudderTyperClient');
+const rudderTyper = require('./analytics/index');
 
 // Pass in your @rudderstack/analytics-js instance to RudderTyper client
 rudderTyper.setRudderTyperOptions({
@@ -225,7 +225,7 @@ rudderTyper.orderCompleted({
 - Execute the following command to generate a bundle from the RudderTyper client:
 
 ```sh
-browserify rudderTyperClient.js --standalone rudderTyper >  rudderTyperBundle.js
+browserify analytics/index.js --standalone rudderTyper >  rudderTyperBundle.js
 ```
 
 - Now you can make calls from your `html` file as shown:
@@ -288,7 +288,7 @@ const client = new RudderAnalytics(WRITE_KEY, {
   // More initialization options
 });
 
-const ruddertyper = require('./rudderTyperClient');
+const ruddertyper = require('./analytics/index');
 // Pass in your @rudderstack/rudder-sdk-node instance to RudderTyper.
 ruddertyper.setRudderTyperOptions({
   analytics: client,

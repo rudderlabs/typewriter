@@ -1,4 +1,4 @@
-const ruddertyper = require('./analytics');
+const ruddertyper = require('./analytics/index');
 const RudderAnalytics = require('@rudderstack/rudder-sdk-node');
 const dotenv = require('dotenv');
 dotenv.config();
