@@ -35,7 +35,7 @@ jobs:
       - name: Install Dependencies
         env:
           HUSKY: 0
-        run: yarn install --frozen-lockfile
+        run: yarn run setup
 
       - name: Get new version number & date
         run: |

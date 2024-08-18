@@ -23,7 +23,13 @@ export default {
     '<rootDir>/tests/**/*.(spec|test).(j|t)s?(x)',
     '<rootDir>/src/**/*.(spec|test).(j|t)s?(x)',
   ],
-  testPathIgnorePatterns: ['__mocks__', '__fixtures__', '<rootDir>/node_modules/'],
+  testPathIgnorePatterns: [
+    '__mocks__',
+    '__fixtures__',
+    '<rootDir>/node_modules/',
+    '<rootDir>/tests/e2e/.*',
+    '<rootDir>/example',
+  ],
   collectCoverageFrom: [
     '<rootDir>/src/**/*.{js,ts,tsx}',
     '!<rootDir>/**/types.ts',

@@ -31,7 +31,7 @@ jobs:
       - name: Install Dependencies
         env:
           HUSKY: 0
-        run: yarn install --frozen-lockfile
+        run: yarn run setup
 
       - name: Run Tests
         run: yarn test
