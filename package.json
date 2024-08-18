@@ -12,7 +12,7 @@
   },
   "author": "RudderStack",
   "license": "MIT",
-  "main": "./dist/src/cli/index.js",
+  "main": "./src/cli/index.js",
   "type": "module",
   "scripts": {
     "setup": "yarn install --frozen-lockfile",

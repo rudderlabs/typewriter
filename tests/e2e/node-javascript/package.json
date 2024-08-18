@@ -1,9 +1,16 @@
 {
-  "name": "typewriter-e2e-node-javascript",
+  "name": "ruddertyper-e2e-node-javascript",
   "version": "1.0.0",
-  "description": "e2e test for Typewriter Node.js client",
+  "description": "E2E test for RudderTyper Node.js JavaScript client",
   "main": "index.js",
-  "repository": "https://github.com/segmentio/typewriter",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rudderlabs/rudder-typer.git"
+  },
+  "homepage": "https://github.com/rudderlabs/rudder-typer/tree/master#readme",
+  "bugs": {
+    "url": "https://github.com/rudderlabs/rudder-typer/issues"
+  },
   "author": "RudderStack",
   "license": "MIT",
   "private": true,
