@@ -35,7 +35,7 @@ jobs:
       - name: Install Dependencies
         env:
           HUSKY: 0
-        run: yarn run setup
+        run: npm run setup
 
       - name: Get new version number & date
         run: |
@@ -51,8 +51,8 @@ jobs:
           NPM_PACKAGE_NEW_VERSION: ${{ env.CURRENT_VERSION_VALUE }}
         run: |
           npm set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
-          yarn build
-          yarn release:ci
+          npm run build
+          npm run release:ci
 
       - name: Send message to Slack channel
         id: slack

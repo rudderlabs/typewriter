@@ -40,7 +40,7 @@ jobs:
       - name: Install Dependencies
         env:
           HUSKY: 0
-        run: yarn install --frozen-lockfile
+        run: npm run setup
 
       # In order to make a commit, we need to initialize a user.
       # You may choose to write something less generic here if you want, it doesn't matter functionality wise.

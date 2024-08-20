@@ -135,7 +135,7 @@ function toYargsHandler<P = unknown>(
 
     try {
       // The '*' command is a catch-all. We want to fail the CLI if an unknown command is
-      // supplied ('yarn rudder-typer footothebar'), instead of just running the default command.
+      // supplied ('npx rudder-typer footothebar'), instead of just running the default command.
       const isValidCommand =
         !cliOptions ||
         !cliOptions.validateDefault ||

@@ -31,10 +31,10 @@ jobs:
       - name: Install Dependencies
         env:
           HUSKY: 0
-        run: yarn run setup
+        run: npm run setup
 
       - name: Run Tests
-        run: yarn test
+        run: npm run test
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3

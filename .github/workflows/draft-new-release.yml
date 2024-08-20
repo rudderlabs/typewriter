@@ -26,7 +26,7 @@ jobs:
       - name: Install Dependencies
         env:
           HUSKY: 0
-        run: yarn run setup
+        run: npm run setup
 
       # In order to make a commit, we need to initialize a user.
       # You may choose to write something less generic here if you want, it doesn't matter functionality wise.
@@ -50,8 +50,7 @@ jobs:
           echo "Merging master into $source_branch_name"
           current_version=$(jq -r .version package.json)
 
-          yarn config set version-git-tag false
-          yarn version --prerelease
+          npm version prerelease --no-git-tag-version --no-commit-hooks
           new_version=$(jq -r .version package.json)
           git reset --hard
 
@@ -79,8 +78,7 @@ jobs:
           echo "Current version: $CURRENT_VERSION_VALUE"
           echo "New version: $NEW_VERSION_VALUE"
           git fetch --no-tags --prune --depth=100 origin master
-          yarn config set version-git-tag true
-          yarn version --prerelease
+          npm version prerelease --no-git-tag-version --no-commit-hooks
 
       - name: Push new version in release branch
         run: |
