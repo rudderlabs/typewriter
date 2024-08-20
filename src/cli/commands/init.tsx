@@ -223,7 +223,7 @@ const SDKPrompt: React.FC<SDKPromptProps> = ({ step, sdk, onSubmit }) => {
     'Use the arrow keys to navigate.',
     'RudderTyper clients are strongly-typed wrappers for the RudderStack SDK.',
     <Text key="sdk-docs">
-      To learn more about the {'RudderStack'} SDKs, visit the
+      To learn more about the {'RudderStack'} SDKs, visit the<Text> </Text>
       <Link url="https://docs.rudderstack.com/stream-sources">documentation</Link>.
     </Text>,
   ];
