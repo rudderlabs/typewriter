@@ -15,8 +15,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "ts-node index.ts",
-    "ruddertyper": "cd ../../.. && yarn run cli --config=tests/e2e/node-typescript"
+    "start": "ts-node index.ts",
+    "ruddertyper": "cd ../../../ && yarn run cli --config=tests/e2e/node-typescript"
   },
   "dependencies": {
     "@rudderstack/rudder-sdk-node": "2.0.9",

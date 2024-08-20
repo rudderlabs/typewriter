@@ -8,9 +8,9 @@ client:
   scriptTarget: ES5
 
 trackingPlans:
-  # Tracking Plan: Test TP
-  # https://app.rudderstack.com/trackingplans/tp_2kbXKu4KM3SW2U0ghbAV9n1VC01
-  - id: tp_2kbXKu4KM3SW2U0ghbAV9n1VC01
+  # Tracking Plan: Ecommerce Tracking Plan
+  # https://app.rudderstack.com/trackingplans/tp_2kuRZPE6pJYlWqdjC127h9BYJKq
+  - id: tp_2kuRZPE6pJYlWqdjC127h9BYJKq
     workspaceSlug: 1wefk9dqF6OoX5I4w7wgPvgVRsd
     path: analytics
     APIVersion: v2

@@ -15,7 +15,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "node index.js",
+    "start": "node index.js",
     "ruddertyper": "cd ../../.. && yarn run cli --config=tests/e2e/node-javascript"
   },
   "dependencies": {
