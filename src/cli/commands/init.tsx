@@ -534,7 +534,7 @@ const APITokenPrompt: React.FC<APITokenPromptProps> = ({ step, config, configPat
   const tips = [
     'An API token is required to download Tracking Plans from RudderStack.',
     <Text key="api-token-docs">
-      You can find documentation on generating an API token
+      You can find documentation on generating an API token<Text> </Text>
       <Link url="https://www.rudderstack.com/docs/dashboard-guides/personal-access-token/">
         here
       </Link>
