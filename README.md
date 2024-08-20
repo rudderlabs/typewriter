@@ -200,7 +200,7 @@ import com.rudderstack.generated.*
 
 ```javascript
 // Import RudderStack JS SDK and initialize it
-var RudderAnalytics = require('@rudderstack/analytics-js');
+const RudderAnalytics = require('@rudderstack/analytics-js');
 
 const rudderAnalytics = new RudderAnalytics();
 rudderAnalytics.load(WRITE_KEY, DATA_PLANE_URL, {});
