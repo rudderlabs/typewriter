@@ -1,6 +1,6 @@
 # Getting Started with Rudder Typer
 
-## Prerequisite(If you want to use your own tracking plan)
+## Prerequisite(If you want to use your tracking plan)
 
 1. You have setup the tracking plan from the dashboard.
 2. Generated PAT from dashboard settings.
@@ -14,7 +14,7 @@
 
 ## Steps to run the sample app
 
-1. From terminal go to tests/e2e/rudder-npm-js project folder.
+1. From terminal go to project folder.
 2. Run the command `npm i`
 3. Replace the write-key and dataplane url in src > useRudderAnalytics.ts file
 4. Run the command `npm start`

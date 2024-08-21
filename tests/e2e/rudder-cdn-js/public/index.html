@@ -136,10 +136,24 @@
         }
       })();
     </script>
+    <script src="./rudderTyperBundle.js"></script>
+    <script>
+      rudderTyper.setRudderTyperOptions({
+        analytics: rudderanalytics,
+      });
+    </script>
+    <script>
+      function track() {
+        rudderTyper.sampleEvent1({
+          'Sample property 1': 'Sample value 1',
+        });
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <button data-testid="track-btn" onclick="track()">Track</button>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
