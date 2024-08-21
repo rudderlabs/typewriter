@@ -26,16 +26,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Yarn setup
-        uses: DerYeger/yarn-setup-action@master
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 10
+          node-version-file: '.nvmrc'
+          cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         env:
           HUSKY: 0
-        run: |
-          yarn install --frozen-lockfile
+        run: npm run setup
 
       - name: Get new version number & date
         run: |
@@ -51,8 +51,8 @@ jobs:
           NPM_PACKAGE_NEW_VERSION: ${{ env.CURRENT_VERSION_VALUE }}
         run: |
           npm set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
-          yarn build
-          yarn release:ci
+          npm run build
+          npm run release:ci
 
       - name: Send message to Slack channel
         id: slack

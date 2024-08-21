@@ -2,13 +2,13 @@ import * as fs from 'fs';
 import { promisify } from 'util';
 import { resolve, dirname } from 'path';
 import * as yaml from 'js-yaml';
-import { generateFromTemplate } from '../../templates';
+import { generateFromTemplate } from '../../templates.js';
 import { homedir } from 'os';
-import { Config, validateConfig } from './schema';
-import { validateToken, RudderAPI } from '../api';
-import { wrapError } from '../commands/error';
-import { runScript, Scripts } from './scripts';
-import { APIError } from '../types';
+import { Config, validateConfig } from './schema.js';
+import { validateToken, RudderAPI } from '../api/index.js';
+import { wrapError } from '../commands/error.js';
+import { runScript, Scripts } from './scripts.js';
+import { APIError } from '../types.js';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -45,7 +45,7 @@ export async function getConfig(path = './'): Promise<Config | undefined> {
     );
   }
 
-  const rawConfig = yaml.safeLoad(file);
+  const rawConfig = yaml.load(file);
 
   return validateConfig(rawConfig as Config);
 }
@@ -165,6 +165,7 @@ export async function listTokens(
     });
     output.file.token = cachedTokenData.split(',')[0].trim();
     output.file.email = cachedTokenData.split(',')[1].trim();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     // Ignore errors if ~/.ruddertyper doesn't exist
   }

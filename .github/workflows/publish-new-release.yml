@@ -31,16 +31,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Yarn setup
-        uses: DerYeger/yarn-setup-action@master
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 10
+          node-version-file: '.nvmrc'
+          cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         env:
           HUSKY: 0
-        run: |
-          yarn install --frozen-lockfile
+        run: npm run setup
 
       # In order to make a commit, we need to initialize a user.
       # You may choose to write something less generic here if you want, it doesn't matter functionality wise.
@@ -65,7 +65,6 @@ jobs:
           github_token: ${{ secrets.PAT }}
           pr_title: 'chore(release): pulling master into develop post release v${{ steps.extract-version.outputs.release_version }}'
           pr_body: ':crown: *An automated PR*'
-          pr_reviewer: 'bardisg,MoumitaM,saikumarrs'
 
       - name: Delete hotfix release branch
         uses: koj-co/delete-merged-action@master

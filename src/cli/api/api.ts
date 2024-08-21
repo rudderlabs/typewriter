@@ -1,10 +1,11 @@
 import got from 'got';
 import { JSONSchema7 } from 'json-schema';
-import { version } from '../../../package.json';
-import { wrapError, isWrappedError } from '../commands/error';
-import { sanitizeTrackingPlan } from './trackingplans';
-import { set } from 'lodash';
-import { APIError } from '../types';
+import { wrapError, isWrappedError } from '../commands/error.js';
+import { sanitizeTrackingPlan } from './trackingplans.js';
+import lodash from 'lodash';
+import { APIError } from '../types.js';
+
+const { set } = lodash;
 
 export namespace RudderAPI {
   export type GetTrackingPlanResponse = TrackingPlan;
@@ -108,8 +109,8 @@ export async function fetchTrackingPlan(options: {
     );
     if (eventsResponse) {
       const eventsRulesResponsePromise = eventsResponse.data
-        .filter(ev => ev.eventType === 'track')
-        .map(async ev => {
+        .filter((ev) => ev.eventType === 'track')
+        .map(async (ev) => {
           const url = `tracking-plans/${options.id}/events/${ev.id}`;
           const eventsRulesResponse = await apiGet<RudderAPI.GetTrackingPlanEventsRulesResponse>(
             url,
@@ -144,7 +145,7 @@ export async function fetchTrackingPlans(options: {
     options.token,
     options.email,
   );
-  response.tracking_plans.map(tp => ({
+  response.tracking_plans.map((tp) => ({
     ...tp,
     createdAt: new Date(tp.create_time),
     updatedAt: new Date(tp.update_time),
@@ -155,7 +156,7 @@ export async function fetchTrackingPlans(options: {
     options.token,
     options.email,
   );
-  responseV2.trackingPlans.map(tp => ({
+  responseV2.trackingPlans.map((tp) => ({
     ...tp,
     createdAt: new Date(tp.createdAt),
     updatedAt: new Date(tp.updatedAt),
@@ -217,27 +218,27 @@ export async function validateToken(
   return tokenValidationCache[token];
 }
 
-async function apiGet<Response>(url: string, token: string, email: string): Promise<Response> {
-  const resp = got(url, {
-    baseUrl:
-      url === 'workspace'
-        ? 'https://api.rudderstack.com/v1'
-        : url.includes('trackingplans')
-        ? 'https://api.rudderstack.com/v1/dg'
-        : 'https://api.rudderstack.com/v2/catalog',
-    headers: {
-      authorization:
-        url === 'workspace' || url.includes('trackingplans')
-          ? `Basic ${Buffer.from(email + ':' + token).toString('base64')}`
-          : 'Bearer ' + token,
-    },
-    json: true,
-    timeout: 10000, // ms
-  });
-
+async function apiGet<T>(url: string, token: string, email: string): Promise<T> {
   try {
-    const { body } = await resp;
-    return body;
+    const resp = await got(url, {
+      prefixUrl:
+        url === 'workspace'
+          ? 'https://api.rudderstack.com/v1'
+          : url.includes('trackingplans')
+            ? 'https://api.rudderstack.com/v1/dg'
+            : 'https://api.rudderstack.com/v2/catalog',
+      headers: {
+        authorization:
+          url === 'workspace' || url.includes('trackingplans')
+            ? `Basic ${Buffer.from(email + ':' + token).toString('base64')}`
+            : 'Bearer ' + token,
+      },
+      timeout: {
+        request: 10000, //ms
+      },
+    }).json();
+
+    return resp as T;
   } catch (error) {
     const err = error as APIError;
     // Don't include the user's authorization token. Overwrite the header value from this error.

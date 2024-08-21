@@ -1,14 +1,16 @@
 import { JSONSchema7 } from 'json-schema';
-import { parse, Schema, getPropertiesSchema, Type } from './ast';
-import { javascript } from './javascript';
-import { objc } from './objc';
-import { swift } from './swift';
-import { android } from './android';
-import { Options, SDK, Language } from './options';
-import { registerStandardHelpers, generateFromTemplate } from '../templates';
-import { Namer, Options as NamerOptions } from './namer';
+import { parse, Schema, getPropertiesSchema, Type } from './ast.js';
+import { javascript } from './javascript/index.js';
+import { objc } from './objc/index.js';
+import { swift } from './swift/index.js';
+import { android } from './android/index.js';
+import { Options, SDK, Language } from './options.js';
+import { registerStandardHelpers, generateFromTemplate } from '../templates.js';
+import { Namer, Options as NamerOptions } from './namer.js';
 import stringify from 'json-stable-stringify';
-import { camelCase, upperFirst } from 'lodash';
+import lodash from 'lodash';
+
+const { camelCase, upperFirst } = lodash;
 
 export type File = {
   path: string;
@@ -37,7 +39,7 @@ export type TrackingPlan = {
 export type BaseRootContext<
   T extends Record<string, unknown>,
   O extends Record<string, unknown>,
-  P extends Record<string, unknown>
+  P extends Record<string, unknown>,
 > = {
   isDevelopment: boolean;
   language: string;
@@ -94,7 +96,7 @@ export declare type Generator<
   R extends Record<string, unknown>,
   T extends Record<string, unknown>,
   O extends Record<string, unknown>,
-  P extends Record<string, unknown>
+  P extends Record<string, unknown>,
 > = {
   namer: NamerOptions;
   setup: (options: GenOptions) => Promise<R>;
@@ -118,7 +120,7 @@ export declare type Generator<
     parentPath: string,
   ) => Promise<P>;
   generateRoot: (client: GeneratorClient, context: R & BaseRootContext<T, O, P>) => Promise<void>;
-  formatFile?: (client: GeneratorClient, file: File) => File;
+  formatFile?: (client: GeneratorClient, file: File) => Promise<File>;
 } & (
   | {
       generatePropertiesObject: true;
@@ -157,7 +159,7 @@ export async function gen(trackingPlan: RawTrackingPlan, options: GenOptions): P
     url: trackingPlan.url,
     id: trackingPlan.id,
     version: trackingPlan.version,
-    trackCalls: trackingPlan.trackCalls.map(s => {
+    trackCalls: trackingPlan.trackCalls.map((s) => {
       const sanitizedSchema = {
         $schema: 'http://json-schema.org/draft-07/schema#',
         ...s,
@@ -188,7 +190,7 @@ async function runGenerator<
   R extends Record<string, unknown>,
   T extends Record<string, unknown>,
   O extends Record<string, unknown>,
-  P extends Record<string, unknown>
+  P extends Record<string, unknown>,
 >(
   generator: Generator<R, T, O, P>,
   trackingPlan: TrackingPlan,
@@ -292,7 +294,7 @@ async function runGenerator<
       // For unions, we generate a property type to represent each of the possible types
       // then use that list of possible property types to generate a union.
       const types = await Promise.all(
-        schema.types.map(async t => {
+        schema.types.map(async (t) => {
           const subSchema = {
             name: schema.name,
             description: schema.description,
@@ -345,7 +347,9 @@ async function runGenerator<
   await generator.generateRoot(client, context);
 
   // Format and output all generated files.
-  return files.map(f => (generator.formatFile ? generator.formatFile(client, f) : f));
+  return await Promise.all(
+    files.map(async (f) => (generator.formatFile ? generator.formatFile(client, f) : f)),
+  );
 }
 
 // Legacy Code:
