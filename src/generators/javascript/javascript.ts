@@ -1,11 +1,13 @@
-import { Type, Schema } from '../ast';
-import { camelCase, upperFirst } from 'lodash';
+import { Type, Schema } from '../ast.js';
 import * as prettier from 'prettier';
 import { transpileModule } from 'typescript';
-import { Language, SDK } from '../options';
-import { Generator } from '../gen';
-import { toTarget, toModule } from './targets';
-import { registerPartial } from '../../templates';
+import { Language, SDK } from '../options.js';
+import { Generator, GeneratorClient, type File } from '../gen.js';
+import { toTarget, toModule } from './targets.js';
+import { registerPartial } from '../../templates.js';
+import lodash from 'lodash';
+
+const { camelCase, upperFirst } = lodash;
 
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.
@@ -62,7 +64,7 @@ export const javascript: Generator<
     allowedIdentifierStartingChars: 'A-Za-z_$',
     allowedIdentifierChars: 'A-Za-z0-9_$',
   },
-  setup: async options => {
+  setup: async (options) => {
     await registerPartial(
       'generators/javascript/templates/setRudderTyperOptionsDocumentation.hbs',
       'setRudderTyperOptionsDocumentation',
@@ -125,7 +127,7 @@ export const javascript: Generator<
   generateUnion: async (client, schema, types) =>
     conditionallyNullable(schema, {
       name: client.namer.escapeString(schema.name),
-      type: types.map(t => t.type).join(' | '),
+      type: types.map((t) => t.type).join(' | '),
     }),
   generateTrackCall: async (client, _schema, functionName, propertiesObject) => ({
     functionName: functionName,
@@ -151,7 +153,7 @@ export const javascript: Generator<
       );
     }
   },
-  formatFile: (client, file) => {
+  formatFile: async (client: GeneratorClient, file: File): Promise<File> => {
     let { contents } = file;
     // If we are generating a JavaScript client, transpile the client
     // from TypeScript into JavaScript.
@@ -169,7 +171,7 @@ export const javascript: Generator<
     }
 
     // Apply stylistic formatting, via Prettier.
-    const formattedContents = prettier.format(contents, {
+    const formattedContents = await prettier.format(contents, {
       parser: client.options.client.language === Language.TYPESCRIPT ? 'typescript' : 'babel',
       // Overwrite a few of the standard prettier settings to match with our RudderTyper configuration:
       tabWidth: 2,

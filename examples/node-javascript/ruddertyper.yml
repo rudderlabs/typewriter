@@ -1,0 +1,16 @@
+# RudderStack RudderTyper Configuration 
+# Just run `npx rudder-typer` to re-generate a client with the latest versions of these events.
+
+client:
+  sdk: analytics-node
+  language: javascript
+  moduleTarget: CommonJS
+  scriptTarget: ES5
+
+trackingPlans:
+  # Tracking Plan: Ecommerce Tracking Plan
+  # https://app.rudderstack.com/trackingplans/tp_2kuRZPE6pJYlWqdjC127h9BYJKq
+  - id: tp_2kuRZPE6pJYlWqdjC127h9BYJKq
+    workspaceSlug: 1wefk9dqF6OoX5I4w7wgPvgVRsd
+    path: analytics
+    APIVersion: v2

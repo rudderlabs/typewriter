@@ -1,180 +1,91 @@
 {
   "name": "rudder-typer",
-  "version": "1.0.0-beta.8",
+  "version": "1.0.0-beta.9",
   "description": "A compiler for generating strongly typed analytics clients via RudderStack",
-  "repository": "ssh://git@github.com/rudderlabs/rudder-typer.git",
-  "homepage": "https://github.com/rudderlabs/rudder-typer",
-  "bugs": "https://github.com/rudderlabs/rudder-typer/issues",
-  "author": "Desu Sai Venkat <venkat@rudderstack.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rudderlabs/rudder-typer.git"
+  },
+  "homepage": "https://github.com/rudderlabs/rudder-typer/tree/master#readme",
+  "bugs": {
+    "url": "https://github.com/rudderlabs/rudder-typer/issues"
+  },
+  "author": "RudderStack",
   "license": "MIT",
   "main": "./src/cli/index.js",
-  "bin": "./src/cli/index.js",
+  "type": "module",
   "scripts": {
-    "init": "TS_NODE_FILES=true ts-node ./src/cli init",
-    "dev": "TS_NODE_FILES=true NODE_ENV=development ts-node ./src/cli",
-    "prod": "TS_NODE_FILES=true NODE_ENV=production ts-node ./src/cli prod",
+    "setup": "npm ci",
+    "init": "npm run cli init",
+    "dev": "NODE_ENV=development npm run cli",
+    "prod": "NODE_ENV=production npm run cli prod",
+    "cli": "TS_NODE_FILES=true tsx ./src/cli/index.tsx",
     "build": "rm -rf dist && tsc && copyfiles --up 1 \"src/**/*.hbs\" dist/src/ && copyfiles \"README.*\" dist/ && copyfiles \"CHANGELOG.*\" dist/",
-    "test": "jest --testPathIgnorePatterns 'tests/e2e/.*' 'example' --coverage",
-    "e2e": "make e2e",
-    "update": "make update",
+    "test": "jest -c jest.config.js",
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "format": "prettier --write ./src/**/*.{ts,tsx}",
     "format:check": "prettier --check ./src/**/*.{ts,tsx}",
-    "release": "yarn run build && np --any-branch --contents dist",
-    "release:pre": "yarn run build && np prerelease --any-branch --tag next --no-release-draft --contents dist",
-    "release:ci": "yarn publish dist --tag next --new-version $NPM_PACKAGE_NEW_VERSION"
-  },
-  "engines": {
-    "node": ">=0.10.18"
+    "release:ci": "cd dist && npm publish --access public",
+    "pre-commit": "npm run build && lint-staged",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "@types/analytics-node": "^3.1.1",
-    "@types/got": "^9.6.7",
-    "@types/hapi__joi": "^15.0.2",
-    "@types/jest": "^26.0.15",
-    "@types/jest-expect-message": "^1.0.3",
-    "@types/js-yaml": "^3.12.1",
-    "@types/json-schema": "^7.0.3",
-    "@types/json-stable-stringify": "^1.0.32",
-    "@types/lodash": "^4.14.123",
-    "@types/node": "^11.13.6",
-    "@types/prettier": "^1.16.3",
-    "@types/prompts": "2.0.0",
-    "@types/react": "^17.0.11",
-    "@types/semver": "^7.5.7",
-    "@typescript-eslint/eslint-plugin": "^4.9.0",
-    "@typescript-eslint/parser": "^4.9.0",
-    "copyfiles": "^2.1.0",
-    "eslint": "^7.14.0",
-    "eslint-config-prettier": "^6.15.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.21.5",
-    "husky": "^2.1.0",
-    "jest": "^26.6.3",
-    "jest-expect-message": "^1.0.2",
-    "lint-staged": "^8.1.7",
-    "np": "^5.0.1",
-    "ts-jest": "^26.4.4",
-    "ts-node": "^8.1.0",
-    "tsconfig-paths": "^3.8.0"
+    "@types/jest": "29.5.12",
+    "@types/js-yaml": "4.0.9",
+    "@types/json-schema": "7.0.15",
+    "@types/json-stable-stringify": "1.0.36",
+    "@types/lodash": "4.17.7",
+    "@types/node": "22.2.0",
+    "@types/react": "18.3.3",
+    "@types/yargs": "17.0.33",
+    "@typescript-eslint/eslint-plugin": "8.1.0",
+    "@typescript-eslint/parser": "8.1.0",
+    "copyfiles": "2.4.1",
+    "eslint": "9.9.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-prettier": "5.2.1",
+    "eslint-plugin-react": "7.35.0",
+    "husky": "9.1.4",
+    "jest": "29.7.0",
+    "jest-expect-message": "1.1.3",
+    "lint-staged": "15.2.9",
+    "ts-jest": "29.2.4",
+    "ts-node": "10.9.2",
+    "tsconfig-paths": "4.2.0",
+    "tsx": "4.17.0",
+    "typescript": "5.5.4"
   },
   "dependencies": {
-    "@hapi/joi": "^15.1.1",
-    "analytics-node": "3.4.0-beta.1",
-    "figures": "^3.0.0",
-    "fuse.js": "^3.4.5",
-    "got": "^9.6.0",
-    "handlebars": "4.7.6",
-    "ink": "^2.5.0",
-    "ink-link": "^1.0.0",
-    "ink-select-input": "^3.1.2",
-    "ink-spinner": "^3.0.1",
-    "ink-text-input": "^3.2.1",
-    "js-yaml": "^3.13.1",
-    "json-stable-stringify": "^1.0.1",
-    "latest-version": "^5.1.0",
-    "lodash": "4.17.20",
-    "node-machine-id": "^1.1.12",
-    "object-assign": "^4.1.1",
-    "prettier": "^1.19.1",
-    "react": "^16.9.0",
-    "semver": "^6.3.1",
-    "sort-keys": "^3.0.0",
-    "typescript": "^4.1.2",
-    "yargs": "^16.1.1",
-    "yarn": "^1.22.21"
+    "figures": "6.1.0",
+    "fuse.js": "7.0.0",
+    "got": "14.4.2",
+    "handlebars": "4.7.8",
+    "ink": "5.0.1",
+    "ink-link": "4.1.0",
+    "ink-select-input": "6.0.0",
+    "ink-spinner": "5.0.0",
+    "ink-text-input": "6.0.0",
+    "joi": "17.13.3",
+    "js-yaml": "4.1.0",
+    "json-schema": "0.4.0",
+    "json-stable-stringify": "1.1.1",
+    "latest-version": "9.0.0",
+    "lodash": "4.17.21",
+    "node-machine-id": "1.1.12",
+    "object-assign": "4.1.1",
+    "prettier": "3.3.3",
+    "react": "18.3.1",
+    "sort-keys": "5.0.0",
+    "yargs": "17.7.2"
   },
   "files": [
-    "dist",
-    "src"
+    "src",
+    "CHANGELOG.md",
+    "README.md",
+    "package.json"
   ],
-  "eslintConfig": {
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint",
-      "prettier"
-    ],
-    "extends": [
-      "plugin:@typescript-eslint/recommended",
-      "prettier/@typescript-eslint",
-      "plugin:prettier/recommended",
-      "plugin:react/recommended"
-    ],
-    "parserOptions": {
-      "ecmaVersion": 2018,
-      "sourceType": "module"
-    },
-    "settings": {
-      "react": {
-        "version": "16.8.6"
-      }
-    },
-    "rules": {
-      "prettier/prettier": [
-        "error",
-        {
-          "useTabs": true,
-          "semi": false,
-          "singleQuote": true,
-          "trailingComma": "es6",
-          "printWidth": 100
-        }
-      ],
-      "@typescript-eslint/explicit-function-return-type": "off",
-      "@typescript-eslint/no-namespace": "off",
-      "@typescript-eslint/no-non-null-assertion": "off",
-      "@typescript-eslint/interface-name-prefix": "off",
-      "@typescript-eslint/no-empty-function": "off"
-    },
-    "overrides": [
-      {
-        "files": [
-          "**/*.tsx"
-        ],
-        "rules": {
-          "react/prop-types": "off"
-        }
-      }
-    ]
-  },
-  "eslintIgnore": [
-    "tests/e2e/**/analytics/*",
-    "src/analytics/**/*",
-    "example/analytics/**/*"
-  ],
-  "jest": {
-    "modulePaths": [
-      "<rootDir>/"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/node_modules/"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "setupFilesAfterEnv": [
-      "jest-expect-message"
-    ]
-  },
   "lint-staged": {
-    "linters": {
-      "*.(ts|tsx)": [
-        "eslint --fix",
-        "git add"
-      ],
-      "*.json": [
-        "prettier --write",
-        "git add"
-      ],
-      "*.yml": [
-        "prettier --write",
-        "git add"
-      ]
-    }
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "make precommit"
-    }
+    "*.{ts,tsx}": "eslint --fix",
+    "*.{json,js,md,ts,tsx}": "prettier --write"
   }
 }

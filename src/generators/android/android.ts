@@ -1,6 +1,7 @@
-import { camelCase, upperFirst } from 'lodash';
-import { Type, Schema, getPropertiesSchema } from '../ast';
-import { Generator, GeneratorClient } from '../gen';
+import camelCase from 'lodash/camelCase.js';
+import upperFirst from 'lodash/upperFirst.js';
+import { Type, Schema, getPropertiesSchema } from '../ast.js';
+import { Generator, GeneratorClient } from '../gen.js';
 
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.
@@ -127,7 +128,7 @@ export const android: Generator<
         'generators/android/templates/SerializableProperties.java.hbs',
         context,
       ),
-      ...context.objects.map(o =>
+      ...context.objects.map((o) =>
         client.generateFile(`${o.name}.java`, 'generators/android/templates/class.java.hbs', o),
       ),
     ]);
