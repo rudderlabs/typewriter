@@ -1,11 +1,12 @@
-import { RudderAPI } from './api';
-import { TrackingPlanConfig, resolveRelativePath, verifyDirectoryExists } from '../config';
+import { RudderAPI } from './api.js';
+import { TrackingPlanConfig, resolveRelativePath, verifyDirectoryExists } from '../config/index.js';
 import sortKeys from 'sort-keys';
 import * as fs from 'fs';
 import { promisify } from 'util';
-import { flow, pickBy } from 'lodash';
+import lodash from 'lodash';
 import stringify from 'json-stable-stringify';
 
+const { flow, pickBy } = lodash;
 const writeFile = promisify(fs.writeFile);
 const readFile = promisify(fs.readFile);
 
@@ -43,8 +44,8 @@ export async function writeTrackingPlan(
   // Perform some pre-processing on the Tracking Plan before writing it.
   const planJSON = flow<RudderAPI.TrackingPlan[], RudderAPI.TrackingPlan, string>(
     // Enforce a deterministic ordering to reduce verson control deltas.
-    plan => sanitizeTrackingPlan(plan),
-    plan => stringify(plan, { space: '\t' }),
+    (plan) => sanitizeTrackingPlan(plan),
+    (plan) => stringify(plan, { space: '\t' }),
   )(plan);
 
   await writeFile(path, planJSON, {
@@ -55,7 +56,7 @@ export async function writeTrackingPlan(
 export function sanitizeTrackingPlan(plan: RudderAPI.TrackingPlan): RudderAPI.TrackingPlan {
   // TODO: on JSON Schema Draft-04, required fields must have at least one element.
   // Therefore, we strip `required: []` from your rules so this error isn't surfaced.
-  const cleanupPlan = pickBy(plan, v => v !== null);
+  const cleanupPlan = pickBy(plan, (v) => v !== null);
   return sortKeys(cleanupPlan, { deep: true });
 }
 
@@ -108,9 +109,7 @@ export function computeDelta(
   return deltas;
 }
 
-export function parseTrackingPlanName(
-  name: string,
-): {
+export function parseTrackingPlanName(name: string): {
   id: string;
   workspaceSlug: string;
   APIVersion: string;

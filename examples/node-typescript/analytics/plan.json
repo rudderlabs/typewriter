@@ -1,0 +1,502 @@
+{
+  "createdAt": "2024-08-20T05:25:29.033Z",
+  "creationType": "Template",
+  "description": "Ecommerce Tracking Plan",
+  "id": "tp_2kuRZPE6pJYlWqdjC127h9BYJKq",
+  "name": "Ecommerce Tracking Plan",
+  "rules": {
+    "events": [
+      {
+        "description": "When a visitor views their cart",
+        "name": "Cart Viewed",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor views their cart",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "cart_id": {
+                  "description": "Contains the cart ID of the cart to which the product was added",
+                  "type": ["string"]
+                },
+                "products": {
+                  "description": "Contains the list of products displayed in the product list",
+                  "type": ["array"]
+                }
+              },
+              "required": [],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor initiates the checkout process for their cart",
+        "name": "Checkout Started",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor initiates the checkout process for their cart",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "affiliation": {
+                  "description": "Contains the store or affiliation details from where the transaction was started",
+                  "type": ["string"]
+                },
+                "coupon": {
+                  "description": "Contains details of the transaction coupon which can be redeemed with the transaction",
+                  "type": ["string"]
+                },
+                "currency": {
+                  "description": "Contains the currency code associated with an order or transaction",
+                  "type": ["string"]
+                },
+                "discount": {
+                  "description": "Contains the total discount associated with the transaction",
+                  "type": ["number"]
+                },
+                "order_id": {
+                  "description": "Contains the order ID or transaction ID, whichever is applicable",
+                  "type": ["string"]
+                },
+                "products": {
+                  "description": "Contains the list of products in the order or transaction",
+                  "type": ["array"]
+                },
+                "revenue": {
+                  "description": "Contains the revenue associated with the transaction, excluding the shipping and tax details",
+                  "type": ["number"]
+                },
+                "shipping": {
+                  "description": "Contains the shipping cost associated with the order or transaction",
+                  "type": ["number"]
+                },
+                "tax": {
+                  "description": "Contains the total tax associated with the order or the transaction",
+                  "type": ["number"]
+                },
+                "value": {
+                  "description": "Contains the details of the revenue with the discount and coupons factored in",
+                  "type": ["number"]
+                }
+              },
+              "required": [],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor completes a step in the checkout funnel",
+        "name": "Checkout Step Completed",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor completes a step in the checkout funnel",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "checkout_id": {
+                  "description": "Contains the checkout transaction ID",
+                  "type": ["string"]
+                },
+                "payment_method": {
+                  "description": "Contains the payment method information",
+                  "type": ["string"]
+                },
+                "shipping_method": {
+                  "description": "Contains the information associated with the chosen shipping method",
+                  "type": ["string"]
+                },
+                "step": {
+                  "description": "Contains the number associated with the checkout process step",
+                  "type": ["number"]
+                }
+              },
+              "required": ["step"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor successfully applies a coupon to their transaction",
+        "name": "Coupon Applied",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor successfully applies a coupon to their transaction",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "cart_id": {
+                  "description": "Contains the cart ID, if applicable",
+                  "type": ["string"]
+                },
+                "coupon_id": {
+                  "description": "Contains the coupon ID",
+                  "type": ["string"]
+                },
+                "coupon_name": {
+                  "description": "Contains the name of the coupon",
+                  "type": ["string"]
+                },
+                "discount": {
+                  "description": "Contains the amount of discount availed by applying the coupon",
+                  "type": ["number"]
+                },
+                "order_id": {
+                  "description": "Contains the order ID or the transaction ID, if applicable",
+                  "type": ["string"]
+                }
+              },
+              "required": [],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor successfully places an order",
+        "name": "Order Completed",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor successfully places an order",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "affiliation": {
+                  "description": "Contains the store or affiliation details from where the transaction was started",
+                  "type": ["string"]
+                },
+                "checkout_id": {
+                  "description": "Contains the checkout ID",
+                  "type": ["string"]
+                },
+                "coupon": {
+                  "description": "Contains details of the transaction coupon which can be redeemed with the transaction",
+                  "type": ["string"]
+                },
+                "currency": {
+                  "description": "Contains the currency code associated with an order or transaction",
+                  "type": ["string"]
+                },
+                "discount": {
+                  "description": "Contains the total discount associated with the transaction",
+                  "type": ["number"]
+                },
+                "order_id": {
+                  "description": "Contains the order ID or transaction ID, whichever is applicable",
+                  "type": ["string"]
+                },
+                "products": {
+                  "description": "Contains the list of products in the order or transaction",
+                  "type": ["array"]
+                },
+                "revenue": {
+                  "description": "Contains the revenue associated with the transaction, excluding the shipping and tax details",
+                  "type": ["number"]
+                },
+                "shipping": {
+                  "description": "Contains the shipping cost associated with the order or transaction",
+                  "type": ["number"]
+                },
+                "subtotal": {
+                  "description": "Contains the order total after discounts but not including the taxes and shipping charges",
+                  "type": ["number"]
+                },
+                "tax": {
+                  "description": "Contains the total tax associated with the order or the transaction",
+                  "type": ["number"]
+                },
+                "total": {
+                  "description": "Contains the details of the revenue with the discount and coupons factored in",
+                  "type": ["number"]
+                }
+              },
+              "required": ["order_id", "revenue", "currency", "products"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor successfully enters payment information during the checkout process",
+        "name": "Payment Info Entered",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor successfully enters payment information during the checkout process",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "checkout_id": {
+                  "description": "Contains the checkout transaction ID",
+                  "type": ["string"]
+                },
+                "order_id": {
+                  "description": "An optional string that contains the order ID",
+                  "type": ["string"]
+                },
+                "payment_method": {
+                  "description": "Contains the payment method information",
+                  "type": ["string"]
+                },
+                "shipping_method": {
+                  "description": "Contains the information associated with the chosen shipping method",
+                  "type": ["string"]
+                },
+                "step": {
+                  "description": "Contains the number associated with the checkout process step",
+                  "type": ["number"]
+                }
+              },
+              "required": ["step"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "User added a product to their shopping cart",
+        "name": "Product Added",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "User added a product to their shopping cart",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "brand": {
+                  "description": "Brand of the product",
+                  "type": ["string"]
+                },
+                "cart_id": {
+                  "description": "Cart ID associated with the product displayed",
+                  "type": ["string"]
+                },
+                "category": {
+                  "description": "Product category being viewed",
+                  "type": ["string"]
+                },
+                "coupon": {
+                  "description": "Coupon code associated with the product",
+                  "type": ["string"]
+                },
+                "image_url": {
+                  "description": "Image url of the product",
+                  "type": ["string"]
+                },
+                "name": {
+                  "description": "Name of the product",
+                  "type": ["string"]
+                },
+                "position": {
+                  "description": "Position of product in the list",
+                  "type": ["integer"]
+                },
+                "price": {
+                  "description": "Price of the product",
+                  "type": ["number"]
+                },
+                "product_id": {
+                  "description": "Database ID of the product",
+                  "type": ["string"]
+                },
+                "quantity": {
+                  "description": "Quantity of the product",
+                  "type": ["integer"]
+                },
+                "sku": {
+                  "description": "Sku of the product",
+                  "type": ["string"]
+                },
+                "url": {
+                  "description": "URL of the product page for product",
+                  "type": ["string"]
+                },
+                "variant": {
+                  "description": "Variant of the product",
+                  "type": ["string"]
+                }
+              },
+              "required": ["product_id", "price"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor clicks on a product from a Product List",
+        "name": "Product Clicked",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor clicks on a product from a Product List",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "brand": {
+                  "description": "Contains the name of the brand associated with the product",
+                  "type": ["string"]
+                },
+                "category": {
+                  "description": "Contains the category of the product",
+                  "type": ["string"]
+                },
+                "coupon": {
+                  "description": "Contains information on the coupon code associated with a product",
+                  "type": ["string"]
+                },
+                "image_url": {
+                  "description": "Contains the image URL of the product",
+                  "type": ["string"]
+                },
+                "name": {
+                  "description": "Contains the name of the product being viewed",
+                  "type": ["string"]
+                },
+                "position": {
+                  "description": "Contains the position of the product in the product list",
+                  "type": ["number"]
+                },
+                "price": {
+                  "description": "Contains the price of the product being viewed",
+                  "type": ["number"]
+                },
+                "product_id": {
+                  "description": "Contains the database ID of the product being viewed",
+                  "type": ["string"]
+                },
+                "quantity": {
+                  "description": "Contains the quantity of the product",
+                  "type": ["number"]
+                },
+                "sku": {
+                  "description": "Contains the SKU of the product",
+                  "type": ["string"]
+                },
+                "url": {
+                  "description": "Contains the URL of the product page",
+                  "type": ["string"]
+                },
+                "variant": {
+                  "description": "Contains information of the variant associated with the product",
+                  "type": ["string"]
+                }
+              },
+              "required": ["product_id"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor performs a product search",
+        "name": "Products Searched",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor performs a product search",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "query": {
+                  "description": "Contains the query that has been searched by the user",
+                  "type": ["object", "string"]
+                }
+              },
+              "required": ["query"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "When a visitor views details about a specific product",
+        "name": "Product Viewed",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "When a visitor views details about a specific product",
+          "properties": {
+            "properties": {
+              "additionalProperties": true,
+              "properties": {
+                "brand": {
+                  "description": "Contains the name of the brand associated with the product",
+                  "type": ["string"]
+                },
+                "category": {
+                  "description": "Contains the category of the product",
+                  "type": ["string"]
+                },
+                "coupon": {
+                  "description": "Contains information on the coupon code associated with a product",
+                  "type": ["string"]
+                },
+                "currency": {
+                  "description": "Contains the currency of the transaction",
+                  "type": ["string"]
+                },
+                "image_url": {
+                  "description": "Contains the image URL of the product",
+                  "type": ["string"]
+                },
+                "name": {
+                  "description": "Containsthe name of the product being viewed",
+                  "type": ["string"]
+                },
+                "position": {
+                  "description": "Contains the position of the product in the product list",
+                  "type": ["number"]
+                },
+                "price": {
+                  "description": "Contains the price of the product being viewed",
+                  "type": ["number"]
+                },
+                "product_id": {
+                  "description": "Contains the database ID of the product being viewed",
+                  "type": ["string"]
+                },
+                "quantity": {
+                  "description": "Contains the quantity of the product",
+                  "type": ["number"]
+                },
+                "sku": {
+                  "description": "Contains the SKU of the product",
+                  "type": ["string"]
+                },
+                "url": {
+                  "description": "Contains the URL of the product page",
+                  "type": ["string"]
+                },
+                "variant": {
+                  "description": "Contains information of the variant associated with the product",
+                  "type": ["string"]
+                }
+              },
+              "required": ["product_id"],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      }
+    ]
+  },
+  "updatedAt": "2024-08-20T05:30:35.373Z",
+  "version": 3,
+  "workspaceId": "1wefk9dqF6OoX5I4w7wgPvgVRsd"
+}
