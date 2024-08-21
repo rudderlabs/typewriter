@@ -18,23 +18,16 @@ Have an idea for improving RudderTyper? [Submit an issue first](https://github.c
 
 ```sh
 # Install dependencies
-$ yarn
+npm run setup
+
 # Test your RudderTyper installation by regenerating RudderTyper's ruddertyper client.
-$ yarn build && yarn dev build
+npm run dev build
 ```
 
 ### Running Tests
 
 ```sh
-$ yarn test
-```
-
-### Deploying
-
-You can deploy a new version to [`npm`](https://www.npmjs.com/package/rudder-typer) by running:
-
-```
-$ yarn release
+npm run test
 ```
 
 ## Notes on JSON Schema AST
@@ -50,11 +43,13 @@ JSON Schema is a large spec, but RudderTyper aims to support just the subset of 
 - Nested objects and arrays
 
 It also aims to handle:
+
 - language-specific name sanitization
 - name conflicts from loading `N` schemas
 - shared interfaces, when identical
 
 The following JSON Schema constructs cannot be reliably code-gened into compile-time types, so we don't plan to support them:
+
 - combined schemas: `oneOf`, `anyOf`, `allOf`, `not`
 - various type-specific vields:
   - `string`: `length`, `pattern`, `format`
@@ -65,6 +60,7 @@ The following JSON Schema constructs cannot be reliably code-gened into compile-
 - conditional schemas: `if`/`then`/`else`
 
 We could explore supporting the following JSON Schema constructs in the future:
+
 - annotations: `default` (default values) and `examples` (documentation of example values)
 - definitions and references: `definitions`, `$ref`
 
