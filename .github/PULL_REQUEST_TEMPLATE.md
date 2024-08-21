@@ -6,7 +6,7 @@ Please note that if the information provided is insufficient, or if the Pull Req
 
 ## Description 📝
 
-Please provide a detailed description of the changes you’ve made in this section. Clearly explain what has been modified, added, or removed, and how it impacts the overall project.
+> Please provide a detailed description of the changes you’ve made in this section. Clearly explain what has been modified, added, or removed, and how it impacts the overall project.
 
 ## Respect Earns Respect 👏
 

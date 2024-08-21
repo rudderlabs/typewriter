@@ -8,7 +8,7 @@ _Bug fixes, documentation improvements, and even small contributions are always 
 
 ## Description
 
-Please provide a detailed description of the bug, feature request, or proposal here.
+> Please provide a detailed description of the bug, feature request, or proposal here.
 
 <details>
 <summary>Guidance on writing a description</summary>
