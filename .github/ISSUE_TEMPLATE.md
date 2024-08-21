@@ -1,48 +1,58 @@
-# Thanks for taking the time to contribute to RudderTyper!
+# Thank You for Contributing to RudderTyper!
 
-It is highly appreciated that you take the time to help improve RudderTyper.
-We appreciate it if you would take the time to write up a bug report or feature request.
+We genuinely appreciate your time and effort in helping to improve RudderTyper. Your contributions are invaluable, whether it's reporting a bug, proposing a new feature, or improving our documentation.
 
-Sadly, if we don't receive enough information, or the issue/feature request doesn't
-align well with our roadmap, we might respectfully thank you for your time, and close the issue.
+Please take a moment to provide detailed information when submitting a bug report or feature request. This helps us understand and address the issue more effectively. However, if we don't receive enough details or if the request doesn't align with our current roadmap, we might have to respectfully close the issue, though we will always appreciate your efforts.
 
-_Bug fixes and documentation fixes are welcome._
+_Bug fixes, documentation improvements, and even small contributions are always welcome!_
 
-## In the case of a bug report 🐞
+## Description
 
-Please consider the following items when filing a bug report:
+Please provide a detailed description of the bug, feature request, or proposal here.
 
-* Issue and steps to reproduce.
-* Versions. (RudderTyper, OS, language, etc.)
-* Screenshots.
-* Expected.
-* Actual.
-* Minimal reproducible example.
+<details>
+<summary>Guidance on writing a description</summary>
 
-## In the case of a feature proposal ✍️
+- For a **bug report**, describe the issue and steps to reproduce it.
+- For a **feature request**, explain the problem that the feature addresses.
+- For a **language proposal**, outline the proposed API and other relevant details.
+</details>
 
-Please detail the following items when filing a feature request:
+## Reporting a Bug 🐞
 
-* Any proposed changes, if relevant.
-* The problem that this feature addresses.
+When filing a bug report, please include:
 
-## In the case of a language proposal 🗺
+- A clear description of the issue and steps to reproduce it.
+- Version information (RudderTyper, OS, language, etc.).
+- Relevant screenshots.
+- What you expected to happen.
+- What actually happened.
+- A minimal reproducible example, if possible.
 
-Please detail the following items when filing a language proposal:
+## Proposing a Feature ✍️
 
-* A proposed API (for the CLI and for analytics functions in the new client).
-* Explain what library you would use for run-time JSON Schema validation.
-* Whether the language will support build-time validation.
-* Any language-specific considerations
+When submitting a feature request, please detail:
 
-See the [contributing guide](CONTRIBUTING.md) for more details.
+- The problem that this feature addresses.
+- Any proposed changes or ideas, if relevant.
 
-## Respect earns Respect 👏
+## Suggesting a Language 🗺
 
-Please respect our [Code of Conduct](CODE_OF_CONDUCT.md), in short:
+When proposing a new language, please include:
 
-* Using welcoming and inclusive language.
-* Being respectful of differing viewpoints and experiences.
-* Gracefully accepting constructive criticism.
-* Focusing on what is best for the community.
-* Showing empathy towards other community members.
+- A proposed API for both the CLI and the analytics functions in the new client.
+- The library you would use for run-time JSON Schema validation.
+- Whether the language will support build-time validation.
+- Any language-specific considerations.
+
+For more information, please refer to the [contributing guide](CONTRIBUTING.md).
+
+## Respect Earns Respect 👏
+
+We ask that all contributors follow our [Code of Conduct](CODE_OF_CONDUCT.md). In short:
+
+- Use welcoming and inclusive language.
+- Respect differing viewpoints and experiences.
+- Accept constructive criticism gracefully.
+- Focus on what is best for the community.
+- Show empathy towards other community members.
