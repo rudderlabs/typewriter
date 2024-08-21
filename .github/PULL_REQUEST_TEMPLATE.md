@@ -1,17 +1,19 @@
-# Thanks for taking the time to contribute to RudderTyper!
+# Thank You for Contributing to RudderTyper!
 
-It is highly appreciated that you take the time to help improve RudderTyper.
-We appreciate it if you would take the time to document your Pull Request.
+We sincerely appreciate the time and effort you invest in helping to improve RudderTyper. To make the most of your contribution, we kindly ask that you document your Pull Request thoroughly.
 
-Sadly, if we don't receive enough information, or the Pull Request doesn't
-align well with our roadmap, we might respectfully thank you for your time, and close the issue.
+Please note that if the information provided is insufficient, or if the Pull Request does not align with our roadmap, we may need to respectfully thank you for your effort and close the issue.
 
-## Respect earns Respect 👏
+## Description 📝
 
-Please respect our [Code of Conduct](CODE_OF_CONDUCT.md), in short:
+Please provide a detailed description of the changes you’ve made in this section. Clearly explain what has been modified, added, or removed, and how it impacts the overall project.
 
-* Using welcoming and inclusive language.
-* Being respectful of differing viewpoints and experiences.
-* Gracefully accepting constructive criticism.
-* Focusing on what is best for the community.
-* Showing empathy towards other community members.
+## Respect Earns Respect 👏
+
+We ask that you adhere to our [Code of Conduct](CODE_OF_CONDUCT.md). In summary:
+
+- Use welcoming and inclusive language.
+- Respect differing viewpoints and experiences.
+- Accept constructive criticism gracefully.
+- Focus on what is best for the community.
+- Show empathy toward other community members.
