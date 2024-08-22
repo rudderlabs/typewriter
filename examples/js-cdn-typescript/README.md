@@ -10,7 +10,7 @@ This is a basic web application written in TypeScript that uses RudderTyper clie
 4. Move ruddertyper.yml file from root level to examples/js-cdn-typescript this folder.
 5. Replace the plan.json in js-cdn-typescript/src/analytics with the one you generated.
 6. Delete `index.ts` and `rudder.ts` inside analytics folder.
-7. Run the command `npx rudder-typer@next`
+7. Run the command `npx rudder-typer`
 8. New `index.ts` and `rudder.ts` file will be generated.
 
 ## Steps to run the sample app

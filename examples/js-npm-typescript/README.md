@@ -10,7 +10,7 @@ This is a basic web application written in TypeScript that uses RudderTyper clie
 4. Move ruddertyper.yml file from root level to examples/js-npm-typescript this folder.
 5. Replace the plan.json in js-npm-typescript/src/analytics with the one you generated.
 6. Delete `index.ts` and `rudder.ts` inside analytics folder.
-7. Run the command `npx rudder-typer@next`
+7. Run the command `npx rudder-typer`
 8. New `index.ts` and `rudder.ts` file will be generated.
 9. Add `import type { RudderAnalytics, RudderAnalyticsPreloader } from '@rudderstack/analytics-js';` this line at the top of rudder.ts and update rudderanalytics interface type to `rudderanalytics: RudderAnalytics | RudderAnalyticsPreloader | undefined;`
 
