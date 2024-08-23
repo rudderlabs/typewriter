@@ -14,7 +14,10 @@ This is a basic web application written in TypeScript that uses RudderTyper clie
 ## Regenerate client libraries
 
 1. Run the command `npx rudder-typer`. This will generate new `index.ts` and `rudder.ts` file based on the ruddertyper.yml.
-2. Run the command `npx browserify src/analytics/index.ts -p [ tsify ] --standalone rudderTyper > public/rudderTyperBundle.js` to generate the browserify bundle.
+2. Run the command to generate the browserify bundle.
+   ```
+   npx browserify src/analytics/index.ts -p [ tsify ] --standalone rudderTyper > public/rudderTyperBundle.js
+   ```
 
 ### Production RudderTyper
 
@@ -46,4 +49,10 @@ You can further execute various RudderTyper commands like,
 
 ```
 npm run ruddertyper:dev <command>
+```
+
+To re-generate the browserify bundle run the below command
+
+```
+npx browserify src/analytics/index.ts -p [ tsify ] --standalone rudderTyper > public/rudderTyperBundle.js
 ```

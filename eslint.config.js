@@ -12,7 +12,13 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: ['tests/e2e/**/analytics/*', 'src/analytics/**/*', 'example/analytics/**/*'],
+    ignores: [
+      'tests/e2e/**/analytics/*',
+      'src/analytics/**/*',
+      'example/analytics/**/*',
+      'examples/js-cdn-typescript/**/*',
+      'examples/js-npm-typescript/**/*',
+    ],
   },
   ...compat.extends('plugin:@typescript-eslint/recommended'),
   ...compat.extends('plugin:prettier/recommended'),
