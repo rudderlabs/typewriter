@@ -43,10 +43,11 @@ enum Steps {
   Language = 2,
   APIToken = 3,
   TrackingPlan = 4,
-  Path = 5,
-  Summary = 6,
-  Build = 7,
-  Done = 8,
+  Mode = 5,
+  Path = 6,
+  Summary = 7,
+  Build = 8,
+  Done = 9,
 }
 
 export const Init: React.FC<InitProps> = (props) => {
@@ -55,6 +56,7 @@ export const Init: React.FC<InitProps> = (props) => {
   const [step, setStep] = useState(Steps.Confirmation);
   const [sdk, setSDK] = useState(config ? config.client.sdk : SDK.WEB);
   const [language, setLanguage] = useState(config ? config.client.language : Language.JAVASCRIPT);
+  const [mode, setMode] = useState('Development' as 'Development' | 'Production');
   const [path, setPath] = useState(
     config && config.trackingPlans.length > 0 ? config.trackingPlans[0].path : '',
   );
@@ -64,6 +66,7 @@ export const Init: React.FC<InitProps> = (props) => {
     workspace: undefined as RudderAPI.Workspace | undefined,
   });
   const [trackingPlan, setTrackingPlan] = useState<RudderAPI.TrackingPlan>();
+  const [trackingPlanVersion, setTrackingPlanVersion] = useState(0);
 
   const { exit } = useApp();
   useEffect(() => {
@@ -128,8 +131,10 @@ export const Init: React.FC<InitProps> = (props) => {
           email={tokenMetadata.email}
           trackingPlan={trackingPlan}
           onSubmit={withNextStep(setTrackingPlan)}
+          onSubmitVersion={withNextStep(setTrackingPlanVersion)}
         />
       )}
+      {step === Steps.Mode && <ModePrompt step={step} onSubmit={withNextStep(setMode)} />}
       {step === Steps.Path && (
         <PathPrompt
           step={step}
@@ -148,12 +153,14 @@ export const Init: React.FC<InitProps> = (props) => {
           token={tokenMetadata.token}
           workspace={tokenMetadata.workspace!}
           trackingPlan={trackingPlan!}
+          trackingPlanVersion={trackingPlanVersion}
+          mode={mode}
           onConfirm={onAcceptSummary}
           onRestart={onRestart}
         />
       )}
       {step === Steps.Build && !props.onDone && (
-        <Build {...{ ...props, config }} production={false} update={true} />
+        <Build {...{ ...props, config }} production={mode === 'Production'} update={true} />
       )}
       {/* TODO: step 8 where we show an example script showing how to import ruddertyper */}
     </Box>
@@ -622,6 +629,7 @@ type TrackingPlanPromptProps = {
   email: string;
   trackingPlan?: RudderAPI.TrackingPlan;
   onSubmit: (trackingPlan: RudderAPI.TrackingPlan) => void;
+  onSubmitVersion: (version: number) => void;
 };
 
 /** A prompt to identify which RudderStack Tracking Plan a user wants to use. */
@@ -632,6 +640,7 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
   email,
   trackingPlan,
   onSubmit,
+  onSubmitVersion,
 }) => {
   const [trackingPlans, setTrackingPlans] = useState<RudderAPI.TrackingPlan[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -671,6 +680,7 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
   const onSelect = (item: any) => {
     const trackingPlan = trackingPlans.find((tp) => getTrackingPlanName(tp) === item.value)!;
     onSubmit(trackingPlan);
+    onSubmitVersion(trackingPlan.version);
   };
 
   // Sort the Tracking Plan alphabetically by display name.
@@ -712,6 +722,29 @@ const TrackingPlanPrompt: React.FC<TrackingPlanPromptProps> = ({
   );
 };
 
+type ModePromptProps = {
+  step: number;
+  onSubmit: (label: 'Development' | 'Production') => void;
+};
+
+const ModePrompt: React.FC<ModePromptProps> = ({ step, onSubmit }) => {
+  const onSelect = (item: any) => {
+    onSubmit(item.value as 'Development' | 'Production');
+  };
+
+  return (
+    <Step name="Choose a mode:" step={step}>
+      <SelectInput
+        items={[
+          { label: 'Production', value: 'Production' },
+          { label: 'Development', value: 'Development' },
+        ]}
+        onSelect={onSelect}
+      />
+    </Step>
+  );
+};
+
 type SummaryPromptProps = {
   step: number;
   sdk: SDK;
@@ -721,6 +754,8 @@ type SummaryPromptProps = {
   workspace: RudderAPI.Workspace;
   configPath: string;
   trackingPlan: RudderAPI.TrackingPlan;
+  trackingPlanVersion: number;
+  mode: string;
   onConfirm: (config: Config) => void;
   onRestart: () => void;
 };
@@ -735,6 +770,8 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
   token,
   workspace,
   trackingPlan,
+  trackingPlanVersion,
+  mode,
   onConfirm,
   onRestart,
 }) => {
@@ -759,8 +796,13 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
         client.scriptTarget = 'ES5';
       }
       const tp = trackingPlan.creationType
-        ? { id: trackingPlan.id, workspaceSlug: trackingPlan.workspaceId, APIVersion: 'v2' }
-        : parseTrackingPlanName(trackingPlan.name);
+        ? {
+            id: trackingPlan.id,
+            version: trackingPlan.version,
+            workspaceSlug: trackingPlan.workspaceId,
+            APIVersion: 'v2',
+          }
+        : parseTrackingPlanName(trackingPlan.name, trackingPlan.version);
       try {
         const config: Config = {
           client,
@@ -768,6 +810,7 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
             {
               name: getTrackingPlanName(trackingPlan),
               id: tp.id,
+              version: tp.version,
               workspaceSlug: tp.workspaceSlug,
               path,
               APIVersion: tp.APIVersion,
@@ -800,8 +843,16 @@ const SummaryPrompt: React.FC<SummaryPromptProps> = ({
     { label: 'API Token', value: `${workspace.name} (${token.slice(0, 10)}...)` },
     { label: 'API Version', value: trackingPlan.creationType ? 'v2' : 'v1' },
     {
+      label: 'Build mode',
+      value: mode,
+    },
+    {
       label: 'Tracking Plan',
       value: <Link url={toTrackingPlanURL(trackingPlan)}>{getTrackingPlanName(trackingPlan)}</Link>,
+    },
+    {
+      label: 'Version',
+      value: trackingPlanVersion,
     },
   ];
 
@@ -858,7 +909,7 @@ const Step: React.FC<StepProps> = ({
         </Box>
         {step && (
           <Box>
-            <Text color="yellow">[{step}/6]</Text>
+            <Text color="yellow">[{step}/7]</Text>
           </Box>
         )}
       </Box>
