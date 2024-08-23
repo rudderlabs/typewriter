@@ -18,7 +18,7 @@ This is a basic web application written in TypeScript that uses RudderTyper clie
 
 1. From terminal go to project folder.
 2. Run the command `npm run setup`
-3. Replace the write-key and dataplane url in src > useRudderAnalytics.ts file
+3. Replace `writeKey` and `dataPlaneUrl` values in `./src/useRudderAnalytics.ts` file.
 4. Run the command `npm start`. The app will run in development mode.Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 5. Click on the track button to fire event.
 
