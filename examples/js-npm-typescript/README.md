@@ -1,6 +1,6 @@
 # Web app with Javascript NPM package
 
-This is a basic web application written in TypeScript that uses RudderTyper client library along with JS npm package.
+This is a basic web application written in TypeScript that uses RudderTyper client library along with the JS SDK NPM package.
 
 ## Prerequisite(If you want to use your tracking plan)
 
