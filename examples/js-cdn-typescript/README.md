@@ -1,6 +1,6 @@
 # Web app with Javascript CDN
 
-This is a basic web application written in TypeScript that uses RudderTyper client library along with JS cdn script.
+This is a basic web application written in TypeScript that uses RudderTyper client library along with JS CDN script.
 
 ## Prerequisite(If you want to use your tracking plan)
 
