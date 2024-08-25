@@ -29,7 +29,7 @@ export namespace RudderAPI {
   export type TrackingPlan = {
     name: string;
     display_name: string;
-    version: string;
+    version: number;
     id: string;
     rules: {
       events: RuleMetadata[];
@@ -80,12 +80,14 @@ export namespace RudderAPI {
 export async function fetchTrackingPlan(options: {
   workspaceSlug: string;
   id: string;
+  version?: number;
   token: string;
   email: string;
   APIVersion: string;
 }): Promise<RudderAPI.TrackingPlan> {
-  const url =
+  let url =
     options.APIVersion === 'v1' ? `trackingplans/${options.id}` : `tracking-plans/${options.id}`;
+  url = options.version ? `${url}?version=${options.version}` : url;
   const response = await apiGet<RudderAPI.GetTrackingPlanResponse>(
     url,
     options.token,
