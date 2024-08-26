@@ -1,6 +1,6 @@
 {
   "name": "rudder-typer",
-  "version": "1.0.0-beta.10",
+  "version": "1.0.0-beta.11",
   "description": "A compiler for generating strongly typed analytics clients via RudderStack",
   "repository": {
     "type": "git",
