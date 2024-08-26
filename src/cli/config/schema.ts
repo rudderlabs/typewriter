@@ -1,5 +1,5 @@
-import { Options } from 'src/generators/options';
-import Joi from '@hapi/joi';
+import { Options } from 'src/generators/options.js';
+import Joi from 'joi';
 
 /**
  * A config, stored in a ruddertyper.yml file.
@@ -37,6 +37,8 @@ export type TrackingPlanConfig = {
   name?: string;
   /** The id of the Tracking Plan to generate a client for. */
   id: string;
+  /** The version of the Tracking Plan to generate a client for. */
+  version: number;
   /** The slug of the RudderStack workspace that owns this Tracking Plan. */
   workspaceSlug: string;
   /**
@@ -55,44 +57,45 @@ export type TrackingPlanConfig = {
 // prettier-ignore
 /** Joi schema for performing validation on ruddertyper.yml files. */
 const ConfigSchema = Joi.object().required().keys({
-	scripts: Joi.object().optional().keys({
-		token: Joi.string().optional().min(1),
-		after: Joi.string().optional().min(1),
-		email: Joi.string().optional().min(1),
+  scripts: Joi.object().optional().keys({
+    token: Joi.string().optional().min(1),
+    after: Joi.string().optional().min(1),
+    email: Joi.string().optional().min(1),
+  }),
+  client: Joi.object().required().keys({
+    sdk: Joi.string().required().valid('analytics.js', 'analytics-node', 'analytics-android', 'analytics-ios'),
+    language: Joi.string().required().valid('javascript', 'typescript', 'java', 'swift', 'objective-c'),
+  })
+    .when('sdk', {
+      is: Joi.string().valid('analytics.js', 'analytics-node'),
+      then: {
+        language: Joi.string().valid('javascript', 'typescript'),
+        scriptTarget: Joi.string().optional().valid('ES3', 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ESNext', 'Latest'),
+        moduleTarget: Joi.string().optional().valid('CommonJS', 'AMD', 'UMD', 'System', 'ES2015', 'ESNext'),
+      },
+    })
+    .when('sdk', {
+      is: Joi.string().valid('analytics-android'),
+      then: { language: Joi.string().valid('java') },
+    })
+    .when('sdk', {
+      is: Joi.string().valid('analytics-ios'),
+      then: { language: Joi.string().valid('swift', 'objective-c') },
     }),
-	client: Joi.object().required().keys({
-		sdk: Joi.string().required().valid('analytics.js', 'analytics-node', 'analytics-android', 'analytics-ios'),
-		language: Joi.string().required().valid('javascript', 'typescript', 'java', 'swift', 'objective-c'),
-	})
-		.when('sdk', {
-			is: Joi.string().valid('analytics.js', 'analytics-node'),
-			then: {
-				language: Joi.string().valid('javascript', 'typescript'),
-				scriptTarget: Joi.string().optional().valid( 'ES3', 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ESNext', 'Latest'),
-				moduleTarget: Joi.string().optional().valid('CommonJS', 'AMD', 'UMD', 'System', 'ES2015', 'ESNext'),
-			},
-		})
-		.when('sdk', {
-			is: Joi.string().valid('analytics-android'),
-			then: { language: Joi.string().valid('java') },
-		})
-		.when('sdk', {
-			is: Joi.string().valid('analytics-ios'),
-			then: { language: Joi.string().valid('swift', 'objective-c') },
-		}),
-	trackingPlans: Joi.array().required().items(
-		Joi.object().keys({
-			id: Joi.string().required().min(1),
-			workspaceSlug: Joi.string().required().min(1),
-			path: Joi.string().required().min(1),
+  trackingPlans: Joi.array().required().items(
+    Joi.object().keys({
+      id: Joi.string().required().min(1),
+      version: Joi.number().optional().min(1),
+      workspaceSlug: Joi.string().required().min(1),
+      path: Joi.string().required().min(1),
       APIVersion: Joi.string().required().min(1),
-		})
-	),
+    })
+  ),
 })
 
 export const validateConfig = (rawConfig: Record<string, unknown>): Config => {
   // Validate the provided configuration file using our Joi schema.
-  const result = Joi.validate(rawConfig, ConfigSchema, {
+  const result = ConfigSchema.validate(rawConfig, {
     abortEarly: false,
     convert: false,
   });
@@ -101,5 +104,5 @@ export const validateConfig = (rawConfig: Record<string, unknown>): Config => {
   }
 
   // We can safely type cast the config, now that is has been validated.
-  return (rawConfig as unknown) as Config;
+  return rawConfig as unknown as Config;
 };

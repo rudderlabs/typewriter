@@ -19,19 +19,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Yarn setup
-        uses: DerYeger/yarn-setup-action@master
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 10
+          node-version-file: '.nvmrc'
+          cache: 'npm'
 
-      - name: Install Node.js Dependencies
-        run: yarn install --frozen-lockfile
+      - name: Install Dependencies
+        env:
+          HUSKY: 0
+        run: npm run setup
 
       - name: Run Tests
-        run: yarn test
+        run: npm run test
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3

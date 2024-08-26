@@ -1,9 +1,23 @@
+<p align="center">
+  <a href="https://rudderstack.com/">
+    <img alt="RudderStack" width="512" src="./assets/rs-logo-full-light.jpg">
+  </a>
+  <br />
+  <caption>The Customer Data Platform for Developers</caption>
+</p>
+<p align="center">
+  <b>
+    <a href="https://rudderstack.com">Website</a>
+    ·
+    <a href="https://www.rudderstack.com/docs/data-governance/tracking-plans/ruddertyper/">Documentation</a>
+    ·
+    <a href="https://rudderstack.com/join-rudderstack-slack-community">Community Slack</a>
+  </b>
+</p>
+
 # RudderTyper
 
-**RudderTyper** is a tool for generating strongly-typed [**RudderStack**](https://www.rudderstack.com/) analytics libraries based on your pre-defined
-tracking plan spec.
-<br>
-<br>
+**RudderTyper** is a tool for generating strongly-typed [**RudderStack**](https://www.rudderstack.com/) analytics libraries based on your pre-defined tracking plan spec.
 
 <p align="center">
 <img src=".github/assets/readme-example.gif" alt="RudderTyper GIF Example" width="80%"/>
@@ -81,14 +95,14 @@ This command prints the help message describing different commands available wit
 
 ## CLI Arguments
 
-| Argument  | Type      | Description                                                                      |
-| :-------- | :-------- | :------------------------------------------------------------------------------- |
-| `config`  | `string`  | An optional path to a `ruddertyper.yml` (or a directory with `ruddertyper.yml`). |
-| `debug`   | `boolean` | An optional (hidden) flag for enabling Ink debug mode.                           |
-| `version` | `boolean` | Standard `--version` flag to print the version of this CLI.                      |
-| `v`       | `boolean` | Standard `-v` flag to print the version of this CLI.                             |
-| `help`    | `boolean` | Standard `--help` flag to print help on a command.                               |
-| `h`       | `boolean` | Standard `-h` flag to print help on a command.                                   |
+| Argument  | Description                                                                      |
+| :-------- | :------------------------------------------------------------------------------- |
+| `config`  | An optional path to a `ruddertyper.yml` (or a directory with `ruddertyper.yml`). |
+| `debug`   | An optional (hidden) flag for enabling Ink debug mode.                           |
+| `version` | Standard `--version` flag to print the version of this CLI.                      |
+| `v`       | Standard `-v` flag to print the version of this CLI.                             |
+| `help`    | Standard `--help` flag to print help on a command.                               |
+| `h`       | Standard `-h` flag to print help on a command.                                   |
 
 ## Configuration Reference
 
@@ -96,15 +110,18 @@ RudderTyper stores its configuration in a `ruddertyper.yml` file in the root of 
 
 A sample configuration looks like the following:
 
-```sh
+```yaml
 # RudderStack RudderTyper Configuration Reference (https://github.com/rudderlabs/rudder-typer)
 # Just run `npx rudder-typer` to re-generate a client with the latest versions of these events.
 
 scripts:
   # You can supply a RudderStack API token using a `scripts.token` command. The output of `script.token` command should be a valid RudderStack API token.
   token: source .env; echo $RUDDERTYPER_TOKEN
+
   # You can supply email address linked to your workspace using a `scripts.email` command.The output of `script.email` command should be an email address registered with your workspace.
   email: source .env; echo $EMAIL
+
+  # You can format any of RudderTyper's auto-generated files using a `scripts.after` command.
   # See `Formatting Generated Files` below.
   after: ./node_modules/.bin/prettier --write analytics/plan.json
 
@@ -112,14 +129,17 @@ client:
   # Which RudderStack SDK you are generating for
   # Valid values: analytics.js, analytics-node, analytics-ios, analytics-android.
   sdk: analytics.js
+
   # The target language for your RudderTyper client.
   # Valid values: javascript, typescript, objective-c, swift, java.
   language: typescript
+
   # JavaScript Transpilation Settings
   # Valid values: 'ES3','ES5','ES2015','ES2016','ES2017','ES2018','ES2019','ESNext','Latest'
-  scriptTarget: "ES5"
+  scriptTarget: 'ES5'
+
   # Valid values: 'CommonJS','AMD','UMD','System','ES2015','ESNext'
-  moduleTarget: "ESNext"
+  moduleTarget: 'ESNext'
 
 trackingPlans:
   # The RudderStack Tracking Plan that you are generating a client for.
@@ -128,6 +148,7 @@ trackingPlans:
   - id: rs_QhWHOgp7xg8wkYxilH3scd2uRID
     workspaceSlug: rudderstack-demo
     path: ./analytics
+
     # Valid values: v1 (old tracking plan), v2 (new tracking plan format)
     APIVersion: v2
 ```
@@ -135,6 +156,8 @@ trackingPlans:
 ## How to integrate RudderTyper-generated client with your app?
 
 This section includes steps to integrate your RudderTyper-generated client with your app across different RudderStack SDKs.
+
+Refer to the `examples` directory for sample integrations with different RudderStack SDKs.
 
 ### RudderStack Android SDK
 
@@ -179,14 +202,19 @@ import com.rudderstack.generated.*
 
 ```javascript
 // Import RudderStack JS SDK and initialize it
-const rudderanalytics = require('rudder-sdk-js');
-rudderanalytics.load(YOUR_WRITE_KEY, DATA_PLANE_URL);
+const RudderAnalytics = require('@rudderstack/analytics-js');
+
+const rudderAnalytics = new RudderAnalytics();
+rudderAnalytics.load(WRITE_KEY, DATA_PLANE_URL, {});
+
 // Import your auto-generated RudderTyper client:
-const rudderTyper = require('./rudderTyperClient');
-// Pass in your rudder-sdk-js instance to RudderTyper client
+const rudderTyper = require('./analytics/index');
+
+// Pass in your @rudderstack/analytics-js instance to RudderTyper client
 rudderTyper.setRudderTyperOptions({
-  analytics: rudderanalytics,
+  analytics: rudderAnalytics,
 });
+
 // Issue your first RudderTyper track call!
 rudderTyper.orderCompleted({
   orderID: 'ck-f306fe0e-cc21-445a-9caa-08245a9aa52c',
@@ -199,7 +227,7 @@ rudderTyper.orderCompleted({
 - Execute the following command to generate a bundle from the RudderTyper client:
 
 ```sh
-browserify rudderTyperClient.js --standalone rudderTyper >  rudderTyperBundle.js
+browserify analytics/index.js --standalone rudderTyper >  rudderTyperBundle.js
 ```
 
 - Now you can make calls from your `html` file as shown:
@@ -222,8 +250,8 @@ browserify rudderTyperClient.js --standalone rudderTyper >  rudderTyperBundle.js
     ];
     for (var i = 0; i < methods.length; i++) {
       var method = methods[i];
-      rudderanalytics[method] = (function(methodName) {
-        return function() {
+      rudderanalytics[method] = (function (methodName) {
+        return function () {
           rudderanalytics.push([methodName].concat(Array.prototype.slice.call(arguments)));
         };
       })(method);
@@ -249,21 +277,27 @@ browserify rudderTyperClient.js --standalone rudderTyper >  rudderTyperBundle.js
 </script>
 ```
 
-### RudderStack Node.js SDK:
+### RudderStack Node.js SDK
 
 - Import the the RudderTyper-generated client and start making calls using RudderTyper as shown:
 
 ```javascript
-// Import Rudder Node SDK and intialize it
-const Analytics = require('@rudderstack/rudder-sdk-node');
-const client = new Analytics(WRITE_KEY, DATA_PLANE_URL / v1 / batch);
-const ruddertyper = require('./rudderTyperClient');
-// Pass in your rudder-sdk-node instance to RudderTyper.
-ruddertyper.setRudderTyperOptions({
+// Import Rudder Node SDK and initialize it
+const RudderAnalytics = require('@rudderstack/rudder-sdk-node');
+
+const client = new RudderAnalytics(WRITE_KEY, {
+  dataPlaneUrl: DATA_PLANE_URL,
+  // More initialization options
+});
+
+const RudderTyperAnalytics = require('./analytics/index');
+// Pass in your @rudderstack/rudder-sdk-node instance to RudderTyper.
+RudderTyperAnalytics.setRudderTyperOptions({
   analytics: client,
 });
+
 // Issue your first RudderTyper track call!
-ruddertyper.orderCompleted({
+RudderTyperAnalytics.orderCompleted({
   orderID: 'ck-f306fe0e-cc21-445a-9caa-08245a9aa52c',
   total: 39.99,
 });
@@ -271,9 +305,38 @@ ruddertyper.orderCompleted({
 
 ## Contribute
 
-- To submit a bug report or feature request, file an issue [**here**](https://github.com/rudderlabs/rudder-typer/issues).
-- To develop on `ruddertyper` or propose support for a new language, see our [**contributors documentation**](./.github/CONTRIBUTING.md).
+We encourage contributions to this project. For detailed guidelines on how to contribute, please refer to [**here**](./CONTRIBUTING.md).
 
-## Contact Us
+## Contact us
 
-For queries on any of the sections in this guide, start a conversation on our [**Slack**](https://resources.rudderstack.com/join-rudderstack-slack) channel.
+For more information on any of the sections covered in this readme, you can [**contact us**](mailto:%20docs@rudderstack.com) or start a conversation on our [**Slack**](https://resources.rudderstack.com/join-rudderstack-slack) channel.
+
+## Follow Us
+
+- [RudderStack Blog][rudderstack-blog]
+- [Slack][slack]
+- [Twitter][twitter]
+- [LinkedIn][linkedin]
+- [dev.to][devto]
+- [Medium][medium]
+- [YouTube][youtube]
+- [HackerNews][hackernews]
+- [Product Hunt][producthunt]
+
+## :clap: Our Supporters
+
+[![Stargazers repo roster for @rudderlabs/rudder-typer](https://reporoster.com/stars/rudderlabs/rudder-typer)](https://github.com/rudderlabs/rudder-typer/stargazers)
+
+[![Forkers repo roster for @rudderlabs/rudder-typer](https://reporoster.com/forks/rudderlabs/rudder-typer)](https://github.com/rudderlabs/rudder-typer/network/members)
+
+<!----variables---->
+
+[rudderstack-blog]: https://rudderstack.com/blog/
+[slack]: https://resources.rudderstack.com/join-rudderstack-slack
+[twitter]: https://twitter.com/rudderstack
+[linkedin]: https://www.linkedin.com/company/rudderlabs/
+[devto]: https://dev.to/rudderstack
+[medium]: https://rudderstack.medium.com/
+[youtube]: https://www.youtube.com/channel/UCgV-B77bV_-LOmKYHw8jvBw
+[hackernews]: https://news.ycombinator.com/item?id=21081756
+[producthunt]: https://www.producthunt.com/posts/rudderstack

@@ -12,21 +12,21 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/heads/develop') || startsWith(github.ref, 'refs/heads/hotfix/')
     steps:
-      - name: Checkout source branch
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Yarn setup
-        uses: DerYeger/yarn-setup-action@master
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 10
+          node-version-file: '.nvmrc'
+          cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         env:
           HUSKY: 0
-        run: |
-          yarn install --frozen-lockfile
+        run: npm run setup
 
       # In order to make a commit, we need to initialize a user.
       # You may choose to write something less generic here if you want, it doesn't matter functionality wise.
@@ -50,8 +50,7 @@ jobs:
           echo "Merging master into $source_branch_name"
           current_version=$(jq -r .version package.json)
 
-          yarn config set version-git-tag false
-          yarn version --prerelease
+          npm version prerelease --no-git-tag-version --no-commit-hooks
           new_version=$(jq -r .version package.json)
           git reset --hard
 
@@ -79,8 +78,7 @@ jobs:
           echo "Current version: $CURRENT_VERSION_VALUE"
           echo "New version: $NEW_VERSION_VALUE"
           git fetch --no-tags --prune --depth=100 origin master
-          yarn config set version-git-tag true
-          yarn version --prerelease
+          npm version prerelease --no-commit-hooks
 
       - name: Push new version in release branch
         run: |
@@ -94,4 +92,3 @@ jobs:
           github_token: ${{ secrets.PAT }}
           pr_title: 'chore(release): pulling ${{ steps.create-release.outputs.branch_name }} into master'
           pr_body: ':crown: *An automated PR*'
-          pr_reviewer: 'ssbeefeater,akashrpo,MoumitaM,1abhishekpandey,saikumarrs'
