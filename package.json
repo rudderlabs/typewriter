@@ -1,6 +1,6 @@
 {
   "name": "rudder-typer",
-  "version": "1.0.0-beta.9",
+  "version": "1.0.0-beta.10",
   "description": "A compiler for generating strongly typed analytics clients via RudderStack",
   "repository": {
     "type": "git",
@@ -12,8 +12,11 @@
   },
   "author": "RudderStack",
   "license": "MIT",
-  "main": "./src/cli/index.js",
   "type": "module",
+  "main": "./src/cli/index.js",
+  "bin": {
+    "rudder-typer": "./src/cli/index.js"
+  },
   "scripts": {
     "setup": "npm ci",
     "init": "npm run cli init",
