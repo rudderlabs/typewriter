@@ -12,8 +12,11 @@
   },
   "author": "RudderStack",
   "license": "MIT",
-  "main": "./src/cli/index.js",
   "type": "module",
+  "main": "./src/cli/index.js",
+  "bin": {
+    "rudder-typer": "./src/cli/index.js"
+  },
   "scripts": {
     "setup": "npm ci",
     "init": "npm run cli init",
