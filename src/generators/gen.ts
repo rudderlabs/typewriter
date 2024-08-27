@@ -21,7 +21,7 @@ export type RawTrackingPlan = {
   name: string;
   url: string;
   id: string;
-  version: string;
+  version: number;
   path: string;
   trackCalls: JSONSchema7[];
 };
@@ -29,7 +29,7 @@ export type RawTrackingPlan = {
 export type TrackingPlan = {
   url: string;
   id: string;
-  version: string;
+  version: number;
   trackCalls: {
     raw: JSONSchema7;
     schema: Schema;
