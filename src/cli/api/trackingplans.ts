@@ -109,8 +109,12 @@ export function computeDelta(
   return deltas;
 }
 
-export function parseTrackingPlanName(name: string): {
+export function parseTrackingPlanName(
+  name: string,
+  version: number,
+): {
   id: string;
+  version: number;
   workspaceSlug: string;
   APIVersion: string;
 } {
@@ -126,6 +130,7 @@ export function parseTrackingPlanName(name: string): {
 
   return {
     id,
+    version,
     workspaceSlug,
     APIVersion: 'v1',
   };
@@ -133,7 +138,7 @@ export function parseTrackingPlanName(name: string): {
 
 export function toTrackingPlanURL(trackingPlan: RudderAPI.TrackingPlan): string {
   if (!trackingPlan.creationType) {
-    const { id } = parseTrackingPlanName(trackingPlan.name);
+    const { id } = parseTrackingPlanName(trackingPlan.name, trackingPlan.version);
     return `https://app.rudderstack.com/trackingplans/${id}`;
   }
   return `https://app.rudderstack.com/trackingplans/${trackingPlan.id}`;
@@ -141,7 +146,7 @@ export function toTrackingPlanURL(trackingPlan: RudderAPI.TrackingPlan): string 
 
 export function toTrackingPlanId(trackingPlan: RudderAPI.TrackingPlan): string {
   if (!trackingPlan.creationType) {
-    const { id } = parseTrackingPlanName(trackingPlan.name);
+    const { id } = parseTrackingPlanName(trackingPlan.name, trackingPlan.version);
     return id;
   }
   return trackingPlan.id;

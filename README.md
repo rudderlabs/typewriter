@@ -95,14 +95,14 @@ This command prints the help message describing different commands available wit
 
 ## CLI Arguments
 
-| Argument  | Type      | Description                                                                      |
-| :-------- | :-------- | :------------------------------------------------------------------------------- |
-| `config`  | `string`  | An optional path to a `ruddertyper.yml` (or a directory with `ruddertyper.yml`). |
-| `debug`   | `boolean` | An optional (hidden) flag for enabling Ink debug mode.                           |
-| `version` | `boolean` | Standard `--version` flag to print the version of this CLI.                      |
-| `v`       | `boolean` | Standard `-v` flag to print the version of this CLI.                             |
-| `help`    | `boolean` | Standard `--help` flag to print help on a command.                               |
-| `h`       | `boolean` | Standard `-h` flag to print help on a command.                                   |
+| Argument  | Description                                                                      |
+| :-------- | :------------------------------------------------------------------------------- |
+| `config`  | An optional path to a `ruddertyper.yml` (or a directory with `ruddertyper.yml`). |
+| `debug`   | An optional (hidden) flag for enabling Ink debug mode.                           |
+| `version` | Standard `--version` flag to print the version of this CLI.                      |
+| `v`       | Standard `-v` flag to print the version of this CLI.                             |
+| `help`    | Standard `--help` flag to print help on a command.                               |
+| `h`       | Standard `-h` flag to print help on a command.                                   |
 
 ## Configuration Reference
 

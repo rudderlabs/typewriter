@@ -173,6 +173,7 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
           try {
             newTrackingPlan = await fetchTrackingPlan({
               id: trackingPlanConfig.id,
+              version: trackingPlanConfig.version,
               workspaceSlug: trackingPlanConfig.workspaceSlug,
               token,
               email,
@@ -378,9 +379,12 @@ export const GenerationStep: React.FC<GenerationProps> = ({
     <Step name={stepName} isRunning={isRunning} isDone={isDone}>
       <Note>Building for {production ? 'production' : 'development'}</Note>
       {trackingPlans.map((trackingPlan) => (
-        <Note key={trackingPlan.url}>
-          <Link url={trackingPlan.url}>{trackingPlan.name}</Link>
-        </Note>
+        <React.Fragment key={trackingPlan.name}>
+          <Note>{trackingPlan.name}</Note>
+          <Note key={trackingPlan.name}>
+            <Link url={trackingPlan.url}>version: {trackingPlan.version}</Link>
+          </Note>
+        </React.Fragment>
       ))}
     </Step>
   );

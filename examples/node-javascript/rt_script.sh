@@ -2,4 +2,4 @@ cd ../../
 npm run build
 cd dist
 npm install
-node . $1 --config=examples/node-javascript 
+node . $1 --config=../examples/node-javascript 
