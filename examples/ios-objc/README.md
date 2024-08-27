@@ -10,7 +10,7 @@ This is a sample iOS (Objective C) app designed to demonstrate how to use the Ru
 
 ### Step 1: Open project in Xcode
 
-- Open project path in Terminal & run `pod update`. Next open the `RudderTyperExample.xcworkspace`, located under `tests/e2e/ios-objc`, in Xcode.
+- Open project path in Terminal & run `pod update`. Next open the `RudderTyperExample.xcworkspace`, located under `examples/ios-objc`, in Xcode.
 
 ### Step 2: Configure RudderStack Properties
 
@@ -20,7 +20,7 @@ This is a sample iOS (Objective C) app designed to demonstrate how to use the Ru
 
 ### Step 3: Add Generated Files
 
-- Navigate to the `tests/e2e/ios-objc` folder in the terminal.
+- Navigate to the `examples/ios-objc` folder in the terminal.
 - Run `npx rudder-typer@next` to re-generate a client with the latest versions of these events.
 - These generated files will be located under the `generated` directory.
 
