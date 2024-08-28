@@ -82,7 +82,7 @@
 		534017E52C64A91200CB4254 /* RudderTyperExample */ = {
 			isa = PBXGroup;
 			children = (
-				5351AA2A2C69EAB2003C3C47 /* generated */,
+				5351AA2A2C69EAB2003C3C47 /* analytics */,
 				5351AA202C653C29003C3C47 /* RudderConfig */,
 				534017E62C64A91200CB4254 /* AppDelegate.h */,
 				534017E72C64A91200CB4254 /* AppDelegate.m */,
@@ -109,7 +109,7 @@
 			path = RudderConfig;
 			sourceTree = "<group>";
 		};
-		5351AA2A2C69EAB2003C3C47 /* generated */ = {
+		5351AA2A2C69EAB2003C3C47 /* analytics */ = {
 			isa = PBXGroup;
 			children = (
 				5351AA242C69EAB2003C3C47 /* plan.json */,
@@ -119,7 +119,7 @@
 				5351AA282C69EAB2003C3C47 /* RSRudderTyperUtils.h */,
 				5351AA292C69EAB2003C3C47 /* RSRudderTyperUtils.m */,
 			);
-			path = generated;
+			path = analytics;
 			sourceTree = "<group>";
 		};
 		89E1ED2095CF2AF66FEB02C2 /* Frameworks */ = {
