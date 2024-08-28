@@ -13,7 +13,7 @@
   NSDictionary<NSString *, id> *rudderTyperContext = @{
       @"sdk": @"analytics-ios",
       @"language": @"objective-c",
-      @"rudderTyperVersion": @"1.0.0-beta.8",
+      @"rudderTyperVersion": @"1.0.0-beta.11",
       @"trackingPlanId": @"trackingPlanId",
       @"trackingPlanVersion": @"2"
     };

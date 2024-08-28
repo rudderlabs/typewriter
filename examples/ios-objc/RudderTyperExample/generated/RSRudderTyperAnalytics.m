@@ -7,16 +7,16 @@
 
 @implementation RSRudderTyperAnalytics
 
-+ (void)sampleEvent1
++ (void)sampleTrackEventName
 {
-    [RSRudderTyperAnalytics sampleEvent1WithOptions:[[RSOption alloc]init]];
+    [RSRudderTyperAnalytics sampleTrackEventNameWithOptions:[[RSOption alloc]init]];
 }
 
-+ (void)sampleEvent1WithOptions:(nullable RSOption *)options
++ (void)sampleTrackEventNameWithOptions:(nullable RSOption *)options
 {
     NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
 
-    [[RSClient sharedInstance] track:@"Sample Event 1" properties:properties options:[RSRudderTyperUtils withRudderTyperContextFields:options]];
+    [[RSClient sharedInstance] track:@"Sample Track Event Name" properties:properties options:[RSRudderTyperUtils withRudderTyperContextFields:options]];
 }
 
 @end

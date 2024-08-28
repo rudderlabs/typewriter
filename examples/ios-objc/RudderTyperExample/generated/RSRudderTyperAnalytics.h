@@ -6,8 +6,8 @@
 
 @interface RSRudderTyperAnalytics : NSObject
 
-+ (void)sampleEvent1;
++ (void)sampleTrackEventName;
 
-+ (void)sampleEvent1WithOptions:(nullable RSOption *)options;
++ (void)sampleTrackEventNameWithOptions:(nullable RSOption *)options;
 
 @end

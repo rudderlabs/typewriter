@@ -1,20 +1,19 @@
 {
-  "createdAt": "2024-08-09T08:15:23.432Z",
+  "createdAt": "2024-08-14T16:35:11.817Z",
   "creationType": "Data catalog",
-  "description": "",
   "id": "trackingPlanId",
-  "name": "Sample Tracking plan",
+  "name": "Simple Plan",
   "rules": {
     "events": [
       {
         "description": "",
-        "name": "Sample Event 1",
+        "name": "Sample Track Event Name",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
           "description": "",
           "properties": {
             "properties": {
-              "additionalProperties": false,
+              "additionalProperties": true,
               "properties": {},
               "required": [],
               "type": "object"
@@ -25,7 +24,7 @@
       }
     ]
   },
-  "updatedAt": "2024-08-09T08:15:24.060Z",
+  "updatedAt": "2024-08-14T16:35:11.817Z",
   "version": 2,
   "workspaceId": "workspaceId"
 }

@@ -21,7 +21,7 @@
 }
 
 - (IBAction)triggerEventAction:(UIButton *)sender {
-    [RSRudderTyperAnalytics sampleEvent1];
+    [RSRudderTyperAnalytics sampleTrackEventName];
 }
 
 @end
