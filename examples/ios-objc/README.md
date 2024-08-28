@@ -18,11 +18,21 @@ This is a sample iOS (Objective C) app designed to demonstrate how to use the Ru
 
   ![RudderConfig](screenshots/rudderConfig_path.png)
 
-### Step 3: Add Generated Files
+### Step 3: Add/Regenerate Analytics Files
 
 - Navigate to the `examples/ios-objc` folder in the terminal.
-- Run `npx rudder-typer@next` to re-generate a client with the latest versions of these events.
-- These generated files will be located under the `generated` directory.
+- Check the node version of the project & install the same by using following commands.
+
+```
+$ node --version
+
+$ node i
+
+$ node use
+```
+
+- Run `npm run init` and follow the prompted instructions to generate the analytics files.
+- Replace the existing files with the generated files under the `analytics` directory.
 
 ### Step 4: Implement Event Tracking
 
