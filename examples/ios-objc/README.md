@@ -20,7 +20,7 @@ This is a sample iOS (Objective C) app designed to demonstrate how to use the Ru
 
 ### Step 3: Add/Regenerate Analytics Files
 
-- Run the following command to regenerate the client library based on your tracking plan using the production version of analytics files.
+- Run the following command to regenerate the client library based on your tracking plan using the production version of RudderTyper.
 
 ```
 npx rudder-typer@latest init
