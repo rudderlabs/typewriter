@@ -20,18 +20,18 @@ This is a sample iOS (Objective C) app designed to demonstrate how to use the Ru
 
 ### Step 3: Add/Regenerate Analytics Files
 
-- Navigate to the `examples/ios-objc` folder in the terminal.
-- Check the node version of the project & install the same by using following commands.
+- Run the following command to regenerate the client library based on your tracking plan using the production version of analytics files.
 
 ```
-$ node --version
-
-$ node i
-
-$ node use
+npx rudder-typer@latest init
 ```
 
-- Run `npm run init` and follow the prompted instructions to generate the analytics files.
+- To regenerate the client library based on your tracking plan using the analytics files from the local repository, use the predefined shellscript file.
+
+```
+./rt_local_script.sh
+```
+
 - Replace the existing files with the generated files under the `analytics` directory.
 
 ### Step 4: Implement Event Tracking
