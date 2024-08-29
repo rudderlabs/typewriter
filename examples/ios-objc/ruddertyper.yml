@@ -7,9 +7,9 @@ client:
 
 trackingPlans:
   # Tracking Plan: Simple Plan
-  # https://app.rudderstack.com/trackingplans/tp_2keoGz7isp0AwGYznhExEigY1CX
-  - id: tp_2keoGz7isp0AwGYznhExEigY1CX
+  # https://app.rudderstack.com/trackingplans/trackingPlanId
+  - id: trackingPlanId
     version: 2
-    workspaceSlug: 2h8hLQOPxmXc4kdECTy9fxt3ow4
-    path: examples/ios-objc/generated
+    workspaceSlug: workspaceSlug
+    path: examples/ios-objc/RudderTyperExample/analytics
     APIVersion: v2
