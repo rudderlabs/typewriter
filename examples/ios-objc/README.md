@@ -28,6 +28,8 @@ npx rudder-typer@latest init
 
 - To regenerate the client library based on your tracking plan using the analytics files from the local repository, use the predefined shellscript file.
 
+  Note: You can use all the supported commands of rudder-typer.
+
 ```
 ./rt_local_script.sh
 ```
