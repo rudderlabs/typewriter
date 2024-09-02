@@ -10,7 +10,7 @@ This is a sample iOS (Swift) app designed to demonstrate how to use the RudderSt
 
 ### Step 1: Open project in Xcode
 
-- Open project path in Terminal & run `pod update`. Next open the `RudderTyperSwiftExample.xcworkspace`, located under `tests/e2e/ios-swift`, in Xcode.
+- Open project path in Terminal & run `pod update`. Next open the `RudderTyperSwiftExample.xcworkspace`, located under `examples/ios-swift`, in Xcode.
 
 ### Step 2: Configure RudderStack Properties
 
@@ -18,11 +18,23 @@ This is a sample iOS (Swift) app designed to demonstrate how to use the RudderSt
 
   ![RudderConfig](screenshots/rudderConfig_path.png)
 
-### Step 3: Add Generated Files
+### Step 3: Add/Regenerate Analytics Files
 
-- Navigate to the `tests/e2e/ios-swift` folder in the terminal.
-- Run `npx rudder-typer@next` to re-generate a client with the latest versions of these events.
-- These generated files will be located under the `generated` directory.
+- Run the following command to regenerate the client library based on your tracking plan using the production version of RudderTyper.
+
+```
+npx rudder-typer@latest init
+```
+
+- To regenerate the client library based on your tracking plan using the analytics files from the local repository, use the predefined shellscript file.
+
+  Note: You can use all the supported commands of rudder-typer.
+
+```
+./rt_local_script_swift.sh
+```
+
+- Replace the existing files with the generated files under the `analytics` directory.
 
 ### Step 4: Implement Event Tracking
 

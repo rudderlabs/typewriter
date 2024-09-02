@@ -10,6 +10,6 @@ trackingPlans:
   # https://app.rudderstack.com/trackingplans/trackingPlanId
   - id: trackingPlanId
     version: 2
-    workspaceSlug: 2h8hLQOPxmXc4kdECTy9fxt3ow4
+    workspaceSlug: workspaceId
     path: examples/ios-swift/RudderTyperSwiftExample/analytics
     APIVersion: v2
