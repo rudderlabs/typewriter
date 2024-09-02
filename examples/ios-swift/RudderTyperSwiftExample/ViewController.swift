@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func triggerEventAction(_ button: UIButton) {
-        RudderTyperAnalytics.sampleEvent1()
+        RudderTyperAnalytics.sampleTrackEventName()
     }
 }
 
