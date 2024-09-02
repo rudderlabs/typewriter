@@ -28,7 +28,7 @@ class RudderTyperUtils {
         let rudderTyperContext = [
                 "sdk": "analytics-ios",
                 "language": "swift",
-                "rudderTyperVersion": "1.0.0-beta.8",
+                "rudderTyperVersion": "1.0.0-beta.11",
                 "trackingPlanId": "trackingPlanId",
                 "trackingPlanVersion": "2"
             ]
