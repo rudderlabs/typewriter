@@ -57,7 +57,9 @@ export const android: Generator<
   generatePrimitive: async (client, schema, parentPath) => {
     let type = 'Object';
 
-    if (schema.type === Type.STRING) {
+    if (schema.enum) {
+      type = schema.enum.map((e) => (typeof e === 'string' ? `'${e}'` : `${e}`)).join(' | ');
+    } else if (schema.type === Type.STRING) {
       type = 'String';
     } else if (schema.type === Type.BOOLEAN) {
       type = 'Boolean';
