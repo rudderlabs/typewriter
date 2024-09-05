@@ -1,5 +1,5 @@
 import { JSONSchema7 } from 'json-schema';
-import { parse, Schema, getPropertiesSchema, Type } from './ast.js';
+import { parse, Schema, getPropertiesSchema, Type, PrimitiveTypeSchema } from './ast.js';
 import { javascript } from './javascript/index.js';
 import { objc } from './objc/index.js';
 import { swift } from './swift/index.js';
@@ -100,7 +100,11 @@ export declare type Generator<
 > = {
   namer: NamerOptions;
   setup: (options: GenOptions) => Promise<R>;
-  generatePrimitive: (client: GeneratorClient, schema: Schema, parentPath: string) => Promise<P>;
+  generatePrimitive: (
+    client: GeneratorClient,
+    schema: PrimitiveTypeSchema,
+    parentPath: string,
+  ) => Promise<P>;
   generateArray: (
     client: GeneratorClient,
     schema: Schema,
@@ -255,7 +259,7 @@ async function runGenerator<
     let p: P;
     if ([Type.ANY, Type.STRING, Type.BOOLEAN, Type.INTEGER, Type.NUMBER].includes(schema.type)) {
       // Primitives are any type that doesn't require generating a "subtype".
-      p = await generator.generatePrimitive(client, schema, parentPath);
+      p = await generator.generatePrimitive(client, schema as PrimitiveTypeSchema, parentPath);
     } else if (schema.type === Type.OBJECT) {
       // For objects, we need to recursively generate each property first.
       const properties: (P & BasePropertyContext)[] = [];

@@ -81,7 +81,9 @@ export const javascript: Generator<
   },
   generatePrimitive: async (client, schema) => {
     let type = 'any';
-    if (schema.type === Type.STRING) {
+    if (schema.enum) {
+      type = schema.enum.map((e) => (typeof e === 'string' ? `'${e}'` : `${e}`)).join(' | ');
+    } else if (schema.type === Type.STRING) {
       type = 'string';
     } else if (schema.type === Type.BOOLEAN) {
       type = 'boolean';
