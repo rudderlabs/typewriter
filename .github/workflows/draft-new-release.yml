@@ -75,7 +75,6 @@ jobs:
         env:
           HUSKY: 0
         run: |
-          npm i conventional-changelog-cli --save-dev
           SUMMARY=$(((npx conventional-changelog -u) 2>&1) | sed "s/*/<br> */g" | sed "s/#/ /g" | tr -d '\n' || true)
           echo $SUMMARY
           echo "::set-output name=commit_summary::$SUMMARY"
