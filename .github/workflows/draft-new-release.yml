@@ -70,11 +70,15 @@ jobs:
           echo "CURRENT_VERSION_VALUE=$current_version" >> $GITHUB_ENV
           echo "NEW_VERSION_VALUE=$new_version" >> $GITHUB_ENV
 
-      - name: Bump version
+      - name: Update changelog & bump version
         id: finish-release
         env:
           HUSKY: 0
         run: |
+          npm i -g conventional-changelog-cli
+          SUMMARY=$(((npx conventional-changelog -u) 2>&1) | sed "s/*/<br> */g" | sed "s/#/ /g" | tr -d '\n' || true)
+          echo $SUMMARY
+          echo "::set-output name=commit_summary::$SUMMARY"
           echo "Current version: $CURRENT_VERSION_VALUE"
           echo "New version: $NEW_VERSION_VALUE"
           git fetch --no-tags --prune --depth=100 origin master
