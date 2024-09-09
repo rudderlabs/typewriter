@@ -5,7 +5,7 @@ This is a basic web application written in TypeScript that uses RudderTyper clie
 ## Steps to run the sample app
 
 1. Run `npm run setup` to install the required dependencies.
-2. Replace `__WRITE_KEY__` and `__DATAPLANE_URL__` values in `./public/index.html` file.
+2. Replace all `__WRITE_KEY__` and `__DATAPLANE_URL__` values in `./public/index.html` file.
 3. Run the command `npm start`. The app will run in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 4. Click on the track button to fire event.
 
