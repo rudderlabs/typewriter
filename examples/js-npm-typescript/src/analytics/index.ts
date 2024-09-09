@@ -21,6 +21,7 @@ import type {
   RudderAnalytics,
   RudderAnalyticsPreloader,
   ApiOptions,
+  ApiObject,
 } from '@rudderstack/analytics-js';
 /**
  * The analytics instance should be available via window.rudderanalytics.
@@ -33,10 +34,6 @@ declare global {
 }
 
 type apiCallback = (data?: any) => void;
-
-export interface Options extends ApiOptions {
-  context?: Record<string, any>;
-}
 
 /** The Schema object which is being used by Ajv to validate the message */
 export interface Schema {
@@ -146,11 +143,11 @@ async function validateAgainstSchema(message: Record<string, any>, schema: Schem
  * Helper to attach metadata on RudderTyper to outbound requests.
  * This is used for attribution and debugging by the RudderStack team.
  */
-function withRudderTyperContext(message: Options = {}): Options {
+function withRudderTyperContext(message: ApiOptions = {}): ApiOptions {
   return {
     ...message,
     context: {
-      ...(message.context || {}),
+      ...((message.context as ApiObject) || {}),
       ruddertyper: {
         sdk: 'analytics.js',
         language: 'typescript',
@@ -177,7 +174,7 @@ function withRudderTyperContext(message: Options = {}): Options {
  */
 export function sampleEvent1(
   props?: SampleEvent1,
-  options?: Options,
+  options?: ApiOptions,
   callback?: apiCallback,
 ): void {
   const a = analytics();

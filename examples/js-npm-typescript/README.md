@@ -38,7 +38,7 @@ Execute the following steps to regenerate the client library based on your track
 Note: Ensure that you have setup the repository for development.
 
 ```
-npm run ruddertyper:dev init
+npm run rudder-typer:dev init
 ```
 
 This will build the RudderTyper module locally and regenerates the client library based on the tracking plan.
@@ -46,5 +46,5 @@ This will build the RudderTyper module locally and regenerates the client librar
 You can further execute various RudderTyper commands like,
 
 ```
-npm run ruddertyper:dev <command>
+npm run rudder-typer:dev <command>
 ```

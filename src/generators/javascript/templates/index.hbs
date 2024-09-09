@@ -21,7 +21,7 @@ import AjvDraft4 from 'ajv-draft-04'
 
 {{#if isBrowser}}
 
-import type { RudderAnalytics, RudderAnalyticsPreloader, ApiOptions } from '@rudderstack/analytics-js';
+import type { RudderAnalytics, RudderAnalyticsPreloader, ApiOptions, ApiObject } from '@rudderstack/analytics-js';
 /**
  * The analytics instance should be available via window.rudderanalytics.
  * You can install it by following instructions at: https://www.rudderstack.com/docs/sources/event-streams/sdks/rudderstack-javascript-sdk/installation/
@@ -34,12 +34,8 @@ declare global {
 
 type apiCallback = (data?: any) => void;
 
-export interface Options extends ApiOptions {
-  context?: Record<string, any>;
-} 
-
 {{else}}
-import AnalyticsNode, { apiObject, apiCallback, TrackParams } from '@rudderstack/rudder-sdk-node'
+import AnalyticsNode, { apiObject as ApiObject, apiCallback, TrackParams } from '@rudderstack/rudder-sdk-node'
 
 /**
  * An ID associated with the user. Note: at least one of userId or anonymousId must be included!
@@ -51,7 +47,7 @@ type Identity =
 export type TrackMessage<PropertiesType> = Omit<
   TrackParams,
   'event' | 'properties'
-> & { event?: string, properties: PropertiesType } & Identity &
+> & { properties: PropertiesType } & Identity &
   Record<string, any>;
 {{/if}}
 
@@ -70,7 +66,7 @@ export interface Schema {
  * {{description}}
  */
 {{/if}}
-export interface {{name}} {{#unless ../isBrowser}} extends apiObject {{/unless}} {
+export interface {{name}} {{#unless ../isBrowser}} extends ApiObject {{/unless}} {
 	{{#each properties}}
 	{{#if description}}
 	/**
@@ -207,11 +203,11 @@ async function validateAgainstSchema(
  * Helper to attach metadata on RudderTyper to outbound requests.
  * This is used for attribution and debugging by the RudderStack team.
  */
-function withRudderTyperContext{{#unless isBrowser}}<P, T extends TrackMessage<P>>{{/unless}}(message: {{#if isBrowser}}Options = {}{{else}}T{{/if}}): {{#if isBrowser}}Options{{else}}T{{/if}} {
+function withRudderTyperContext{{#unless isBrowser}}<P, T extends TrackMessage<P>>{{/unless}}(message: {{#if isBrowser}}ApiOptions = {}{{else}}T{{/if}}): {{#if isBrowser}}ApiOptions{{else}}T{{/if}} {
 	return {
 		...message,
 		context: {
-			...(message.context || {}),
+			...((message.context as ApiObject)  || {}),
 			ruddertyper: {
 				sdk: '{{sdk}}',
 				language: '{{language}}',
@@ -259,7 +255,7 @@ function withRudderTyperContext{{#unless isBrowser}}<P, T extends TrackMessage<P
 {{#if ../isBrowser}}
 export function {{functionName}}(
 	props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
-	options?: Options,
+	options?: ApiOptions,
 	callback?: apiCallback
 ): void {
 	const a = analytics()

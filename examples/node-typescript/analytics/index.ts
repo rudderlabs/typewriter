@@ -17,7 +17,11 @@
 import Ajv, { ErrorObject } from 'ajv';
 import AjvDraft4 from 'ajv-draft-04';
 
-import AnalyticsNode, { apiObject, apiCallback, TrackParams } from '@rudderstack/rudder-sdk-node';
+import AnalyticsNode, {
+  apiObject as ApiObject,
+  apiCallback,
+  TrackParams,
+} from '@rudderstack/rudder-sdk-node';
 
 /**
  * An ID associated with the user. Note: at least one of userId or anonymousId must be included!
@@ -25,7 +29,6 @@ import AnalyticsNode, { apiObject, apiCallback, TrackParams } from '@rudderstack
 type Identity = { userId: string; anonymousId?: string } | { userId?: string; anonymousId: string };
 
 export type TrackMessage<PropertiesType> = Omit<TrackParams, 'event' | 'properties'> & {
-  event?: string;
   properties: PropertiesType;
 } & Identity &
   Record<string, any>;
@@ -39,7 +42,7 @@ export interface Schema {
   type?: string;
 }
 
-export interface CartViewed extends apiObject {
+export interface CartViewed extends ApiObject {
   /**
    * Contains the cart ID of the cart to which the product was added
    */
@@ -49,7 +52,7 @@ export interface CartViewed extends apiObject {
    */
   products?: any[];
 }
-export interface CheckoutStarted extends apiObject {
+export interface CheckoutStarted extends ApiObject {
   /**
    * Contains the store or affiliation details from where the transaction was started
    */
@@ -91,7 +94,7 @@ export interface CheckoutStarted extends apiObject {
    */
   value?: number;
 }
-export interface CheckoutStepCompleted extends apiObject {
+export interface CheckoutStepCompleted extends ApiObject {
   /**
    * Contains the checkout transaction ID
    */
@@ -109,7 +112,7 @@ export interface CheckoutStepCompleted extends apiObject {
    */
   step: number;
 }
-export interface CouponApplied extends apiObject {
+export interface CouponApplied extends ApiObject {
   /**
    * Contains the cart ID, if applicable
    */
@@ -131,7 +134,7 @@ export interface CouponApplied extends apiObject {
    */
   order_id?: string;
 }
-export interface OrderCompleted extends apiObject {
+export interface OrderCompleted extends ApiObject {
   /**
    * Contains the store or affiliation details from where the transaction was started
    */
@@ -181,7 +184,7 @@ export interface OrderCompleted extends apiObject {
    */
   total?: number;
 }
-export interface PaymentInfoEntered extends apiObject {
+export interface PaymentInfoEntered extends ApiObject {
   /**
    * Contains the checkout transaction ID
    */
@@ -203,7 +206,7 @@ export interface PaymentInfoEntered extends apiObject {
    */
   step: number;
 }
-export interface ProductAdded extends apiObject {
+export interface ProductAdded extends ApiObject {
   /**
    * Brand of the product
    */
@@ -257,7 +260,7 @@ export interface ProductAdded extends apiObject {
    */
   variant?: string;
 }
-export interface ProductClicked extends apiObject {
+export interface ProductClicked extends ApiObject {
   /**
    * Contains the name of the brand associated with the product
    */
@@ -307,13 +310,13 @@ export interface ProductClicked extends apiObject {
    */
   variant?: string;
 }
-export interface ProductsSearched extends apiObject {
+export interface ProductsSearched extends ApiObject {
   /**
    * Contains the query that has been searched by the user
    */
   query: Record<string, any> | string;
 }
-export interface ProductViewed extends apiObject {
+export interface ProductViewed extends ApiObject {
   /**
    * Contains the name of the brand associated with the product
    */
@@ -487,7 +490,7 @@ function withRudderTyperContext<P, T extends TrackMessage<P>>(message: T): T {
   return {
     ...message,
     context: {
-      ...(message.context || {}),
+      ...((message.context as ApiObject) || {}),
       ruddertyper: {
         sdk: 'analytics-node',
         language: 'typescript',

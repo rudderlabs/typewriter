@@ -33,7 +33,7 @@
     "setup": "npm ci",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "ruddertyper:dev": "chmod +x ./rt_script.sh && ./rt_script.sh"
+    "rudder-typer:dev": "chmod +x ./rt_script.sh && ./rt_script.sh"
   },
   "eslintConfig": {
     "extends": [
