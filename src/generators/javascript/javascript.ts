@@ -144,16 +144,6 @@ export const javascript: Generator<
       'generators/javascript/templates/index.hbs',
       context,
     );
-
-    // rudder.hbs contains the TypeScript definitions for the Rudder API.
-    // It becomes an empty file for JavaScript after being transpiled.
-    if (client.options.client.language === Language.TYPESCRIPT) {
-      await client.generateFile<JavaScriptRootContext>(
-        'rudder.ts',
-        'generators/javascript/templates/rudder.hbs',
-        context,
-      );
-    }
   },
   formatFile: async (client: GeneratorClient, file: File): Promise<File> => {
     let { contents } = file;

@@ -5,11 +5,13 @@ This is a basic web application written in TypeScript that uses RudderTyper clie
 ## Steps to run the sample app
 
 1. Run `npm run setup` to install the required dependencies.
-2. Replace `__WRITE_KEY__` and `__DATAPLANE_URL__` values in `./public/index.html` file.
+2. Replace all `__WRITE_KEY__` and `__DATAPLANE_URL__` values in `./public/index.html` file.
 3. Run the command `npm start`. The app will run in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 4. Click on the track button to fire event.
 
 ![Alt text](app.png?raw=true 'Sample Site')
+
+> Note: If you are building your own sample app, `@rudderstack/analytics-js` npm package must be added as a dev dependency of the package.json.
 
 ## Regenerate client libraries
 
@@ -40,7 +42,7 @@ Execute the following steps to regenerate the client library based on your track
 Note: Ensure that you have setup the repository for development.
 
 ```
-npm run ruddertyper:dev init
+npm run rudder-typer:dev init
 ```
 
 This will build the RudderTyper module locally and regenerates the client library based on the tracking plan.
@@ -48,7 +50,7 @@ This will build the RudderTyper module locally and regenerates the client librar
 You can further execute various RudderTyper commands like,
 
 ```
-npm run ruddertyper:dev <command>
+npm run rudder-typer:dev <command>
 ```
 
 To re-generate the browserify bundle run the below command

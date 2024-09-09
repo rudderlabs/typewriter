@@ -11,10 +11,11 @@ This is a basic web application written in TypeScript that uses RudderTyper clie
 
 ![Alt text](app.png?raw=true 'Sample Site')
 
+> Note: If you are building your own sample app, `@rudderstack/analytics-js` npm package must be added as a dev dependency of the package.json.
+
 ## Regenerate client libraries
 
-1. Run the command `npx rudder-typer`. This will generate new `index.ts` and `rudder.ts` file based on the ruddertyper.yml.
-2. Add `import type { RudderAnalytics, RudderAnalyticsPreloader } from '@rudderstack/analytics-js';` this line at the top of `rudder.ts` file and update _rudderanalytics_ interface type to `rudderanalytics: RudderAnalytics | RudderAnalyticsPreloader | undefined;`
+Run the command `npx rudder-typer`. This will generate new `index.ts` file based on the ruddertyper.yml.
 
 ### Production RudderTyper
 
@@ -37,7 +38,7 @@ Execute the following steps to regenerate the client library based on your track
 Note: Ensure that you have setup the repository for development.
 
 ```
-npm run ruddertyper:dev init
+npm run rudder-typer:dev init
 ```
 
 This will build the RudderTyper module locally and regenerates the client library based on the tracking plan.
@@ -45,5 +46,5 @@ This will build the RudderTyper module locally and regenerates the client librar
 You can further execute various RudderTyper commands like,
 
 ```
-npm run ruddertyper:dev <command>
+npm run rudder-typer:dev <command>
 ```

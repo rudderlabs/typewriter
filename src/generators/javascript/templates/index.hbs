@@ -18,12 +18,47 @@
 import Ajv, { ErrorObject } from 'ajv'
 import AjvDraft4 from 'ajv-draft-04'
 {{/if}}
-import * as Rudder from './rudder'
+
 {{#if isBrowser}}
+
+import type { RudderAnalytics, RudderAnalyticsPreloader, ApiOptions, ApiObject } from '@rudderstack/analytics-js';
+/**
+ * The analytics instance should be available via window.rudderanalytics.
+ * You can install it by following instructions at: https://www.rudderstack.com/docs/sources/event-streams/sdks/rudderstack-javascript-sdk/installation/
+ */
+declare global {
+  interface Window {
+    rudderanalytics: RudderAnalytics | RudderAnalyticsPreloader | undefined;
+  }
+}
+
 type apiCallback = (data?: any) => void;
+
 {{else}}
-import { apiObject, apiCallback } from '@rudderstack/rudder-sdk-node'
+import AnalyticsNode, { apiObject as ApiObject, apiCallback, TrackParams } from '@rudderstack/rudder-sdk-node'
+
+/**
+ * An ID associated with the user. Note: at least one of userId or anonymousId must be included!
+ **/
+type Identity =
+  | { userId: string; anonymousId?: string }
+  | { userId?: string; anonymousId: string }
+
+export type TrackMessage<PropertiesType> = Omit<
+  TrackParams,
+  'event' | 'properties'
+> & { properties: PropertiesType } & Identity &
+  Record<string, any>;
 {{/if}}
+
+/** The Schema object which is being used by Ajv to validate the message */
+export interface Schema {
+	$schema? : string 
+	description? : string
+	properties? : object
+	title? : string
+	type? : string
+}
 
 {{#each objects}}
 {{#if description}}
@@ -31,7 +66,7 @@ import { apiObject, apiCallback } from '@rudderstack/rudder-sdk-node'
  * {{description}}
  */
 {{/if}}
-export interface {{name}} {{#unless ../isBrowser}} extends apiObject {{/unless}} {
+export interface {{name}} {{#unless ../isBrowser}} extends ApiObject {{/unless}} {
 	{{#each properties}}
 	{{#if description}}
 	/**
@@ -44,7 +79,7 @@ export interface {{name}} {{#unless ../isBrowser}} extends apiObject {{/unless}}
 {{/each}}
 
 export type ViolationHandler = (
-	message: {{#if isBrowser}}Record<string, any>{{else}}Rudder.TrackMessage<Record<string, any>>{{/if}},
+	message: {{#if isBrowser}}Record<string, any>{{else}}TrackMessage<Record<string, any>>{{/if}},
 	{{!-- Swap the type definitions here so we don't want depend on ajv in production just for this type definition. --}}
 	violations: {{#if isDevelopment}}ErrorObject{{else}}any{{/if}}[]
 ) => void
@@ -95,7 +130,7 @@ For more information on analytics-node, see: https://docs.rudderstack.com/stream
 {{/unless}}
 
 {{!-- We use a closure so we can lazy-resolve window.rudderanalytics in browser environments. --}}
-let analytics: () => ({{#if isBrowser}}any{{else}}Rudder.AnalyticsNode{{/if}} | undefined) = () => {
+let analytics: () => ({{#if isBrowser}}any{{else}}AnalyticsNode{{/if}} | undefined) = () => {
 	{{#if isBrowser}}
 	return window.rudderanalytics
 	{{else}}
@@ -111,7 +146,7 @@ export interface RudderTyperOptions {
 	 * Defaults to window.rudderanalytics.
 	 {{/if}}
 	 */
-	analytics{{#if isBrowser}}?{{/if}}: {{#if isBrowser}}any{{else}}Rudder.AnalyticsNode{{/if}}
+	analytics{{#if isBrowser}}?{{/if}}: {{#if isBrowser}}any{{else}}AnalyticsNode{{/if}}
 	/**
 	 * Handler fired when if an event does not match its spec. This handler
 	 * does not fire in production mode, because it requires inlining the full
@@ -137,8 +172,8 @@ export function setRudderTyperOptions(options: RudderTyperOptions) {
 	* is invalid, the `onViolation` handler will be called.
 	*/
 async function validateAgainstSchema(
-	message: {{#if isBrowser}}Record<string, any>{{else}}Rudder.TrackMessage<Record<string, any>>{{/if}},
-	schema: Rudder.Schema
+	message: {{#if isBrowser}}Record<string, any>{{else}}TrackMessage<Record<string, any>>{{/if}},
+	schema: Schema
 ) {
 	let ajv;
 	if (schema['$schema'] && schema['$schema'].includes('draft-04')) {
@@ -168,11 +203,11 @@ async function validateAgainstSchema(
  * Helper to attach metadata on RudderTyper to outbound requests.
  * This is used for attribution and debugging by the RudderStack team.
  */
-function withRudderTyperContext{{#unless isBrowser}}<P, T extends Rudder.TrackMessage<P>>{{/unless}}(message: {{#if isBrowser}}Rudder.Options = {}{{else}}T{{/if}}): {{#if isBrowser}}Rudder.Options{{else}}T{{/if}} {
+function withRudderTyperContext{{#unless isBrowser}}<P, T extends TrackMessage<P>>{{/unless}}(message: {{#if isBrowser}}ApiOptions = {}{{else}}T{{/if}}): {{#if isBrowser}}ApiOptions{{else}}T{{/if}} {
 	return {
 		...message,
 		context: {
-			...(message.context || {}),
+			...((message.context as ApiObject)  || {}),
 			ruddertyper: {
 				sdk: '{{sdk}}',
 				language: '{{language}}',
@@ -220,7 +255,7 @@ function withRudderTyperContext{{#unless isBrowser}}<P, T extends Rudder.TrackMe
 {{#if ../isBrowser}}
 export function {{functionName}}(
 	props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
-	options?: Rudder.Options,
+	options?: ApiOptions,
 	callback?: apiCallback
 ): void {
 	const a = analytics()
@@ -254,7 +289,7 @@ export function {{functionName}}(
 }
 {{else}}
 export function {{functionName}}(
-	message: Rudder.TrackMessage<{{propertiesType}}>,
+	message: TrackMessage<{{propertiesType}}>,
 	callback?: apiCallback
 ): void {
 	const msg = withRudderTyperContext({

@@ -21,22 +21,48 @@ async function run() {
     },
   });
 
-  RudderTyperAnalytics.productClicked({
-    userId: 'temp_user_id',
-    anonymousId: 'temp_anonymous_id',
-    properties: {
-      product_id: 'iphone_12',
-      sku: 'iphone_12_sku',
-      category: 'smartphones',
-      name: 'iPhone 12',
-      brand: 'Apple',
-      price: 999.99,
-      image_url: 'https://example.com/iphone_12.jpg',
-      coupon: 'SUMMER_SALE',
-      position: 1,
-      variant: 'red',
+  RudderTyperAnalytics.productClicked(
+    {
+      userId: 'temp_user_id',
+      anonymousId: 'temp_anonymous_id',
+      properties: {
+        product_id: 'iphone_12',
+        sku: 'iphone_12_sku',
+        category: 'smartphones',
+        name: 'iPhone 12',
+        brand: 'Apple',
+        price: 999.99,
+        image_url: 'https://example.com/iphone_12.jpg',
+        coupon: 'SUMMER_SALE',
+        position: 1,
+        variant: 'red',
+      },
+      context: {
+        app: {
+          name: 'RudderStack',
+          version: '1.0.0',
+          build: '100',
+        },
+        device: {
+          id: 'device_id',
+          manufacturer: 'Samsung',
+          model: 'Galaxy S20',
+          name: 'Samsung Galaxy S20',
+          type: 'Android',
+        },
+        randomKey1: 'RandomValue',
+      },
+      integrations: {
+        All: true,
+        Amplitude: false,
+      },
+      timestamp: new Date(),
+      extraKey1: 'value1',
     },
-  });
+    () => {
+      console.log('callback called from productClicked event');
+    },
+  );
 
   RudderTyperAnalytics.productViewed({
     userId: 'temp_user_id',

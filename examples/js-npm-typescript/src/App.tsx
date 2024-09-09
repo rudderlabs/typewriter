@@ -16,9 +16,37 @@ function App() {
   }, [analytics]);
 
   const track = () => {
-    RudderTyperAnalytics.sampleEvent1({
-      'Sample property 1': 'Sample value 1',
-    });
+    RudderTyperAnalytics.sampleEvent1(
+      {
+        'Sample property 1': 'Sample value 1',
+      },
+      {
+        integrations: {
+          All: false,
+          'Google Analytics': true,
+        },
+        context: {
+          active: true,
+          app: {
+            name: 'RudderStack',
+            version: '1.0.0',
+            build: '100',
+          },
+          device: {
+            id: 'device_id',
+            manufacturer: 'Samsung',
+            model: 'Galaxy S20',
+            name: 'Samsung Galaxy S20',
+            type: 'Android',
+          },
+          timestamp: new Date(),
+          extraKey1: 'value1',
+        },
+      },
+      () => {
+        console.log('callback called from sampleEvent1 event');
+      },
+    );
   };
 
   return (
