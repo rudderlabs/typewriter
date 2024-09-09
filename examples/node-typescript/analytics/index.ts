@@ -16,8 +16,28 @@
  */
 import Ajv, { ErrorObject } from 'ajv';
 import AjvDraft4 from 'ajv-draft-04';
-import * as Rudder from './rudder';
-import { apiObject, apiCallback } from '@rudderstack/rudder-sdk-node';
+
+import AnalyticsNode, { apiObject, apiCallback, TrackParams } from '@rudderstack/rudder-sdk-node';
+
+/**
+ * An ID associated with the user. Note: at least one of userId or anonymousId must be included!
+ **/
+type Identity = { userId: string; anonymousId?: string } | { userId?: string; anonymousId: string };
+
+export type TrackMessage<PropertiesType> = Omit<TrackParams, 'event' | 'properties'> & {
+  event?: string;
+  properties: PropertiesType;
+} & Identity &
+  Record<string, any>;
+
+/** The Schema object which is being used by Ajv to validate the message */
+export interface Schema {
+  $schema?: string;
+  description?: string;
+  properties?: object;
+  title?: string;
+  type?: string;
+}
 
 export interface CartViewed extends apiObject {
   /**
@@ -349,7 +369,7 @@ export interface ProductViewed extends apiObject {
 }
 
 export type ViolationHandler = (
-  message: Rudder.TrackMessage<Record<string, any>>,
+  message: TrackMessage<Record<string, any>>,
   violations: ErrorObject[],
 ) => void;
 
@@ -392,7 +412,7 @@ const missingAnalyticsNodeError = new Error(`You must set an analytics-node inst
 For more information on analytics-node, see: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#installing-the-rudderstack-node-js-sdk
 `);
 
-let analytics: () => Rudder.AnalyticsNode | undefined = () => {
+let analytics: () => AnalyticsNode | undefined = () => {
   throw missingAnalyticsNodeError;
 };
 
@@ -401,7 +421,7 @@ export interface RudderTyperOptions {
   /**
    * Underlying analytics instance where analytics calls are forwarded on to.
    */
-  analytics: Rudder.AnalyticsNode;
+  analytics: AnalyticsNode;
   /**
    * Handler fired when if an event does not match its spec. This handler
    * does not fire in production mode, because it requires inlining the full
@@ -437,10 +457,7 @@ export function setRudderTyperOptions(options: RudderTyperOptions) {
  * Validates a message against a JSON Schema using Ajv. If the message
  * is invalid, the `onViolation` handler will be called.
  */
-async function validateAgainstSchema(
-  message: Rudder.TrackMessage<Record<string, any>>,
-  schema: Rudder.Schema,
-) {
+async function validateAgainstSchema(message: TrackMessage<Record<string, any>>, schema: Schema) {
   let ajv;
   if (schema['$schema'] && schema['$schema'].includes('draft-04')) {
     ajv = new AjvDraft4({
@@ -466,7 +483,7 @@ async function validateAgainstSchema(
  * Helper to attach metadata on RudderTyper to outbound requests.
  * This is used for attribution and debugging by the RudderStack team.
  */
-function withRudderTyperContext<P, T extends Rudder.TrackMessage<P>>(message: T): T {
+function withRudderTyperContext<P, T extends TrackMessage<P>>(message: T): T {
   return {
     ...message,
     context: {
@@ -474,7 +491,7 @@ function withRudderTyperContext<P, T extends Rudder.TrackMessage<P>>(message: T)
       ruddertyper: {
         sdk: 'analytics-node',
         language: 'typescript',
-        rudderTyperVersion: '1.0.0-beta.8',
+        rudderTyperVersion: '1.0.0-beta.11',
         trackingPlanId: 'tp_2kuRZPE6pJYlWqdjC127h9BYJKq',
         trackingPlanVersion: 3,
       },
@@ -611,7 +628,7 @@ function withRudderTyperContext<P, T extends Rudder.TrackMessage<P>>(message: T)
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
  * 		call is fired.
  */
-export function cartViewed(message: Rudder.TrackMessage<CartViewed>, callback?: apiCallback): void {
+export function cartViewed(message: TrackMessage<CartViewed>, callback?: apiCallback): void {
   const msg = withRudderTyperContext({
     properties: {},
     ...message,
@@ -657,7 +674,7 @@ export function cartViewed(message: Rudder.TrackMessage<CartViewed>, callback?: 
  * 		call is fired.
  */
 export function checkoutStarted(
-  message: Rudder.TrackMessage<CheckoutStarted>,
+  message: TrackMessage<CheckoutStarted>,
   callback?: apiCallback,
 ): void {
   const msg = withRudderTyperContext({
@@ -741,7 +758,7 @@ export function checkoutStarted(
  * 		call is fired.
  */
 export function checkoutStepCompleted(
-  message: Rudder.TrackMessage<CheckoutStepCompleted>,
+  message: TrackMessage<CheckoutStepCompleted>,
   callback?: apiCallback,
 ): void {
   const msg = withRudderTyperContext({
@@ -796,10 +813,7 @@ export function checkoutStepCompleted(
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
  * 		call is fired.
  */
-export function couponApplied(
-  message: Rudder.TrackMessage<CouponApplied>,
-  callback?: apiCallback,
-): void {
+export function couponApplied(message: TrackMessage<CouponApplied>, callback?: apiCallback): void {
   const msg = withRudderTyperContext({
     properties: {},
     ...message,
@@ -857,7 +871,7 @@ export function couponApplied(
  * 		call is fired.
  */
 export function orderCompleted(
-  message: Rudder.TrackMessage<OrderCompleted>,
+  message: TrackMessage<OrderCompleted>,
   callback?: apiCallback,
 ): void {
   const msg = withRudderTyperContext({
@@ -950,7 +964,7 @@ export function orderCompleted(
  * 		call is fired.
  */
 export function paymentInfoEntered(
-  message: Rudder.TrackMessage<PaymentInfoEntered>,
+  message: TrackMessage<PaymentInfoEntered>,
   callback?: apiCallback,
 ): void {
   const msg = withRudderTyperContext({
@@ -1010,10 +1024,7 @@ export function paymentInfoEntered(
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
  * 		call is fired.
  */
-export function productAdded(
-  message: Rudder.TrackMessage<ProductAdded>,
-  callback?: apiCallback,
-): void {
+export function productAdded(message: TrackMessage<ProductAdded>, callback?: apiCallback): void {
   const msg = withRudderTyperContext({
     properties: {},
     ...message,
@@ -1103,7 +1114,7 @@ export function productAdded(
  * 		call is fired.
  */
 export function productClicked(
-  message: Rudder.TrackMessage<ProductClicked>,
+  message: TrackMessage<ProductClicked>,
   callback?: apiCallback,
 ): void {
   const msg = withRudderTyperContext({
@@ -1191,7 +1202,7 @@ export function productClicked(
  * 		call is fired.
  */
 export function productsSearched(
-  message: Rudder.TrackMessage<ProductsSearched>,
+  message: TrackMessage<ProductsSearched>,
   callback?: apiCallback,
 ): void {
   const msg = withRudderTyperContext({
@@ -1234,10 +1245,7 @@ export function productsSearched(
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
  * 		call is fired.
  */
-export function productViewed(
-  message: Rudder.TrackMessage<ProductViewed>,
-  callback?: apiCallback,
-): void {
+export function productViewed(message: TrackMessage<ProductViewed>, callback?: apiCallback): void {
   const msg = withRudderTyperContext({
     properties: {},
     ...message,

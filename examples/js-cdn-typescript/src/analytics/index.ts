@@ -16,8 +16,36 @@
  */
 import Ajv, { ErrorObject } from 'ajv';
 import AjvDraft4 from 'ajv-draft-04';
-import * as Rudder from './rudder';
+
+import type {
+  RudderAnalytics,
+  RudderAnalyticsPreloader,
+  ApiOptions,
+} from '@rudderstack/analytics-js';
+/**
+ * The analytics.js snippet should be available via window.analytics.
+ * You can install it by following instructions at: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-javascript-sdk#2-installing-the-rudderstack-javascript-sdk
+ */
+declare global {
+  interface Window {
+    rudderanalytics: RudderAnalytics | RudderAnalyticsPreloader | undefined;
+  }
+}
+
 type apiCallback = (data?: any) => void;
+
+export interface Options extends ApiOptions {
+  context?: Record<string, any>;
+}
+
+/** The Schema object which is being used by Ajv to validate the message */
+export interface Schema {
+  $schema?: string;
+  description?: string;
+  properties?: object;
+  title?: string;
+  type?: string;
+}
 
 export interface SampleEvent1 {
   /**
@@ -94,7 +122,7 @@ export function setRudderTyperOptions(options: RudderTyperOptions) {
  * Validates a message against a JSON Schema using Ajv. If the message
  * is invalid, the `onViolation` handler will be called.
  */
-async function validateAgainstSchema(message: Record<string, any>, schema: Rudder.Schema) {
+async function validateAgainstSchema(message: Record<string, any>, schema: Schema) {
   let ajv;
   if (schema['$schema'] && schema['$schema'].includes('draft-04')) {
     ajv = new AjvDraft4({
@@ -118,7 +146,7 @@ async function validateAgainstSchema(message: Record<string, any>, schema: Rudde
  * Helper to attach metadata on RudderTyper to outbound requests.
  * This is used for attribution and debugging by the RudderStack team.
  */
-function withRudderTyperContext(message: Rudder.Options = {}): Rudder.Options {
+function withRudderTyperContext(message: Options = {}): Options {
   return {
     ...message,
     context: {
@@ -126,7 +154,7 @@ function withRudderTyperContext(message: Rudder.Options = {}): Rudder.Options {
       ruddertyper: {
         sdk: 'analytics.js',
         language: 'typescript',
-        rudderTyperVersion: '1.0.0-beta.8',
+        rudderTyperVersion: '1.0.0-beta.11',
         trackingPlanId: 'tp_2kKI0i514th5OEuYi5AdsRwNlXC',
         trackingPlanVersion: 2,
       },
@@ -149,7 +177,7 @@ function withRudderTyperContext(message: Rudder.Options = {}): Rudder.Options {
  */
 export function sampleEvent1(
   props?: SampleEvent1,
-  options?: Rudder.Options,
+  options?: Options,
   callback?: apiCallback,
 ): void {
   const a = analytics();

@@ -19,7 +19,7 @@
     "ruddertyper:dev": "chmod +x ./rt_script.sh && ./rt_script.sh"
   },
   "dependencies": {
-    "@rudderstack/rudder-sdk-node": "2.0.9",
+    "@rudderstack/rudder-sdk-node": "2.0.10",
     "dotenv": "16.4.5"
   },
   "devDependencies": {

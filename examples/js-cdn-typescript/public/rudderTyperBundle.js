@@ -8388,7 +8388,7 @@
                 ruddertyper: {
                   sdk: 'analytics.js',
                   language: 'typescript',
-                  rudderTyperVersion: '1.0.0-beta.8',
+                  rudderTyperVersion: '1.0.0-beta.11',
                   trackingPlanId: 'tp_2kKI0i514th5OEuYi5AdsRwNlXC',
                   trackingPlanVersion: 2,
                 },
