@@ -23,8 +23,8 @@ import type {
   ApiOptions,
 } from '@rudderstack/analytics-js';
 /**
- * The analytics.js snippet should be available via window.analytics.
- * You can install it by following instructions at: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-javascript-sdk#2-installing-the-rudderstack-javascript-sdk
+ * The analytics instance should be available via window.rudderanalytics.
+ * You can install it by following instructions at: https://www.rudderstack.com/docs/sources/event-streams/sdks/rudderstack-javascript-sdk/installation/
  */
 declare global {
   interface Window {
