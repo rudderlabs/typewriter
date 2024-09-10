@@ -196,76 +196,36 @@ import com.rudderstack.generated.*
 
 ### RudderStack JavaScript SDK
 
-- Import the RudderTyper-generated client using `require()` and make the calls if your framework supports them. Otherwise, you can use [**Browserify**](https://browserify.org/) to generate a bundle that supports your implementation. The implementation for each of the alternatives mentioned above will be as shown:
+There are two ways to get started with RudderTyper in your browser:
 
-#### Using the `require()`method
+#### 1. Using the JavaScript SDK snippet
 
-```javascript
-// Import RudderStack JS SDK and initialize it
-const RudderAnalytics = require('@rudderstack/analytics-js');
-
-const rudderAnalytics = new RudderAnalytics();
-rudderAnalytics.load(WRITE_KEY, DATA_PLANE_URL, {});
-
-// Import your auto-generated RudderTyper client:
-const rudderTyper = require('./analytics/index');
-
-// Pass in your @rudderstack/analytics-js instance to RudderTyper client
-rudderTyper.setRudderTyperOptions({
-  analytics: rudderAnalytics,
-});
-
-// Issue your first RudderTyper track call!
-rudderTyper.orderCompleted({
-  orderID: 'ck-f306fe0e-cc21-445a-9caa-08245a9aa52c',
-  total: 39.99,
-});
-```
-
-#### Using `browserify`
-
-- Execute the following command to generate a bundle from the RudderTyper client:
+- Paste the [JavaScript SDK snippet](https://www.rudderstack.com/docs/sources/event-streams/sdks/rudderstack-javascript-sdk/quickstart/#using-cdn) from the RudderStack dashboard to your HTML file.
+- If you use TypeScript, add `@rudderstack/analytics-js` as a dev dependency.
 
 ```sh
-browserify analytics/index.js --standalone rudderTyper >  rudderTyperBundle.js
+npm install --save-dev  @rudderstack/analytics-js
 ```
 
-- Now you can make calls from your `html` file as shown:
+- Run the following command to generate a bundle from the RudderTyper client:
+
+```sh
+npx browserify analytics/index.js --standalone rudderTyper >  rudderTyperBundle.js
+```
+
+- For the TypeScript analytics client, add the NPM package `tsify` as a dependency and run the following command to generate the bundle:
+
+```sh
+npx browserify analytics/index.ts -p [ tsify ] --standalone rudderTyper >  rudderTyperBundle.js
+```
+
+- Import your RudderTyper client and send events, as shown:
 
 ```html
-<head>
-  <script>
-    rudderanalytics = window.rudderanalytics = [];
-    var methods = [
-      'load',
-      'page',
-      'track',
-      'identify',
-      'alias',
-      'group',
-      'ready',
-      'reset',
-      'getAnonymousId',
-      'setAnonymousId',
-    ];
-    for (var i = 0; i < methods.length; i++) {
-      var method = methods[i];
-      rudderanalytics[method] = (function (methodName) {
-        return function () {
-          rudderanalytics.push([methodName].concat(Array.prototype.slice.call(arguments)));
-        };
-      })(method);
-    }
-    rudderanalytics.load(YOUR_WRITE_KEY, DATA_PLANE_URL);
-    rudderanalytics.page();
-  </script>
-  <script src="https://cdn.rudderlabs.com/v1/rudder-analytics.min.js"></script>
-  <script src="./rudderTyperBundle.js"></script>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
-</head>
+<script>
+  // Here goes the SDK snippet
+</script>
+<script src="./rudderTyperBundle.js"></script>
 <script>
   rudderTyper.setRudderTyperOptions({
     analytics: rudderanalytics,
@@ -276,6 +236,40 @@ browserify analytics/index.js --standalone rudderTyper >  rudderTyperBundle.js
   });
 </script>
 ```
+
+See the [sample application](https://github.com/rudderlabs/rudder-typer/tree/develop/examples/js-cdn-typescript) for reference.
+
+#### 2. Using NPM
+
+Import the RudderTyper-generated client and make the calls if your framework supports them.
+
+```javascript
+// Import RudderStack JS SDK and initialize it
+import { RudderAnalytics } from '@rudderstack/analytics-js';
+// Import your auto-generated RudderTyper client:
+import { RudderTyperAnalytics } from './analytics/index';
+
+const rudderAnalytics = new RudderAnalytics();
+rudderAnalytics.load(WRITE_KEY, DATA_PLANE_URL, {});
+
+// Pass in your @rudderstack/analytics-js instance to RudderTyper client
+RudderTyperAnalytics.setRudderTyperOptions({
+  analytics: rudderAnalytics,
+});
+
+// Issue your first RudderTyper track call!
+RudderTyperAnalytics.orderCompleted({
+  orderID: 'ck-f306fe0e-cc21-445a-9caa-08245a9aa52c',
+  total: 39.99,
+});
+```
+
+Note the following:
+
+- Remember to replace `WRITE_KEY` and `DATA_PLANE_URL` in the above snippet with the write key of your JavaScript source and the data plane URL respectively.
+- Run `npx rudder-typer` to regenerate your RudderTyper client every time you update your tracking plan.
+
+See the [sample application](https://github.com/rudderlabs/rudder-typer/tree/develop/examples/js-npm-typescript) for reference.
 
 ### RudderStack Node.js SDK
 
