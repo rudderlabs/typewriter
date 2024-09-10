@@ -200,7 +200,7 @@ There are two ways to get started with Rudder-Typer in your browser:
 
 #### 1. Using CDN (Snippet)
 
-- Paste the snippet from Rudderstack dashboard to your HTML file. [Ref](https://www.rudderstack.com/docs/sources/event-streams/sdks/rudderstack-javascript-sdk/quickstart/#using-cdn)
+- Paste the snippet from the Rudderstack dashboard to your HTML file. [Ref](https://www.rudderstack.com/docs/sources/event-streams/sdks/rudderstack-javascript-sdk/quickstart/#using-cdn)
 - If you are using typescript add `@rudderstack/analytics-js` as dev dependency.
 
 ```sh
