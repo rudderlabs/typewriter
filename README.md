@@ -222,6 +222,9 @@ npx browserify analytics/index.ts -p [ tsify ] --standalone rudderTyper >  rudde
 - Now import your RudderTyper client and send events
 
 ```html
+<script>
+  // Here goes the SDK snippet
+</script>
 <script src="./rudderTyperBundle.js"></script>
 <script>
   rudderTyper.setRudderTyperOptions({
@@ -233,6 +236,8 @@ npx browserify analytics/index.ts -p [ tsify ] --standalone rudderTyper >  rudde
   });
 </script>
 ```
+
+> Check out the [sample application](https://github.com/rudderlabs/rudder-typer/tree/develop/examples/js-cdn-typescript) for reference.
 
 #### 2. Using NPM
 
@@ -259,7 +264,7 @@ RudderTyperAnalytics.orderCompleted({
 });
 ```
 
-> Note: Remember to replace all instances of `WRITE_KEY` and `DATA_PLANE_URL` in the snippet with your write key and data plane URL values respectively.
+> Note: Remember to replace all instances of `WRITE_KEY` and `DATA_PLANE_URL` with your write key and data plane URL values respectively.
 
 > Note: Run `npx rudder-typer` to regenerate your RudderTyper client. You need to do this each time you update your Tracking Plan.
 
