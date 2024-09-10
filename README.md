@@ -216,7 +216,7 @@ npx browserify analytics/index.js --standalone rudderTyper >  rudderTyperBundle.
 - For TypeScript analytics client, add `tsify` NPM package as a dev dependency and run the following command to generate the bundle:
 
 ```sh
-npx browserify analytics/index.js -p [ tsify ] --standalone rudderTyper >  rudderTyperBundle.js
+npx browserify analytics/index.ts -p [ tsify ] --standalone rudderTyper >  rudderTyperBundle.js
 ```
 
 - Now import your RudderTyper client and send events
