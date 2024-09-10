@@ -196,33 +196,16 @@ import com.rudderstack.generated.*
 
 ### RudderStack JavaScript SDK
 
-- Import the RudderTyper-generated client using `require()` and make the calls if your framework supports them. Otherwise, you can use [**Browserify**](https://browserify.org/) to generate a bundle that supports your implementation. The implementation for each of the alternatives mentioned above will be as shown:
+There are two ways to get started with Rudder-Typer in your browser:
 
-#### Using the `require()`method
+#### 1. Using CDN (Snippet)
 
-```javascript
-// Import RudderStack JS SDK and initialize it
-const RudderAnalytics = require('@rudderstack/analytics-js');
+- Paste the snippet from Rudderstack dashboard to your HTML file. [Ref](https://www.rudderstack.com/docs/sources/event-streams/sdks/rudderstack-javascript-sdk/quickstart/#using-cdn)
+- If you are using typescript add `@rudderstack/analytics-js` as dev dependency.
 
-const rudderAnalytics = new RudderAnalytics();
-rudderAnalytics.load(WRITE_KEY, DATA_PLANE_URL, {});
-
-// Import your auto-generated RudderTyper client:
-const rudderTyper = require('./analytics/index');
-
-// Pass in your @rudderstack/analytics-js instance to RudderTyper client
-rudderTyper.setRudderTyperOptions({
-  analytics: rudderAnalytics,
-});
-
-// Issue your first RudderTyper track call!
-rudderTyper.orderCompleted({
-  orderID: 'ck-f306fe0e-cc21-445a-9caa-08245a9aa52c',
-  total: 39.99,
-});
+```sh
+npm install --save-dev  @rudderstack/analytics-js
 ```
-
-#### Using `browserify`
 
 - Execute the following command to generate a bundle from the RudderTyper client:
 
@@ -230,142 +213,16 @@ rudderTyper.orderCompleted({
 npx browserify analytics/index.js --standalone rudderTyper >  rudderTyperBundle.js
 ```
 
-For typescript project add `tsify` npm package as dev dependency and run the following command:
+- For typescript project add `tsify` npm package as dev dependency and run the following command:
 
 ```sh
 npx browserify analytics/index.js -p [ tsify ] --standalone rudderTyper >  rudderTyperBundle.js
 ```
 
-- Now you can make calls from your `html` file as shown:
+- Now import your RudderTyper client and send events
 
 ```html
-<head>
-  <script>
-    (function () {
-      'use strict';
-      window.RudderSnippetVersion = '3.0.24';
-      var identifier = 'rudderanalytics';
-      if (!window[identifier]) {
-        window[identifier] = [];
-      }
-      var rudderanalytics = window[identifier];
-      if (Array.isArray(rudderanalytics)) {
-        if (rudderanalytics.snippetExecuted === true && window.console && console.error) {
-          console.error('RudderStack JavaScript SDK snippet included more than once.');
-        } else {
-          rudderanalytics.snippetExecuted = true;
-          window.rudderAnalyticsBuildType = 'legacy';
-          var sdkBaseUrl = 'https://cdn.rudderlabs.com/v3';
-          var sdkName = 'rsa.min.js';
-          var scriptLoadingMode = 'async';
-          var methods = [
-            'setDefaultInstanceKey',
-            'load',
-            'ready',
-            'page',
-            'track',
-            'identify',
-            'alias',
-            'group',
-            'reset',
-            'setAnonymousId',
-            'startSession',
-            'endSession',
-            'consent',
-          ];
-          for (var i = 0; i < methods.length; i++) {
-            var method = methods[i];
-            rudderanalytics[method] = (function (methodName) {
-              return function () {
-                if (Array.isArray(window[identifier])) {
-                  rudderanalytics.push([methodName].concat(Array.prototype.slice.call(arguments)));
-                } else {
-                  var _methodName;
-                  (_methodName = window[identifier][methodName]) === null ||
-                    _methodName === void 0 ||
-                    _methodName.apply(window[identifier], arguments);
-                }
-              };
-            })(method);
-          }
-          try {
-            new Function('return import("")');
-            window.rudderAnalyticsBuildType = 'modern';
-          } catch (e) {}
-          var head = document.head || document.getElementsByTagName('head')[0];
-          var body = document.body || document.getElementsByTagName('body')[0];
-          window.rudderAnalyticsAddScript = function (url, extraAttributeKey, extraAttributeVal) {
-            var scriptTag = document.createElement('script');
-            scriptTag.src = url;
-            scriptTag.setAttribute('data-loader', 'RS_JS_SDK');
-            if (extraAttributeKey && extraAttributeVal) {
-              scriptTag.setAttribute(extraAttributeKey, extraAttributeVal);
-            }
-            if (scriptLoadingMode === 'async') {
-              scriptTag.async = true;
-            } else if (scriptLoadingMode === 'defer') {
-              scriptTag.defer = true;
-            }
-            if (head) {
-              head.insertBefore(scriptTag, head.firstChild);
-            } else {
-              body.insertBefore(scriptTag, body.firstChild);
-            }
-          };
-          window.rudderAnalyticsMount = function () {
-            (function () {
-              if (typeof globalThis === 'undefined') {
-                var getGlobal = function getGlobal() {
-                  if (typeof self !== 'undefined') {
-                    return self;
-                  }
-                  if (typeof window !== 'undefined') {
-                    return window;
-                  }
-                  return null;
-                };
-                var global = getGlobal();
-                if (global) {
-                  Object.defineProperty(global, 'globalThis', {
-                    value: global,
-                    configurable: true,
-                  });
-                }
-              }
-            })();
-            window.rudderAnalyticsAddScript(
-              ''
-                .concat(sdkBaseUrl, '/')
-                .concat(window.rudderAnalyticsBuildType, '/')
-                .concat(sdkName),
-              'data-rsa-write-key',
-              'WRITE_KEY',
-            );
-          };
-          if (typeof Promise === 'undefined' || typeof globalThis === 'undefined') {
-            window.rudderAnalyticsAddScript(
-              'https://polyfill-fastly.io/v3/polyfill.min.js?version=3.111.0&features=Symbol%2CPromise&callback=rudderAnalyticsMount',
-            );
-          } else {
-            window.rudderAnalyticsMount();
-          }
-          var loadOptions = {
-            logLevel: 'DEBUG',
-            configUrl: 'https://api.rudderstack.com',
-            destSDKBaseURL: sdkBaseUrl + '/' + window.rudderAnalyticsBuildType + '/js-integrations',
-            pluginsSDKBaseURL: sdkBaseUrl + '/' + window.rudderAnalyticsBuildType + '/plugins',
-          };
-          rudderanalytics.load('WRITE_KEY', 'DATA_PLANE_URL', loadOptions);
-        }
-      }
-    })();
-  </script>
-  <script src="./rudderTyperBundle.js"></script>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
-</head>
+<script src="./rudderTyperBundle.js"></script>
 <script>
   rudderTyper.setRudderTyperOptions({
     analytics: rudderanalytics,
@@ -377,7 +234,34 @@ npx browserify analytics/index.js -p [ tsify ] --standalone rudderTyper >  rudde
 </script>
 ```
 
-> Note: Remember to replace all `WRITE_KEY` and `DATA_PLANE_URL` with your write key and data plane url.
+#### 2. Using NPM
+
+Import the RudderTyper-generated client and make the calls if your framework supports them.
+
+```javascript
+// Import RudderStack JS SDK and initialize it
+import { RudderAnalytics } from '@rudderstack/analytics-js';
+// Import your auto-generated RudderTyper client:
+import { RudderTyperAnalytics } from './analytics/index';
+
+const rudderAnalytics = new RudderAnalytics();
+rudderAnalytics.load(WRITE_KEY, DATA_PLANE_URL, {});
+
+// Pass in your @rudderstack/analytics-js instance to RudderTyper client
+RudderTyperAnalytics.setRudderTyperOptions({
+  analytics: rudderAnalytics,
+});
+
+// Issue your first RudderTyper track call!
+RudderTyperAnalytics.orderCompleted({
+  orderID: 'ck-f306fe0e-cc21-445a-9caa-08245a9aa52c',
+  total: 39.99,
+});
+```
+
+> Note: Remember to replace all instances of `WRITE_KEY` and `DATA_PLANE_URL` in the snippet with your write key and data plane URL values respectively.
+
+> Note: Run `npx rudder-typer` to regenerate your RudderTyper client. You need to do this each time you update your Tracking Plan.
 
 ### RudderStack Node.js SDK
 
