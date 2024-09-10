@@ -268,6 +268,8 @@ RudderTyperAnalytics.orderCompleted({
 
 > Note: Run `npx rudder-typer` to regenerate your RudderTyper client. You need to do this each time you update your Tracking Plan.
 
+> Check out the [sample application](https://github.com/rudderlabs/rudder-typer/tree/develop/examples/js-npm-typescript) for reference.
+
 ### RudderStack Node.js SDK
 
 - Import the the RudderTyper-generated client and start making calls using RudderTyper as shown:
