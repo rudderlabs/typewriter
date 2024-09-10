@@ -213,7 +213,7 @@ npm install --save-dev  @rudderstack/analytics-js
 npx browserify analytics/index.js --standalone rudderTyper >  rudderTyperBundle.js
 ```
 
-- For typescript project add `tsify` npm package as dev dependency and run the following command:
+- For TypeScript analytics client, add `tsify` NPM package as a dev dependency and run the following command to generate the bundle:
 
 ```sh
 npx browserify analytics/index.js -p [ tsify ] --standalone rudderTyper >  rudderTyperBundle.js
