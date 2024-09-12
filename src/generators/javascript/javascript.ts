@@ -81,7 +81,9 @@ export const javascript: Generator<
   },
   generatePrimitive: async (client, schema) => {
     let type = 'any';
-    if (schema.type === Type.STRING) {
+    if (schema.enum) {
+      type = schema.enum.map((e) => (typeof e === 'string' ? `'${e}'` : `${e}`)).join(' | ');
+    } else if (schema.type === Type.STRING) {
       type = 'string';
     } else if (schema.type === Type.BOOLEAN) {
       type = 'boolean';
@@ -142,16 +144,6 @@ export const javascript: Generator<
       'generators/javascript/templates/index.hbs',
       context,
     );
-
-    // rudder.hbs contains the TypeScript definitions for the Rudder API.
-    // It becomes an empty file for JavaScript after being transpiled.
-    if (client.options.client.language === Language.TYPESCRIPT) {
-      await client.generateFile<JavaScriptRootContext>(
-        'rudder.ts',
-        'generators/javascript/templates/rudder.hbs',
-        context,
-      );
-    }
   },
   formatFile: async (client: GeneratorClient, file: File): Promise<File> => {
     let { contents } = file;

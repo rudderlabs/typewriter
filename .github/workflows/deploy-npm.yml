@@ -48,7 +48,6 @@ jobs:
           HUSKY: 0
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
-          NPM_PACKAGE_NEW_VERSION: ${{ env.CURRENT_VERSION_VALUE }}
         run: |
           npm set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
           npm run build
