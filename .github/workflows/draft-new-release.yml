@@ -50,7 +50,7 @@ jobs:
           echo "Merging master into $source_branch_name"
           current_version=$(jq -r .version package.json)
 
-          npm version prerelease --no-git-tag-version --no-commit-hooks
+          npm run release -- --skip.commit --skip.tag --skip.changelog
           new_version=$(jq -r .version package.json)
           git reset --hard
 
@@ -82,7 +82,7 @@ jobs:
           echo "New version: $NEW_VERSION_VALUE"
           git fetch --no-tags --prune --depth=100 origin master
           npm version prerelease --no-commit-hooks
-          npx standard-version
+          npm run release
 
       - name: Push new version in release branch
         run: |
