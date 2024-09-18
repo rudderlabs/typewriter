@@ -81,7 +81,6 @@ jobs:
           echo "Current version: $CURRENT_VERSION_VALUE"
           echo "New version: $NEW_VERSION_VALUE"
           git fetch --no-tags --prune --depth=100 origin master
-          npm version prerelease --no-commit-hooks
           npm run release
 
       - name: Push new version in release branch
