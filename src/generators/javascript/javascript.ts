@@ -33,11 +33,24 @@ type JavaScriptObjectContext = {
   name: string;
 };
 
+type PropertyContext = {
+  // The formatted name for this property, ex: "numAvocados".
+  name: string;
+  // The type of this property. ex: "number".
+  type: string;
+};
+
 type JavaScriptPropertyContext = {
   // The formatted name for this property, ex: "numAvocados".
   name: string;
   // The type of this property. ex: "number".
   type: string;
+  // Whether this property has an enum.
+  hasEnum: boolean;
+  // The formatted enum name, ex: "NumAvocados".
+  enumName?: string;
+  // The formatted enum values, ex: "NUM
+  enumValues?: any;
 };
 
 export const javascript: Generator<
@@ -81,20 +94,26 @@ export const javascript: Generator<
   },
   generatePrimitive: async (client, schema) => {
     let type = 'any';
-    if (schema.enum) {
-      type = schema.enum.map((e) => (typeof e === 'string' ? `'${e}'` : `${e}`)).join(' | ');
-    } else if (schema.type === Type.STRING) {
+    let hasEnum = false;
+
+    if (schema.type === Type.STRING) {
       type = 'string';
+      hasEnum = !!schema.enum;
     } else if (schema.type === Type.BOOLEAN) {
       type = 'boolean';
     } else if (schema.type === Type.INTEGER || schema.type === Type.NUMBER) {
       type = 'number';
+      hasEnum = !!schema.enum;
     }
 
-    return conditionallyNullable(schema, {
-      name: client.namer.escapeString(schema.name),
-      type,
-    });
+    return conditionallyNullable(
+      schema,
+      {
+        name: client.namer.escapeString(schema.name),
+        type,
+      },
+      hasEnum,
+    );
   },
   generateArray: async (client, schema, items) =>
     conditionallyNullable(schema, {
@@ -183,12 +202,37 @@ export const javascript: Generator<
   },
 };
 
+const convertToEnum = (values: any[], type: string) => {
+  return (
+    values
+      .map((value) => {
+        let key, formattedValue;
+
+        if (type === 'string' || typeof value === 'string') {
+          key = 'S_' + value.toString().trim().toUpperCase().replace(/ /g, '_');
+          formattedValue = `'${value.toString().trim()}'`;
+        } else if (type === 'number') {
+          key = 'N_' + value.toString().replace('.', '_');
+          formattedValue = `${value}`;
+        }
+
+        return `${key} = ${formattedValue}`;
+      })
+      .join(',\n    ') + ','
+  ); // Join with commas and add comma at the end
+};
+
 function conditionallyNullable(
   schema: Schema,
-  property: JavaScriptPropertyContext,
+  property: PropertyContext,
+  hasEnum?: boolean,
 ): JavaScriptPropertyContext {
   return {
     ...property,
-    type: !!schema.isNullable ? `${property.type} | null` : property.type,
+    type: !!schema.isNullable && !hasEnum ? `${property.type} | null` : property.type,
+    hasEnum: !!hasEnum,
+    enumName: upperFirst(schema.name),
+    enumValues:
+      hasEnum && 'enum' in schema ? convertToEnum(schema.enum!, property.type) : undefined,
   };
 }

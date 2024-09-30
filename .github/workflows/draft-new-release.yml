@@ -35,7 +35,8 @@ jobs:
           git config user.name "GitHub actions"
           git config user.email noreply@github.com
 
-      - name: Create 1.0.0 stable release branch
+      # Calculate the next release version based on conventional semantic release
+      - name: Create release branch
         id: create-release
         env:
           HUSKY: 0
@@ -49,7 +50,9 @@ jobs:
           echo "Merging master into $source_branch_name"
           current_version=$(jq -r .version package.json)
 
-          new_version=1.0.0
+          npm run release -- --skip.commit --skip.tag --skip.changelog
+          new_version=$(jq -r .version package.json)
+          git reset --hard
 
           branch_name="${release_type}/${new_version}"
 
@@ -67,68 +70,22 @@ jobs:
           echo "CURRENT_VERSION_VALUE=$current_version" >> $GITHUB_ENV
           echo "NEW_VERSION_VALUE=$new_version" >> $GITHUB_ENV
 
-      # # Calculate the next release version based on conventional semantic release
-      # - name: Create release branch
-      #   id: create-release
-      #   env:
-      #     HUSKY: 0
-      #   run: |
-      #     source_branch_name=${GITHUB_REF##*/}
-      #     release_type=release
-      #     grep -q "hotfix/" <<< "${GITHUB_REF}" && release_type=hotfix-release
-      #     git remote show origin
-      #     git fetch origin master --depth=1
-      #     git fetch --tags origin
-      #     echo "Merging master into $source_branch_name"
-      #     current_version=$(jq -r .version package.json)
-
-      #     npm version prerelease --no-git-tag-version --no-commit-hooks
-      #     new_version=$(jq -r .version package.json)
-      #     git reset --hard
-
-      #     branch_name="${release_type}/${new_version}"
-
-      #     echo "Source branch for new release is $source_branch_name"
-      #     echo "Current version is $current_version"
-      #     echo "Release type is $release_type"
-      #     echo "New version is $new_version"
-      #     echo "New release branch name is $branch_name"
-      #     git checkout -b "$branch_name"
-      #     git push --set-upstream origin "$branch_name"
-
-      #     echo "source_branch_name=$source_branch_name" >> $GITHUB_OUTPUT
-      #     echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
-      #     echo "new_version=$new_version" >> $GITHUB_OUTPUT
-      #     echo "CURRENT_VERSION_VALUE=$current_version" >> $GITHUB_ENV
-      #     echo "NEW_VERSION_VALUE=$new_version" >> $GITHUB_ENV
-
-      - name: Update changelog for 1.0.0 stable release
+      - name: Update changelog & bump version
         id: finish-release
         env:
           HUSKY: 0
         run: |
+          SUMMARY=$(((npx conventional-changelog -u) 2>&1) | sed "s/*/<br> */g" | sed "s/#/ /g" | tr -d '\n' || true)
+          echo $SUMMARY
+          echo "::set-output name=commit_summary::$SUMMARY"
           echo "Current version: $CURRENT_VERSION_VALUE"
           echo "New version: $NEW_VERSION_VALUE"
           git fetch --no-tags --prune --depth=100 origin master
-          git tag -a "v1.0.0" -m "chore(release): v1.0.0"
-          git push origin refs/tags/v1.0.0
+          npm run release
 
-      # - name: Update changelog & bump version
-      #   id: finish-release
-      #   env:
-      #     HUSKY: 0
-      #   run: |
-      #     SUMMARY=$(((npx conventional-changelog -u) 2>&1) | sed "s/*/<br> */g" | sed "s/#/ /g" | tr -d '\n' || true)
-      #     echo $SUMMARY
-      #     echo "::set-output name=commit_summary::$SUMMARY"
-      #     echo "Current version: $CURRENT_VERSION_VALUE"
-      #     echo "New version: $NEW_VERSION_VALUE"
-      #     git fetch --no-tags --prune --depth=100 origin master
-      #     npm version prerelease --no-commit-hooks
-
-      # - name: Push new version in release branch
-      #   run: |
-      #     git push --follow-tags
+      - name: Push new version in release branch
+        run: |
+          git push --follow-tags
 
       - name: Create pull request into master
         uses: repo-sync/pull-request@v2
