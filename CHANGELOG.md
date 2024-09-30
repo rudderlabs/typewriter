@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/rudderlabs/rudder-typer/compare/v1.0.0...v1.1.0) (2024-09-30)
+
+
+### Features
+
+* add named enum for javascript ([#71](https://github.com/rudderlabs/rudder-typer/issues/71)) ([58d6894](https://github.com/rudderlabs/rudder-typer/commit/58d6894ab244f9d1ed640445b802e39bf88ecd6b))
+
 ## [1.0.0](https://github.com/rudderlabs/rudder-typer/compare/v1.0.0-beta.8...v1.0.0) (2024-09-12)
 
 
