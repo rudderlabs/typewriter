@@ -8,7 +8,7 @@ on:
       - closed
 
 env:
-  NODE_OPTIONS: "--no-warnings"
+  NODE_OPTIONS: '--no-warnings'
 
 jobs:
   release:
@@ -55,7 +55,7 @@ jobs:
           HUSKY: 0
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "TODO"
+          npm run release:github
 
       - name: Create pull request into develop
         uses: repo-sync/pull-request@v2
