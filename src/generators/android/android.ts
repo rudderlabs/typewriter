@@ -14,6 +14,12 @@ type AndroidObjectContext = {
 type AndroidPropertyContext = {
   // The formatted name for this property, ex: "numAvocados".
   name: string;
+  // The formatted enum name, ex: "NumAvocados".
+  enumName?: string;
+  // Whether this property has an enum.
+  hasEnum: boolean;
+  // The formatted enum values, ex: "NUM
+  enumValues?: any;
   // The type of this property. ex: "String".
   type: string;
   // Whether the property is nullable (@NonNull vs @Nullable modifier).
@@ -56,19 +62,23 @@ export const android: Generator<
   },
   generatePrimitive: async (client, schema, parentPath) => {
     let type = 'Object';
+    let hasEnum = false;
 
     if (schema.type === Type.STRING) {
       type = 'String';
+      hasEnum = !!schema.enum;
     } else if (schema.type === Type.BOOLEAN) {
       type = 'Boolean';
     } else if (schema.type === Type.INTEGER) {
       type = 'Long';
+      hasEnum = !!schema.enum;
     } else if (schema.type === Type.NUMBER) {
       type = 'Double';
+      hasEnum = !!schema.enum;
     }
 
     return {
-      ...defaultPropertyContext(client, schema, type, parentPath),
+      ...defaultPropertyContext(client, schema, type, parentPath, hasEnum),
     };
   },
   setup: async () => ({}),
@@ -129,10 +139,45 @@ export const android: Generator<
         context,
       ),
       ...context.objects.map((o) =>
+        o.properties.forEach((p) => {
+          if (p.hasEnum) {
+            // Generate the enum file
+            client.generateFile(
+              `${upperFirst(camelCase(p.name))}.java`,
+              'generators/android/templates/enumeration.java.hbs',
+              p,
+            );
+          }
+        }),
+      ),
+      ...context.objects.map((o) =>
         client.generateFile(`${o.name}.java`, 'generators/android/templates/class.java.hbs', o),
       ),
     ]);
   },
+};
+
+const convertToEnum = (values: any[], type: string) => {
+  return (
+    values
+      .map((value) => {
+        let key, formattedValue;
+
+        if (type === 'String' || typeof value === 'string') {
+          key = 'S_' + value.toString().trim().toUpperCase().replace(/ /g, '');
+          formattedValue = `"${value.toString().trim()}"`; // String values
+        } else if (type === 'Long') {
+          key = 'L_' + value.toString();
+          formattedValue = `${value}L`; // Long values
+        } else if (type === 'Double') {
+          key = 'D_' + value.toString().replace('.', '_');
+          formattedValue = `${value}D`; // Double values
+        }
+
+        return `${key}(${formattedValue})`;
+      })
+      .join(',\n    ') + ';'
+  ); // Join with commas and add semicolon at the end
 };
 
 function defaultPropertyContext(
@@ -140,11 +185,19 @@ function defaultPropertyContext(
   schema: Schema,
   type: string,
   namespace: string,
+  hasEnum?: boolean,
 ): AndroidPropertyContext {
   return {
     name: client.namer.register(schema.name, namespace, {
       transform: camelCase,
     }),
+    hasEnum: !!hasEnum,
+    enumName: hasEnum
+      ? client.namer.register(schema.name, namespace, {
+          transform: (name) => upperFirst(camelCase(name)),
+        })
+      : undefined,
+    enumValues: hasEnum && 'enum' in schema ? convertToEnum(schema.enum!, type) : undefined,
     type,
     isVariableNullable: !schema.isRequired || !!schema.isNullable,
     shouldThrowRuntimeError: schema.isRequired && !schema.isNullable,
