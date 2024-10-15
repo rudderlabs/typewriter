@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/rudderlabs/rudder-typer/compare/v1.1.0...v1.2.0) (2024-10-15)
+
+
+### Features
+
+* add enum support for android ([#69](https://github.com/rudderlabs/rudder-typer/issues/69)) ([c40e69b](https://github.com/rudderlabs/rudder-typer/commit/c40e69b60daadef4f6baba0cbe8a58e15054348b))
+
+
+### Bug Fixes
+
+* upgrade @rudderstack/rudder-sdk-node from 2.0.9 to 2.0.10 ([#73](https://github.com/rudderlabs/rudder-typer/issues/73)) ([9b9fe62](https://github.com/rudderlabs/rudder-typer/commit/9b9fe621a87f9ca145c9432a4e6e1beb9cf3073f))
+
 ## [1.1.0](https://github.com/rudderlabs/rudder-typer/compare/v1.0.0...v1.1.0) (2024-09-30)
 
 
