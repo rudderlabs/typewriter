@@ -44,13 +44,14 @@ type Identity =
   | { userId: string; anonymousId?: string }
   | { userId?: string; anonymousId: string }
 
-export type TrackMessage<PropertiesType> = Omit<
+export type PayloadMessage<PropertiesType> = Omit<
   TrackParams,
   'event' | 'properties'
 > & { properties: PropertiesType } & Identity &
   Record<string, any>;
 {{/if}}
 
+{{#if isDevelopment}}
 /** The Schema object which is being used by Ajv to validate the message */
 export interface Schema {
 	$schema? : string 
@@ -59,6 +60,7 @@ export interface Schema {
 	title? : string
 	type? : string
 }
+{{/if}}
 
 {{#each objects}}
 {{#each properties}}
@@ -87,7 +89,7 @@ export interface {{name}} {{#unless ../isBrowser}} extends ApiObject {{/unless}}
 
 {{/each}}
 export type ViolationHandler = (
-	message: {{#if isBrowser}}Record<string, any>{{else}}TrackMessage<Record<string, any>>{{/if}},
+	message: {{#if isBrowser}}Record<string, any>{{else}}PayloadMessage<Record<string, any>>{{/if}},
 	{{!-- Swap the type definitions here so we don't want depend on ajv in production just for this type definition. --}}
 	violations: {{#if isDevelopment}}ErrorObject{{else}}any{{/if}}[]
 ) => void
@@ -180,7 +182,7 @@ export function setRudderTyperOptions(options: RudderTyperOptions) {
 	* is invalid, the `onViolation` handler will be called.
 	*/
 async function validateAgainstSchema(
-	message: {{#if isBrowser}}Record<string, any>{{else}}TrackMessage<Record<string, any>>{{/if}},
+	message: {{#if isBrowser}}Record<string, any>{{else}}PayloadMessage<Record<string, any>>{{/if}},
 	schema: Schema
 ) {
 	let ajv;
@@ -211,7 +213,7 @@ async function validateAgainstSchema(
  * Helper to attach metadata on RudderTyper to outbound requests.
  * This is used for attribution and debugging by the RudderStack team.
  */
-function withRudderTyperContext{{#unless isBrowser}}<P, T extends TrackMessage<P>>{{/unless}}(message: {{#if isBrowser}}ApiOptions = {}{{else}}T{{/if}}): {{#if isBrowser}}ApiOptions{{else}}T{{/if}} {
+function withRudderTyperContext{{#unless isBrowser}}<P, T extends PayloadMessage<P>>{{/unless}}(message: {{#if isBrowser}}ApiOptions = {}{{else}}T{{/if}}): {{#if isBrowser}}ApiOptions{{else}}T{{/if}} {
 	return {
 		...message,
 		context: {
@@ -232,7 +234,7 @@ function withRudderTyperContext{{#unless isBrowser}}<P, T extends TrackMessage<P
  * A message payload for an analytics-node `.track()` call.
  * See: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#track
  *
- * @typedef TrackMessage<PropertiesType>
+ * @typedef PayloadMessage<PropertiesType>
  * @property {string | number} [userId] - The ID for this user in your database.
  * @property {string | number} [anonymousId] - An ID to associated with the user when you don't know who they are.
  * @property {PropertiesType} [properties] - A dictionary of properties for the event.
@@ -297,11 +299,10 @@ export function {{functionName}}(
 }
 {{else}}
 export function {{functionName}}(
-	message: TrackMessage<{{propertiesType}}>,
+	message: PayloadMessage<{{propertiesType}}>,
 	callback?: apiCallback
 ): void {
 	const msg = withRudderTyperContext({
-		properties: {},
 		...message,
 		event: '{{rawEventName}}'
 	})
@@ -363,9 +364,69 @@ export function {{functionName}}
 	{{/if}}
 }
 {{else}}
-{{!-- TODO for Node--}}
+export function {{functionName}}
+(
+	message: PayloadMessage<{{propertiesType}}>,
+	callback?: apiCallback
+): void {
+	const msg = withRudderTyperContext({
+		...message,
+		name: '{{rawEventName}}'
+	})
+	const a = analytics()
+	{{#if ../isDevelopment}}
+	const schema = {{rawJSONSchema}}
+	validateAgainstSchema(msg, schema).then(()=>{
+		if (a) {
+			a.page(msg, callback)
+		} else {
+			throw missingAnalyticsNodeError
+		}
+	})
+	{{else}}
+	if (a) {
+		a.page(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
+	}
+	{{/if}}
+}
 {{/if}}
 {{/each}}
+
+{{#unless isBrowser}}
+{{#each screen}}
+{{> functionDocumentation isBrowser=../isBrowser }}
+export function {{functionName}}
+(
+	message: PayloadMessage<{{propertiesType}}>,
+	callback?: apiCallback
+): void {
+	const msg = withRudderTyperContext({
+		...message,
+		name: '{{rawEventName}}'
+	})
+	const a = analytics()
+	{{#if ../isDevelopment}}
+	const schema = {{rawJSONSchema}}
+	validateAgainstSchema(msg, schema).then(()=>{
+		if (a) {
+			a.screen(msg, callback)
+		} else {
+			throw missingAnalyticsNodeError
+		}
+	})
+	{{else}}
+	if (a) {
+		a.screen(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
+	}
+	{{/if}}
+}
+{{/each}}
+{{/unless}}
+
 
 {{#each identify}}
 {{> functionDocumentation isBrowser=../isBrowser }}
@@ -403,7 +464,33 @@ export function {{functionName}}
 	{{/if}}
 }
 {{else}}
-{{!-- TODO for Node--}}
+export function {{functionName}}
+(
+	message: PayloadMessage<{{propertiesType}}>,
+	callback?: apiCallback
+): void {
+	const msg = withRudderTyperContext({
+		traits: {},
+		...message,
+	})
+	const a = analytics()
+	{{#if ../isDevelopment}}
+	const schema = {{rawJSONSchema}}
+	validateAgainstSchema(msg, schema).then(()=>{
+		if (a) {
+			a.identify(msg, callback)
+		} else {
+			throw missingAnalyticsNodeError
+		}
+	})
+	{{else}}
+	if (a) {
+		a.identify(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
+	}
+	{{/if}}
+}
 {{/if}}
 {{/each}}
 
@@ -443,7 +530,34 @@ export function {{functionName}}
 	{{/if}}
 }
 {{else}}
-{{!-- TODO for Node--}}
+export function {{functionName}}
+(
+	message: PayloadMessage<{{propertiesType}}>,
+	callback?: apiCallback
+): void {
+	const msg = withRudderTyperContext({
+		groupId: '',
+		traits: {},
+		...message,
+	})
+	const a = analytics()
+	{{#if ../isDevelopment}}
+	const schema = {{rawJSONSchema}}
+	validateAgainstSchema(msg, schema).then(()=>{
+		if (a) {
+			a.group(msg, callback)
+		} else {
+			throw missingAnalyticsNodeError
+		}
+	})
+	{{else}}
+	if (a) {
+		a.group(msg, callback)
+	} else {
+		throw missingAnalyticsNodeError
+	}
+	{{/if}}
+}
 {{/if}}
 {{/each}}
 
