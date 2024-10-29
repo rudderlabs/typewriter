@@ -266,9 +266,9 @@ function withRudderTyperContext{{#unless isBrowser}}<P, T extends PayloadMessage
 export function {{functionName}}(
 	props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
 	options?: ApiOptions,
-	callback?: apiCallback
+	callback?: apiCallback,
 ): void {
-	const a = analytics()
+	const a = analytics();
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
 	const message = {
@@ -331,35 +331,95 @@ export function {{functionName}}(
 {{#each page}}
 {{> functionDocumentation isBrowser=../isBrowser }}
 {{#if ../isBrowser}}
-export function {{functionName}}
-(
+export function {{functionName}}(
+	category: string,
+	name: string,
 	props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
 	options?: ApiOptions,
-	callback?: apiCallback
+	callback?: apiCallback,
+): void;
+export function {{functionName}}(
+  name: string,
+  props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
+  options?: ApiOptions,
+  callback?: apiCallback,
+): void;
+export function {{functionName}}(
+	props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
+	options?: ApiOptions,
+	callback?: apiCallback,
+): void;
+export function {{functionName}}(
+  categoryOrProps?: string | {{propertiesType}},
+  nameOrPropsOrOptions?: string | {{propertiesType}} | ApiOptions,
+  propsOrOptionsOrCallback?: {{propertiesType}} | ApiOptions | apiCallback,
+  optionsOrCallback?: ApiOptions | apiCallback,
+  callback?: apiCallback,
 ): void {
-	const a = analytics()
+	const a = analytics();
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
 	const message = {
+		event: '{{rawEventName}}',
 		properties: props || {},
 		options,
 	}
 	validateAgainstSchema(message, schema).then(()=>{
 		if (a) {
-			a.page(
-				props || {},
-				withRudderTyperContext(options),
-				callback
-			)
+			if (typeof categoryOrProps === 'string' && typeof nameOrPropsOrOptions === 'string') {
+				// Overload (category: string, name: string, props?: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback)
+				a.page(
+					categoryOrProps,
+					'{{rawEventName}}',
+					(propsOrOptionsOrCallback as {{propertiesType}}) || {},
+					withRudderTyperContext(optionsOrCallback as ApiOptions),
+					callback,
+				);
+			} else if (typeof categoryOrProps === 'string') {
+				// Overload (name: string, props?: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback)
+				a.page(
+					'{{rawEventName}}',
+					(nameOrPropsOrOptions as {{propertiesType}}) || {},
+					withRudderTyperContext(propsOrOptionsOrCallback as ApiOptions),
+					optionsOrCallback as apiCallback,
+				);
+			} else {
+				// Overload (props?: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback)
+				a.page(
+					categoryOrProps || {},
+					withRudderTyperContext(nameOrPropsOrOptions as ApiOptions),
+					propsOrOptionsOrCallback as apiCallback,
+				);
+			}
 		}
 	})
 	{{else}}
 	if (a) {
-		a.page(
-			props || {},
-			withRudderTyperContext(options),
-			callback
-		)
+		if (typeof categoryOrProps === 'string' && typeof nameOrPropsOrOptions === 'string') {
+			// Overload (category: string, name: string, props?: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback)
+			a.page(
+				categoryOrProps,
+				'{{rawEventName}}',
+				(propsOrOptionsOrCallback as {{propertiesType}}) || {},
+				withRudderTyperContext(optionsOrCallback as ApiOptions),
+				callback,
+			);
+		} else if (typeof categoryOrProps === 'string') {
+			// Overload (name: string, props?: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback)
+			a.page(
+				'{{rawEventName}}',
+				(nameOrPropsOrOptions as {{propertiesType}}) || {},
+				withRudderTyperContext(propsOrOptionsOrCallback as ApiOptions),
+				optionsOrCallback as apiCallback,
+			);
+		} else {
+			// Overload (props?: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback)
+			a.page(
+				categoryOrProps || {},
+				withRudderTyperContext(nameOrPropsOrOptions as ApiOptions),
+				propsOrOptionsOrCallback as apiCallback,
+			);
+		}
 	}
 	{{/if}}
 }
@@ -367,13 +427,13 @@ export function {{functionName}}
 export function {{functionName}}
 (
 	message: PayloadMessage<{{propertiesType}}>,
-	callback?: apiCallback
+	callback?: apiCallback,
 ): void {
 	const msg = withRudderTyperContext({
 		...message,
 		name: '{{rawEventName}}'
 	})
-	const a = analytics()
+	const a = analytics();
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
 	validateAgainstSchema(msg, schema).then(()=>{
@@ -400,13 +460,13 @@ export function {{functionName}}
 export function {{functionName}}
 (
 	message: PayloadMessage<{{propertiesType}}>,
-	callback?: apiCallback
+	callback?: apiCallback,
 ): void {
 	const msg = withRudderTyperContext({
 		...message,
 		name: '{{rawEventName}}'
 	})
-	const a = analytics()
+	const a = analytics();
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
 	validateAgainstSchema(msg, schema).then(()=>{
@@ -431,35 +491,56 @@ export function {{functionName}}
 {{#each identify}}
 {{> functionDocumentation isBrowser=../isBrowser }}
 {{#if ../isBrowser}}
-export function {{functionName}}
-(
-	props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
-	options?: ApiOptions,
-	callback?: apiCallback
+export function {{functionName}}(
+  userId: string,
+  traits{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
+  options?: ApiOptions,
+  callback?: apiCallback,
+): void;
+export function {{functionName}}(traits{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback): void;
+export function {{functionName}}(
+  userIdOrTraits?: string | Identify,
+  traitsOrOptions{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}} | ApiOptions,
+  optionsOrCallback?: ApiOptions | apiCallback,
+  callback?: apiCallback,
 ): void {
 	const a = analytics()
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
 	const message = {
-		traits: props || {},
+		traits: traits || {},
 		options,
 	}
 	validateAgainstSchema(message, schema).then(()=>{
 		if (a) {
-			a.identify(
-				props || {},
-				withRudderTyperContext(options),
-				callback
-			)
+			const userId = typeof userIdOrTraits === 'string' ? userIdOrTraits : undefined;
+			const traits =
+			typeof userIdOrTraits === 'string'
+				? (traitsOrOptions as Identify)
+				: (userIdOrTraits as Identify);
+			const options =
+			typeof userIdOrTraits === 'string'
+				? (optionsOrCallback as ApiOptions)
+				: (traitsOrOptions as ApiOptions);
+			const cb = typeof userIdOrTraits === 'string' ? callback : (optionsOrCallback as apiCallback);
+
+			a.identify(userId, traits || {}, withRudderTyperContext(options), cb);
 		}
 	})
 	{{else}}
 	if (a) {
-		a.identify(
-			props || {},
-			withRudderTyperContext(options),
-			callback
-		)
+		const userId = typeof userIdOrTraits === 'string' ? userIdOrTraits : undefined;
+		const traits =
+		typeof userIdOrTraits === 'string'
+			? (traitsOrOptions as Identify)
+			: (userIdOrTraits as Identify);
+		const options =
+		typeof userIdOrTraits === 'string'
+			? (optionsOrCallback as ApiOptions)
+			: (traitsOrOptions as ApiOptions);
+		const cb = typeof userIdOrTraits === 'string' ? callback : (optionsOrCallback as apiCallback);
+
+		a.identify(userId, traits || {}, withRudderTyperContext(options), cb);
 	}
 	{{/if}}
 }
@@ -497,13 +578,20 @@ export function {{functionName}}
 {{#each group}}
 {{> functionDocumentation isBrowser=../isBrowser }}
 {{#if ../isBrowser}}
-export function {{functionName}}
-(
-	props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
-	options?: ApiOptions,
-	callback?: apiCallback
+export function {{functionName}}(
+  groupId: string,
+  props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
+  options?: ApiOptions,
+  callback?: apiCallback,
+): void;
+export function {{functionName}}(props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback): void;
+export function {{functionName}}(
+  groupIdOrProps?: string | Group,
+  propsOrOptions{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}} | ApiOptions,
+  optionsOrCallback?: ApiOptions | apiCallback,
+  callback?: apiCallback,
 ): void {
-	const a = analytics()
+	const a = analytics();
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
 	const message = {
@@ -512,20 +600,32 @@ export function {{functionName}}
 	}
 	validateAgainstSchema(message, schema).then(()=>{
 		if (a) {
-			a.group(
-				props || {},
-				withRudderTyperContext(options),
-				callback
-			)
+			if (typeof groupIdOrProps === 'string') {
+				const groupId = groupIdOrProps;
+				const props = (propsOrOptions as Group) || {};
+				const options = optionsOrCallback as ApiOptions;
+				a.group(groupId, props, withRudderTyperContext(options), callback);
+			} else {
+				const props = (groupIdOrProps as Group) || {};
+				const options = propsOrOptions as ApiOptions;
+				const cb = optionsOrCallback as apiCallback;
+				a.group(props, withRudderTyperContext(options), cb);
+			}
 		}
 	})
 	{{else}}
 	if (a) {
-		a.group(
-			props || {},
-			withRudderTyperContext(options),
-			callback
-		)
+	    if (typeof groupIdOrProps === 'string') {
+			const groupId = groupIdOrProps;
+			const props = (propsOrOptions as Group) || {};
+			const options = optionsOrCallback as ApiOptions;
+			a.group(groupId, props, withRudderTyperContext(options), callback);
+		} else {
+			const props = (groupIdOrProps as Group) || {};
+			const options = propsOrOptions as ApiOptions;
+			const cb = optionsOrCallback as apiCallback;
+			a.group(props, withRudderTyperContext(options), cb);
+		}
 	}
 	{{/if}}
 }
