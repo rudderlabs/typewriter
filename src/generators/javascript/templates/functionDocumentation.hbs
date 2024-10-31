@@ -2,7 +2,11 @@
  {{#if functionDescription}}
  * {{functionDescription}}
  {{else}}
- * Fires a '{{rawEventName}}' track call.
+    {{#ifEquals event "track"}}
+        * Fires a '{{rawEventName}}' track call.
+    {{else}}
+        * Fires a '{{rawEventName}}' call.
+    {{/ifEquals}}
  {{/if}}
  *
  {{#if isBrowser}}
@@ -12,9 +16,27 @@
  * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
  * 		call is fired.
  {{else}}
- {{!-- Note: this uses whitespace control to "escape" the outer curly braces. --}}
- * @param {PayloadMessage<{{propertiesType}}>} message - The analytics properties that will be sent to RudderStack.
- * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
- * 		call is fired.
+    {{#if (eq event "page")}}
+        * @param {PageMessage<{{propertiesType}}>} message - The analytics properties that will be sent to RudderStack.
+        * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+    {{else}}
+        {{#if (eq event "screen")}}
+            * @param {ScreenMessage<{{propertiesType}}>} message - The analytics properties that will be sent to RudderStack.
+            * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+        {{else}}
+            {{#if (eq event "identify")}}
+                * @param {IdentifyMessage<{{propertiesType}}>} message - The analytics properties that will be sent to RudderStack.
+                * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+            {{else}}
+                {{#if (eq event "group")}}
+                    * @param {GroupMessage<{{propertiesType}}>} message - The analytics properties that will be sent to RudderStack.
+                    * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+                {{else}}
+                    * @param {TrackMessage<{{propertiesType}}>} message - The analytics properties that will be sent to RudderStack.
+                    * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+                {{/if}}
+            {{/if}}
+        {{/if}}
+    {{/if}}
  {{/if}}
  */

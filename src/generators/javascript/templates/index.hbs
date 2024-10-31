@@ -35,20 +35,59 @@ declare global {
 type apiCallback = (data?: any) => void;
 
 {{else}}
-import AnalyticsNode, { apiObject as ApiObject, apiCallback, TrackParams } from '@rudderstack/rudder-sdk-node'
+import AnalyticsNode, {
+  apiObject as ApiObject,
+  apiCallback,
+  TrackParams,
+  PageParams,
+  ScreenParams,
+  IdentifyParams,
+  GroupParams,
+} from '@rudderstack/rudder-sdk-node';
 
 /**
  * An ID associated with the user. Note: at least one of userId or anonymousId must be included!
  **/
-type Identity =
+type IdentityOptions =
   | { userId: string; anonymousId?: string }
   | { userId?: string; anonymousId: string }
 
-export type PayloadMessage<PropertiesType> = Omit<
-  TrackParams,
-  'event' | 'properties'
-> & { properties: PropertiesType } & Identity &
+export type TrackMessage<PropertiesType> = {
+  properties: PropertiesType;
+} & Omit<TrackParams, 'event' | 'properties'> &
+  IdentityOptions &
   Record<string, any>;
+
+export type PageMessage<PropertiesType> = {
+  properties: PropertiesType;
+} & Omit<PageParams, 'name' | 'properties'> &
+  IdentityOptions &
+  Record<string, any>;
+
+export type ScreenMessage<PropertiesType> = {
+  properties: PropertiesType;
+} & Omit<ScreenParams, 'name' | 'properties'> &
+  IdentityOptions &
+  Record<string, any>;
+
+export type IdentifyMessage<PropertiesType> = {
+  traits: PropertiesType;
+} & Omit<IdentifyParams, 'traits'> &
+  IdentityOptions &
+  Record<string, any>;
+
+export type GroupMessage<PropertiesType> = {
+  traits: PropertiesType;
+} & Omit<GroupParams, 'groupId' | 'traits'> &
+  IdentityOptions &
+  Record<string, any>;
+
+export type PayloadMessage<PropertiesType> =
+  | TrackMessage<PropertiesType>
+  | PageMessage<PropertiesType>
+  | ScreenMessage<PropertiesType>
+  | IdentifyMessage<PropertiesType>
+  | GroupMessage<PropertiesType>;
 {{/if}}
 
 {{#if isDevelopment}}
@@ -234,7 +273,7 @@ function withRudderTyperContext{{#unless isBrowser}}<P, T extends PayloadMessage
  * A message payload for an analytics-node `.track()` call.
  * See: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#track
  *
- * @typedef PayloadMessage<PropertiesType>
+ * @typedef TrackMessage<PropertiesType>
  * @property {string | number} [userId] - The ID for this user in your database.
  * @property {string | number} [anonymousId] - An ID to associated with the user when you don't know who they are.
  * @property {PropertiesType} [properties] - A dictionary of properties for the event.
@@ -243,6 +282,61 @@ function withRudderTyperContext{{#unless isBrowser}}<P, T extends PayloadMessage
  * 		sure you to send a timestamp.
  * @template PropertiesType
  */
+
+/** 
+* A message payload for an analytics-node `.page()` call.
+* See: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#page
+* @typedef PageMessage<PropertiesType>
+* @property {string | number} [userId] - The ID for this user in your database.
+* @property {string | number} [anonymousId] - An ID to associated with the user when you don't know who they are.
+* @property {string} name - The name of the page viewed.
+* @property {PropertiesType} [properties] - A dictionary of properties for the event.
+* @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
+* 		just happened, leave it out and we'll use the server's time. If you're importing data from the past make
+* 		sure you to send a timestamp.
+* @template PropertiesType
+*/
+
+/**
+* A message payload for an analytics-node `.screen()` call.
+* See: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#screen
+* @typedef ScreenMessage<PropertiesType>
+* @property {string | number} [userId] - The ID for this user in your database.
+* @property {string | number} [anonymousId] - An ID to associated with the user when you don't know who they are.
+* @property {string} name - The name of the screen viewed.
+* @property {PropertiesType} [properties] - A dictionary of properties for the event.
+* @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
+* 		just happened, leave it out and we'll use the server's time. If you're importing data from the past make
+* 		sure you to send a timestamp.
+* @template PropertiesType
+*/
+
+/**
+* A message payload for an analytics-node `.identify()` call.
+* See: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#identify
+* @typedef IdentifyMessage<PropertiesType>
+* @property {string | number} [userId] - The ID for this user in your database.
+* @property {string | number} [anonymousId] - An ID to associated with the user when you don't know who they are.
+* @property {PropertiesType} [traits] - A dictionary of traits for the user.
+* @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
+* 		just happened, leave it out and we'll use the server's time. If you're importing data from the past make
+* 		sure you to send a timestamp.
+* @template PropertiesType
+*/
+
+/**
+* A message payload for an analytics-node `.group()` call.
+* See: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#group
+* @typedef GroupMessage<PropertiesType>
+* @property {string | number} [userId] - The ID for this user in your database.
+* @property {string | number} [anonymousId] - An ID to associated with the user when you don't know who they are.
+* @property {string} groupId - The ID for this group in your database.
+* @property {PropertiesType} [traits] - A dictionary of traits for the group.
+* @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
+* 		just happened, leave it out and we'll use the server's time. If you're importing data from the past make
+* 		sure you to send a timestamp.
+* @template PropertiesType
+*/
 {{/unless}}
 
 {{#each objects}}
@@ -261,7 +355,7 @@ function withRudderTyperContext{{#unless isBrowser}}<P, T extends PayloadMessage
 {{/each}}
 
 {{#each tracks}}
-{{> functionDocumentation isBrowser=../isBrowser }}
+{{> functionDocumentation isBrowser=../isBrowser event="track"}}
 {{#if ../isBrowser}}
 export function {{functionName}}(
 	props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
@@ -298,8 +392,9 @@ export function {{functionName}}(
 	{{/if}}
 }
 {{else}}
+{{!-- Track call for node sdk --}}
 export function {{functionName}}(
-	message: PayloadMessage<{{propertiesType}}>,
+	message: TrackMessage<{{propertiesType}}>,
 	callback?: apiCallback
 ): void {
 	const msg = withRudderTyperContext({
@@ -329,7 +424,7 @@ export function {{functionName}}(
 {{/each}}
 
 {{#each page}}
-{{> functionDocumentation isBrowser=../isBrowser }}
+{{> functionDocumentation isBrowser=../isBrowser event="page"}}
 {{#if ../isBrowser}}
 export function {{functionName}}(
 	category: string,
@@ -424,14 +519,15 @@ export function {{functionName}}(
 	{{/if}}
 }
 {{else}}
+{{!-- Page call for node sdk --}}
 export function {{functionName}}
 (
-	message: PayloadMessage<{{propertiesType}}>,
+	message: PageMessage<{{propertiesType}}>,
 	callback?: apiCallback,
 ): void {
 	const msg = withRudderTyperContext({
+		name: ''
 		...message,
-		name: '{{rawEventName}}'
 	})
 	const a = analytics();
 	{{#if ../isDevelopment}}
@@ -456,15 +552,16 @@ export function {{functionName}}
 
 {{#unless isBrowser}}
 {{#each screen}}
-{{> functionDocumentation isBrowser=../isBrowser }}
+{{> functionDocumentation isBrowser=../isBrowser event="screen"}}
+{{!-- screen call for Node SDK --}}
 export function {{functionName}}
 (
-	message: PayloadMessage<{{propertiesType}}>,
+	message: ScreenMessage<{{propertiesType}}>,
 	callback?: apiCallback,
 ): void {
 	const msg = withRudderTyperContext({
+		name: '';
 		...message,
-		name: '{{rawEventName}}'
 	})
 	const a = analytics();
 	{{#if ../isDevelopment}}
@@ -489,7 +586,7 @@ export function {{functionName}}
 
 
 {{#each identify}}
-{{> functionDocumentation isBrowser=../isBrowser }}
+{{> functionDocumentation isBrowser=../isBrowser event="identify"}}
 {{#if ../isBrowser}}
 export function {{functionName}}(
   userId: string,
@@ -545,13 +642,13 @@ export function {{functionName}}(
 	{{/if}}
 }
 {{else}}
+{{!-- Identify call for Node SDK --}}
 export function {{functionName}}
 (
-	message: PayloadMessage<{{propertiesType}}>,
+	message: IdentifyMessage<{{propertiesType}}>,
 	callback?: apiCallback
 ): void {
 	const msg = withRudderTyperContext({
-		traits: {},
 		...message,
 	})
 	const a = analytics()
@@ -576,7 +673,7 @@ export function {{functionName}}
 {{/each}}
 
 {{#each group}}
-{{> functionDocumentation isBrowser=../isBrowser }}
+{{> functionDocumentation isBrowser=../isBrowser event="group"}}
 {{#if ../isBrowser}}
 export function {{functionName}}(
   groupId: string,
@@ -630,14 +727,14 @@ export function {{functionName}}(
 	{{/if}}
 }
 {{else}}
+{{!-- Group call for Node SDK --}}
 export function {{functionName}}
 (
-	message: PayloadMessage<{{propertiesType}}>,
+	message: GroupMessage<{{propertiesType}}>,
 	callback?: apiCallback
 ): void {
 	const msg = withRudderTyperContext({
 		groupId: '',
-		traits: {},
 		...message,
 	})
 	const a = analytics()
@@ -666,23 +763,23 @@ const clientAPI = {
 	{{> setRudderTyperOptionsDocumentation}}
 	setRudderTyperOptions,
 	{{#each tracks}}
-	{{> functionDocumentation isBrowser=../isBrowser }}
+	{{> functionDocumentation isBrowser=../isBrowser event="track"}}
 	{{functionName}},
 	{{/each}}
 	{{#each page}}
-	{{> functionDocumentation isBrowser=../isBrowser }}
+	{{> functionDocumentation isBrowser=../isBrowser event="page"}}
 	{{functionName}},
 	{{/each}}
 	{{#each screen}}
-	{{> functionDocumentation isBrowser=../isBrowser }}
+	{{> functionDocumentation isBrowser=../isBrowser event="screen"}}
 	{{functionName}},
 	{{/each}}
 	{{#each identify}}
-	{{> functionDocumentation isBrowser=../isBrowser }}
+	{{> functionDocumentation isBrowser=../isBrowser event="identify"}}
 	{{functionName}},
 	{{/each}}
 	{{#each group}}
-	{{> functionDocumentation isBrowser=../isBrowser }}
+	{{> functionDocumentation isBrowser=../isBrowser event="group"}}
 	{{functionName}},
 	{{/each}}
 }
