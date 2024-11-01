@@ -235,7 +235,7 @@ async function apiGet<T>(url: string, token: string, email: string): Promise<T> 
           url === 'workspace' || url.includes('trackingplans')
             ? `Basic ${Buffer.from(email + ':' + token).toString('base64')}`
             : 'Bearer ' + token,
-        'User-Agent': `RudderTyper/${version}`,
+        'User-Agent': `RudderTyper/${version} Node/${process.version} Platform/${process.platform}`,
       },
       timeout: {
         request: 10000, //ms
