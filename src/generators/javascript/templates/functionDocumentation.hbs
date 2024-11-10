@@ -10,33 +10,43 @@
  {{/if}}
  *
  {{#if isBrowser}}
- {{!-- Note: this uses whitespace control to "escape" the outer curly braces. --}}
- * @param { {{~propertiesType~}} } {{#if isPropertiesOptional}}[props]{{else}}props{{/if}} - The analytics properties that will be sent to RudderStack.
- * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
- * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
- * 		call is fired.
- {{else}}
-    {{#if (eq event "page")}}
-        * @param {PageMessage<{{propertiesType}}>} message - The analytics properties that will be sent to RudderStack.
+    {{#ifEquals event "page"}}
+        * @param {string} [category] - The category of the page.
+        * @param {string} [name] - The name of the page.
+        * @param { {{~propertiesType~}} } {{#if isPropertiesOptional}}[props]{{else}}props{{/if}} - The analytics properties that will be sent to RudderStack.
+        * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+        * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+    {{else ifEquals event "identify"}}
+        * @param {string} [userId] - The user ID of the user.
+        * @param { {{~propertiesType~}} } {{#if isPropertiesOptional}}[traits]{{else}}traits{{/if}} - The analytics traits that will be sent to RudderStack.
+        * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+        * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+    {{else ifEquals event "group"}}
+        * @param {string} [groupId] - The group ID of the group.
+        * @param { {{~propertiesType~}} } {{#if isPropertiesOptional}}[traits]{{else}}traits{{/if}} - The analytics traits that will be sent to RudderStack.
+        * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
         * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
     {{else}}
-        {{#if (eq event "screen")}}
-            * @param {ScreenMessage<{{propertiesType}}>} message - The analytics properties that will be sent to RudderStack.
-            * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
-        {{else}}
-            {{#if (eq event "identify")}}
-                * @param {IdentifyMessage<{{propertiesType}}>} message - The analytics properties that will be sent to RudderStack.
-                * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
-            {{else}}
-                {{#if (eq event "group")}}
-                    * @param {GroupMessage<{{propertiesType}}>} message - The analytics properties that will be sent to RudderStack.
-                    * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
-                {{else}}
-                    * @param {TrackMessage<{{propertiesType}}>} message - The analytics properties that will be sent to RudderStack.
-                    * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
-                {{/if}}
-            {{/if}}
-        {{/if}}
-    {{/if}}
+        * @param { {{~propertiesType~}} } {{#if isPropertiesOptional}}[props]{{else}}props{{/if}} - The analytics properties that will be sent to RudderStack.
+        * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+        * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+    {{/ifEquals}}
+ {{else}}
+    {{#ifEquals event "page"}}
+        * @param {PageMessage<{{propertiesType}}>} message - The analytics properties that will be sent to RudderStack.
+        * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+    {{else ifEquals event "screen"}}
+        * @param {ScreenMessage<{{propertiesType}}>} message - The analytics properties that will be sent to RudderStack.
+        * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+    {{else ifEquals event "identify"}}
+        * @param {IdentifyMessage<{{propertiesType}}>} message - The analytics properties that will be sent to RudderStack.
+        * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+    {{else ifEquals event "group"}}
+        * @param {GroupMessage<{{propertiesType}}>} message - The analytics properties that will be sent to RudderStack.
+        * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+    {{else}}
+        * @param {TrackMessage<{{propertiesType}}>} message - The analytics properties that will be sent to RudderStack.
+        * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+    {{/ifEquals}}
  {{/if}}
  */

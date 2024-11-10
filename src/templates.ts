@@ -70,7 +70,4 @@ export async function registerStandardHelpers(): Promise<void> {
   Handlebars.registerHelper('ifEquals', function (this: any, arg1, arg2, options) {
     return arg1 === arg2 ? options.fn(this) : options.inverse(this);
   });
-  Handlebars.registerHelper('eq', function (arg1, arg2) {
-    return arg1 === arg2;
-  });
 }

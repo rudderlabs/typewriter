@@ -370,55 +370,41 @@ export function {{functionName}}(
 		properties: props || {},
 		options,
 	}
-	validateAgainstSchema(message, schema).then(()=>{
+	{{/if}}
+	
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
 		if (a) {
 			a.track(
-				'{{rawEventName}}',
-				props || {},
-				withRudderTyperContext(options),
-				callback
-			)
-		}
-	})
-	{{else}}
-	if (a) {
-		a.track(
 			'{{rawEventName}}',
 			props || {},
 			withRudderTyperContext(options),
 			callback
-		)
-	}
-	{{/if}}
+			);
+		}
+	{{/validateAndExecute}}
 }
 {{else}}
 {{!-- Track call for node sdk --}}
 export function {{functionName}}(
-	message: TrackMessage<{{propertiesType}}>,
+	trackMessage: TrackMessage<{{propertiesType}}>,
 	callback?: apiCallback
 ): void {
-	const msg = withRudderTyperContext({
-		...message,
+	const message = withRudderTyperContext({
+		...trackMessage,
 		event: '{{rawEventName}}'
 	})
 	const a = analytics()
 	{{#if ../isDevelopment}}
-	const schema = {{rawJSONSchema}}	
-	validateAgainstSchema(msg, schema).then(()=>{
+	const schema = {{rawJSONSchema}}
+	{{/if}}
+
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
 		if (a) {
-			a.track(msg, callback)
+			a.track(message, callback)
 		} else {
 			throw missingAnalyticsNodeError
 		}
-	})
-	{{else}}
-	if (a) {
-		a.track(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
-	}
-	{{/if}}
-
+	{{/validateAndExecute}}
 }
 {{/if}}
 {{/each}}
@@ -459,7 +445,9 @@ export function {{functionName}}(
 		properties: props || {},
 		options,
 	}
-	validateAgainstSchema(message, schema).then(()=>{
+	{{/if}}
+
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
 		if (a) {
 			if (typeof categoryOrProps === 'string' && typeof nameOrPropsOrOptions === 'string') {
 				// Overload (category: string, name: string, props?: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback)
@@ -487,65 +475,30 @@ export function {{functionName}}(
 				);
 			}
 		}
-	})
-	{{else}}
-	if (a) {
-		if (typeof categoryOrProps === 'string' && typeof nameOrPropsOrOptions === 'string') {
-			// Overload (category: string, name: string, props?: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback)
-			a.page(
-				categoryOrProps,
-				'{{rawEventName}}',
-				(propsOrOptionsOrCallback as {{propertiesType}}) || {},
-				withRudderTyperContext(optionsOrCallback as ApiOptions),
-				callback,
-			);
-		} else if (typeof categoryOrProps === 'string') {
-			// Overload (name: string, props?: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback)
-			a.page(
-				'{{rawEventName}}',
-				(nameOrPropsOrOptions as {{propertiesType}}) || {},
-				withRudderTyperContext(propsOrOptionsOrCallback as ApiOptions),
-				optionsOrCallback as apiCallback,
-			);
-		} else {
-			// Overload (props?: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback)
-			a.page(
-				categoryOrProps || {},
-				withRudderTyperContext(nameOrPropsOrOptions as ApiOptions),
-				propsOrOptionsOrCallback as apiCallback,
-			);
-		}
-	}
-	{{/if}}
+	{{/validateAndExecute}}
 }
 {{else}}
 {{!-- Page call for node sdk --}}
 export function {{functionName}}
 (
-	message: PageMessage<{{propertiesType}}>,
+	pageMessage: PageMessage<{{propertiesType}}>,
 	callback?: apiCallback,
 ): void {
-	const msg = withRudderTyperContext({
-		name: ''
-		...message,
+	const message = withRudderTyperContext({
+		name: '',
+		...pageMessage
 	})
 	const a = analytics();
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
-	validateAgainstSchema(msg, schema).then(()=>{
+	{{/if}}
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
 		if (a) {
-			a.page(msg, callback)
+			a.page(message, callback)
 		} else {
 			throw missingAnalyticsNodeError
 		}
-	})
-	{{else}}
-	if (a) {
-		a.page(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
-	}
-	{{/if}}
+	{{/validateAndExecute}}
 }
 {{/if}}
 {{/each}}
@@ -556,30 +509,25 @@ export function {{functionName}}
 {{!-- screen call for Node SDK --}}
 export function {{functionName}}
 (
-	message: ScreenMessage<{{propertiesType}}>,
+	screenMessage: ScreenMessage<{{propertiesType}}>,
 	callback?: apiCallback,
 ): void {
-	const msg = withRudderTyperContext({
-		name: '';
-		...message,
+	const message = withRudderTyperContext({
+		name: '',
+		...screenMessage,
 	})
 	const a = analytics();
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
-	validateAgainstSchema(msg, schema).then(()=>{
+	{{/if}}
+
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
 		if (a) {
-			a.screen(msg, callback)
+			a.screen(message, callback)
 		} else {
 			throw missingAnalyticsNodeError
 		}
-	})
-	{{else}}
-	if (a) {
-		a.screen(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
-	}
-	{{/if}}
+	{{/validateAndExecute}}
 }
 {{/each}}
 {{/unless}}
@@ -608,7 +556,9 @@ export function {{functionName}}(
 		traits: traits || {},
 		options,
 	}
-	validateAgainstSchema(message, schema).then(()=>{
+	{{/if}}
+
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
 		if (a) {
 			const userId = typeof userIdOrTraits === 'string' ? userIdOrTraits : undefined;
 			const traits =
@@ -623,51 +573,29 @@ export function {{functionName}}(
 
 			a.identify(userId, traits || {}, withRudderTyperContext(options), cb);
 		}
-	})
-	{{else}}
-	if (a) {
-		const userId = typeof userIdOrTraits === 'string' ? userIdOrTraits : undefined;
-		const traits =
-		typeof userIdOrTraits === 'string'
-			? (traitsOrOptions as Identify)
-			: (userIdOrTraits as Identify);
-		const options =
-		typeof userIdOrTraits === 'string'
-			? (optionsOrCallback as ApiOptions)
-			: (traitsOrOptions as ApiOptions);
-		const cb = typeof userIdOrTraits === 'string' ? callback : (optionsOrCallback as apiCallback);
-
-		a.identify(userId, traits || {}, withRudderTyperContext(options), cb);
-	}
-	{{/if}}
+	{{/validateAndExecute}}
 }
 {{else}}
 {{!-- Identify call for Node SDK --}}
 export function {{functionName}}
 (
-	message: IdentifyMessage<{{propertiesType}}>,
+	identifyMessage: IdentifyMessage<{{propertiesType}}>,
 	callback?: apiCallback
 ): void {
-	const msg = withRudderTyperContext({
-		...message,
+	const message = withRudderTyperContext({
+		...identifyMessage,
 	})
 	const a = analytics()
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
-	validateAgainstSchema(msg, schema).then(()=>{
+	{{/if}}
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
 		if (a) {
-			a.identify(msg, callback)
+			a.identify(message, callback)
 		} else {
 			throw missingAnalyticsNodeError
 		}
-	})
-	{{else}}
-	if (a) {
-		a.identify(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
-	}
-	{{/if}}
+	{{/validateAndExecute}}
 }
 {{/if}}
 {{/each}}
@@ -677,14 +605,14 @@ export function {{functionName}}
 {{#if ../isBrowser}}
 export function {{functionName}}(
   groupId: string,
-  props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
+  traits{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
   options?: ApiOptions,
   callback?: apiCallback,
 ): void;
-export function {{functionName}}(props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback): void;
+export function {{functionName}}(traits{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback): void;
 export function {{functionName}}(
-  groupIdOrProps?: string | Group,
-  propsOrOptions{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}} | ApiOptions,
+  groupIdOrTraits?: string | Group,
+  traitsOrOptions{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}} | ApiOptions,
   optionsOrCallback?: ApiOptions | apiCallback,
   callback?: apiCallback,
 ): void {
@@ -692,68 +620,50 @@ export function {{functionName}}(
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
 	const message = {
-		traits: props || {},
+		traits: traits || {},
 		options,
 	}
-	validateAgainstSchema(message, schema).then(()=>{
+	{{/if}}
+
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
 		if (a) {
-			if (typeof groupIdOrProps === 'string') {
-				const groupId = groupIdOrProps;
-				const props = (propsOrOptions as Group) || {};
+			if (typeof groupIdOrTraits === 'string') {
+				const groupId = groupIdOrTraits;
+				const traits = (traitsOrOptions as Group) || {};
 				const options = optionsOrCallback as ApiOptions;
-				a.group(groupId, props, withRudderTyperContext(options), callback);
+				a.group(groupId, traits, withRudderTyperContext(options), callback);
 			} else {
-				const props = (groupIdOrProps as Group) || {};
-				const options = propsOrOptions as ApiOptions;
+				const traits = (groupIdOrTraits as Group) || {};
+				const options = traitsOrOptions as ApiOptions;
 				const cb = optionsOrCallback as apiCallback;
-				a.group(props, withRudderTyperContext(options), cb);
+				a.group(traits, withRudderTyperContext(options), cb);
 			}
 		}
-	})
-	{{else}}
-	if (a) {
-	    if (typeof groupIdOrProps === 'string') {
-			const groupId = groupIdOrProps;
-			const props = (propsOrOptions as Group) || {};
-			const options = optionsOrCallback as ApiOptions;
-			a.group(groupId, props, withRudderTyperContext(options), callback);
-		} else {
-			const props = (groupIdOrProps as Group) || {};
-			const options = propsOrOptions as ApiOptions;
-			const cb = optionsOrCallback as apiCallback;
-			a.group(props, withRudderTyperContext(options), cb);
-		}
-	}
-	{{/if}}
+	{{/validateAndExecute}}
 }
 {{else}}
 {{!-- Group call for Node SDK --}}
 export function {{functionName}}
 (
-	message: GroupMessage<{{propertiesType}}>,
+	groupMessage: GroupMessage<{{propertiesType}}>,
 	callback?: apiCallback
 ): void {
-	const msg = withRudderTyperContext({
+	const message = withRudderTyperContext({
 		groupId: '',
-		...message,
+		...groupMessage,
 	})
 	const a = analytics()
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
-	validateAgainstSchema(msg, schema).then(()=>{
-		if (a) {
-			a.group(msg, callback)
+	{{/if}}
+
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
+	 if (a) {
+			a.group(message, callback)
 		} else {
 			throw missingAnalyticsNodeError
 		}
-	})
-	{{else}}
-	if (a) {
-		a.group(msg, callback)
-	} else {
-		throw missingAnalyticsNodeError
-	}
-	{{/if}}
+	{{/validateAndExecute}}
 }
 {{/if}}
 {{/each}}
