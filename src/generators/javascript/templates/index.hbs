@@ -440,10 +440,30 @@ export function {{functionName}}(
 	const a = analytics();
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
-	const message = {
-		event: '{{rawEventName}}',
-		properties: props || {},
-		options,
+
+	let message = { event: '{{rawEventName}}', properties: {}, options: undefined };
+
+	if (typeof categoryOrProps === 'string' && typeof nameOrPropsOrOptions === 'string') {
+		// Overload (category: string, name: string, props?: Page, options?: ApiOptions, callback?: apiCallback)
+		message = {
+		...message,
+		properties: propsOrOptionsOrCallback || {},
+		options: optionsOrCallback,
+		};
+	} else if (typeof categoryOrProps === 'string') {
+		// Overload (name: string, props?: Page, options?: ApiOptions, callback?: apiCallback)
+		message = {
+		...message,
+		properties: nameOrPropsOrOptions || {},
+		options: propsOrOptionsOrCallback,
+		};
+	} else {
+		// Overload (props?: Page, options?: ApiOptions, callback?: apiCallback)
+		message = {
+		...message,
+		properties: categoryOrProps || {},
+		options: nameOrPropsOrOptions,
+		};
 	}
 	{{/if}}
 
@@ -553,9 +573,15 @@ export function {{functionName}}(
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
 	const message = {
-		traits: traits || {},
-		options,
-	}
+		traits:
+		typeof userIdOrTraits === 'string'
+			? (traitsOrOptions as Identify)
+			: (userIdOrTraits as Identify) || {},
+		options:
+		typeof userIdOrTraits === 'string'
+			? (optionsOrCallback as ApiOptions)
+			: (traitsOrOptions as ApiOptions),
+	};
 	{{/if}}
 
 	{{#> validateAndExecute isDevelopment=../isDevelopment }}
@@ -619,9 +645,17 @@ export function {{functionName}}(
 	const a = analytics();
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
-	const message = {
-		traits: traits || {},
-		options,
+	let message;
+	if (typeof groupIdOrTraits === 'string') {
+		message = {
+		traits: (traitsOrOptions as Group) || {},
+		options: optionsOrCallback as ApiOptions,
+		};
+	} else {
+		message = {
+		traits: (groupIdOrTraits as Group) || {},
+		options: traitsOrOptions as ApiOptions,
+		};
 	}
 	{{/if}}
 
