@@ -441,28 +441,32 @@ export function {{functionName}}(
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
 
-	let message = { event: '{{rawEventName}}', properties: {}, options: undefined };
+	let message: {
+		event: string;
+		properties: Page | {};
+		options?: ApiOptions;
+	} = { event: '{{rawEventName}}', properties: {}, options: undefined };
 
 	if (typeof categoryOrProps === 'string' && typeof nameOrPropsOrOptions === 'string') {
 		// Overload (category: string, name: string, props?: Page, options?: ApiOptions, callback?: apiCallback)
 		message = {
 		...message,
 		properties: propsOrOptionsOrCallback || {},
-		options: optionsOrCallback,
+		options: typeof optionsOrCallback === 'object' ? optionsOrCallback : undefined,
 		};
 	} else if (typeof categoryOrProps === 'string') {
 		// Overload (name: string, props?: Page, options?: ApiOptions, callback?: apiCallback)
 		message = {
 		...message,
 		properties: nameOrPropsOrOptions || {},
-		options: propsOrOptionsOrCallback,
+		options: typeof propsOrOptionsOrCallback === 'object' && !Array.isArray(propsOrOptionsOrCallback) ? propsOrOptionsOrCallback as ApiOptions : undefined,
 		};
 	} else {
 		// Overload (props?: Page, options?: ApiOptions, callback?: apiCallback)
 		message = {
 		...message,
 		properties: categoryOrProps || {},
-		options: nameOrPropsOrOptions,
+		options: typeof nameOrPropsOrOptions === 'object' && !Array.isArray(nameOrPropsOrOptions) ? nameOrPropsOrOptions as ApiOptions : undefined,
 		};
 	}
 	{{/if}}
@@ -714,10 +718,12 @@ const clientAPI = {
 	{{> functionDocumentation isBrowser=../isBrowser event="page"}}
 	{{functionName}},
 	{{/each}}
-	{{#each screen}}
-	{{> functionDocumentation isBrowser=../isBrowser event="screen"}}
-	{{functionName}},
-	{{/each}}
+	{{#unless isBrowser}}
+		{{#each screen}}
+		{{> functionDocumentation isBrowser=../isBrowser event="screen"}}
+		{{functionName}},
+		{{/each}}
+	{{/unless}}
 	{{#each identify}}
 	{{> functionDocumentation isBrowser=../isBrowser event="identify"}}
 	{{functionName}},

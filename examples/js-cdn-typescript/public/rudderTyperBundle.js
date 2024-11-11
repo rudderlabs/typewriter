@@ -8269,6 +8269,9 @@
             };
           Object.defineProperty(exports, '__esModule', { value: true });
           exports.RudderTyperAnalytics =
+            exports.group =
+            exports.identify =
+            exports.page =
             exports.sampleEvent1 =
             exports.setRudderTyperOptions =
             exports.defaultValidationErrorHandler =
@@ -8388,9 +8391,9 @@
                 ruddertyper: {
                   sdk: 'analytics.js',
                   language: 'typescript',
-                  rudderTyperVersion: '1.0.0-beta.11',
+                  rudderTyperVersion: '1.2.0',
                   trackingPlanId: 'tp_2kKI0i514th5OEuYi5AdsRwNlXC',
-                  trackingPlanVersion: 2,
+                  trackingPlanVersion: 3,
                 },
               }),
             });
@@ -8400,12 +8403,27 @@
            * @property {any | null} [Sample property 1] - Sample property 1
            */
           /**
+           * @typedef Screen
+           * @property {any | null} [Sample property 1] -
+           */
+          /**
+           * @typedef Page
+           * @property {any | null} [Sample property 1] -
+           */
+          /**
+           * @typedef Group
+           * @property {any | null} [Sample property 1] -
+           */
+          /**
+           * @typedef Identify
+           * @property {any | null} [Sample property 1] -
+           */
+          /**
            * Sample event 1
            *
            * @param {SampleEvent1} [props] - The analytics properties that will be sent to RudderStack.
            * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
-           * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-           * 		call is fired.
+           * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
            */
           function sampleEvent1(props, options, callback) {
             var a = analytics();
@@ -8439,6 +8457,172 @@
             });
           }
           exports.sampleEvent1 = sampleEvent1;
+          function page(
+            categoryOrProps,
+            nameOrPropsOrOptions,
+            propsOrOptionsOrCallback,
+            optionsOrCallback,
+            callback,
+          ) {
+            var a = analytics();
+            var schema = {
+              $schema: 'http://json-schema.org/draft-07/schema#',
+              description: 'Sample Page event',
+              properties: {
+                properties: {
+                  additionalProperties: false,
+                  properties: {
+                    'Sample property 1': {},
+                  },
+                  required: [],
+                  type: 'object',
+                },
+              },
+              title: 'page',
+              type: 'object',
+            };
+            var message = { event: 'page', properties: {}, options: undefined };
+            if (typeof categoryOrProps === 'string' && typeof nameOrPropsOrOptions === 'string') {
+              // Overload (category: string, name: string, props?: Page, options?: ApiOptions, callback?: apiCallback)
+              message = __assign(__assign({}, message), {
+                properties: propsOrOptionsOrCallback || {},
+                options: typeof optionsOrCallback === 'object' ? optionsOrCallback : undefined,
+              });
+            } else if (typeof categoryOrProps === 'string') {
+              // Overload (name: string, props?: Page, options?: ApiOptions, callback?: apiCallback)
+              message = __assign(__assign({}, message), {
+                properties: nameOrPropsOrOptions || {},
+                options:
+                  typeof propsOrOptionsOrCallback === 'object' &&
+                  !Array.isArray(propsOrOptionsOrCallback)
+                    ? propsOrOptionsOrCallback
+                    : undefined,
+              });
+            } else {
+              // Overload (props?: Page, options?: ApiOptions, callback?: apiCallback)
+              message = __assign(__assign({}, message), {
+                properties: categoryOrProps || {},
+                options:
+                  typeof nameOrPropsOrOptions === 'object' && !Array.isArray(nameOrPropsOrOptions)
+                    ? nameOrPropsOrOptions
+                    : undefined,
+              });
+            }
+            validateAgainstSchema(message, schema).then(function () {
+              if (a) {
+                if (
+                  typeof categoryOrProps === 'string' &&
+                  typeof nameOrPropsOrOptions === 'string'
+                ) {
+                  // Overload (category: string, name: string, props?: Page, options?: ApiOptions, callback?: apiCallback)
+                  a.page(
+                    categoryOrProps,
+                    'page',
+                    propsOrOptionsOrCallback || {},
+                    withRudderTyperContext(optionsOrCallback),
+                    callback,
+                  );
+                } else if (typeof categoryOrProps === 'string') {
+                  // Overload (name: string, props?: Page, options?: ApiOptions, callback?: apiCallback)
+                  a.page(
+                    'page',
+                    nameOrPropsOrOptions || {},
+                    withRudderTyperContext(propsOrOptionsOrCallback),
+                    optionsOrCallback,
+                  );
+                } else {
+                  // Overload (props?: Page, options?: ApiOptions, callback?: apiCallback)
+                  a.page(
+                    categoryOrProps || {},
+                    withRudderTyperContext(nameOrPropsOrOptions),
+                    propsOrOptionsOrCallback,
+                  );
+                }
+              }
+            });
+          }
+          exports.page = page;
+          function identify(userIdOrTraits, traitsOrOptions, optionsOrCallback, callback) {
+            var a = analytics();
+            var schema = {
+              $schema: 'http://json-schema.org/draft-07/schema#',
+              description: 'Sample Identify event',
+              properties: {
+                traits: {
+                  additionalProperties: false,
+                  properties: {
+                    'Sample property 1': {},
+                  },
+                  required: [],
+                  type: 'object',
+                },
+              },
+              title: 'identify',
+              type: 'object',
+            };
+            var message = {
+              traits: typeof userIdOrTraits === 'string' ? traitsOrOptions : userIdOrTraits || {},
+              options: typeof userIdOrTraits === 'string' ? optionsOrCallback : traitsOrOptions,
+            };
+            validateAgainstSchema(message, schema).then(function () {
+              if (a) {
+                var userId = typeof userIdOrTraits === 'string' ? userIdOrTraits : undefined;
+                var traits = typeof userIdOrTraits === 'string' ? traitsOrOptions : userIdOrTraits;
+                var options =
+                  typeof userIdOrTraits === 'string' ? optionsOrCallback : traitsOrOptions;
+                var cb = typeof userIdOrTraits === 'string' ? callback : optionsOrCallback;
+                a.identify(userId, traits || {}, withRudderTyperContext(options), cb);
+              }
+            });
+          }
+          exports.identify = identify;
+          function group(groupIdOrTraits, traitsOrOptions, optionsOrCallback, callback) {
+            var a = analytics();
+            var schema = {
+              $schema: 'http://json-schema.org/draft-07/schema#',
+              description: 'Sample Group event',
+              properties: {
+                traits: {
+                  additionalProperties: false,
+                  properties: {
+                    'Sample property 1': {},
+                  },
+                  required: [],
+                  type: 'object',
+                },
+              },
+              title: 'group',
+              type: 'object',
+            };
+            var message;
+            if (typeof groupIdOrTraits === 'string') {
+              message = {
+                traits: traitsOrOptions || {},
+                options: optionsOrCallback,
+              };
+            } else {
+              message = {
+                traits: groupIdOrTraits || {},
+                options: traitsOrOptions,
+              };
+            }
+            validateAgainstSchema(message, schema).then(function () {
+              if (a) {
+                if (typeof groupIdOrTraits === 'string') {
+                  var groupId = groupIdOrTraits;
+                  var traits = traitsOrOptions || {};
+                  var options = optionsOrCallback;
+                  a.group(groupId, traits, withRudderTyperContext(options), callback);
+                } else {
+                  var traits = groupIdOrTraits || {};
+                  var options = traitsOrOptions;
+                  var cb = optionsOrCallback;
+                  a.group(traits, withRudderTyperContext(options), cb);
+                }
+              }
+            });
+          }
+          exports.group = group;
           var clientAPI = {
             /**
              * Updates the run-time configuration of this RudderTyper client.
@@ -8459,10 +8643,37 @@
              *
              * @param {SampleEvent1} [props] - The analytics properties that will be sent to RudderStack.
              * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
-             * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-             * 		call is fired.
+             * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
              */
             sampleEvent1: sampleEvent1,
+            /**
+             * Sample Page event
+             *
+             * @param {string} [category] - The category of the page.
+             * @param {string} [name] - The name of the page.
+             * @param {Page} [props] - The analytics properties that will be sent to RudderStack.
+             * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+             * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+             */
+            page: page,
+            /**
+             * Sample Identify event
+             *
+             * @param {string} [userId] - The user ID of the user.
+             * @param {Identify} [traits] - The analytics traits that will be sent to RudderStack.
+             * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+             * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+             */
+            identify: identify,
+            /**
+             * Sample Group event
+             *
+             * @param {string} [groupId] - The group ID of the group.
+             * @param {Group} [traits] - The analytics traits that will be sent to RudderStack.
+             * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+             * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+             */
+            group: group,
           };
           exports.RudderTyperAnalytics = new Proxy(clientAPI, {
             get: function (target, method) {

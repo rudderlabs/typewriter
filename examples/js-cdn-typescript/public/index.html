@@ -185,6 +185,140 @@
           },
         );
       }
+
+      function page() {
+        rudderTyper.page('sample category name', 'sample page name', {
+          'Sample property 1': 'Sample value 1',
+        });
+
+        rudderTyper.page('sample page name', {
+          'Sample property 1': 'Sample value 1',
+        });
+
+        rudderTyper.page({
+          'Sample property 1': 'Sample value 1',
+        });
+
+        rudderTyper.page(
+          'sample category name',
+          'sample page name',
+          {
+            'Sample property 1': 'Sample value 1',
+          },
+          {
+            integrations: {
+              All: false,
+              'Google Analytics': true,
+            },
+            context: {
+              active: true,
+              app: {
+                name: 'RudderStack',
+                version: '1.0.0',
+                build: '100',
+              },
+              device: {
+                id: 'device_id',
+                manufacturer: 'Samsung',
+                model: 'Galaxy S20',
+                name: 'Samsung Galaxy S20',
+                type: 'Android',
+              },
+              timestamp: new Date(),
+              extraKey1: 'value1',
+            },
+          },
+          () => {
+            console.log('callback called from sampleEvent1 event');
+          },
+        );
+      }
+
+      function identify() {
+        rudderTyper.identify('sample user id', {
+          'Sample property 1': 'Sample value 1',
+        });
+
+        rudderTyper.identify({
+          'Sample property 1': 'Sample value 1',
+        });
+
+        rudderTyper.identify(
+          'sample user id',
+          {
+            'Sample property 1': 'Sample value 1',
+          },
+          {
+            integrations: {
+              All: false,
+              'Google Analytics': true,
+            },
+            context: {
+              active: true,
+              app: {
+                name: 'RudderStack',
+                version: '1.0.0',
+                build: '100',
+              },
+              device: {
+                id: 'device_id',
+                manufacturer: 'Samsung',
+                model: 'Galaxy S20',
+                name: 'Samsung Galaxy S20',
+                type: 'Android',
+              },
+              timestamp: new Date(),
+              extraKey1: 'value1',
+            },
+          },
+          () => {
+            console.log('callback called from sampleEvent1 event');
+          },
+        );
+      }
+
+      function group() {
+        rudderTyper.group('sample group id', {
+          'Sample property 1': 'Sample value 1',
+        });
+
+        rudderTyper.group({
+          'Sample property 1': 'Sample value 1',
+        });
+
+        rudderTyper.group(
+          'sample group id',
+          {
+            'Sample property 1': 'Sample value 1',
+          },
+          {
+            integrations: {
+              All: false,
+              'Google Analytics': true,
+            },
+            context: {
+              active: true,
+              app: {
+                name: 'RudderStack',
+                version: '1.0.0',
+                build: '100',
+              },
+              device: {
+                id: 'device_id',
+                manufacturer: 'Samsung',
+                model: 'Galaxy S20',
+                name: 'Samsung Galaxy S20',
+                type: 'Android',
+              },
+              timestamp: new Date(),
+              extraKey1: 'value1',
+            },
+          },
+          () => {
+            console.log('callback called from sampleEvent1 event');
+          },
+        );
+      }
     </script>
   </head>
   <body>
@@ -193,6 +327,9 @@
       <h1>Test HTML file</h1>
       <br />
       <button data-testid="track-btn" onclick="track()">Track</button>
+      <button data-testid="track-btn" onclick="page()">Page</button>
+      <button data-testid="track-btn" onclick="identify()">Identify</button>
+      <button data-testid="track-btn" onclick="group()">Group</button>
     </div>
 
     <div id="root"></div>

@@ -51,6 +51,22 @@ export interface SampleEvent1 {
   'Sample property 1'?: any | null;
 }
 
+export interface Screen {
+  'Sample property 1'?: any | null;
+}
+
+export interface Page {
+  'Sample property 1'?: any | null;
+}
+
+export interface Group {
+  'Sample property 1'?: any | null;
+}
+
+export interface Identify {
+  'Sample property 1'?: any | null;
+}
+
 export type ViolationHandler = (message: Record<string, any>, violations: ErrorObject[]) => void;
 
 /**
@@ -151,9 +167,9 @@ function withRudderTyperContext(message: ApiOptions = {}): ApiOptions {
       ruddertyper: {
         sdk: 'analytics.js',
         language: 'typescript',
-        rudderTyperVersion: '1.0.0-beta.11',
+        rudderTyperVersion: '1.2.0',
         trackingPlanId: 'tp_2kKI0i514th5OEuYi5AdsRwNlXC',
-        trackingPlanVersion: 2,
+        trackingPlanVersion: 3,
       },
     },
   };
@@ -163,14 +179,29 @@ function withRudderTyperContext(message: ApiOptions = {}): ApiOptions {
  * @typedef SampleEvent1
  * @property {any | null} [Sample property 1] - Sample property 1
  */
+/**
+ * @typedef Screen
+ * @property {any | null} [Sample property 1] -
+ */
+/**
+ * @typedef Page
+ * @property {any | null} [Sample property 1] -
+ */
+/**
+ * @typedef Group
+ * @property {any | null} [Sample property 1] -
+ */
+/**
+ * @typedef Identify
+ * @property {any | null} [Sample property 1] -
+ */
 
 /**
  * Sample event 1
  *
  * @param {SampleEvent1} [props] - The analytics properties that will be sent to RudderStack.
  * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
- * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
- * 		call is fired.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
  */
 export function sampleEvent1(
   props?: SampleEvent1,
@@ -201,9 +232,259 @@ export function sampleEvent1(
     properties: props || {},
     options,
   };
+
   validateAgainstSchema(message, schema).then(() => {
     if (a) {
       a.track('Sample event 1', props || {}, withRudderTyperContext(options), callback);
+    }
+  });
+}
+
+/**
+ * Sample Page event
+ *
+ * @param {string} [category] - The category of the page.
+ * @param {string} [name] - The name of the page.
+ * @param {Page} [props] - The analytics properties that will be sent to RudderStack.
+ * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+ */
+export function page(
+  category: string,
+  name: string,
+  props?: Page,
+  options?: ApiOptions,
+  callback?: apiCallback,
+): void;
+export function page(
+  name: string,
+  props?: Page,
+  options?: ApiOptions,
+  callback?: apiCallback,
+): void;
+export function page(props?: Page, options?: ApiOptions, callback?: apiCallback): void;
+export function page(
+  categoryOrProps?: string | Page,
+  nameOrPropsOrOptions?: string | Page | ApiOptions,
+  propsOrOptionsOrCallback?: Page | ApiOptions | apiCallback,
+  optionsOrCallback?: ApiOptions | apiCallback,
+  callback?: apiCallback,
+): void {
+  const a = analytics();
+  const schema = {
+    $schema: 'http://json-schema.org/draft-07/schema#',
+    description: 'Sample Page event',
+    properties: {
+      properties: {
+        additionalProperties: false,
+        properties: {
+          'Sample property 1': {},
+        },
+        required: [],
+        type: 'object',
+      },
+    },
+    title: 'page',
+    type: 'object',
+  };
+
+  let message: {
+    event: string;
+    properties: Page | {};
+    options?: ApiOptions;
+  } = { event: 'page', properties: {}, options: undefined };
+
+  if (typeof categoryOrProps === 'string' && typeof nameOrPropsOrOptions === 'string') {
+    // Overload (category: string, name: string, props?: Page, options?: ApiOptions, callback?: apiCallback)
+    message = {
+      ...message,
+      properties: propsOrOptionsOrCallback || {},
+      options: typeof optionsOrCallback === 'object' ? optionsOrCallback : undefined,
+    };
+  } else if (typeof categoryOrProps === 'string') {
+    // Overload (name: string, props?: Page, options?: ApiOptions, callback?: apiCallback)
+    message = {
+      ...message,
+      properties: nameOrPropsOrOptions || {},
+      options:
+        typeof propsOrOptionsOrCallback === 'object' && !Array.isArray(propsOrOptionsOrCallback)
+          ? (propsOrOptionsOrCallback as ApiOptions)
+          : undefined,
+    };
+  } else {
+    // Overload (props?: Page, options?: ApiOptions, callback?: apiCallback)
+    message = {
+      ...message,
+      properties: categoryOrProps || {},
+      options:
+        typeof nameOrPropsOrOptions === 'object' && !Array.isArray(nameOrPropsOrOptions)
+          ? (nameOrPropsOrOptions as ApiOptions)
+          : undefined,
+    };
+  }
+
+  validateAgainstSchema(message, schema).then(() => {
+    if (a) {
+      if (typeof categoryOrProps === 'string' && typeof nameOrPropsOrOptions === 'string') {
+        // Overload (category: string, name: string, props?: Page, options?: ApiOptions, callback?: apiCallback)
+        a.page(
+          categoryOrProps,
+          'page',
+          (propsOrOptionsOrCallback as Page) || {},
+          withRudderTyperContext(optionsOrCallback as ApiOptions),
+          callback,
+        );
+      } else if (typeof categoryOrProps === 'string') {
+        // Overload (name: string, props?: Page, options?: ApiOptions, callback?: apiCallback)
+        a.page(
+          'page',
+          (nameOrPropsOrOptions as Page) || {},
+          withRudderTyperContext(propsOrOptionsOrCallback as ApiOptions),
+          optionsOrCallback as apiCallback,
+        );
+      } else {
+        // Overload (props?: Page, options?: ApiOptions, callback?: apiCallback)
+        a.page(
+          categoryOrProps || {},
+          withRudderTyperContext(nameOrPropsOrOptions as ApiOptions),
+          propsOrOptionsOrCallback as apiCallback,
+        );
+      }
+    }
+  });
+}
+
+/**
+ * Sample Identify event
+ *
+ * @param {string} [userId] - The user ID of the user.
+ * @param {Identify} [traits] - The analytics traits that will be sent to RudderStack.
+ * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+ */
+export function identify(
+  userId: string,
+  traits?: Identify,
+  options?: ApiOptions,
+  callback?: apiCallback,
+): void;
+export function identify(traits?: Identify, options?: ApiOptions, callback?: apiCallback): void;
+export function identify(
+  userIdOrTraits?: string | Identify,
+  traitsOrOptions?: Identify | ApiOptions,
+  optionsOrCallback?: ApiOptions | apiCallback,
+  callback?: apiCallback,
+): void {
+  const a = analytics();
+  const schema = {
+    $schema: 'http://json-schema.org/draft-07/schema#',
+    description: 'Sample Identify event',
+    properties: {
+      traits: {
+        additionalProperties: false,
+        properties: {
+          'Sample property 1': {},
+        },
+        required: [],
+        type: 'object',
+      },
+    },
+    title: 'identify',
+    type: 'object',
+  };
+  const message = {
+    traits:
+      typeof userIdOrTraits === 'string'
+        ? (traitsOrOptions as Identify)
+        : (userIdOrTraits as Identify) || {},
+    options:
+      typeof userIdOrTraits === 'string'
+        ? (optionsOrCallback as ApiOptions)
+        : (traitsOrOptions as ApiOptions),
+  };
+
+  validateAgainstSchema(message, schema).then(() => {
+    if (a) {
+      const userId = typeof userIdOrTraits === 'string' ? userIdOrTraits : undefined;
+      const traits =
+        typeof userIdOrTraits === 'string'
+          ? (traitsOrOptions as Identify)
+          : (userIdOrTraits as Identify);
+      const options =
+        typeof userIdOrTraits === 'string'
+          ? (optionsOrCallback as ApiOptions)
+          : (traitsOrOptions as ApiOptions);
+      const cb = typeof userIdOrTraits === 'string' ? callback : (optionsOrCallback as apiCallback);
+
+      a.identify(userId, traits || {}, withRudderTyperContext(options), cb);
+    }
+  });
+}
+
+/**
+ * Sample Group event
+ *
+ * @param {string} [groupId] - The group ID of the group.
+ * @param {Group} [traits] - The analytics traits that will be sent to RudderStack.
+ * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+ */
+export function group(
+  groupId: string,
+  traits?: Group,
+  options?: ApiOptions,
+  callback?: apiCallback,
+): void;
+export function group(traits?: Group, options?: ApiOptions, callback?: apiCallback): void;
+export function group(
+  groupIdOrTraits?: string | Group,
+  traitsOrOptions?: Group | ApiOptions,
+  optionsOrCallback?: ApiOptions | apiCallback,
+  callback?: apiCallback,
+): void {
+  const a = analytics();
+  const schema = {
+    $schema: 'http://json-schema.org/draft-07/schema#',
+    description: 'Sample Group event',
+    properties: {
+      traits: {
+        additionalProperties: false,
+        properties: {
+          'Sample property 1': {},
+        },
+        required: [],
+        type: 'object',
+      },
+    },
+    title: 'group',
+    type: 'object',
+  };
+  let message;
+  if (typeof groupIdOrTraits === 'string') {
+    message = {
+      traits: (traitsOrOptions as Group) || {},
+      options: optionsOrCallback as ApiOptions,
+    };
+  } else {
+    message = {
+      traits: (groupIdOrTraits as Group) || {},
+      options: traitsOrOptions as ApiOptions,
+    };
+  }
+
+  validateAgainstSchema(message, schema).then(() => {
+    if (a) {
+      if (typeof groupIdOrTraits === 'string') {
+        const groupId = groupIdOrTraits;
+        const traits = (traitsOrOptions as Group) || {};
+        const options = optionsOrCallback as ApiOptions;
+        a.group(groupId, traits, withRudderTyperContext(options), callback);
+      } else {
+        const traits = (groupIdOrTraits as Group) || {};
+        const options = traitsOrOptions as ApiOptions;
+        const cb = optionsOrCallback as apiCallback;
+        a.group(traits, withRudderTyperContext(options), cb);
+      }
     }
   });
 }
@@ -228,10 +509,37 @@ const clientAPI = {
    *
    * @param {SampleEvent1} [props] - The analytics properties that will be sent to RudderStack.
    * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
-   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-   * 		call is fired.
+   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
    */
   sampleEvent1,
+  /**
+   * Sample Page event
+   *
+   * @param {string} [category] - The category of the page.
+   * @param {string} [name] - The name of the page.
+   * @param {Page} [props] - The analytics properties that will be sent to RudderStack.
+   * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+   */
+  page,
+  /**
+   * Sample Identify event
+   *
+   * @param {string} [userId] - The user ID of the user.
+   * @param {Identify} [traits] - The analytics traits that will be sent to RudderStack.
+   * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+   */
+  identify,
+  /**
+   * Sample Group event
+   *
+   * @param {string} [groupId] - The group ID of the group.
+   * @param {Group} [traits] - The analytics traits that will be sent to RudderStack.
+   * @param {Object} [options] - A dictionary of options. For example, enable or disable specific destinations for the call.
+   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
+   */
+  group,
 };
 
 export const RudderTyperAnalytics = new Proxy<typeof clientAPI>(clientAPI, {
