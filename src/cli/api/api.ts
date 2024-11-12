@@ -4,8 +4,8 @@ import { wrapError, isWrappedError } from '../commands/error.js';
 import { sanitizeTrackingPlan } from './trackingplans.js';
 import lodash from 'lodash';
 import { APIError } from '../types.js';
-import { version } from '../../../package.json';
 import { EventType } from 'src/generators/gen.js';
+import packageJson from '../../../package.json' assert { type: 'json' };
 
 const { set } = lodash;
 
@@ -237,7 +237,7 @@ async function apiGet<T>(url: string, token: string, email: string): Promise<T> 
           url === 'workspace' || url.includes('trackingplans')
             ? `Basic ${Buffer.from(email + ':' + token).toString('base64')}`
             : 'Bearer ' + token,
-        'User-Agent': `RudderTyper/${version} Node/${process.version} Platform/${process.platform}`,
+        'User-Agent': `RudderTyper/${packageJson.version} Node/${process.version} Platform/${process.platform}`,
       },
       timeout: {
         request: 10000, //ms
