@@ -16,236 +16,14 @@ var __assign =
       };
     return __assign.apply(this, arguments);
   };
-var __createBinding =
-  (this && this.__createBinding) ||
-  (Object.create
-    ? function (o, m, k, k2) {
-        if (k2 === undefined) k2 = k;
-        var desc = Object.getOwnPropertyDescriptor(m, k);
-        if (!desc || ('get' in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-          desc = {
-            enumerable: true,
-            get: function () {
-              return m[k];
-            },
-          };
-        }
-        Object.defineProperty(o, k2, desc);
-      }
-    : function (o, m, k, k2) {
-        if (k2 === undefined) k2 = k;
-        o[k2] = m[k];
-      });
-var __setModuleDefault =
-  (this && this.__setModuleDefault) ||
-  (Object.create
-    ? function (o, v) {
-        Object.defineProperty(o, 'default', { enumerable: true, value: v });
-      }
-    : function (o, v) {
-        o['default'] = v;
-      });
-var __importStar =
-  (this && this.__importStar) ||
-  function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null)
-      for (var k in mod)
-        if (k !== 'default' && Object.prototype.hasOwnProperty.call(mod, k))
-          __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-  };
-var __awaiter =
-  (this && this.__awaiter) ||
-  function (thisArg, _arguments, P, generator) {
-    function adopt(value) {
-      return value instanceof P
-        ? value
-        : new P(function (resolve) {
-            resolve(value);
-          });
-    }
-    return new (P || (P = Promise))(function (resolve, reject) {
-      function fulfilled(value) {
-        try {
-          step(generator.next(value));
-        } catch (e) {
-          reject(e);
-        }
-      }
-      function rejected(value) {
-        try {
-          step(generator['throw'](value));
-        } catch (e) {
-          reject(e);
-        }
-      }
-      function step(result) {
-        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-      }
-      step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-  };
-var __generator =
-  (this && this.__generator) ||
-  function (thisArg, body) {
-    var _ = {
-        label: 0,
-        sent: function () {
-          if (t[0] & 1) throw t[1];
-          return t[1];
-        },
-        trys: [],
-        ops: [],
-      },
-      f,
-      y,
-      t,
-      g;
-    return (
-      (g = { next: verb(0), throw: verb(1), return: verb(2) }),
-      typeof Symbol === 'function' &&
-        (g[Symbol.iterator] = function () {
-          return this;
-        }),
-      g
-    );
-    function verb(n) {
-      return function (v) {
-        return step([n, v]);
-      };
-    }
-    function step(op) {
-      if (f) throw new TypeError('Generator is already executing.');
-      while ((g && ((g = 0), op[0] && (_ = 0)), _))
-        try {
-          if (
-            ((f = 1),
-            y &&
-              (t =
-                op[0] & 2
-                  ? y['return']
-                  : op[0]
-                    ? y['throw'] || ((t = y['return']) && t.call(y), 0)
-                    : y.next) &&
-              !(t = t.call(y, op[1])).done)
-          )
-            return t;
-          if (((y = 0), t)) op = [op[0] & 2, t.value];
-          switch (op[0]) {
-            case 0:
-            case 1:
-              t = op;
-              break;
-            case 4:
-              _.label++;
-              return { value: op[1], done: false };
-            case 5:
-              _.label++;
-              y = op[1];
-              op = [0];
-              continue;
-            case 7:
-              op = _.ops.pop();
-              _.trys.pop();
-              continue;
-            default:
-              if (
-                !((t = _.trys), (t = t.length > 0 && t[t.length - 1])) &&
-                (op[0] === 6 || op[0] === 2)
-              ) {
-                _ = 0;
-                continue;
-              }
-              if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) {
-                _.label = op[1];
-                break;
-              }
-              if (op[0] === 6 && _.label < t[1]) {
-                _.label = t[1];
-                t = op;
-                break;
-              }
-              if (t && _.label < t[2]) {
-                _.label = t[2];
-                _.ops.push(op);
-                break;
-              }
-              if (t[2]) _.ops.pop();
-              _.trys.pop();
-              continue;
-          }
-          op = body.call(thisArg, _);
-        } catch (e) {
-          op = [6, e];
-          y = 0;
-        } finally {
-          f = t = 0;
-        }
-      if (op[0] & 5) throw op[1];
-      return { value: op[0] ? op[1] : void 0, done: true };
-    }
-  };
-var __importDefault =
-  (this && this.__importDefault) ||
-  function (mod) {
-    return mod && mod.__esModule ? mod : { default: mod };
-  };
 Object.defineProperty(exports, '__esModule', { value: true });
-exports.RudderTyperAnalytics = exports.defaultValidationErrorHandler = void 0;
+exports.RudderTyperAnalytics = void 0;
 exports.setRudderTyperOptions = setRudderTyperOptions;
-exports.cartViewed = cartViewed;
-exports.checkoutStarted = checkoutStarted;
-exports.checkoutStepCompleted = checkoutStepCompleted;
-exports.couponApplied = couponApplied;
-exports.orderCompleted = orderCompleted;
-exports.paymentInfoEntered = paymentInfoEntered;
-exports.productAdded = productAdded;
-exports.productClicked = productClicked;
-exports.productsSearched = productsSearched;
-exports.productViewed = productViewed;
-/**
- * Ajv is a peer dependency for development builds. It's used to apply run-time validation
- * to message payloads before passing them on to the underlying analytics instance.
- *
- * Note that the production bundle does not depend on Ajv.
- *
- * You can install it with: `npm install --save-dev ajv`.
- *
- * In order to support run-time validation of draft-04 JSON Schema we are using `ajv-draft-04`.
- * You can install it with: `npm install --save-dev ajv-draft-04`.
- *
- */
-var ajv_1 = __importDefault(require('ajv'));
-var ajv_draft_04_1 = __importDefault(require('ajv-draft-04'));
-/**
- * The default handler that is fired if none is supplied with setRudderTyperOptions.
- * If NODE_ENV="test", this handler will throw an error. Otherwise, it will log
- * a warning message to the console.
- */
-var defaultValidationErrorHandler = function (message, violations) {
-  var msg = JSON.stringify(
-    {
-      type: 'RudderTyper JSON Schema Validation Error',
-      description:
-        'You made an analytics call ('.concat(
-          message.event,
-          ") using RudderTyper that doesn't match the ",
-        ) + 'Tracking Plan spec.',
-      errors: violations,
-    },
-    undefined,
-    2,
-  );
-  if (process.env.NODE_ENV === 'test') {
-    throw new Error(msg);
-  }
-  console.warn(msg);
-};
-exports.defaultValidationErrorHandler = defaultValidationErrorHandler;
-var onViolation = exports.defaultValidationErrorHandler;
+exports.sampleEvent1 = sampleEvent1;
+exports.page = page;
+exports.screen = screen;
+exports.identify = identify;
+exports.group = group;
 var missingAnalyticsNodeError = new Error(
   "You must set an analytics-node instance:\n\n>\tconst RudderAnalytics = require('@rudderstack/rudder-sdk-node');\n>\tconst { setRudderTyperOptions } = require('./analytics')\n>\n>\tconst analytics = new RudderAnalytics(WRITE_KEY, DATA_PLANE_URL/v1/batch)\n>\tsetRudderTyperOptions({\n>\t\tanalytics: analytics,\n>\t})\n\nFor more information on analytics-node, see: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#installing-the-rudderstack-node-js-sdk\n",
 );
@@ -273,48 +51,6 @@ function setRudderTyperOptions(options) {
         return options.analytics;
       }
     : analytics;
-  onViolation = options.onViolation || onViolation;
-}
-/**
- * Validates a message against a JSON Schema using Ajv. If the message
- * is invalid, the `onViolation` handler will be called.
- */
-function validateAgainstSchema(message, schema) {
-  return __awaiter(this, void 0, void 0, function () {
-    var ajv, schemaDraft06;
-    return __generator(this, function (_a) {
-      switch (_a.label) {
-        case 0:
-          if (!(schema['$schema'] && schema['$schema'].includes('draft-04')))
-            return [3 /*break*/, 1];
-          ajv = new ajv_draft_04_1.default({
-            allErrors: true,
-            verbose: true,
-          });
-          return [3 /*break*/, 3];
-        case 1:
-          ajv = new ajv_1.default({
-            allErrors: true,
-            verbose: true,
-          });
-          return [
-            4 /*yield*/,
-            Promise.resolve().then(function () {
-              return __importStar(require('ajv/lib/refs/json-schema-draft-06.json'));
-            }),
-          ];
-        case 2:
-          schemaDraft06 = _a.sent();
-          ajv.addMetaSchema(schemaDraft06);
-          _a.label = 3;
-        case 3:
-          if (!ajv.validate(schema, message) && ajv.errors) {
-            onViolation(message, ajv.errors);
-          }
-          return [2 /*return*/];
-      }
-    });
-  });
 }
 /**
  * Helper to attach metadata on RudderTyper to outbound requests.
@@ -326,8 +62,8 @@ function withRudderTyperContext(message) {
       ruddertyper: {
         sdk: 'analytics-node',
         language: 'javascript',
-        rudderTyperVersion: '1.0.0-beta.9',
-        trackingPlanId: 'tp_2kuRZPE6pJYlWqdjC127h9BYJKq',
+        rudderTyperVersion: '1.2.0',
+        trackingPlanId: 'tp_2kKI0i514th5OEuYi5AdsRwNlXC',
         trackingPlanVersion: 3,
       },
     }),
@@ -347,791 +83,152 @@ function withRudderTyperContext(message) {
  * @template PropertiesType
  */
 /**
- * @typedef CartViewed
- * @property {string} [cart_id] - Contains the cart ID of the cart to which the product was added
- * @property {any[]} [products] - Contains the list of products displayed in the product list
+ * A message payload for an analytics-node `.page()` call.
+ * See: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#page
+ * @typedef PageMessage<PropertiesType>
+ * @property {string | number} [userId] - The ID for this user in your database.
+ * @property {string | number} [anonymousId] - An ID to associated with the user when you don't know who they are.
+ * @property {string} name - The name of the page viewed.
+ * @property {PropertiesType} [properties] - A dictionary of properties for the event.
+ * @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
+ * 		just happened, leave it out and we'll use the server's time. If you're importing data from the past make
+ * 		sure you to send a timestamp.
+ * @template PropertiesType
  */
 /**
- * @typedef CheckoutStarted
- * @property {string} [affiliation] - Contains the store or affiliation details from where the transaction was started
- * @property {string} [coupon] - Contains details of the transaction coupon which can be redeemed with the transaction
- * @property {string} [currency] - Contains the currency code associated with an order or transaction
- * @property {number} [discount] - Contains the total discount associated with the transaction
- * @property {string} [order_id] - Contains the order ID or transaction ID, whichever is applicable
- * @property {any[]} [products] - Contains the list of products in the order or transaction
- * @property {number} [revenue] - Contains the revenue associated with the transaction, excluding the shipping and tax details
- * @property {number} [shipping] - Contains the shipping cost associated with the order or transaction
- * @property {number} [tax] - Contains the total tax associated with the order or the transaction
- * @property {number} [value] - Contains the details of the revenue with the discount and coupons factored in
+ * A message payload for an analytics-node `.screen()` call.
+ * See: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#screen
+ * @typedef ScreenMessage<PropertiesType>
+ * @property {string | number} [userId] - The ID for this user in your database.
+ * @property {string | number} [anonymousId] - An ID to associated with the user when you don't know who they are.
+ * @property {string} name - The name of the screen viewed.
+ * @property {PropertiesType} [properties] - A dictionary of properties for the event.
+ * @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
+ * 		just happened, leave it out and we'll use the server's time. If you're importing data from the past make
+ * 		sure you to send a timestamp.
+ * @template PropertiesType
  */
 /**
- * @typedef CheckoutStepCompleted
- * @property {string} [checkout_id] - Contains the checkout transaction ID
- * @property {string} [payment_method] - Contains the payment method information
- * @property {string} [shipping_method] - Contains the information associated with the chosen shipping method
- * @property {number} step - Contains the number associated with the checkout process step
+ * A message payload for an analytics-node `.identify()` call.
+ * See: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#identify
+ * @typedef IdentifyMessage<PropertiesType>
+ * @property {string | number} [userId] - The ID for this user in your database.
+ * @property {string | number} [anonymousId] - An ID to associated with the user when you don't know who they are.
+ * @property {PropertiesType} [traits] - A dictionary of traits for the user.
+ * @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
+ * 		just happened, leave it out and we'll use the server's time. If you're importing data from the past make
+ * 		sure you to send a timestamp.
+ * @template PropertiesType
  */
 /**
- * @typedef CouponApplied
- * @property {string} [cart_id] - Contains the cart ID, if applicable
- * @property {string} [coupon_id] - Contains the coupon ID
- * @property {string} [coupon_name] - Contains the name of the coupon
- * @property {number} [discount] - Contains the amount of discount availed by applying the coupon
- * @property {string} [order_id] - Contains the order ID or the transaction ID, if applicable
+ * A message payload for an analytics-node `.group()` call.
+ * See: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#group
+ * @typedef GroupMessage<PropertiesType>
+ * @property {string | number} [userId] - The ID for this user in your database.
+ * @property {string | number} [anonymousId] - An ID to associated with the user when you don't know who they are.
+ * @property {string} groupId - The ID for this group in your database.
+ * @property {PropertiesType} [traits] - A dictionary of traits for the group.
+ * @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
+ * 		just happened, leave it out and we'll use the server's time. If you're importing data from the past make
+ * 		sure you to send a timestamp.
+ * @template PropertiesType
  */
 /**
- * @typedef OrderCompleted
- * @property {string} [affiliation] - Contains the store or affiliation details from where the transaction was started
- * @property {string} [checkout_id] - Contains the checkout ID
- * @property {string} [coupon] - Contains details of the transaction coupon which can be redeemed with the transaction
- * @property {string} currency - Contains the currency code associated with an order or transaction
- * @property {number} [discount] - Contains the total discount associated with the transaction
- * @property {string} order_id - Contains the order ID or transaction ID, whichever is applicable
- * @property {any[]} products - Contains the list of products in the order or transaction
- * @property {number} revenue - Contains the revenue associated with the transaction, excluding the shipping and tax details
- * @property {number} [shipping] - Contains the shipping cost associated with the order or transaction
- * @property {number} [subtotal] - Contains the order total after discounts but not including the taxes and shipping charges
- * @property {number} [tax] - Contains the total tax associated with the order or the transaction
- * @property {number} [total] - Contains the details of the revenue with the discount and coupons factored in
+ * @typedef SampleEvent1
+ * @property {any | null} [Sample property 1] - Sample property 1
  */
 /**
- * @typedef PaymentInfoEntered
- * @property {string} [checkout_id] - Contains the checkout transaction ID
- * @property {string} [order_id] - An optional string that contains the order ID
- * @property {string} [payment_method] - Contains the payment method information
- * @property {string} [shipping_method] - Contains the information associated with the chosen shipping method
- * @property {number} step - Contains the number associated with the checkout process step
+ * @typedef Screen
+ * @property {any | null} [Sample property 1] -
  */
 /**
- * @typedef ProductAdded
- * @property {string} [brand] - Brand of the product
- * @property {string} [cart_id] - Cart ID associated with the product displayed
- * @property {string} [category] - Product category being viewed
- * @property {string} [coupon] - Coupon code associated with the product
- * @property {string} [image_url] - Image url of the product
- * @property {string} [name] - Name of the product
- * @property {number} [position] - Position of product in the list
- * @property {number} price - Price of the product
- * @property {string} product_id - Database ID of the product
- * @property {number} [quantity] - Quantity of the product
- * @property {string} [sku] - Sku of the product
- * @property {string} [url] - URL of the product page for product
- * @property {string} [variant] - Variant of the product
+ * @typedef Page
+ * @property {any | null} [Sample property 1] -
  */
 /**
- * @typedef ProductClicked
- * @property {string} [brand] - Contains the name of the brand associated with the product
- * @property {string} [category] - Contains the category of the product
- * @property {string} [coupon] - Contains information on the coupon code associated with a product
- * @property {string} [image_url] - Contains the image URL of the product
- * @property {string} [name] - Contains the name of the product being viewed
- * @property {number} [position] - Contains the position of the product in the product list
- * @property {number} [price] - Contains the price of the product being viewed
- * @property {string} product_id - Contains the database ID of the product being viewed
- * @property {number} [quantity] - Contains the quantity of the product
- * @property {string} [sku] - Contains the SKU of the product
- * @property {string} [url] - Contains the URL of the product page
- * @property {string} [variant] - Contains information of the variant associated with the product
+ * @typedef Group
+ * @property {any | null} [Sample property 1] -
  */
 /**
- * @typedef ProductsSearched
- * @property {Record<string, any> | string} query - Contains the query that has been searched by the user
+ * @typedef Identify
+ * @property {any | null} [Sample property 1] -
  */
 /**
- * @typedef ProductViewed
- * @property {string} [brand] - Contains the name of the brand associated with the product
- * @property {string} [category] - Contains the category of the product
- * @property {string} [coupon] - Contains information on the coupon code associated with a product
- * @property {string} [currency] - Contains the currency of the transaction
- * @property {string} [image_url] - Contains the image URL of the product
- * @property {string} [name] - Containsthe name of the product being viewed
- * @property {number} [position] - Contains the position of the product in the product list
- * @property {number} [price] - Contains the price of the product being viewed
- * @property {string} product_id - Contains the database ID of the product being viewed
- * @property {number} [quantity] - Contains the quantity of the product
- * @property {string} [sku] - Contains the SKU of the product
- * @property {string} [url] - Contains the URL of the product page
- * @property {string} [variant] - Contains information of the variant associated with the product
- */
-/**
- * When a visitor views their cart
+ * Sample event 1
  *
- * @param {TrackMessage<CartViewed>} message - The analytics properties that will be sent to RudderStack.
- * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
- * 		call is fired.
+ * @param {TrackMessage<SampleEvent1>} message - The analytics properties that will be sent to RudderStack.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
  */
-function cartViewed(message, callback) {
-  var msg = withRudderTyperContext(
-    __assign(__assign({ properties: {} }, message), { event: 'Cart Viewed' }),
+function sampleEvent1(trackMessage, callback) {
+  var message = withRudderTyperContext(
+    __assign(__assign({}, trackMessage), { event: 'Sample event 1' }),
   );
   var a = analytics();
-  var schema = {
-    $schema: 'http://json-schema.org/draft-07/schema#',
-    description: 'When a visitor views their cart',
-    properties: {
-      properties: {
-        additionalProperties: true,
-        properties: {
-          cart_id: {
-            description: 'Contains the cart ID of the cart to which the product was added',
-            type: ['string'],
-          },
-          products: {
-            description: 'Contains the list of products displayed in the product list',
-            type: ['array'],
-          },
-        },
-        required: [],
-        type: 'object',
-      },
-    },
-    title: 'Cart Viewed',
-    type: 'object',
-  };
-  validateAgainstSchema(msg, schema).then(function () {
-    if (a) {
-      a.track(msg, callback);
-    } else {
-      throw missingAnalyticsNodeError;
-    }
-  });
+  if (a) {
+    a.track(message, callback);
+  } else {
+    throw missingAnalyticsNodeError;
+  }
 }
 /**
- * When a visitor initiates the checkout process for their cart
+ * Sample Page event
  *
- * @param {TrackMessage<CheckoutStarted>} message - The analytics properties that will be sent to RudderStack.
- * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
- * 		call is fired.
+ * @param {PageMessage<Page>} message - The analytics properties that will be sent to RudderStack.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
  */
-function checkoutStarted(message, callback) {
-  var msg = withRudderTyperContext(
-    __assign(__assign({ properties: {} }, message), {
-      event: 'Checkout Started',
-    }),
-  );
+function page(pageMessage, callback) {
+  var message = withRudderTyperContext(__assign({ name: '' }, pageMessage));
   var a = analytics();
-  var schema = {
-    $schema: 'http://json-schema.org/draft-07/schema#',
-    description: 'When a visitor initiates the checkout process for their cart',
-    properties: {
-      properties: {
-        additionalProperties: true,
-        properties: {
-          affiliation: {
-            description:
-              'Contains the store or affiliation details from where the transaction was started',
-            type: ['string'],
-          },
-          coupon: {
-            description:
-              'Contains details of the transaction coupon which can be redeemed with the transaction',
-            type: ['string'],
-          },
-          currency: {
-            description: 'Contains the currency code associated with an order or transaction',
-            type: ['string'],
-          },
-          discount: {
-            description: 'Contains the total discount associated with the transaction',
-            type: ['number'],
-          },
-          order_id: {
-            description: 'Contains the order ID or transaction ID, whichever is applicable',
-            type: ['string'],
-          },
-          products: {
-            description: 'Contains the list of products in the order or transaction',
-            type: ['array'],
-          },
-          revenue: {
-            description:
-              'Contains the revenue associated with the transaction, excluding the shipping and tax details',
-            type: ['number'],
-          },
-          shipping: {
-            description: 'Contains the shipping cost associated with the order or transaction',
-            type: ['number'],
-          },
-          tax: {
-            description: 'Contains the total tax associated with the order or the transaction',
-            type: ['number'],
-          },
-          value: {
-            description:
-              'Contains the details of the revenue with the discount and coupons factored in',
-            type: ['number'],
-          },
-        },
-        required: [],
-        type: 'object',
-      },
-    },
-    title: 'Checkout Started',
-    type: 'object',
-  };
-  validateAgainstSchema(msg, schema).then(function () {
-    if (a) {
-      a.track(msg, callback);
-    } else {
-      throw missingAnalyticsNodeError;
-    }
-  });
+  if (a) {
+    a.page(message, callback);
+  } else {
+    throw missingAnalyticsNodeError;
+  }
 }
 /**
- * When a visitor completes a step in the checkout funnel
+ * Sample Screen event
  *
- * @param {TrackMessage<CheckoutStepCompleted>} message - The analytics properties that will be sent to RudderStack.
- * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
- * 		call is fired.
+ * @param {ScreenMessage<Screen>} message - The analytics properties that will be sent to RudderStack.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
  */
-function checkoutStepCompleted(message, callback) {
-  var msg = withRudderTyperContext(
-    __assign(__assign({ properties: {} }, message), {
-      event: 'Checkout Step Completed',
-    }),
-  );
+function screen(screenMessage, callback) {
+  var message = withRudderTyperContext(__assign({ name: '' }, screenMessage));
   var a = analytics();
-  var schema = {
-    $schema: 'http://json-schema.org/draft-07/schema#',
-    description: 'When a visitor completes a step in the checkout funnel',
-    properties: {
-      properties: {
-        additionalProperties: true,
-        properties: {
-          checkout_id: {
-            description: 'Contains the checkout transaction ID',
-            type: ['string'],
-          },
-          payment_method: {
-            description: 'Contains the payment method information',
-            type: ['string'],
-          },
-          shipping_method: {
-            description: 'Contains the information associated with the chosen shipping method',
-            type: ['string'],
-          },
-          step: {
-            description: 'Contains the number associated with the checkout process step',
-            type: ['number'],
-          },
-        },
-        required: ['step'],
-        type: 'object',
-      },
-    },
-    title: 'Checkout Step Completed',
-    type: 'object',
-  };
-  validateAgainstSchema(msg, schema).then(function () {
-    if (a) {
-      a.track(msg, callback);
-    } else {
-      throw missingAnalyticsNodeError;
-    }
-  });
+  if (a) {
+    a.screen(message, callback);
+  } else {
+    throw missingAnalyticsNodeError;
+  }
 }
 /**
- * When a visitor successfully applies a coupon to their transaction
+ * Sample Identify event
  *
- * @param {TrackMessage<CouponApplied>} message - The analytics properties that will be sent to RudderStack.
- * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
- * 		call is fired.
+ * @param {IdentifyMessage<Identify>} message - The analytics properties that will be sent to RudderStack.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
  */
-function couponApplied(message, callback) {
-  var msg = withRudderTyperContext(
-    __assign(__assign({ properties: {} }, message), { event: 'Coupon Applied' }),
-  );
+function identify(identifyMessage, callback) {
+  var message = withRudderTyperContext(__assign({}, identifyMessage));
   var a = analytics();
-  var schema = {
-    $schema: 'http://json-schema.org/draft-07/schema#',
-    description: 'When a visitor successfully applies a coupon to their transaction',
-    properties: {
-      properties: {
-        additionalProperties: true,
-        properties: {
-          cart_id: {
-            description: 'Contains the cart ID, if applicable',
-            type: ['string'],
-          },
-          coupon_id: {
-            description: 'Contains the coupon ID',
-            type: ['string'],
-          },
-          coupon_name: {
-            description: 'Contains the name of the coupon',
-            type: ['string'],
-          },
-          discount: {
-            description: 'Contains the amount of discount availed by applying the coupon',
-            type: ['number'],
-          },
-          order_id: {
-            description: 'Contains the order ID or the transaction ID, if applicable',
-            type: ['string'],
-          },
-        },
-        required: [],
-        type: 'object',
-      },
-    },
-    title: 'Coupon Applied',
-    type: 'object',
-  };
-  validateAgainstSchema(msg, schema).then(function () {
-    if (a) {
-      a.track(msg, callback);
-    } else {
-      throw missingAnalyticsNodeError;
-    }
-  });
+  if (a) {
+    a.identify(message, callback);
+  } else {
+    throw missingAnalyticsNodeError;
+  }
 }
 /**
- * When a visitor successfully places an order
+ * Sample Group event
  *
- * @param {TrackMessage<OrderCompleted>} message - The analytics properties that will be sent to RudderStack.
- * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
- * 		call is fired.
+ * @param {GroupMessage<Group>} message - The analytics properties that will be sent to RudderStack.
+ * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
  */
-function orderCompleted(message, callback) {
-  var msg = withRudderTyperContext(
-    __assign(__assign({ properties: {} }, message), {
-      event: 'Order Completed',
-    }),
-  );
+function group(groupMessage, callback) {
+  var message = withRudderTyperContext(__assign({ groupId: '' }, groupMessage));
   var a = analytics();
-  var schema = {
-    $schema: 'http://json-schema.org/draft-07/schema#',
-    description: 'When a visitor successfully places an order',
-    properties: {
-      properties: {
-        additionalProperties: true,
-        properties: {
-          affiliation: {
-            description:
-              'Contains the store or affiliation details from where the transaction was started',
-            type: ['string'],
-          },
-          checkout_id: {
-            description: 'Contains the checkout ID',
-            type: ['string'],
-          },
-          coupon: {
-            description:
-              'Contains details of the transaction coupon which can be redeemed with the transaction',
-            type: ['string'],
-          },
-          currency: {
-            description: 'Contains the currency code associated with an order or transaction',
-            type: ['string'],
-          },
-          discount: {
-            description: 'Contains the total discount associated with the transaction',
-            type: ['number'],
-          },
-          order_id: {
-            description: 'Contains the order ID or transaction ID, whichever is applicable',
-            type: ['string'],
-          },
-          products: {
-            description: 'Contains the list of products in the order or transaction',
-            type: ['array'],
-          },
-          revenue: {
-            description:
-              'Contains the revenue associated with the transaction, excluding the shipping and tax details',
-            type: ['number'],
-          },
-          shipping: {
-            description: 'Contains the shipping cost associated with the order or transaction',
-            type: ['number'],
-          },
-          subtotal: {
-            description:
-              'Contains the order total after discounts but not including the taxes and shipping charges',
-            type: ['number'],
-          },
-          tax: {
-            description: 'Contains the total tax associated with the order or the transaction',
-            type: ['number'],
-          },
-          total: {
-            description:
-              'Contains the details of the revenue with the discount and coupons factored in',
-            type: ['number'],
-          },
-        },
-        required: ['order_id', 'revenue', 'currency', 'products'],
-        type: 'object',
-      },
-    },
-    title: 'Order Completed',
-    type: 'object',
-  };
-  validateAgainstSchema(msg, schema).then(function () {
-    if (a) {
-      a.track(msg, callback);
-    } else {
-      throw missingAnalyticsNodeError;
-    }
-  });
-}
-/**
- * When a visitor successfully enters payment information during the checkout process
- *
- * @param {TrackMessage<PaymentInfoEntered>} message - The analytics properties that will be sent to RudderStack.
- * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
- * 		call is fired.
- */
-function paymentInfoEntered(message, callback) {
-  var msg = withRudderTyperContext(
-    __assign(__assign({ properties: {} }, message), {
-      event: 'Payment Info Entered',
-    }),
-  );
-  var a = analytics();
-  var schema = {
-    $schema: 'http://json-schema.org/draft-07/schema#',
-    description:
-      'When a visitor successfully enters payment information during the checkout process',
-    properties: {
-      properties: {
-        additionalProperties: true,
-        properties: {
-          checkout_id: {
-            description: 'Contains the checkout transaction ID',
-            type: ['string'],
-          },
-          order_id: {
-            description: 'An optional string that contains the order ID',
-            type: ['string'],
-          },
-          payment_method: {
-            description: 'Contains the payment method information',
-            type: ['string'],
-          },
-          shipping_method: {
-            description: 'Contains the information associated with the chosen shipping method',
-            type: ['string'],
-          },
-          step: {
-            description: 'Contains the number associated with the checkout process step',
-            type: ['number'],
-          },
-        },
-        required: ['step'],
-        type: 'object',
-      },
-    },
-    title: 'Payment Info Entered',
-    type: 'object',
-  };
-  validateAgainstSchema(msg, schema).then(function () {
-    if (a) {
-      a.track(msg, callback);
-    } else {
-      throw missingAnalyticsNodeError;
-    }
-  });
-}
-/**
- * User added a product to their shopping cart
- *
- * @param {TrackMessage<ProductAdded>} message - The analytics properties that will be sent to RudderStack.
- * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
- * 		call is fired.
- */
-function productAdded(message, callback) {
-  var msg = withRudderTyperContext(
-    __assign(__assign({ properties: {} }, message), { event: 'Product Added' }),
-  );
-  var a = analytics();
-  var schema = {
-    $schema: 'http://json-schema.org/draft-07/schema#',
-    description: 'User added a product to their shopping cart',
-    properties: {
-      properties: {
-        additionalProperties: true,
-        properties: {
-          brand: {
-            description: 'Brand of the product',
-            type: ['string'],
-          },
-          cart_id: {
-            description: 'Cart ID associated with the product displayed',
-            type: ['string'],
-          },
-          category: {
-            description: 'Product category being viewed',
-            type: ['string'],
-          },
-          coupon: {
-            description: 'Coupon code associated with the product',
-            type: ['string'],
-          },
-          image_url: {
-            description: 'Image url of the product',
-            type: ['string'],
-          },
-          name: {
-            description: 'Name of the product',
-            type: ['string'],
-          },
-          position: {
-            description: 'Position of product in the list',
-            type: ['integer'],
-          },
-          price: {
-            description: 'Price of the product',
-            type: ['number'],
-          },
-          product_id: {
-            description: 'Database ID of the product',
-            type: ['string'],
-          },
-          quantity: {
-            description: 'Quantity of the product',
-            type: ['integer'],
-          },
-          sku: {
-            description: 'Sku of the product',
-            type: ['string'],
-          },
-          url: {
-            description: 'URL of the product page for product',
-            type: ['string'],
-          },
-          variant: {
-            description: 'Variant of the product',
-            type: ['string'],
-          },
-        },
-        required: ['product_id', 'price'],
-        type: 'object',
-      },
-    },
-    title: 'Product Added',
-    type: 'object',
-  };
-  validateAgainstSchema(msg, schema).then(function () {
-    if (a) {
-      a.track(msg, callback);
-    } else {
-      throw missingAnalyticsNodeError;
-    }
-  });
-}
-/**
- * When a visitor clicks on a product from a Product List
- *
- * @param {TrackMessage<ProductClicked>} message - The analytics properties that will be sent to RudderStack.
- * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
- * 		call is fired.
- */
-function productClicked(message, callback) {
-  var msg = withRudderTyperContext(
-    __assign(__assign({ properties: {} }, message), {
-      event: 'Product Clicked',
-    }),
-  );
-  var a = analytics();
-  var schema = {
-    $schema: 'http://json-schema.org/draft-07/schema#',
-    description: 'When a visitor clicks on a product from a Product List',
-    properties: {
-      properties: {
-        additionalProperties: true,
-        properties: {
-          brand: {
-            description: 'Contains the name of the brand associated with the product',
-            type: ['string'],
-          },
-          category: {
-            description: 'Contains the category of the product',
-            type: ['string'],
-          },
-          coupon: {
-            description: 'Contains information on the coupon code associated with a product',
-            type: ['string'],
-          },
-          image_url: {
-            description: 'Contains the image URL of the product',
-            type: ['string'],
-          },
-          name: {
-            description: 'Contains the name of the product being viewed',
-            type: ['string'],
-          },
-          position: {
-            description: 'Contains the position of the product in the product list',
-            type: ['number'],
-          },
-          price: {
-            description: 'Contains the price of the product being viewed',
-            type: ['number'],
-          },
-          product_id: {
-            description: 'Contains the database ID of the product being viewed',
-            type: ['string'],
-          },
-          quantity: {
-            description: 'Contains the quantity of the product',
-            type: ['number'],
-          },
-          sku: {
-            description: 'Contains the SKU of the product',
-            type: ['string'],
-          },
-          url: {
-            description: 'Contains the URL of the product page',
-            type: ['string'],
-          },
-          variant: {
-            description: 'Contains information of the variant associated with the product',
-            type: ['string'],
-          },
-        },
-        required: ['product_id'],
-        type: 'object',
-      },
-    },
-    title: 'Product Clicked',
-    type: 'object',
-  };
-  validateAgainstSchema(msg, schema).then(function () {
-    if (a) {
-      a.track(msg, callback);
-    } else {
-      throw missingAnalyticsNodeError;
-    }
-  });
-}
-/**
- * When a visitor performs a product search
- *
- * @param {TrackMessage<ProductsSearched>} message - The analytics properties that will be sent to RudderStack.
- * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
- * 		call is fired.
- */
-function productsSearched(message, callback) {
-  var msg = withRudderTyperContext(
-    __assign(__assign({ properties: {} }, message), {
-      event: 'Products Searched',
-    }),
-  );
-  var a = analytics();
-  var schema = {
-    $schema: 'http://json-schema.org/draft-07/schema#',
-    description: 'When a visitor performs a product search',
-    properties: {
-      properties: {
-        additionalProperties: true,
-        properties: {
-          query: {
-            description: 'Contains the query that has been searched by the user',
-            type: ['object', 'string'],
-          },
-        },
-        required: ['query'],
-        type: 'object',
-      },
-    },
-    title: 'Products Searched',
-    type: 'object',
-  };
-  validateAgainstSchema(msg, schema).then(function () {
-    if (a) {
-      a.track(msg, callback);
-    } else {
-      throw missingAnalyticsNodeError;
-    }
-  });
-}
-/**
- * When a visitor views details about a specific product
- *
- * @param {TrackMessage<ProductViewed>} message - The analytics properties that will be sent to RudderStack.
- * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
- * 		call is fired.
- */
-function productViewed(message, callback) {
-  var msg = withRudderTyperContext(
-    __assign(__assign({ properties: {} }, message), { event: 'Product Viewed' }),
-  );
-  var a = analytics();
-  var schema = {
-    $schema: 'http://json-schema.org/draft-07/schema#',
-    description: 'When a visitor views details about a specific product',
-    properties: {
-      properties: {
-        additionalProperties: true,
-        properties: {
-          brand: {
-            description: 'Contains the name of the brand associated with the product',
-            type: ['string'],
-          },
-          category: {
-            description: 'Contains the category of the product',
-            type: ['string'],
-          },
-          coupon: {
-            description: 'Contains information on the coupon code associated with a product',
-            type: ['string'],
-          },
-          currency: {
-            description: 'Contains the currency of the transaction',
-            type: ['string'],
-          },
-          image_url: {
-            description: 'Contains the image URL of the product',
-            type: ['string'],
-          },
-          name: {
-            description: 'Containsthe name of the product being viewed',
-            type: ['string'],
-          },
-          position: {
-            description: 'Contains the position of the product in the product list',
-            type: ['number'],
-          },
-          price: {
-            description: 'Contains the price of the product being viewed',
-            type: ['number'],
-          },
-          product_id: {
-            description: 'Contains the database ID of the product being viewed',
-            type: ['string'],
-          },
-          quantity: {
-            description: 'Contains the quantity of the product',
-            type: ['number'],
-          },
-          sku: {
-            description: 'Contains the SKU of the product',
-            type: ['string'],
-          },
-          url: {
-            description: 'Contains the URL of the product page',
-            type: ['string'],
-          },
-          variant: {
-            description: 'Contains information of the variant associated with the product',
-            type: ['string'],
-          },
-        },
-        required: ['product_id'],
-        type: 'object',
-      },
-    },
-    title: 'Product Viewed',
-    type: 'object',
-  };
-  validateAgainstSchema(msg, schema).then(function () {
-    if (a) {
-      a.track(msg, callback);
-    } else {
-      throw missingAnalyticsNodeError;
-    }
-  });
+  if (a) {
+    a.group(message, callback);
+  } else {
+    throw missingAnalyticsNodeError;
+  }
 }
 var clientAPI = {
   /**
@@ -1151,85 +248,40 @@ var clientAPI = {
    */
   setRudderTyperOptions: setRudderTyperOptions,
   /**
-   * When a visitor views their cart
+   * Sample event 1
    *
-   * @param {TrackMessage<CartViewed>} message - The analytics properties that will be sent to RudderStack.
-   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-   * 		call is fired.
+   * @param {TrackMessage<SampleEvent1>} message - The analytics properties that will be sent to RudderStack.
+   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
    */
-  cartViewed: cartViewed,
+  sampleEvent1: sampleEvent1,
   /**
-   * When a visitor initiates the checkout process for their cart
+   * Sample Page event
    *
-   * @param {TrackMessage<CheckoutStarted>} message - The analytics properties that will be sent to RudderStack.
-   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-   * 		call is fired.
+   * @param {PageMessage<Page>} message - The analytics properties that will be sent to RudderStack.
+   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
    */
-  checkoutStarted: checkoutStarted,
+  page: page,
   /**
-   * When a visitor completes a step in the checkout funnel
+   * Sample Screen event
    *
-   * @param {TrackMessage<CheckoutStepCompleted>} message - The analytics properties that will be sent to RudderStack.
-   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-   * 		call is fired.
+   * @param {ScreenMessage<Screen>} message - The analytics properties that will be sent to RudderStack.
+   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
    */
-  checkoutStepCompleted: checkoutStepCompleted,
+  screen: screen,
   /**
-   * When a visitor successfully applies a coupon to their transaction
+   * Sample Identify event
    *
-   * @param {TrackMessage<CouponApplied>} message - The analytics properties that will be sent to RudderStack.
-   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-   * 		call is fired.
+   * @param {IdentifyMessage<Identify>} message - The analytics properties that will be sent to RudderStack.
+   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
    */
-  couponApplied: couponApplied,
+  identify: identify,
   /**
-   * When a visitor successfully places an order
+   * Sample Group event
    *
-   * @param {TrackMessage<OrderCompleted>} message - The analytics properties that will be sent to RudderStack.
-   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-   * 		call is fired.
+   * @param {GroupMessage<Group>} message - The analytics properties that will be sent to RudderStack.
+   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics call is fired.
    */
-  orderCompleted: orderCompleted,
-  /**
-   * When a visitor successfully enters payment information during the checkout process
-   *
-   * @param {TrackMessage<PaymentInfoEntered>} message - The analytics properties that will be sent to RudderStack.
-   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-   * 		call is fired.
-   */
-  paymentInfoEntered: paymentInfoEntered,
-  /**
-   * User added a product to their shopping cart
-   *
-   * @param {TrackMessage<ProductAdded>} message - The analytics properties that will be sent to RudderStack.
-   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-   * 		call is fired.
-   */
-  productAdded: productAdded,
-  /**
-   * When a visitor clicks on a product from a Product List
-   *
-   * @param {TrackMessage<ProductClicked>} message - The analytics properties that will be sent to RudderStack.
-   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-   * 		call is fired.
-   */
-  productClicked: productClicked,
-  /**
-   * When a visitor performs a product search
-   *
-   * @param {TrackMessage<ProductsSearched>} message - The analytics properties that will be sent to RudderStack.
-   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-   * 		call is fired.
-   */
-  productsSearched: productsSearched,
-  /**
-   * When a visitor views details about a specific product
-   *
-   * @param {TrackMessage<ProductViewed>} message - The analytics properties that will be sent to RudderStack.
-   * @param {Function} [callback] - An optional callback called after a short timeout after the analytics
-   * 		call is fired.
-   */
-  productViewed: productViewed,
+  group: group,
 };
 exports.RudderTyperAnalytics = new Proxy(clientAPI, {
   get: function (target, method) {
@@ -1237,12 +289,6 @@ exports.RudderTyperAnalytics = new Proxy(clientAPI, {
       return target[method];
     }
     return function () {
-      console.warn(
-        '\u26A0\uFE0F  You made an analytics call ('.concat(
-          String(method),
-          ") that can't be found. Either:\n    a) Re-generate your ruddertyper client: `npx rudder-typer`\n    b) Add it to your Tracking Plan: https://app.rudderstack.com/trackingplans/tp_2kuRZPE6pJYlWqdjC127h9BYJKq",
-        ),
-      );
       var a = analytics();
       if (a) {
         a.track(

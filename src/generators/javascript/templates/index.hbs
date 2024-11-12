@@ -77,6 +77,7 @@ export type IdentifyMessage<PropertiesType> = {
   Record<string, any>;
 
 export type GroupMessage<PropertiesType> = {
+  groupId: string;
   traits: PropertiesType;
 } & Omit<GroupParams, 'groupId' | 'traits'> &
   IdentityOptions &

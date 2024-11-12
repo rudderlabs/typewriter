@@ -9,7 +9,7 @@ trackingPlans:
   # Tracking Plan: Sample tracking plan 1
   # https://app.rudderstack.com/trackingplans/tp_2kKI0i514th5OEuYi5AdsRwNlXC
   - id: tp_2kKI0i514th5OEuYi5AdsRwNlXC
-    version: 2
+    version: 3
     workspaceSlug: sample-workspace-id
     path: src/analytics
     APIVersion: v2

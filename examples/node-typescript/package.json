@@ -15,6 +15,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "setup": "npm ci",
     "start": "ts-node index.ts",
     "rudder-typer:dev": "chmod +x ./rt_script.sh && ./rt_script.sh"
   },
