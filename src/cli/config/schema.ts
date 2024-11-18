@@ -88,7 +88,7 @@ const ConfigSchema = Joi.object().required().keys({
       version: Joi.number().optional().min(1),
       workspaceSlug: Joi.string().required().min(1),
       path: Joi.string().required().min(1),
-      APIVersion: Joi.string().required().min(1),
+      APIVersion: Joi.string().required().valid('v1', 'v2'),
     })
   ),
 })
