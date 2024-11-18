@@ -105,10 +105,13 @@ export function getPropertiesSchema(event: Schema): ObjectTypeSchema {
     const propertiesSchema = event.properties.find(
       (schema: Schema): boolean => schema.name === 'properties',
     );
+    const isRequired = (propertiesSchema as ObjectTypeSchema).properties.find(
+      (schema: Schema): boolean => schema.isRequired === true,
+    );
     // The schema representing `.properties` in the RudderStack analytics
     // event should also always be an object.
     if (propertiesSchema && propertiesSchema.type === Type.OBJECT) {
-      properties = propertiesSchema;
+      properties = { ...propertiesSchema, isRequired: !!isRequired };
     }
   }
 
@@ -122,6 +125,31 @@ export function getPropertiesSchema(event: Schema): ObjectTypeSchema {
     isNullable: false,
     // Use the event's name and description when generating an interface
     // to represent these properties.
+    name: event.name,
+    description: event.description,
+  };
+}
+
+// get traits from the event schema
+export function getTraitsSchema(event: Schema): ObjectTypeSchema {
+  let traits: ObjectTypeSchema | undefined = undefined;
+
+  if (event.type === Type.OBJECT) {
+    const traitsSchema = event.properties.find(
+      (schema: Schema): boolean => schema.name === 'traits',
+    );
+
+    if (traitsSchema && traitsSchema.type === Type.OBJECT) {
+      traits = traitsSchema;
+    }
+  }
+
+  return {
+    type: Type.OBJECT,
+    properties: [],
+    ...(traits || {}),
+    isRequired: traits ? !!traits.isRequired : false,
+    isNullable: false,
     name: event.name,
     description: event.description,
   };

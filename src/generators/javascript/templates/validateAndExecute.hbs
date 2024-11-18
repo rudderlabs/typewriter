@@ -1,0 +1,9 @@
+{{!-- This partial handles schema validation and function execution --}}
+
+{{#if isDevelopment}}
+  validateAgainstSchema(message, schema).then(() => {
+    {{> @partial-block }}
+  })
+{{else}}
+  {{> @partial-block }}
+{{/if}}

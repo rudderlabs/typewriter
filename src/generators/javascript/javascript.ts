@@ -86,6 +86,10 @@ export const javascript: Generator<
       'generators/javascript/templates/functionDocumentation.hbs',
       'functionDocumentation',
     );
+    await registerPartial(
+      'generators/javascript/templates/validateAndExecute.hbs',
+      'validateAndExecute',
+    );
 
     return {
       isBrowser: options.client.sdk === SDK.WEB,
