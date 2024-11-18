@@ -27,10 +27,6 @@ export interface SampleEvent1 {
   'Sample property 1'?: any | null;
 }
 
-export interface Screen {
-  'Sample property 1'?: any | null;
-}
-
 export interface Page {
   'Sample property 1'?: any | null;
 }
@@ -107,10 +103,6 @@ function withRudderTyperContext(message: ApiOptions = {}): ApiOptions {
 /**
  * @typedef SampleEvent1
  * @property {any | null} [Sample property 1] - Sample property 1
- */
-/**
- * @typedef Screen
- * @property {any | null} [Sample property 1] -
  */
 /**
  * @typedef Page

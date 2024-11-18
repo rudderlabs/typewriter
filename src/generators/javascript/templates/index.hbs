@@ -111,21 +111,23 @@ export enum {{enumName}} {
 {{/if}}
 {{/each}}
 
-{{#if description}}
-/**
- * {{description}}
- */
-{{/if}}
-export interface {{name}} {{#unless ../isBrowser}} extends ApiObject {{/unless}} {
-	{{#each properties}}
+{{#if (or (not ../isBrowser) (and ../isBrowser (not (eq name "Screen"))))}}
 	{{#if description}}
 	/**
-	 * {{description}}
-	 */
+	* {{description}}
+	*/
 	{{/if}}
-	'{{name}}'{{#unless isRequired}}?{{/unless}}: {{#if hasEnum}}{{enumName}}{{else}}{{type}}{{/if}}
-	{{/each}}
-}
+	export interface {{name}} {{#unless ../isBrowser}} extends ApiObject {{/unless}} {
+		{{#each properties}}
+		{{#if description}}
+		/**
+		* {{description}}
+		*/
+		{{/if}}
+		'{{name}}'{{#unless isRequired}}?{{/unless}}: {{#if hasEnum}}{{enumName}}{{else}}{{type}}{{/if}}
+		{{/each}}
+	}
+{{/if}}
 
 {{/each}}
 export type ViolationHandler = (
@@ -341,18 +343,20 @@ function withRudderTyperContext{{#unless isBrowser}}<P, T extends PayloadMessage
 {{/unless}}
 
 {{#each objects}}
-/**
- {{#if description}}
- * {{description}}
- {{/if}}
- * @typedef {{name}}
- {{#each properties}}
-	{{!-- Note: this uses whitespace control to "escape" the outer curly braces. --}}
-	{{!-- Note: The backticks enable JSDoc to parse names with spaces (without resorting to square brackets). --}}
-	{{!-- Temporary removed backticks around required names below because of typescript compiler + JSDoc error. Will investigate. --}}
- * @property {{#if hasEnum}}{ {{~enumName~}} }{{else}}{ {{~type~}} }{{/if}} {{#if isRequired}}{{name}}{{else}}[{{name}}]{{/if}} - {{description}}
- {{/each}}
- */
+	{{#if (or (not ../isBrowser) (and ../isBrowser (not (eq name "Screen"))))}}
+		/**
+		{{#if description}}
+		* {{description}}
+		{{/if}}
+		* @typedef {{name}}
+		{{#each properties}}
+			{{!-- Note: this uses whitespace control to "escape" the outer curly braces. --}}
+			{{!-- Note: The backticks enable JSDoc to parse names with spaces (without resorting to square brackets). --}}
+			{{!-- Temporary removed backticks around required names below because of typescript compiler + JSDoc error. Will investigate. --}}
+		* @property {{#if hasEnum}}{ {{~enumName~}} }{{else}}{ {{~type~}} }{{/if}} {{#if isRequired}}{{name}}{{else}}[{{name}}]{{/if}} - {{description}}
+		{{/each}}
+	*/
+	{{/if}}
 {{/each}}
 
 {{#each tracks}}
