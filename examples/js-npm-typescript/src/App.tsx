@@ -22,7 +22,7 @@ function App() {
       },
       {
         integrations: {
-          All: false,
+          All: true,
           'Google Analytics': true,
         },
         context: {
@@ -70,7 +70,7 @@ function App() {
       },
       {
         integrations: {
-          All: false,
+          All: true,
           'Google Analytics': true,
         },
         context: {
@@ -113,7 +113,7 @@ function App() {
       },
       {
         integrations: {
-          All: false,
+          All: true,
           'Google Analytics': true,
         },
         context: {
@@ -156,7 +156,7 @@ function App() {
       },
       {
         integrations: {
-          All: false,
+          All: true,
           'Google Analytics': true,
         },
         context: {
