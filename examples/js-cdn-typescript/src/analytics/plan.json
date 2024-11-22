@@ -1,13 +1,93 @@
 {
-  "createdAt": "2024-08-07T10:13:39.371Z",
+  "createdAt": "2024-11-11T12:14:26.043Z",
   "creationType": "Data catalog",
-  "description": "Sample tracking plan 1",
   "id": "tp_2kKI0i514th5OEuYi5AdsRwNlXC",
   "name": "Sample tracking plan 1",
   "rules": {
     "events": [
       {
+        "description": "Sample Identify event",
+        "eventType": "identify",
+        "name": "",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "Sample Identify event",
+          "properties": {
+            "traits": {
+              "additionalProperties": false,
+              "properties": {
+                "Sample property 1": {}
+              },
+              "required": [],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "Sample Page event",
+        "eventType": "page",
+        "name": "",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "Sample Page event",
+          "properties": {
+            "properties": {
+              "additionalProperties": false,
+              "properties": {
+                "Sample property 1": {}
+              },
+              "required": [],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "Sample Screen event",
+        "eventType": "screen",
+        "name": "",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "Sample Screen event",
+          "properties": {
+            "properties": {
+              "additionalProperties": false,
+              "properties": {
+                "Sample property 1": {}
+              },
+              "required": [],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "description": "Sample Group event",
+        "eventType": "group",
+        "name": "",
+        "rules": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "description": "Sample Group event",
+          "properties": {
+            "traits": {
+              "additionalProperties": false,
+              "properties": {
+                "Sample property 1": {}
+              },
+              "required": [],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
         "description": "Sample event 1",
+        "eventType": "track",
         "name": "Sample event 1",
         "rules": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -29,7 +109,7 @@
       }
     ]
   },
-  "updatedAt": "2024-08-07T10:13:40.488Z",
-  "version": 2,
-  "workspaceId": "sample-workspace-id"
+  "updatedAt": "2024-11-11T12:14:26.043Z",
+  "version": 3,
+  "workspaceId": "2L8FgwnU8Q4I4nQbdqmin8uP5n8"
 }

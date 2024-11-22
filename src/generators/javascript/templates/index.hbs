@@ -35,22 +35,63 @@ declare global {
 type apiCallback = (data?: any) => void;
 
 {{else}}
-import AnalyticsNode, { apiObject as ApiObject, apiCallback, TrackParams } from '@rudderstack/rudder-sdk-node'
+import AnalyticsNode, {
+  apiObject as ApiObject,
+  apiCallback,
+  TrackParams,
+  PageParams,
+  ScreenParams,
+  IdentifyParams,
+  GroupParams,
+} from '@rudderstack/rudder-sdk-node';
 
 /**
  * An ID associated with the user. Note: at least one of userId or anonymousId must be included!
  **/
-type Identity =
+type IdentityOptions =
   | { userId: string; anonymousId?: string }
   | { userId?: string; anonymousId: string }
 
-export type TrackMessage<PropertiesType> = Omit<
-  TrackParams,
-  'event' | 'properties'
-> & { properties: PropertiesType } & Identity &
+export type TrackMessage<PropertiesType> = {
+  properties: PropertiesType;
+} & Omit<TrackParams, 'event' | 'properties'> &
+  IdentityOptions &
   Record<string, any>;
+
+export type PageMessage<PropertiesType> = {
+  properties: PropertiesType;
+} & Omit<PageParams, 'name' | 'properties'> &
+  IdentityOptions &
+  Record<string, any>;
+
+export type ScreenMessage<PropertiesType> = {
+  properties: PropertiesType;
+} & Omit<ScreenParams, 'name' | 'properties'> &
+  IdentityOptions &
+  Record<string, any>;
+
+export type IdentifyMessage<PropertiesType> = {
+  traits: PropertiesType;
+} & Omit<IdentifyParams, 'traits'> &
+  IdentityOptions &
+  Record<string, any>;
+
+export type GroupMessage<PropertiesType> = {
+  groupId: string;
+  traits: PropertiesType;
+} & Omit<GroupParams, 'groupId' | 'traits'> &
+  IdentityOptions &
+  Record<string, any>;
+
+export type PayloadMessage<PropertiesType> =
+  | TrackMessage<PropertiesType>
+  | PageMessage<PropertiesType>
+  | ScreenMessage<PropertiesType>
+  | IdentifyMessage<PropertiesType>
+  | GroupMessage<PropertiesType>;
 {{/if}}
 
+{{#if isDevelopment}}
 /** The Schema object which is being used by Ajv to validate the message */
 export interface Schema {
 	$schema? : string 
@@ -59,6 +100,7 @@ export interface Schema {
 	title? : string
 	type? : string
 }
+{{/if}}
 
 {{#each objects}}
 {{#each properties}}
@@ -69,25 +111,27 @@ export enum {{enumName}} {
 {{/if}}
 {{/each}}
 
-{{#if description}}
-/**
- * {{description}}
- */
-{{/if}}
-export interface {{name}} {{#unless ../isBrowser}} extends ApiObject {{/unless}} {
-	{{#each properties}}
+{{#if (or (not ../isBrowser) (and ../isBrowser (not (eq name "Screen"))))}}
 	{{#if description}}
 	/**
-	 * {{description}}
-	 */
+	* {{description}}
+	*/
 	{{/if}}
-	'{{name}}'{{#unless isRequired}}?{{/unless}}: {{#if hasEnum}}{{enumName}}{{else}}{{type}}{{/if}}
-	{{/each}}
-}
+	export interface {{name}} {{#unless ../isBrowser}} extends ApiObject {{/unless}} {
+		{{#each properties}}
+		{{#if description}}
+		/**
+		* {{description}}
+		*/
+		{{/if}}
+		'{{name}}'{{#unless isRequired}}?{{/unless}}: {{#if hasEnum}}{{enumName}}{{else}}{{type}}{{/if}}
+		{{/each}}
+	}
+{{/if}}
 
 {{/each}}
 export type ViolationHandler = (
-	message: {{#if isBrowser}}Record<string, any>{{else}}TrackMessage<Record<string, any>>{{/if}},
+	message: {{#if isBrowser}}Record<string, any>{{else}}PayloadMessage<Record<string, any>>{{/if}},
 	{{!-- Swap the type definitions here so we don't want depend on ajv in production just for this type definition. --}}
 	violations: {{#if isDevelopment}}ErrorObject{{else}}any{{/if}}[]
 ) => void
@@ -180,7 +224,7 @@ export function setRudderTyperOptions(options: RudderTyperOptions) {
 	* is invalid, the `onViolation` handler will be called.
 	*/
 async function validateAgainstSchema(
-	message: {{#if isBrowser}}Record<string, any>{{else}}TrackMessage<Record<string, any>>{{/if}},
+	message: {{#if isBrowser}}Record<string, any>{{else}}PayloadMessage<Record<string, any>>{{/if}},
 	schema: Schema
 ) {
 	let ajv;
@@ -211,7 +255,7 @@ async function validateAgainstSchema(
  * Helper to attach metadata on RudderTyper to outbound requests.
  * This is used for attribution and debugging by the RudderStack team.
  */
-function withRudderTyperContext{{#unless isBrowser}}<P, T extends TrackMessage<P>>{{/unless}}(message: {{#if isBrowser}}ApiOptions = {}{{else}}T{{/if}}): {{#if isBrowser}}ApiOptions{{else}}T{{/if}} {
+function withRudderTyperContext{{#unless isBrowser}}<P, T extends PayloadMessage<P>>{{/unless}}(message: {{#if isBrowser}}ApiOptions = {}{{else}}T{{/if}}): {{#if isBrowser}}ApiOptions{{else}}T{{/if}} {
 	return {
 		...message,
 		context: {
@@ -241,32 +285,89 @@ function withRudderTyperContext{{#unless isBrowser}}<P, T extends TrackMessage<P
  * 		sure you to send a timestamp.
  * @template PropertiesType
  */
+
+/** 
+* A message payload for an analytics-node `.page()` call.
+* See: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#page
+* @typedef PageMessage<PropertiesType>
+* @property {string | number} [userId] - The ID for this user in your database.
+* @property {string | number} [anonymousId] - An ID to associated with the user when you don't know who they are.
+* @property {string} name - The name of the page viewed.
+* @property {PropertiesType} [properties] - A dictionary of properties for the event.
+* @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
+* 		just happened, leave it out and we'll use the server's time. If you're importing data from the past make
+* 		sure you to send a timestamp.
+* @template PropertiesType
+*/
+
+/**
+* A message payload for an analytics-node `.screen()` call.
+* See: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#screen
+* @typedef ScreenMessage<PropertiesType>
+* @property {string | number} [userId] - The ID for this user in your database.
+* @property {string | number} [anonymousId] - An ID to associated with the user when you don't know who they are.
+* @property {string} name - The name of the screen viewed.
+* @property {PropertiesType} [properties] - A dictionary of properties for the event.
+* @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
+* 		just happened, leave it out and we'll use the server's time. If you're importing data from the past make
+* 		sure you to send a timestamp.
+* @template PropertiesType
+*/
+
+/**
+* A message payload for an analytics-node `.identify()` call.
+* See: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#identify
+* @typedef IdentifyMessage<PropertiesType>
+* @property {string | number} [userId] - The ID for this user in your database.
+* @property {string | number} [anonymousId] - An ID to associated with the user when you don't know who they are.
+* @property {PropertiesType} [traits] - A dictionary of traits for the user.
+* @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
+* 		just happened, leave it out and we'll use the server's time. If you're importing data from the past make
+* 		sure you to send a timestamp.
+* @template PropertiesType
+*/
+
+/**
+* A message payload for an analytics-node `.group()` call.
+* See: https://docs.rudderstack.com/stream-sources/rudderstack-sdk-integration-guides/rudderstack-node-sdk#group
+* @typedef GroupMessage<PropertiesType>
+* @property {string | number} [userId] - The ID for this user in your database.
+* @property {string | number} [anonymousId] - An ID to associated with the user when you don't know who they are.
+* @property {string} groupId - The ID for this group in your database.
+* @property {PropertiesType} [traits] - A dictionary of traits for the group.
+* @property {Date} [timestamp] - A Javascript date object representing when the track took place. If the track
+* 		just happened, leave it out and we'll use the server's time. If you're importing data from the past make
+* 		sure you to send a timestamp.
+* @template PropertiesType
+*/
 {{/unless}}
 
 {{#each objects}}
-/**
- {{#if description}}
- * {{description}}
- {{/if}}
- * @typedef {{name}}
- {{#each properties}}
-	{{!-- Note: this uses whitespace control to "escape" the outer curly braces. --}}
-	{{!-- Note: The backticks enable JSDoc to parse names with spaces (without resorting to square brackets). --}}
-	{{!-- Temporary removed backticks around required names below because of typescript compiler + JSDoc error. Will investigate. --}}
- * @property {{#if hasEnum}}{ {{~enumName~}} }{{else}}{ {{~type~}} }{{/if}} {{#if isRequired}}{{name}}{{else}}[{{name}}]{{/if}} - {{description}}
- {{/each}}
- */
+	{{#if (or (not ../isBrowser) (and ../isBrowser (not (eq name "Screen"))))}}
+		/**
+		{{#if description}}
+		* {{description}}
+		{{/if}}
+		* @typedef {{name}}
+		{{#each properties}}
+			{{!-- Note: this uses whitespace control to "escape" the outer curly braces. --}}
+			{{!-- Note: The backticks enable JSDoc to parse names with spaces (without resorting to square brackets). --}}
+			{{!-- Temporary removed backticks around required names below because of typescript compiler + JSDoc error. Will investigate. --}}
+		* @property {{#if hasEnum}}{ {{~enumName~}} }{{else}}{ {{~type~}} }{{/if}} {{#if isRequired}}{{name}}{{else}}[{{name}}]{{/if}} - {{description}}
+		{{/each}}
+	*/
+	{{/if}}
 {{/each}}
 
 {{#each tracks}}
-{{> functionDocumentation isBrowser=../isBrowser }}
+{{> functionDocumentation isBrowser=../isBrowser event="track"}}
 {{#if ../isBrowser}}
 export function {{functionName}}(
 	props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
 	options?: ApiOptions,
-	callback?: apiCallback
+	callback?: apiCallback,
 ): void {
-	const a = analytics()
+	const a = analytics();
 	{{#if ../isDevelopment}}
 	const schema = {{rawJSONSchema}}
 	const message = {
@@ -274,55 +375,338 @@ export function {{functionName}}(
 		properties: props || {},
 		options,
 	}
-	validateAgainstSchema(message, schema).then(()=>{
+	{{/if}}
+	
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
 		if (a) {
 			a.track(
-				'{{rawEventName}}',
-				props || {},
-				withRudderTyperContext(options),
-				callback
-			)
-		}
-	})
-	{{else}}
-	if (a) {
-		a.track(
 			'{{rawEventName}}',
 			props || {},
 			withRudderTyperContext(options),
 			callback
-		)
-	}
-	{{/if}}
+			);
+		}
+	{{/validateAndExecute}}
 }
 {{else}}
+{{!-- Track call for node sdk --}}
 export function {{functionName}}(
-	message: TrackMessage<{{propertiesType}}>,
+	trackMessage: TrackMessage<{{propertiesType}}>,
 	callback?: apiCallback
 ): void {
-	const msg = withRudderTyperContext({
-		properties: {},
-		...message,
+	const message = withRudderTyperContext({
+		...trackMessage,
 		event: '{{rawEventName}}'
 	})
 	const a = analytics()
 	{{#if ../isDevelopment}}
-	const schema = {{rawJSONSchema}}	
-	validateAgainstSchema(msg, schema).then(()=>{
+	const schema = {{rawJSONSchema}}
+	{{/if}}
+
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
 		if (a) {
-			a.track(msg, callback)
+			a.track(message, callback)
 		} else {
 			throw missingAnalyticsNodeError
 		}
-	})
-	{{else}}
-	if (a) {
-		a.track(msg, callback)
+	{{/validateAndExecute}}
+}
+{{/if}}
+{{/each}}
+
+{{#each page}}
+{{> functionDocumentation isBrowser=../isBrowser event="page"}}
+{{#if ../isBrowser}}
+export function {{functionName}}(
+	category: string,
+	name: string,
+	props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
+	options?: ApiOptions,
+	callback?: apiCallback,
+): void;
+export function {{functionName}}(
+  name: string,
+  props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
+  options?: ApiOptions,
+  callback?: apiCallback,
+): void;
+export function {{functionName}}(
+	props{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
+	options?: ApiOptions,
+	callback?: apiCallback,
+): void;
+export function {{functionName}}(
+  categoryOrProps?: string | {{propertiesType}},
+  nameOrPropsOrOptions?: string | {{propertiesType}} | ApiOptions,
+  propsOrOptionsOrCallback?: {{propertiesType}} | ApiOptions | apiCallback,
+  optionsOrCallback?: ApiOptions | apiCallback,
+  callback?: apiCallback,
+): void {
+	const a = analytics();
+	{{#if ../isDevelopment}}
+	const schema = {{rawJSONSchema}}
+
+	let message: {
+		event: string;
+		properties: Page | {};
+		options?: ApiOptions;
+	} = { event: '{{rawEventName}}', properties: {}, options: undefined };
+
+	if (typeof categoryOrProps === 'string' && typeof nameOrPropsOrOptions === 'string') {
+		// Overload (category: string, name: string, props?: Page, options?: ApiOptions, callback?: apiCallback)
+		message = {
+		...message,
+		properties: propsOrOptionsOrCallback || {},
+		options: typeof optionsOrCallback === 'object' ? optionsOrCallback : undefined,
+		};
+	} else if (typeof categoryOrProps === 'string') {
+		// Overload (name: string, props?: Page, options?: ApiOptions, callback?: apiCallback)
+		message = {
+		...message,
+		properties: nameOrPropsOrOptions || {},
+		options: typeof propsOrOptionsOrCallback === 'object' && !Array.isArray(propsOrOptionsOrCallback) ? propsOrOptionsOrCallback as ApiOptions : undefined,
+		};
 	} else {
-		throw missingAnalyticsNodeError
+		// Overload (props?: Page, options?: ApiOptions, callback?: apiCallback)
+		message = {
+		...message,
+		properties: categoryOrProps || {},
+		options: typeof nameOrPropsOrOptions === 'object' && !Array.isArray(nameOrPropsOrOptions) ? nameOrPropsOrOptions as ApiOptions : undefined,
+		};
 	}
 	{{/if}}
 
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
+		if (a) {
+			if (typeof categoryOrProps === 'string' && typeof nameOrPropsOrOptions === 'string') {
+				// Overload (category: string, name: string, props?: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback)
+				a.page(
+					categoryOrProps,
+					'{{rawEventName}}',
+					(propsOrOptionsOrCallback as {{propertiesType}}) || {},
+					withRudderTyperContext(optionsOrCallback as ApiOptions),
+					callback,
+				);
+			} else if (typeof categoryOrProps === 'string') {
+				// Overload (name: string, props?: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback)
+				a.page(
+					'{{rawEventName}}',
+					(nameOrPropsOrOptions as {{propertiesType}}) || {},
+					withRudderTyperContext(propsOrOptionsOrCallback as ApiOptions),
+					optionsOrCallback as apiCallback,
+				);
+			} else {
+				// Overload (props?: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback)
+				a.page(
+					categoryOrProps || {},
+					withRudderTyperContext(nameOrPropsOrOptions as ApiOptions),
+					propsOrOptionsOrCallback as apiCallback,
+				);
+			}
+		}
+	{{/validateAndExecute}}
+}
+{{else}}
+{{!-- Page call for node sdk --}}
+export function {{functionName}}
+(
+	pageMessage: PageMessage<{{propertiesType}}>,
+	callback?: apiCallback,
+): void {
+	const message = withRudderTyperContext({
+		name: '',
+		...pageMessage
+	})
+	const a = analytics();
+	{{#if ../isDevelopment}}
+	const schema = {{rawJSONSchema}}
+	{{/if}}
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
+		if (a) {
+			a.page(message, callback)
+		} else {
+			throw missingAnalyticsNodeError
+		}
+	{{/validateAndExecute}}
+}
+{{/if}}
+{{/each}}
+
+{{#unless isBrowser}}
+{{#each screen}}
+{{> functionDocumentation isBrowser=../isBrowser event="screen"}}
+{{!-- screen call for Node SDK --}}
+export function {{functionName}}
+(
+	screenMessage: ScreenMessage<{{propertiesType}}>,
+	callback?: apiCallback,
+): void {
+	const message = withRudderTyperContext({
+		name: '',
+		...screenMessage,
+	})
+	const a = analytics();
+	{{#if ../isDevelopment}}
+	const schema = {{rawJSONSchema}}
+	{{/if}}
+
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
+		if (a) {
+			a.screen(message, callback)
+		} else {
+			throw missingAnalyticsNodeError
+		}
+	{{/validateAndExecute}}
+}
+{{/each}}
+{{/unless}}
+
+
+{{#each identify}}
+{{> functionDocumentation isBrowser=../isBrowser event="identify"}}
+{{#if ../isBrowser}}
+export function {{functionName}}(
+  userId: string,
+  traits{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
+  options?: ApiOptions,
+  callback?: apiCallback,
+): void;
+export function {{functionName}}(traits{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback): void;
+export function {{functionName}}(
+  userIdOrTraits?: string | Identify,
+  traitsOrOptions{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}} | ApiOptions,
+  optionsOrCallback?: ApiOptions | apiCallback,
+  callback?: apiCallback,
+): void {
+	const a = analytics()
+	{{#if ../isDevelopment}}
+	const schema = {{rawJSONSchema}}
+	const message = {
+		traits:
+		typeof userIdOrTraits === 'string'
+			? (traitsOrOptions as Identify)
+			: (userIdOrTraits as Identify) || {},
+		options:
+		typeof userIdOrTraits === 'string'
+			? (optionsOrCallback as ApiOptions)
+			: (traitsOrOptions as ApiOptions),
+	};
+	{{/if}}
+
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
+		if (a) {
+			const userId = typeof userIdOrTraits === 'string' ? userIdOrTraits : undefined;
+			const traits =
+			typeof userIdOrTraits === 'string'
+				? (traitsOrOptions as Identify)
+				: (userIdOrTraits as Identify);
+			const options =
+			typeof userIdOrTraits === 'string'
+				? (optionsOrCallback as ApiOptions)
+				: (traitsOrOptions as ApiOptions);
+			const cb = typeof userIdOrTraits === 'string' ? callback : (optionsOrCallback as apiCallback);
+
+			a.identify(userId, traits || {}, withRudderTyperContext(options), cb);
+		}
+	{{/validateAndExecute}}
+}
+{{else}}
+{{!-- Identify call for Node SDK --}}
+export function {{functionName}}
+(
+	identifyMessage: IdentifyMessage<{{propertiesType}}>,
+	callback?: apiCallback
+): void {
+	const message = withRudderTyperContext({
+		...identifyMessage,
+	})
+	const a = analytics()
+	{{#if ../isDevelopment}}
+	const schema = {{rawJSONSchema}}
+	{{/if}}
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
+		if (a) {
+			a.identify(message, callback)
+		} else {
+			throw missingAnalyticsNodeError
+		}
+	{{/validateAndExecute}}
+}
+{{/if}}
+{{/each}}
+
+{{#each group}}
+{{> functionDocumentation isBrowser=../isBrowser event="group"}}
+{{#if ../isBrowser}}
+export function {{functionName}}(
+  groupId: string,
+  traits{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}},
+  options?: ApiOptions,
+  callback?: apiCallback,
+): void;
+export function {{functionName}}(traits{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}}, options?: ApiOptions, callback?: apiCallback): void;
+export function {{functionName}}(
+  groupIdOrTraits?: string | Group,
+  traitsOrOptions{{#if isPropertiesOptional}}?{{/if}}: {{propertiesType}} | ApiOptions,
+  optionsOrCallback?: ApiOptions | apiCallback,
+  callback?: apiCallback,
+): void {
+	const a = analytics();
+	{{#if ../isDevelopment}}
+	const schema = {{rawJSONSchema}}
+	let message;
+	if (typeof groupIdOrTraits === 'string') {
+		message = {
+		traits: (traitsOrOptions as Group) || {},
+		options: optionsOrCallback as ApiOptions,
+		};
+	} else {
+		message = {
+		traits: (groupIdOrTraits as Group) || {},
+		options: traitsOrOptions as ApiOptions,
+		};
+	}
+	{{/if}}
+
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
+		if (a) {
+			if (typeof groupIdOrTraits === 'string') {
+				const groupId = groupIdOrTraits;
+				const traits = (traitsOrOptions as Group) || {};
+				const options = optionsOrCallback as ApiOptions;
+				a.group(groupId, traits, withRudderTyperContext(options), callback);
+			} else {
+				const traits = (groupIdOrTraits as Group) || {};
+				const options = traitsOrOptions as ApiOptions;
+				const cb = optionsOrCallback as apiCallback;
+				a.group(traits, withRudderTyperContext(options), cb);
+			}
+		}
+	{{/validateAndExecute}}
+}
+{{else}}
+{{!-- Group call for Node SDK --}}
+export function {{functionName}}
+(
+	groupMessage: GroupMessage<{{propertiesType}}>,
+	callback?: apiCallback
+): void {
+	const message = withRudderTyperContext({
+		groupId: '',
+		...groupMessage,
+	})
+	const a = analytics()
+	{{#if ../isDevelopment}}
+	const schema = {{rawJSONSchema}}
+	{{/if}}
+
+	{{#> validateAndExecute isDevelopment=../isDevelopment }}
+	 if (a) {
+			a.group(message, callback)
+		} else {
+			throw missingAnalyticsNodeError
+		}
+	{{/validateAndExecute}}
 }
 {{/if}}
 {{/each}}
@@ -332,7 +716,25 @@ const clientAPI = {
 	{{> setRudderTyperOptionsDocumentation}}
 	setRudderTyperOptions,
 	{{#each tracks}}
-	{{> functionDocumentation isBrowser=../isBrowser }}
+	{{> functionDocumentation isBrowser=../isBrowser event="track"}}
+	{{functionName}},
+	{{/each}}
+	{{#each page}}
+	{{> functionDocumentation isBrowser=../isBrowser event="page"}}
+	{{functionName}},
+	{{/each}}
+	{{#unless isBrowser}}
+		{{#each screen}}
+		{{> functionDocumentation isBrowser=../isBrowser event="screen"}}
+		{{functionName}},
+		{{/each}}
+	{{/unless}}
+	{{#each identify}}
+	{{> functionDocumentation isBrowser=../isBrowser event="identify"}}
+	{{functionName}},
+	{{/each}}
+	{{#each group}}
+	{{> functionDocumentation isBrowser=../isBrowser event="group"}}
 	{{functionName}},
 	{{/each}}
 }

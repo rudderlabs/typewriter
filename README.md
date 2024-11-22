@@ -43,6 +43,17 @@ To fire up a quickstart wizard to create a `ruddertyper.yml` and generate your f
 $ npx rudder-typer init | initialize | quickstart
 ```
 
+# Troubleshooting
+
+If you get an error during the setup process, run the following commands to clear your cache and local storage:
+
+```sh
+npm cache clean --force
+rm -r ~/.ruddertyper
+```
+
+If you get a “Your workspace does not have any Tracking Plans” error during the setup, verify that your RudderTyper client is on a stable version (v1.x).
+
 ## Other Commands
 
 ### Update

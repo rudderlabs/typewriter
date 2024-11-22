@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/rudderlabs/rudder-typer/compare/v1.2.0...v1.3.0) (2024-11-22)
+
+
+### Features
+
+* add support for non track event for js and node sdk ([#80](https://github.com/rudderlabs/rudder-typer/issues/80)) ([97d496f](https://github.com/rudderlabs/rudder-typer/commit/97d496f628ddc788e8d509e9c11e06ce268356be))
+
+
+### Bug Fixes
+
+* import assertion error ([#83](https://github.com/rudderlabs/rudder-typer/issues/83)) ([a1bed21](https://github.com/rudderlabs/rudder-typer/commit/a1bed2135d2f18fe2f933bc1d7f2a294d1af55c8))
+* update readme and schema validation for version ([#84](https://github.com/rudderlabs/rudder-typer/issues/84)) ([28ff1aa](https://github.com/rudderlabs/rudder-typer/commit/28ff1aa7ecfc524f8c29d27d88cef917e49856f7))
+* update sample apps for context - integrations to true ([#85](https://github.com/rudderlabs/rudder-typer/issues/85)) ([8274a2d](https://github.com/rudderlabs/rudder-typer/commit/8274a2dbaa80ab01ac7452bed128ef89689aacdf))
+
 ## [1.2.0](https://github.com/rudderlabs/rudder-typer/compare/v1.1.0...v1.2.0) (2024-10-15)
 
 
