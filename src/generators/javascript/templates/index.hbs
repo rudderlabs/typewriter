@@ -241,7 +241,7 @@ async function validateAgainstSchema(
 		{{#if isBrowser}}
 			const schemaDraft06 =await import('ajv/lib/refs/json-schema-draft-06.json');
 		{{else}}
-			const schemaDraft06 =await import('ajv/lib/refs/json-schema-draft-06.json', { assert: { type: 'json' } });
+			const schemaDraft06 =await import('ajv/lib/refs/json-schema-draft-06.json', { with: { type: 'json' } });
 		{{/if}}
 		ajv.addMetaSchema(schemaDraft06);
 	}

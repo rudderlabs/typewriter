@@ -2,7 +2,7 @@ import React, { createContext, useEffect } from 'react';
 import { Box, Text, useApp } from 'ink';
 import Link from 'ink-link';
 import figures from 'figures';
-import packageJson from '../../../package.json' assert { type: 'json' };
+import packageJson from '../../../package.json' with { type: 'json' };
 import { AnalyticsProps } from '../index.js';
 
 type ErrorContextProps = {

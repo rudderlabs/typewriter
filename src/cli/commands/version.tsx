@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Box, useApp, Text } from 'ink';
-import packageJson from '../../../package.json' assert { type: 'json' };
+import packageJson from '../../../package.json' with { type: 'json' };
 import latest from 'latest-version';
 import { StandardProps } from '../index.js';
 import { ErrorContext, WrappedError } from './error.js';
