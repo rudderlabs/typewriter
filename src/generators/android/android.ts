@@ -2,6 +2,7 @@ import camelCase from 'lodash/camelCase.js';
 import upperFirst from 'lodash/upperFirst.js';
 import { Type, Schema, getPropertiesSchema } from '../ast.js';
 import { Generator, GeneratorClient } from '../gen.js';
+import { sanitizeKey } from '../utils.js';
 
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.
@@ -164,13 +165,13 @@ const convertToEnum = (values: any[], type: string) => {
         let key, formattedValue;
 
         if (type === 'String' || typeof value === 'string') {
-          key = 'S_' + value.toString().trim().toUpperCase().replace(/ /g, '');
+          key = 'S_' + sanitizeKey(value);
           formattedValue = `"${value.toString().trim()}"`; // String values
         } else if (type === 'Long') {
-          key = 'L_' + value.toString();
-          formattedValue = `${value}L`; // Long values
+          key = 'L_' + sanitizeKey(value);
+          formattedValue = Number(value) % 1 === 0 ? `${value}L` : value.toString(); // Long values
         } else if (type === 'Double') {
-          key = 'D_' + value.toString().replace('.', '_');
+          key = 'D_' + sanitizeKey(value);
           formattedValue = `${value}D`; // Double values
         }
 
