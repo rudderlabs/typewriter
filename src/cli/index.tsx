@@ -8,7 +8,7 @@ import React, { createContext } from 'react';
 import { render } from 'ink';
 import { Token, Version, Build, Help, Init, ErrorBoundary } from './commands/index.js';
 import { Config, getConfig, getTokenMethod } from './config/index.js';
-import packageJson from '../../package.json' assert { type: 'json' };
+import packageJson from '../../package.json' with { type: 'json' };
 import { loadTrackingPlan } from './api/index.js';
 import yargs, { ArgumentsCamelCase, Options } from 'yargs';
 import { getTrackingPlanName } from './api/trackingplans.js';
