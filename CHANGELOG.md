@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/rudderlabs/rudder-typer/compare/v1.3.0...v1.3.1) (2024-12-16)
+
+
+### Bug Fixes
+
+* handle enum names ([#94](https://github.com/rudderlabs/rudder-typer/issues/94)) ([6ef8b8f](https://github.com/rudderlabs/rudder-typer/commit/6ef8b8fd6b8a9e2eee9e3d5873d48dbf1b95a0d9))
+* use with instead of assert as per latest node version ([#95](https://github.com/rudderlabs/rudder-typer/issues/95)) ([babc2b7](https://github.com/rudderlabs/rudder-typer/commit/babc2b7b2b6d7ce31bf1d0c7e10a9b2aae544e15))
+
 ## [1.3.0](https://github.com/rudderlabs/rudder-typer/compare/v1.2.0...v1.3.0) (2024-11-22)
 
 
