@@ -5,7 +5,7 @@ import { sanitizeTrackingPlan } from './trackingplans.js';
 import lodash from 'lodash';
 import { APIError } from '../types.js';
 import { EventType } from 'src/generators/gen.js';
-import packageJson from '../../../package.json' assert { type: 'json' };
+import packageJson from '../../../package.json' with { type: 'json' };
 
 const { set } = lodash;
 

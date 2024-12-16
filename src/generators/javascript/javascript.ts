@@ -6,6 +6,7 @@ import { Generator, GeneratorClient, type File } from '../gen.js';
 import { toTarget, toModule } from './targets.js';
 import { registerPartial } from '../../templates.js';
 import lodash from 'lodash';
+import { sanitizeKey } from '../utils.js';
 
 const { camelCase, upperFirst } = lodash;
 
@@ -213,10 +214,10 @@ const convertToEnum = (values: any[], type: string) => {
         let key, formattedValue;
 
         if (type === 'string' || typeof value === 'string') {
-          key = 'S_' + value.toString().trim().toUpperCase().replace(/ /g, '_');
+          key = 'S_' + sanitizeKey(value);
           formattedValue = `'${value.toString().trim()}'`;
         } else if (type === 'number') {
-          key = 'N_' + value.toString().replace('.', '_');
+          key = 'N_' + sanitizeKey(value);
           formattedValue = `${value}`;
         }
 
