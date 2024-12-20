@@ -2,7 +2,7 @@ import camelCase from 'lodash/camelCase.js';
 import upperFirst from 'lodash/upperFirst.js';
 import { Type, Schema, getPropertiesSchema } from '../ast.js';
 import { Generator, GeneratorClient } from '../gen.js';
-import { sanitizeKey } from '../utils.js';
+import { sanitizeEnumKey, sanitizeKey } from '../utils.js';
 
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.
@@ -195,7 +195,7 @@ function defaultPropertyContext(
     hasEnum: !!hasEnum,
     enumName: hasEnum
       ? client.namer.register(schema.name, namespace, {
-          transform: (name) => upperFirst(camelCase(name)),
+          transform: (name) => sanitizeEnumKey(camelCase(name)),
         })
       : undefined,
     enumValues: hasEnum && 'enum' in schema ? convertToEnum(schema.enum!, type) : undefined,
