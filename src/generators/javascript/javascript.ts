@@ -6,7 +6,7 @@ import { Generator, GeneratorClient, type File } from '../gen.js';
 import { toTarget, toModule } from './targets.js';
 import { registerPartial } from '../../templates.js';
 import lodash from 'lodash';
-import { sanitizeKey } from '../utils.js';
+import { sanitizeEnumKey, sanitizeKey } from '../utils.js';
 
 const { camelCase, upperFirst } = lodash;
 
@@ -236,7 +236,7 @@ function conditionallyNullable(
     ...property,
     type: !!schema.isNullable && !hasEnum ? `${property.type} | null` : property.type,
     hasEnum: !!hasEnum,
-    enumName: upperFirst(schema.name),
+    enumName: sanitizeEnumKey(schema.name),
     enumValues:
       hasEnum && 'enum' in schema ? convertToEnum(schema.enum!, property.type) : undefined,
   };
