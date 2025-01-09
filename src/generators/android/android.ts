@@ -111,7 +111,7 @@ export const android: Generator<
   },
   generateUnion: async (client, schema, _, parentPath) => {
     // TODO: support unions
-    return defaultPropertyContext(client, schema, 'Object', parentPath);
+    return defaultPropertyContext(client, schema, 'Object', parentPath, !!schema.enum);
   },
   generateTrackCall: async (_client, schema, functionName, propertiesObject) => {
     const { properties } = getPropertiesSchema(schema);

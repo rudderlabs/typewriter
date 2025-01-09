@@ -6,6 +6,7 @@ import {
   Type,
   PrimitiveTypeSchema,
   getTraitsSchema,
+  UnionTypeSchema,
 } from './ast.js';
 import { javascript } from './javascript/index.js';
 import { objc } from './objc/index.js';
@@ -162,7 +163,7 @@ export declare type Generator<
   ) => Promise<{ property: P; object?: O }>;
   generateUnion: (
     client: GeneratorClient,
-    schema: Schema,
+    schema: UnionTypeSchema,
     types: (P & BasePropertyContext)[],
     parentPath: string,
   ) => Promise<P>;

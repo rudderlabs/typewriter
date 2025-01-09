@@ -151,10 +151,14 @@ export const javascript: Generator<
     }
   },
   generateUnion: async (client, schema, types) =>
-    conditionallyNullable(schema, {
-      name: client.namer.escapeString(schema.name),
-      type: types.map((t) => t.type).join(' | '),
-    }),
+    conditionallyNullable(
+      schema,
+      {
+        name: client.namer.escapeString(schema.name),
+        type: types.map((t) => t.type).join(' | '),
+      },
+      !!schema.enum,
+    ),
   generateTrackCall: async (client, _schema, functionName, propertiesObject) => ({
     functionName: functionName,
     propertiesType: propertiesObject.type,
