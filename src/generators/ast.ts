@@ -214,7 +214,7 @@ function parseTypeSpecificFields(raw: JSONSchema7, type: Type): TypeSpecificFiel
           Object.keys(schema.properties).length > 0 &&
           schema.type === undefined
         ) {
-          schema.type = ['object'];
+          schema.type = ['array', 'object'];
         }
         fields.items = parseTypeSpecificFields(schema, getType(schema));
       } else if (schemas.length > 1) {
