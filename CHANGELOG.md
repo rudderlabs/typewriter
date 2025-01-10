@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.2](https://github.com/rudderlabs/rudder-typer/compare/v1.3.1...v1.3.2) (2025-01-10)
+
+
+### Bug Fixes
+
+* add nested prop for array type any and enum for union ([#110](https://github.com/rudderlabs/rudder-typer/issues/110)) ([55c22c1](https://github.com/rudderlabs/rudder-typer/commit/55c22c1ca8173d805e5fa08b85d8cbbdb28f84e8))
+* enum insertion for android sdk ([#112](https://github.com/rudderlabs/rudder-typer/issues/112)) ([dfa0942](https://github.com/rudderlabs/rudder-typer/commit/dfa09426e83eb070dbc06a9418b7e99af722b32a))
+* sanitize enum key ([#107](https://github.com/rudderlabs/rudder-typer/issues/107)) ([97b1d11](https://github.com/rudderlabs/rudder-typer/commit/97b1d116b1d539d007ebb364bcb866d29544b353))
+
 ### [1.3.1](https://github.com/rudderlabs/rudder-typer/compare/v1.3.0...v1.3.1) (2024-12-16)
 
 
