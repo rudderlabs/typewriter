@@ -4,7 +4,7 @@ import { resolve, dirname } from 'path';
 import * as yaml from 'js-yaml';
 import { generateFromTemplate } from '../../templates.js';
 import { homedir } from 'os';
-import { Config, validateConfig } from './schema.js';
+import { Config, TrackingPlanConfig, validateConfig } from './schema.js';
 import { validateToken, RudderAPI } from '../api/index.js';
 import { wrapError } from '../commands/error.js';
 import { runScript, Scripts } from './scripts.js';
@@ -93,16 +93,18 @@ export async function verifyDirectoryExists(
 export async function getToken(
   cfg: Partial<Config> | undefined,
   configPath: string,
+  trackingPlanConfig: TrackingPlanConfig,
 ): Promise<string | undefined> {
-  const token = await getTokenMetadata(cfg, configPath);
+  const token = await getTokenMetadata(cfg, configPath, trackingPlanConfig);
   return token ? token.token : undefined;
 }
 
 export async function getEmail(
   cfg: Partial<Config> | undefined,
   configPath: string,
+  trackingPlanConfig: TrackingPlanConfig,
 ): Promise<string | undefined> {
-  const token = await getTokenMetadata(cfg, configPath);
+  const token = await getTokenMetadata(cfg, configPath, trackingPlanConfig);
   return token ? token.email : undefined;
 }
 
@@ -117,8 +119,9 @@ export async function getTokenMethod(
 async function getTokenMetadata(
   cfg: Partial<Config> | undefined,
   configPath: string,
+  trackingPlanConfig?: TrackingPlanConfig,
 ): Promise<TokenMetadata | undefined> {
-  const tokens = await listTokens(cfg, configPath);
+  const tokens = await listTokens(cfg, configPath, trackingPlanConfig);
   const resolutionOrder = [tokens.script, tokens.file];
   for (const metadata of resolutionOrder) {
     if (metadata.isValidToken) {
@@ -150,6 +153,7 @@ const emailScriptCache: Record<string, string> = {};
 export async function listTokens(
   cfg: Partial<Config> | undefined,
   configPath: string,
+  trackingPlanConfig?: TrackingPlanConfig,
 ): Promise<ListTokensOutput> {
   const output: ListTokensOutput = {
     script: { method: 'script', isValidToken: false },
@@ -172,9 +176,15 @@ export async function listTokens(
 
   // Attempt to read a token and email by executing their respective script from the ruddertyper.yml config file.
   // Handle token script errors gracefully, f.e., in CI where you don't need it.
-  if (cfg && cfg.scripts && cfg.scripts.token && cfg.scripts.email) {
-    const tokenScript = cfg.scripts.token;
-    const emailScript = cfg.scripts.email;
+  if (
+    (cfg && cfg.scripts && cfg.scripts.token && cfg.scripts.email) ||
+    (trackingPlanConfig &&
+      trackingPlanConfig.scripts &&
+      trackingPlanConfig.scripts.token &&
+      trackingPlanConfig.scripts.email)
+  ) {
+    const tokenScript = (trackingPlanConfig?.scripts?.token || cfg?.scripts?.token)!;
+    const emailScript = (trackingPlanConfig?.scripts?.email || cfg?.scripts?.email)!;
     // Since we don't know if this token script has side effects, cache (in-memory) the result
     // s.t. we only execute it once per CLI invocation.
     if (!tokenScriptCache[tokenScript]) {
