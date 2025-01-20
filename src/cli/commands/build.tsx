@@ -167,8 +167,8 @@ export const UpdatePlanStep: React.FC<UpdatePlanStepProps> = ({
       let newTrackingPlan: RudderAPI.TrackingPlan | undefined = undefined;
       if (update || !previousTrackingPlan) {
         // Attempt to read a token and use it to update the local Tracking Plan to the latest version.
-        const token = await getToken(config, configPath);
-        const email = await getEmail(config, configPath);
+        const token = await getToken(config, configPath, trackingPlanConfig);
+        const email = await getEmail(config, configPath, trackingPlanConfig);
         if (token && email) {
           try {
             newTrackingPlan = await fetchTrackingPlan({
@@ -387,7 +387,8 @@ export const GenerationStep: React.FC<GenerationProps> = ({
     for (const trackingPlan of trackingPlans) {
       // Generate the client:
       const files = await gen(trackingPlan, {
-        client: config.client,
+        client:
+          config.trackingPlans.find((plan) => plan.id === trackingPlan.id)?.client || config.client,
         rudderTyperVersion: packageJson.version,
         isDevelopment: !production,
       });
@@ -432,7 +433,14 @@ export const AfterStep: React.FC<AfterStepProps> = ({ config, configPath, step, 
   const [error, setError] = useState<WrappedError>();
   const { isRunning, isDone } = useStep(step, Steps.After, after, onDone);
 
-  const afterScript = config.scripts ? config.scripts.after : undefined;
+  let afterScript = config.trackingPlans
+    .map((trackingPlan) => trackingPlan.scripts?.after)
+    .filter(Boolean)
+    .join(' && ');
+
+  if (!afterScript) {
+    afterScript = config.scripts?.after ?? '';
+  }
 
   async function after() {
     if (afterScript) {
