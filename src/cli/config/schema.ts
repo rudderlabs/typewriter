@@ -50,14 +50,9 @@ export type TrackingPlanConfig = {
    * The API version to use for the tracking plan
    */
   APIVersion: string;
-  /**
-   * The name of the Tracking Plan. Only set during the `init` step, so it
-   * can be added as a comment in the generated `ruddertyper.yml`.
-   */
+  /** Metadata on how to configure a client (language, SDK, module-type, etc.). */
   client?: Options;
-  /**
-   * The name of the Tracking Plan. Only set during the `init` step, so it
-   */
+  /** A set of optional shell commands to customize ruddertyper's behavior. */
   scripts?: {
     /**
      * An optional shell command that must produce a RudderStack API token as its only output.
