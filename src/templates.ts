@@ -83,4 +83,13 @@ export async function registerStandardHelpers(): Promise<void> {
   Handlebars.registerHelper('and', function (val1, val2) {
     return val1 && val2;
   });
+
+  const processedEnums = new Set();
+  Handlebars.registerHelper('uniqueEnum', function (enumName, enumValues, options) {
+    if (!processedEnums.has(enumName)) {
+      processedEnums.add(enumName);
+      return options.fn({ enumName, enumValues });
+    }
+    return '';
+  });
 }
