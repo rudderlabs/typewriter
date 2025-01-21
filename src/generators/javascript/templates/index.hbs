@@ -105,9 +105,11 @@ export interface Schema {
 {{#each objects}}
 {{#each properties}}
 {{#if hasEnum}}
-export enum {{enumName}} {
+	{{#uniqueEnum enumName enumValues}}
+	export enum {{enumName}} {
 	{{enumValues}}
-}
+	}
+	{{/uniqueEnum}}
 {{/if}}
 {{/each}}
 
