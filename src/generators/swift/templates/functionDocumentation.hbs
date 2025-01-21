@@ -1,0 +1,13 @@
+/**
+ {{#if functionDescription}}
+  {{functionDescription}}
+ {{else}}
+  Fires a '{{functionName}}' track call.
+ {{/if}}
+ 
+  - Parameters:
+        {{#each properties}}
+    - {{name}}: {{#if isRequired}}{{type}} (required){{else}}{{type}} (optional){{/if}}{{#if description}} - {{description}}{{/if}}
+        {{/each}}
+    - options: Event-level options (optional)
+ */

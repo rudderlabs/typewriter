@@ -13,9 +13,7 @@ class RudderTyperAnalytics {
         {{functionCall "RudderTyperAnalytics" functionName properties "options" "RSOption()"}}
     }
 
-    {{#if functionDescription}}
-    /// {{functionDescription}}
-    {{/if}}
+    {{> functionDocumentation }}
     static func {{functionSignature functionName properties true}} {
         {{indent "        " (propertiesDictionary properties)}}
 

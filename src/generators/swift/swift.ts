@@ -2,6 +2,7 @@ import { Type, Schema } from '../ast.js';
 import Handlebars from 'handlebars';
 import { Generator, BasePropertyContext, GeneratorClient } from '../gen.js';
 import lodash from 'lodash';
+import { registerPartial } from '../../templates.js';
 
 const { camelCase, upperFirst } = lodash;
 
@@ -61,6 +62,10 @@ export const swift: Generator<
     allowedIdentifierChars: 'A-Za-z0-9_$',
   },
   setup: async () => {
+    await registerPartial(
+      'generators/swift/templates/functionDocumentation.hbs',
+      'functionDocumentation',
+    );
     Handlebars.registerHelper('propertiesDictionary', generatePropertiesDictionary);
     Handlebars.registerHelper('functionCall', generateFunctionCall);
     Handlebars.registerHelper('functionSignature', generateFunctionSignature);
