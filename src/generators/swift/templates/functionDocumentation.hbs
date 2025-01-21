@@ -7,7 +7,7 @@
  
   - Parameters:
         {{#each properties}}
-    - {{name}}: {{#if isRequired}}[{{type}}]{{else}}{{type}}{{/if}}{{#if description}} - {{description}}{{/if}}
+    - {{name}}: {{#if isRequired}}{{type}} (required){{else}}{{type}} (optional){{/if}}{{#if description}} - {{description}}{{/if}}
         {{/each}}
-    - options: Event-level options.
+    - options: Event-level options (optional)
  */
