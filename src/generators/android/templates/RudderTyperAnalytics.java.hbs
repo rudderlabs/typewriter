@@ -11,15 +11,15 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public class RudderTyperAnalytics {
-    private RudderClient rudderClient;
+    private final RudderClient rudderClient;
 
     /**
      * Return a reference to the global default {@link RudderTyperAnalytics} instance.
-     *
      * This will use your the global default {@link RudderClient} instance.
-     *
      * If you want to use a different {@link RudderClient} instance instance, see the
      * {@link RudderTyperAnalytics} constructor below.
      */
@@ -29,7 +29,6 @@ public class RudderTyperAnalytics {
 
     /**
      * Initializes a new RudderTyperAnalytics instance wrapping the provided RudderStack client.
-     *
      * You very likely want to use RudderTyperAnalytics.with(context) method above instead, which
      * will utilize your existing singleton RudderStack {@link RudderClient} instance.
      *
@@ -46,22 +45,30 @@ public class RudderTyperAnalytics {
      {{#if functionDescription}}
      *{{functionDescription}}
      {{/if}}
-     * @param props {@link {{class ~}} } to add extra information to this call.
+     * @param props {@link {{propsType ~}} } to add extra information to this call.
      * @see <a href="https://docs.rudderstack.com/rudderstack-api-spec/http-api-specification#7-track">Track Documentation</a>
      */
     public void {{functionName}}(final @Nullable {{propsType}} props) {
-        this.rudderClient.track("{{rawEventName}}", props.toRudderProperty(), RudderTyperUtils.addRudderTyperContext());
+        if (props != null) {
+            this.rudderClient.track("{{rawEventName}}", props.toRudderProperty(), RudderTyperUtils.addRudderTyperContext());
+        } else {
+            this.rudderClient.track("{{rawEventName}}", null, RudderTyperUtils.addRudderTyperContext());
+        }
     }
 
     /**
      {{#if functionDescription}}
      * {{functionDescription}}
      {{/if}}
-     * @param props {@link {{class ~}} } to add extra information to this call.
+     * @param props {@link {{propsType ~}} } to add extra information to this call.
      * @see <a href="https://docs.rudderstack.com/rudderstack-api-spec/http-api-specification#7-track">Track Documentation</a>
      */
-    public void {{functionName}}(final @Nullable {{propsType}} props, final @Nullable RudderOption options) {
-        this.rudderClient.track("{{rawEventName}}", props.toRudderProperty(), RudderTyperUtils.addRudderTyperContext(options));
+    public void {{functionName}}(final @Nullable {{propsType}} props, final @NotNull RudderOption options) {
+        if (props != null) {
+            this.rudderClient.track("{{rawEventName}}", props.toRudderProperty(), RudderTyperUtils.addRudderTyperContext(options));
+        } else {
+            this.rudderClient.track("{{rawEventName}}", null, RudderTyperUtils.addRudderTyperContext(options));
+        }
     }
     {{else}}
     /**
@@ -80,7 +87,7 @@ public class RudderTyperAnalytics {
      {{/if}}
      * @see <a href="https://docs.rudderstack.com/rudderstack-api-spec/http-api-specification#7-track">Track Documentation</a>
      */
-    public void {{functionName}}(final @Nullable RudderOption options)  {
+    public void {{functionName}}(final @NotNull RudderOption options)  {
         this.rudderClient.track("{{rawEventName}}", new RudderProperty(), RudderTyperUtils.addRudderTyperContext(options));
     }
     {{/if}}

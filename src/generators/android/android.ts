@@ -144,7 +144,7 @@ export const android: Generator<
           if (p.hasEnum) {
             // Generate the enum file
             client.generateFile(
-              `${upperFirst(camelCase(p.name))}.java`,
+              `${sanitizeEnumKey(camelCase(p.name))}.java`,
               'generators/android/templates/enumeration.java.hbs',
               p,
             );
