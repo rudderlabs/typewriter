@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 
 public final class RudderTyperUtils {
-    protected static Map<String, Object> rudderTyperCtx;
+    private static final Map<String, Object> rudderTyperCtx;
 
     static {
         rudderTyperCtx = new HashMap<>();
@@ -21,20 +21,20 @@ public final class RudderTyperUtils {
         rudderTyperCtx.put("trackingPlanVersion", "{{trackingPlanVersion}}");
     }
 
-    protected static RudderOption addRudderTyperContext(final @NonNull RudderOption options){
+    static RudderOption addRudderTyperContext(final @NonNull RudderOption options){
         options.putCustomContext("ruddertyper", rudderTyperCtx);
 
         return options;
     }
 
-    protected static RudderOption addRudderTyperContext(){
+    static RudderOption addRudderTyperContext(){
         RudderOption rudderTyperContext = new RudderOption();
         rudderTyperContext.putCustomContext("ruddertyper", rudderTyperCtx);
 
         return rudderTyperContext;
     }
 
-    protected static List<?> serializeList(final @Nullable List<?> props){
+    static List<?> serializeList(final @Nullable List<?> props){
         if (props == null) {
             return props;
         }

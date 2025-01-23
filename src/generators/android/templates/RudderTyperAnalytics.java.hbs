@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 
 public class RudderTyperAnalytics {
-    private RudderClient rudderClient;
+    private final RudderClient rudderClient;
 
     /**
      * Return a reference to the global default {@link RudderTyperAnalytics} instance.
@@ -55,7 +55,7 @@ public class RudderTyperAnalytics {
         if (props != null) {
             this.rudderClient.track("{{rawEventName}}", props.toRudderProperty(), RudderTyperUtils.addRudderTyperContext());
         } else {
-            this.rudderClient.track("{{rawEventName}}", new RudderProperty(), RudderTyperUtils.addRudderTyperContext());
+            this.rudderClient.track("{{rawEventName}}", null, RudderTyperUtils.addRudderTyperContext());
         }
     }
 
@@ -70,7 +70,7 @@ public class RudderTyperAnalytics {
         if (props != null) {
             this.rudderClient.track("{{rawEventName}}", props.toRudderProperty(), RudderTyperUtils.addRudderTyperContext(options));
         } else {
-            this.rudderClient.track("{{rawEventName}}", new RudderProperty(), RudderTyperUtils.addRudderTyperContext(options));
+            this.rudderClient.track("{{rawEventName}}", null, RudderTyperUtils.addRudderTyperContext(options));
         }
     }
     {{else}}
