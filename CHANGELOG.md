@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/rudderlabs/rudder-typer/compare/v1.3.2...v1.4.0) (2025-01-23)
+
+
+### Features
+
+* include parameter details in Swift docstrings ([#118](https://github.com/rudderlabs/rudder-typer/issues/118)) ([5fdfa31](https://github.com/rudderlabs/rudder-typer/commit/5fdfa31b1a1497a552c9f19c48fe006da23f07eb))
+* take scripts and client from tp level if exist or root level scripts ([#117](https://github.com/rudderlabs/rudder-typer/issues/117)) ([456921d](https://github.com/rudderlabs/rudder-typer/commit/456921db50c8b64e34eba26944d60e66ed67dd14))
+
+
+### Bug Fixes
+
+* android null exception ([#120](https://github.com/rudderlabs/rudder-typer/issues/120)) ([e40b595](https://github.com/rudderlabs/rudder-typer/commit/e40b59586d51f30022e1768c1930b0ac7fa1d89b))
+* make field enum namespaced ([#119](https://github.com/rudderlabs/rudder-typer/issues/119)) ([06a1eb9](https://github.com/rudderlabs/rudder-typer/commit/06a1eb915b3fa1dfd07d41015b06af31179011ce))
+* upgrade @rudderstack/rudder-sdk-node from 2.0.10 to 2.1.1 ([#89](https://github.com/rudderlabs/rudder-typer/issues/89)) ([8f64db9](https://github.com/rudderlabs/rudder-typer/commit/8f64db96f463685ccaa68d60dc8753312baf6bd5))
+
 ### [1.3.2](https://github.com/rudderlabs/rudder-typer/compare/v1.3.1...v1.3.2) (2025-01-10)
 
 
