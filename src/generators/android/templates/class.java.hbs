@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public final class {{name}} extends SerializableProperties {
-    private RudderProperty properties;
+    private final RudderProperty properties;
 
     private {{name}}(RudderProperty properties) {
         this.properties = properties;
@@ -23,7 +23,7 @@ public final class {{name}} extends SerializableProperties {
      * Builder for {@link {{name ~}} }
      */
     public static class Builder {
-        private RudderProperty properties;
+        private final RudderProperty properties;
 
         /**
          * Builder for {@link {{name ~}} }
@@ -45,15 +45,19 @@ public final class {{name}} extends SerializableProperties {
          */
         public Builder {{name}}(final {{#if isVariableNullable}}@Nullable{{else}}@NonNull{{/if}} {{#if hasEnum}}{{enumName}}{{else}}{{type}}{{/if}} {{name}}) {
             {{#if hasEnum}}
+            {{#if isVariableNullable}}
+            if ({{name}} != null) {
+                properties.put("{{rawName}}", {{name}}.getValue());
+            }
+            {{else}}
             properties.put("{{rawName}}", {{name}}.getValue());
+            {{/if}}
             {{else if isListType}}
             List<?> p = RudderTyperUtils.serializeList({{name}});
             properties.put("{{rawName}}", p);
             {{else if implementsSerializableProperties}}
             if ({{name}} != null) {
                 properties.putValue("{{rawName}}", {{name}}.toRudderProperty());
-            } else {
-                properties.put("{{rawName}}", {{name}});
             }
             {{else}}
             properties.put("{{rawName}}", {{name}});
