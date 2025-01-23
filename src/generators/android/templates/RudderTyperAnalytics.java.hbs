@@ -19,9 +19,7 @@ public class RudderTyperAnalytics {
 
     /**
      * Return a reference to the global default {@link RudderTyperAnalytics} instance.
-     *
      * This will use your the global default {@link RudderClient} instance.
-     *
      * If you want to use a different {@link RudderClient} instance instance, see the
      * {@link RudderTyperAnalytics} constructor below.
      */
@@ -31,7 +29,6 @@ public class RudderTyperAnalytics {
 
     /**
      * Initializes a new RudderTyperAnalytics instance wrapping the provided RudderStack client.
-     *
      * You very likely want to use RudderTyperAnalytics.with(context) method above instead, which
      * will utilize your existing singleton RudderStack {@link RudderClient} instance.
      *
@@ -48,7 +45,7 @@ public class RudderTyperAnalytics {
      {{#if functionDescription}}
      *{{functionDescription}}
      {{/if}}
-     * @param props {@link {{class ~}} } to add extra information to this call.
+     * @param props {@link {{propsType ~}} } to add extra information to this call.
      * @see <a href="https://docs.rudderstack.com/rudderstack-api-spec/http-api-specification#7-track">Track Documentation</a>
      */
     public void {{functionName}}(final @Nullable {{propsType}} props) {
@@ -63,7 +60,7 @@ public class RudderTyperAnalytics {
      {{#if functionDescription}}
      * {{functionDescription}}
      {{/if}}
-     * @param props {@link {{class ~}} } to add extra information to this call.
+     * @param props {@link {{propsType ~}} } to add extra information to this call.
      * @see <a href="https://docs.rudderstack.com/rudderstack-api-spec/http-api-specification#7-track">Track Documentation</a>
      */
     public void {{functionName}}(final @Nullable {{propsType}} props, final @NotNull RudderOption options) {
