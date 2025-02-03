@@ -9,7 +9,7 @@ class {{name}}: RudderTyperSerializable {
 {{#if description}}
 /// {{description}}
 {{/if}}
-    var {{name}}: {{type}}{{#isVariableNullable}}?{{/isVariableNullable}}
+    var {{name}}: {{#if hasEnum}}{{enumName}}{{else}}{{type}}{{/if}}{{#isVariableNullable}}?{{/isVariableNullable}}
 {{/each}}
 
     {{functionSignature "init" properties false}} {

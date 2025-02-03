@@ -6,7 +6,7 @@ import { Generator, GeneratorClient, type File } from '../gen.js';
 import { toTarget, toModule } from './targets.js';
 import { registerPartial } from '../../templates.js';
 import lodash from 'lodash';
-import { sanitizeEnumKey, sanitizeKey } from '../utils.js';
+import { getEnumPropertyTypes, sanitizeEnumKey, sanitizeKey } from '../utils.js';
 
 const { camelCase, upperFirst } = lodash;
 
@@ -48,9 +48,9 @@ type JavaScriptPropertyContext = {
   type: string;
   // Whether this property has an enum.
   hasEnum: boolean;
-  // The formatted enum name, ex: "NumAvocados".
+  // The formatted enum name
   enumName?: string;
-  // The formatted enum values, ex: "NUM
+  // The formatted enum values
   enumValues?: any;
 };
 
@@ -219,7 +219,7 @@ const convertToEnum = (values: any[], type: string) => {
 
         if (type === 'string' || typeof value === 'string') {
           key = 'S_' + sanitizeKey(value);
-          formattedValue = `'${value.toString().trim()}'`;
+          formattedValue = `'${value.toString().replace(/'/g, "\\'").trim()}'`;
         } else if (type === 'number') {
           key = 'N_' + sanitizeKey(value);
           formattedValue = `${value}`;
@@ -228,7 +228,7 @@ const convertToEnum = (values: any[], type: string) => {
         return `${key} = ${formattedValue}`;
       })
       .join(',\n    ') + ','
-  ); // Join with commas and add comma at the end
+  );
 };
 
 function conditionallyNullable(
@@ -240,7 +240,7 @@ function conditionallyNullable(
     ...property,
     type: !!schema.isNullable && !hasEnum ? `${property.type} | null` : property.type,
     hasEnum: !!hasEnum,
-    enumName: sanitizeEnumKey(schema.name),
+    enumName: sanitizeEnumKey(schema.name) + '_' + getEnumPropertyTypes(schema),
     enumValues:
       hasEnum && 'enum' in schema ? convertToEnum(schema.enum!, property.type) : undefined,
   };

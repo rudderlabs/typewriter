@@ -166,7 +166,7 @@ const convertToEnum = (values: any[], type: string) => {
 
         if (type === 'String' || typeof value === 'string') {
           key = 'S_' + sanitizeKey(value);
-          formattedValue = `"${value.toString().trim()}"`; // String values
+          formattedValue = `"${value.toString().replace(/"/g, '\\"').trim()}"`; // String values
         } else if (type === 'Long') {
           key = 'L_' + sanitizeKey(value);
           formattedValue = Number(value) % 1 === 0 ? `${value}L` : value.toString(); // Long values

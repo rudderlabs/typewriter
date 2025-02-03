@@ -1,3 +1,5 @@
+import { Schema, Type } from './ast.js';
+
 export const sanitizeKey = (value: any) =>
   value
     .toString()
@@ -16,3 +18,25 @@ export const sanitizeEnumKey = (value: string) =>
     .split('_') // Split by underscores
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize each word
     .join(''); // Join words into PascalCase
+
+const enumTypeMapping: Record<Type, string> = {
+  [Type.ANY]: 'Any',
+  [Type.STRING]: 'String',
+  [Type.BOOLEAN]: 'Boolean',
+  [Type.INTEGER]: 'Integer',
+  [Type.NUMBER]: 'Number',
+  [Type.OBJECT]: 'Object',
+  [Type.ARRAY]: 'Array',
+  [Type.UNION]: 'Union',
+};
+
+export const getEnumPropertyTypes = (schema: Schema): string => {
+  let enumTypes;
+  if ('types' in schema) {
+    enumTypes = schema.types.map((p) => enumTypeMapping[p.type]).join('_');
+  } else {
+    enumTypes = enumTypeMapping[schema.type];
+  }
+
+  return enumTypes;
+};
