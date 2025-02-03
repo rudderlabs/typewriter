@@ -37,6 +37,8 @@ type SwiftPropertyContext = {
   enumName?: string;
   // The formatted enum values
   enumValues?: any;
+  // The type of the enum values
+  enumType?: string;
 };
 
 type SwiftTrackCallContext = {
@@ -206,6 +208,7 @@ function defaultPropertyContext(
     hasEnum: !!hasEnum,
     enumName: sanitizeEnumKey(schema.name) + '_' + getEnumPropertyTypes(schema),
     enumValues: hasEnum && 'enum' in schema ? convertToEnum(schema.enum!, type) : undefined,
+    enumType: type === 'Any' ? 'String' : type,
   };
 }
 

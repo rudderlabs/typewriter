@@ -10,7 +10,7 @@ class RudderTyperAnalytics {
     {{#each properties}}
     {{#if hasEnum}}
 	{{#uniqueEnum enumName enumValues}}
-	public enum {{enumName}}: {{../type}} {
+	enum {{enumName}}: {{../enumType}} {
 	    {{enumValues}}
 	}
     

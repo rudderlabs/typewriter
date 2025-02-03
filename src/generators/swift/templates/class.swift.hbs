@@ -6,6 +6,14 @@ import Foundation
 
 class {{name}}: RudderTyperSerializable {
 {{#each properties}}
+    {{#if hasEnum}}
+    {{#uniqueEnum enumName enumValues}}
+    enum {{enumName}}: {{../enumType}} {
+        {{enumValues}}
+    }
+    {{/uniqueEnum}}
+    {{/if}}
+
 {{#if description}}
 /// {{description}}
 {{/if}}
