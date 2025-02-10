@@ -164,6 +164,44 @@ trackingPlans:
     APIVersion: v2
 ```
 
+### Configuration Hierarchy
+
+RudderTyper uses a two-level configuration system for both Client and Scripts:
+
+1. **Tracking Plan-Level Configuration**:
+
+   - Overrides root-level settings.
+   - Optional fields: `client` and `scripts`. Defaults to root-level if absent.
+
+2. **Root-Level Configuration**:
+   - Used when tracking plan-level overrides are not provided.
+
+### Precedence Flow:
+
+- **Tracking Plan-Level Configuration** takes precedence over the **Root-Level Configuration**.
+- If a specific setting is not defined at the tracking plan level, the **Root-Level Configuration** will be used as a default.
+
+### Example:
+
+In the case where a Tracking Plan has the following settings:
+
+```yaml
+trackingPlans:
+  - id: rs_QhWHOgp7xg8wkYxilH3scd2uRID
+    workspaceSlug: rudderstack-demo
+    path: ./analytics
+    APIVersion: v2
+
+    scripts:
+      token: source .env; echo $RUDDERTYPER_TOKEN
+
+    client:
+      sdk: analytics-android
+      language: swift
+```
+
+This will override the root-level configuration if provided at the tracking plan level. If not provided, the root-level configuration will be used.
+
 ## How to integrate RudderTyper-generated client with your app?
 
 This section includes steps to integrate your RudderTyper-generated client with your app across different RudderStack SDKs.
