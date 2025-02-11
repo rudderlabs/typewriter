@@ -89,54 +89,78 @@ export async function fetchTrackingPlan(options: {
   email: string;
   APIVersion: string;
 }): Promise<RudderAPI.TrackingPlan> {
-  let url =
-    options.APIVersion === 'v1' ? `trackingplans/${options.id}` : `tracking-plans/${options.id}`;
-  url = options.version ? `${url}?version=${options.version}` : url;
-  const response = await apiGet<RudderAPI.GetTrackingPlanResponse>(
-    url,
-    options.token,
-    options.email,
-  );
+  let response: RudderAPI.GetTrackingPlanResponse;
+  const { id, version, token, email } = options;
 
-  if (options.APIVersion === 'v2') {
-    response.createdAt = new Date(response.createdAt);
-    response.updatedAt = new Date(response.updatedAt);
-  } else {
-    response.create_time = new Date(response.create_time);
-    response.update_time = new Date(response.update_time);
+  switch (options.APIVersion) {
+    case 'v1':
+      response = await fetchTrackingPlanV1(id, version, token, email);
+      break;
+
+    case 'v2':
+      response = await fetchTrackingPlanV2(id, version, token, email);
+      break;
+
+    default:
+      throw new Error(`Invalid API version: ${options.APIVersion}`);
   }
 
-  if (options.APIVersion === 'v2') {
-    const url = `tracking-plans/${options.id}/events`;
-    const eventsResponse = await apiGet<RudderAPI.GetTrackingPlanEventsResponse>(
-      url,
-      options.token,
-      options.email,
-    );
-    if (eventsResponse) {
-      const eventsRulesResponsePromise = eventsResponse.data.map(async (ev) => {
-        const url = `tracking-plans/${options.id}/events/${ev.id}`;
-        const eventsRulesResponse = await apiGet<RudderAPI.GetTrackingPlanEventsRulesResponse>(
-          url,
-          options.token,
-          options.email,
-        );
-        return {
-          name: eventsRulesResponse.name,
-          description: eventsRulesResponse.description,
-          eventType: eventsRulesResponse.eventType,
-          rules: eventsRulesResponse.rules,
-        };
-      });
-      const eventsRulesResponse: RudderAPI.RuleMetadata[] = await Promise.all(
-        eventsRulesResponsePromise,
-      );
-      response.rules = {
-        events: eventsRulesResponse,
-      };
-    }
-  }
   return sanitizeTrackingPlan(response);
+}
+
+async function fetchTrackingPlanV1(
+  id: string,
+  version: number | undefined,
+  token: string,
+  email: string,
+): Promise<RudderAPI.GetTrackingPlanResponse> {
+  const url = version ? `trackingplans/${id}?version=${version}` : `trackingplans/${id}`;
+
+  const response = await apiGet<RudderAPI.GetTrackingPlanResponse>(url, token, email);
+  response.create_time = new Date(response.create_time);
+  response.update_time = new Date(response.update_time);
+
+  return response;
+}
+
+async function fetchTrackingPlanV2(
+  id: string,
+  version: number | undefined,
+  token: string,
+  email: string,
+): Promise<RudderAPI.GetTrackingPlanResponse> {
+  let url = version ? `tracking-plans/${id}?version=${version}` : `tracking-plans/${id}`;
+
+  const response = await apiGet<RudderAPI.GetTrackingPlanResponse>(url, token, email);
+  response.createdAt = new Date(response.createdAt);
+  response.updatedAt = new Date(response.updatedAt);
+
+  url = `tracking-plans/${id}/events`;
+  const eventsResponse = await apiGet<RudderAPI.GetTrackingPlanEventsResponse>(url, token, email);
+  if (eventsResponse) {
+    const eventsRulesResponsePromise = eventsResponse.data.map(async (ev) => {
+      const url = `tracking-plans/${id}/events/${ev.id}`;
+      const eventsRulesResponse = await apiGet<RudderAPI.GetTrackingPlanEventsRulesResponse>(
+        url,
+        token,
+        email,
+      );
+      return {
+        name: eventsRulesResponse.name,
+        description: eventsRulesResponse.description,
+        eventType: eventsRulesResponse.eventType,
+        rules: eventsRulesResponse.rules,
+      };
+    });
+    const eventsRulesResponse: RudderAPI.RuleMetadata[] = await Promise.all(
+      eventsRulesResponsePromise,
+    );
+    response.rules = {
+      events: eventsRulesResponse,
+    };
+  }
+
+  return response;
 }
 
 // fetchTrackingPlans fetches all Tracking Plans accessible by a given API token
