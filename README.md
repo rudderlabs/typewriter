@@ -168,17 +168,17 @@ trackingPlans:
 
 RudderTyper uses a two-level configuration system for both Client and Scripts:
 
-1. **Tracking Plan-Level Configuration**:
+1. **Tracking Plan Level Configuration**:
 
    - Overrides root-level settings.
    - Optional fields: `client` and `scripts`. Defaults to root-level if absent.
 
 2. **Root-Level Configuration**:
-   - Used when tracking plan-level overrides are not provided.
+   - Used when tracking plan level overrides are not provided.
 
 ### Precedence Flow:
 
-- **Tracking Plan-Level Configuration** takes precedence over the **Root-Level Configuration**.
+- **Tracking Plan Level Configuration** takes precedence over the **Root-Level Configuration**.
 - If a specific setting is not defined at the tracking plan level, the **Root-Level Configuration** will be used as a default.
 
 ### Example:
