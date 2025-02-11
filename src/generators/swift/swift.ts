@@ -3,6 +3,7 @@ import Handlebars from 'handlebars';
 import { Generator, BasePropertyContext, GeneratorClient } from '../gen.js';
 import lodash from 'lodash';
 import { registerPartial } from '../../templates.js';
+import { getEnumPropertyTypes, sanitizeEnumKey, sanitizeKey } from '../utils.js';
 
 const { camelCase, upperFirst } = lodash;
 
@@ -30,6 +31,14 @@ type SwiftPropertyContext = {
   // Note: only set if this is a class.
   // The header file containing the interface for this class.
   importName?: string;
+  // Whether this property has an enum.
+  hasEnum: boolean;
+  // The formatted enum name
+  enumName?: string;
+  // The formatted enum values
+  enumValues?: any;
+  // The type of the enum values
+  enumType?: string;
 };
 
 type SwiftTrackCallContext = {
@@ -74,10 +83,12 @@ export const swift: Generator<
   generatePrimitive: async (client, schema, parentPath) => {
     let type = 'Any';
     let isPointerType = !schema.isRequired || !!schema.isNullable;
+    let hasEnum = false;
 
     if (schema.type === Type.STRING) {
       type = 'String';
       isPointerType = true;
+      hasEnum = !!schema.enum;
     } else if (schema.type === Type.BOOLEAN) {
       // BOOLs cannot nullable in Objective-C. Instead, use an NSNumber which can be
       // initialized like a boolean like so: [NSNumber numberWithBool:YES]
@@ -85,12 +96,14 @@ export const swift: Generator<
       type = 'Bool';
     } else if (schema.type === Type.INTEGER) {
       type = 'Int';
+      hasEnum = !!schema.enum;
     } else if (schema.type === Type.NUMBER) {
       type = 'Decimal';
       isPointerType = true;
+      hasEnum = !!schema.enum;
     }
 
-    return defaultPropertyContext(client, schema, type, parentPath, isPointerType);
+    return defaultPropertyContext(client, schema, type, parentPath, isPointerType, hasEnum);
   },
   generateArray: async (client, schema, items, parentPath) => {
     // Objective-C doesn't support NSArray's of primitives. Therefore, we
@@ -126,7 +139,7 @@ export const swift: Generator<
   },
   generateUnion: async (client, schema, _, parentPath) => {
     // TODO: support unions in iOS
-    return defaultPropertyContext(client, schema, 'Any', parentPath, true);
+    return defaultPropertyContext(client, schema, 'Any', parentPath, true, !!schema.enum);
   },
   generateTrackCall: async (_client, _schema, functionName) => ({
     functionName: functionName,
@@ -155,12 +168,34 @@ export const swift: Generator<
   },
 };
 
+const convertToEnum = (values: any[], type: string) => {
+  return values
+    .map((value) => {
+      let key, formattedValue;
+
+      if (type === 'String' || typeof value === 'string') {
+        key = 'S_' + sanitizeKey(value);
+        formattedValue = `"${value.toString().replace(/"/g, '\\"').trim()}"`;
+      } else if (type === 'Int') {
+        key = 'I_' + sanitizeKey(value);
+        formattedValue = `${value}`;
+      } else if (type === 'Decimal') {
+        key = 'D_' + sanitizeKey(value);
+        formattedValue = `${value}`;
+      }
+
+      return `case ${key} = ${formattedValue}`;
+    })
+    .join('\n\t\t');
+};
+
 function defaultPropertyContext(
   client: GeneratorClient,
   schema: Schema,
   type: string,
   namespace: string,
   isPointerType: boolean,
+  hasEnum?: boolean,
 ): SwiftPropertyContext {
   return {
     name: client.namer.register(schema.name, namespace, {
@@ -170,6 +205,10 @@ function defaultPropertyContext(
     isVariableNullable: !schema.isRequired || !!schema.isNullable,
     isPayloadFieldNullable: !!schema.isNullable && !!schema.isRequired,
     isPointerType,
+    hasEnum: !!hasEnum,
+    enumName: sanitizeEnumKey(schema.name) + '_' + getEnumPropertyTypes(schema),
+    enumValues: hasEnum && 'enum' in schema ? convertToEnum(schema.enum!, type) : undefined,
+    enumType: type === 'Any' ? 'String' : type,
   };
 }
 
@@ -186,6 +225,8 @@ function generateFunctionSignature(
     name: string;
     isPointerType: boolean;
     isVariableNullable: boolean;
+    hasEnum?: boolean;
+    enumName?: string;
   }[] = [...properties];
   if (withOptions) {
     parameters.push({
@@ -200,12 +241,14 @@ function generateFunctionSignature(
     type: string;
     isPointerType: boolean;
     isVariableNullable: boolean;
+    hasEnum?: boolean;
+    enumName?: string;
   }) => {
-    const { type, isVariableNullable } = property;
+    const { type, isVariableNullable, hasEnum, enumName } = property;
     if (isVariableNullable) {
-      return `${type}? = nil`;
+      return hasEnum ? `${enumName}? = nil` : `${type}? = nil`;
     } else {
-      return `${type}`;
+      return hasEnum ? `${enumName}` : `${type}`;
     }
   };
 

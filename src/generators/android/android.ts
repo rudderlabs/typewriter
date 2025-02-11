@@ -2,7 +2,7 @@ import camelCase from 'lodash/camelCase.js';
 import upperFirst from 'lodash/upperFirst.js';
 import { Type, Schema, getPropertiesSchema } from '../ast.js';
 import { Generator, GeneratorClient } from '../gen.js';
-import { sanitizeEnumKey, sanitizeKey } from '../utils.js';
+import { getEnumPropertyTypes, sanitizeEnumKey, sanitizeKey } from '../utils.js';
 
 // These contexts are what will be passed to Handlebars to perform rendering.
 // Everything in these contexts should be properly sanitized.
@@ -144,7 +144,7 @@ export const android: Generator<
           if (p.hasEnum) {
             // Generate the enum file
             client.generateFile(
-              `${sanitizeEnumKey(camelCase(p.name))}.java`,
+              `${p.enumName}.java`,
               'generators/android/templates/enumeration.java.hbs',
               p,
             );
@@ -166,7 +166,7 @@ const convertToEnum = (values: any[], type: string) => {
 
         if (type === 'String' || typeof value === 'string') {
           key = 'S_' + sanitizeKey(value);
-          formattedValue = `"${value.toString().trim()}"`; // String values
+          formattedValue = `"${value.toString().replace(/"/g, '\\"').trim()}"`; // String values
         } else if (type === 'Long') {
           key = 'L_' + sanitizeKey(value);
           formattedValue = Number(value) % 1 === 0 ? `${value}L` : value.toString(); // Long values
@@ -195,7 +195,8 @@ function defaultPropertyContext(
     hasEnum: !!hasEnum,
     enumName: hasEnum
       ? client.namer.register(schema.name, namespace, {
-          transform: (name) => sanitizeEnumKey(camelCase(name)),
+          transform: (name) =>
+            sanitizeEnumKey(camelCase(name)) + '_' + getEnumPropertyTypes(schema),
         })
       : undefined,
     enumValues: hasEnum && 'enum' in schema ? convertToEnum(schema.enum!, type) : undefined,

@@ -5,6 +5,20 @@
 import Rudder
 
 class RudderTyperAnalytics {
+
+    {{#each tracks}}
+    {{#each properties}}
+    {{#if hasEnum}}
+	{{#uniqueEnum enumName enumValues}}
+	enum {{enumName}}: {{../enumType}} {
+	    {{enumValues}}
+	}
+    
+	{{/uniqueEnum}}
+    {{/if}}
+    {{/each}}
+    {{/each}}
+
     {{#each tracks}}
     {{#if description}}
     /// {{description}}

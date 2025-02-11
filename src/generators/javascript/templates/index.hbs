@@ -109,10 +109,13 @@ export interface Schema {
 	export enum {{enumName}} {
 	{{enumValues}}
 	}
+	
 	{{/uniqueEnum}}
 {{/if}}
 {{/each}}
+{{/each}}
 
+{{#each objects}}
 {{#if (or (not ../isBrowser) (and ../isBrowser (not (eq name "Screen"))))}}
 	{{#if description}}
 	/**
