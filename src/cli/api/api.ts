@@ -153,7 +153,7 @@ async function _fetchTrackingPlanV2RulesByPage(
   email: string,
   page = 1,
 ): Promise<RudderAPI.RuleMetadata[]> {
-  const url = `tracking-plans/${id}/events/${page}`;
+  const url = `tracking-plans/${id}/events?page=${page}`;
 
   const trackingplanEvents = await apiGet<RudderAPI.GetTrackingPlanEventsResponse>(
     url,
