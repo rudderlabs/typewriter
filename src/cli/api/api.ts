@@ -93,6 +93,7 @@ export async function fetchTrackingPlan(options: {
   APIVersion: string;
 }): Promise<RudderAPI.TrackingPlan> {
   let response: RudderAPI.GetTrackingPlanResponse;
+
   const { id, version, token, email } = options;
 
   switch (options.APIVersion) {
@@ -162,7 +163,8 @@ async function _fetchTrackingPlanV2RulesByPage(
 
   let combinedRules: RudderAPI.RuleMetadata[] = [];
 
-  if (trackingplanEvents.currentPage < trackingplanEvents.total) {
+  const hasNext = trackingplanEvents.total - trackingplanEvents.pageSize * page > 0;
+  if (hasNext) {
     combinedRules = await _fetchTrackingPlanV2RulesByPage(
       id,
       token,
