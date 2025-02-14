@@ -106,7 +106,7 @@ export async function fetchTrackingPlan(options: {
       break;
 
     default:
-      throw new Error(`Invalid API version: ${options.APIVersion}`);
+      throw new Error(`Invalid TrackingPlan API version: ${options.APIVersion}`);
   }
 
   return sanitizeTrackingPlan(response);
@@ -139,7 +139,7 @@ async function _fetchTrackingPlanV2(
   response.createdAt = new Date(response.createdAt);
   response.updatedAt = new Date(response.updatedAt);
 
-  const rules = await _fetchTrackingPlanV2RulesByPage(id, token, email);
+  const rules = await _fetchTrackingPlanV2Rules(id, token, email);
   response.rules = {
     events: rules,
   };
@@ -147,33 +147,42 @@ async function _fetchTrackingPlanV2(
   return response;
 }
 
+async function _fetchTrackingPlanV2Rules(
+  id: string,
+  token: string,
+  email: string,
+): Promise<RudderAPI.RuleMetadata[]> {
+  let combinedRules: RudderAPI.RuleMetadata[] = [];
+  let page = 1;
+
+  while (true) {
+    const { byPage, hasNext } = await _fetchTrackingPlanV2RulesByPage(id, token, email, page);
+    combinedRules = combinedRules.concat(byPage);
+
+    if (!hasNext) {
+      break;
+    }
+    page++;
+  }
+
+  return combinedRules;
+}
+
 async function _fetchTrackingPlanV2RulesByPage(
   id: string,
   token: string,
   email: string,
-  page = 1,
-): Promise<RudderAPI.RuleMetadata[]> {
+  page: number,
+): Promise<{ byPage: RudderAPI.RuleMetadata[]; hasNext: boolean }> {
   const url = `tracking-plans/${id}/events?page=${page}`;
 
-  const trackingplanEvents = await apiGet<RudderAPI.GetTrackingPlanEventsResponse>(
+  const trackingPlanEvents = await apiGet<RudderAPI.GetTrackingPlanEventsResponse>(
     url,
     token,
     email,
   );
 
-  let combinedRules: RudderAPI.RuleMetadata[] = [];
-
-  const hasNext = trackingplanEvents.total - trackingplanEvents.pageSize * page > 0;
-  if (hasNext) {
-    combinedRules = await _fetchTrackingPlanV2RulesByPage(
-      id,
-      token,
-      email,
-      trackingplanEvents.currentPage + 1,
-    );
-  }
-
-  const rulesPromise = trackingplanEvents.data.map(async (ev) => {
+  const rulesPromise = trackingPlanEvents.data.map(async (ev) => {
     const url = `tracking-plans/${id}/events/${ev.id}`;
     const eventsRulesResponse = await apiGet<RudderAPI.GetTrackingPlanEventsRulesResponse>(
       url,
@@ -189,8 +198,10 @@ async function _fetchTrackingPlanV2RulesByPage(
     } as RudderAPI.RuleMetadata;
   });
 
-  const currentByPage = await Promise.all(rulesPromise);
-  return currentByPage.concat(combinedRules);
+  const byPage = await Promise.all(rulesPromise);
+  const hasNext = trackingPlanEvents.total - trackingPlanEvents.pageSize * page > 0;
+
+  return { byPage, hasNext };
 }
 
 // fetchTrackingPlans fetches all Tracking Plans accessible by a given API token
