@@ -63,6 +63,9 @@ export namespace RudderAPI {
       identitySection: string;
       additionalProperties: boolean;
     }[];
+    total: number;
+    currentPage: number;
+    pageSize: number;
   };
 
   export type RuleMetadata = {
@@ -89,54 +92,116 @@ export async function fetchTrackingPlan(options: {
   email: string;
   APIVersion: string;
 }): Promise<RudderAPI.TrackingPlan> {
-  let url =
-    options.APIVersion === 'v1' ? `trackingplans/${options.id}` : `tracking-plans/${options.id}`;
-  url = options.version ? `${url}?version=${options.version}` : url;
-  const response = await apiGet<RudderAPI.GetTrackingPlanResponse>(
+  let response: RudderAPI.GetTrackingPlanResponse;
+
+  const { id, version, token, email } = options;
+
+  switch (options.APIVersion) {
+    case 'v1':
+      response = await _fetchTrackingPlanV1(id, version, token, email);
+      break;
+
+    case 'v2':
+      response = await _fetchTrackingPlanV2(id, version, token, email);
+      break;
+
+    default:
+      throw new Error(`Invalid TrackingPlan API version: ${options.APIVersion}`);
+  }
+
+  return sanitizeTrackingPlan(response);
+}
+
+async function _fetchTrackingPlanV1(
+  id: string,
+  version: number | undefined,
+  token: string,
+  email: string,
+): Promise<RudderAPI.GetTrackingPlanResponse> {
+  const url = version ? `trackingplans/${id}?version=${version}` : `trackingplans/${id}`;
+
+  const response = await apiGet<RudderAPI.GetTrackingPlanResponse>(url, token, email);
+  response.create_time = new Date(response.create_time);
+  response.update_time = new Date(response.update_time);
+
+  return response;
+}
+
+async function _fetchTrackingPlanV2(
+  id: string,
+  version: number | undefined,
+  token: string,
+  email: string,
+): Promise<RudderAPI.GetTrackingPlanResponse> {
+  const url = version ? `tracking-plans/${id}?version=${version}` : `tracking-plans/${id}`;
+
+  const response = await apiGet<RudderAPI.GetTrackingPlanResponse>(url, token, email);
+  response.createdAt = new Date(response.createdAt);
+  response.updatedAt = new Date(response.updatedAt);
+
+  const rules = await _fetchTrackingPlanV2Rules(id, token, email);
+  response.rules = {
+    events: rules,
+  };
+
+  return response;
+}
+
+async function _fetchTrackingPlanV2Rules(
+  id: string,
+  token: string,
+  email: string,
+): Promise<RudderAPI.RuleMetadata[]> {
+  let combinedRules: RudderAPI.RuleMetadata[] = [];
+  let page = 1;
+
+  while (true) {
+    const { byPage, hasNext } = await _fetchTrackingPlanV2RulesByPage(id, token, email, page);
+    combinedRules = combinedRules.concat(byPage);
+
+    if (!hasNext) {
+      break;
+    }
+    page++;
+  }
+
+  return combinedRules;
+}
+
+async function _fetchTrackingPlanV2RulesByPage(
+  id: string,
+  token: string,
+  email: string,
+  page: number,
+): Promise<{ byPage: RudderAPI.RuleMetadata[]; hasNext: boolean }> {
+  const url = `tracking-plans/${id}/events?page=${page}`;
+
+  const trackingPlanEvents = await apiGet<RudderAPI.GetTrackingPlanEventsResponse>(
     url,
-    options.token,
-    options.email,
+    token,
+    email,
   );
 
-  if (options.APIVersion === 'v2') {
-    response.createdAt = new Date(response.createdAt);
-    response.updatedAt = new Date(response.updatedAt);
-  } else {
-    response.create_time = new Date(response.create_time);
-    response.update_time = new Date(response.update_time);
-  }
-
-  if (options.APIVersion === 'v2') {
-    const url = `tracking-plans/${options.id}/events`;
-    const eventsResponse = await apiGet<RudderAPI.GetTrackingPlanEventsResponse>(
+  const rulesPromise = trackingPlanEvents.data.map(async (ev) => {
+    const url = `tracking-plans/${id}/events/${ev.id}`;
+    const eventsRulesResponse = await apiGet<RudderAPI.GetTrackingPlanEventsRulesResponse>(
       url,
-      options.token,
-      options.email,
+      token,
+      email,
     );
-    if (eventsResponse) {
-      const eventsRulesResponsePromise = eventsResponse.data.map(async (ev) => {
-        const url = `tracking-plans/${options.id}/events/${ev.id}`;
-        const eventsRulesResponse = await apiGet<RudderAPI.GetTrackingPlanEventsRulesResponse>(
-          url,
-          options.token,
-          options.email,
-        );
-        return {
-          name: eventsRulesResponse.name,
-          description: eventsRulesResponse.description,
-          eventType: eventsRulesResponse.eventType,
-          rules: eventsRulesResponse.rules,
-        };
-      });
-      const eventsRulesResponse: RudderAPI.RuleMetadata[] = await Promise.all(
-        eventsRulesResponsePromise,
-      );
-      response.rules = {
-        events: eventsRulesResponse,
-      };
-    }
-  }
-  return sanitizeTrackingPlan(response);
+
+    return {
+      name: eventsRulesResponse.name,
+      description: eventsRulesResponse.description,
+      eventType: eventsRulesResponse.eventType,
+      rules: eventsRulesResponse.rules,
+    } as RudderAPI.RuleMetadata;
+  });
+
+  const byPage = await Promise.all(rulesPromise);
+  const hasNext = trackingPlanEvents.total - trackingPlanEvents.pageSize * page > 0;
+
+  return { byPage, hasNext };
 }
 
 // fetchTrackingPlans fetches all Tracking Plans accessible by a given API token
