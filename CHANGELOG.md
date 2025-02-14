@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/rudderlabs/rudder-typer/compare/v1.4.0...v1.5.0) (2025-02-14)
+
+
+### Features
+
+* add enum support for swift language iOS ([#129](https://github.com/rudderlabs/rudder-typer/issues/129)) ([cfd1121](https://github.com/rudderlabs/rudder-typer/commit/cfd11219b45f790006dc3e66933f83954a030a42))
+
+
+### Bug Fixes
+
+* tracking-plan v2 events fetch paginated ([#132](https://github.com/rudderlabs/rudder-typer/issues/132)) ([0a995c1](https://github.com/rudderlabs/rudder-typer/commit/0a995c139f8929369f3c801cab8c5b852db83873))
+
 ## [1.4.0](https://github.com/rudderlabs/rudder-typer/compare/v1.3.2...v1.4.0) (2025-01-23)
 
 
